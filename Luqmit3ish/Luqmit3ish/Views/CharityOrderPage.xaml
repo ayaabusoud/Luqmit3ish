@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Luqmit3ish.Views.CharityOrderPage"
+             xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
+             Title="Orders">
+
+    <ContentPage.BindingContext>
+        <vm:CharityOrderViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout Margin="16,64,16,35">
+            <Frame Style="{StaticResource OrderCard}">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.5*"/>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Frame Grid.RowSpan="3" Grid.Column="0"  Style="{StaticResource ImageOrderCard}" >
+                        <ImageButton Source=""  Aspect="AspectFill" CornerRadius="5" />
+                    </Frame>
+
+                    <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource LabelOrderCard}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Restaurant name: "  FontSize="Medium">
+                                    <Span.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="ProfileTapped"></TapGestureRecognizer>
+                                    </Span.GestureRecognizers>
+                                </Span>
+                                <Span Text="..." FontAttributes="Italic" FontSize="Small" />
+                            </FormattedString>
+                        </Label.FormattedText>
+
+                    </Label>
+                    <Label  Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource LabelOrderCard}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Date: " FontSize="Small"/>
+                                <Span Text="..." FontAttributes="Italic" FontSize="Small" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label Grid.Row="2" Grid.Column="1"  Style="{StaticResource LabelOrderCard}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Pizza: " FontSize="Small"/>
+                                <Span Text="..." FontAttributes="Italic" FontSize="Small" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <ImageButton Grid.Row="2" Grid.Column="2" Source="icon_edit.png" WidthRequest="25" VerticalOptions="Center" Clicked="EditClicked" BackgroundColor="White"/>
+                </Grid>
+            </Frame>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
+

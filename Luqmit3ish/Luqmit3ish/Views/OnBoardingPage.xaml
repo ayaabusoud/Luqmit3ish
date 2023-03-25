@@ -1,0 +1,15 @@
+﻿<CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              x:Class="Luqmit3ish.Views.OnBoardingPage">
+    <ContentPage>
+        <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
+            <Label Text="Welcome" FontSize="Medium" HorizontalOptions="Center" />
+        </StackLayout>
+    </ContentPage>
+
+    <ContentPage>
+        <StackLayout Margin="16,64,16,35" VerticalOptions="Center">
+            <Button VerticalOptions="Center" Text="Join us" Clicked="SignupClicked" Style="{StaticResource BorderButton}"/>
+        </StackLayout>    
+    </ContentPage>
+</CarouselPage>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Luqmit3ish.Views.RestaurantHomePage"
+             Title="Order">
+    <ContentPage.Content>
+        <StackLayout Margin="16,64,16,35">
+            <Frame Style="{StaticResource FoodCard}">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="FrameTapped"></TapGestureRecognizer>
+                </Frame.GestureRecognizers>
+                <StackLayout>
+                    <ImageButton Source="" BackgroundColor="Gray" Style="{StaticResource ImageFoodCard}" />
+                    <Label Text="pizza" Margin="10,0" FontSize="Medium"/>
+                    <Label Text="mini dishes" Margin="10,0" FontSize="Small"/>
+                    <Label Text="5 dishes" Margin="10,0" FontSize="Small"/>
+                    <Button Text="Edit" Clicked="EditClicked"/>
+                </StackLayout>
+            </Frame>
+            <Button Clicked="AddClicked" Style="{StaticResource FloatingButton}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

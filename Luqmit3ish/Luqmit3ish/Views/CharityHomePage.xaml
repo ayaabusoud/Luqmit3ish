@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Luqmit3ish.Views.CharityHomePage"
+             xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
+             Title="Home">
+    <ContentPage.BindingContext>
+        <vm:CharityHomeViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="icon_search.png"  Clicked="SearchClicked"/>
+        <ToolbarItem Icon="icon_filter.png"  Clicked="FilterClicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout Margin="16,64,16,35">
+            <Frame Style="{StaticResource FoodCard}">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="FrameTapped"></TapGestureRecognizer>
+                </Frame.GestureRecognizers>
+                <StackLayout>
+                    <ImageButton Source="" BackgroundColor="Gray" Style="{StaticResource ImageFoodCard}" />
+                    <Label Text="pizza" Margin="10,0" FontSize="Medium"/>
+                    <Label Text="mini dishes" Margin="10,0" FontSize="Small">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="ProfileTapped"></TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="5 dishes" Margin="10,0" FontSize="Small"/>
+             
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
