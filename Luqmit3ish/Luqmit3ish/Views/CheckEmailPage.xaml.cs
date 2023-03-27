@@ -16,12 +16,9 @@ namespace Luqmit3ish.Views
         public CheckEmailPage()
         {
             InitializeComponent();
-            this.BindingContext = new CheckEmailViewModel();
+            this.BindingContext = new CheckEmailViewModel(Navigation);
         }
 
-        private void ResetClicked(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new ResetPasswordPage());
-        }
+
     }
 }

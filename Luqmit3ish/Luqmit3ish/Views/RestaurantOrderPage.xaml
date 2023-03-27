@@ -5,9 +5,55 @@
              Title="Order">
     <ContentPage.Content>
         <StackLayout Margin="16,64,16,35">
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Frame Style="{StaticResource OrderCard}">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.5*"/>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Frame Grid.RowSpan="3" Grid.Column="0"  Style="{StaticResource ImageOrderCard}" >
+                        <ImageButton Source=""  Aspect="AspectFill" CornerRadius="5" />
+                    </Frame>
+
+                    <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource LabelOrderCard}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Charity name: "  FontSize="Medium">
+                                    <Span.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ProfileCommand}" ></TapGestureRecognizer>
+                                    </Span.GestureRecognizers>
+                                </Span>
+                                <Span Text="..." FontAttributes="Italic" FontSize="Small" />
+                            </FormattedString>
+                        </Label.FormattedText>
+
+                    </Label>
+                    <Label  Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource LabelOrderCard}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Date: " FontSize="Small"/>
+                                <Span Text="..." FontAttributes="Italic" FontSize="Small" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label Grid.Row="2" Grid.Column="1"  Style="{StaticResource LabelOrderCard}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Pizza: " FontSize="Small"/>
+                                <Span Text="..." FontAttributes="Italic" FontSize="Small" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Grid>
+            </Frame>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

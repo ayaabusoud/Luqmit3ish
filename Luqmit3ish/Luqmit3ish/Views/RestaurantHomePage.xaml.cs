@@ -16,21 +16,7 @@ namespace Luqmit3ish.Views
         public RestaurantHomePage()
         {
             InitializeComponent();
-            this.BindingContext = new RestaurantHomeViewModel();
-        }
-        private void FrameTapped(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new FoodDetailPage());
-        }
-
-        private void AddClicked(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new AddFoodPage());
-        }
-
-        private void EditClicked(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new EditFoodPage());
+            this.BindingContext = new RestaurantHomeViewModel(Navigation);
         }
     }
 }

@@ -15,17 +15,9 @@ namespace Luqmit3ish.Views
         public LoginPage()
         {
             InitializeComponent();
-            this.BindingContext = new LoginViewModel();
+            this.BindingContext = new LoginViewModel(Navigation);
         }
 
-        private void ForgotPassClicked(object sender, EventArgs e)
-        {
-            Navigation.PushModalAsync(new NavigationPage(new ForgotPasswordPage()));
-        }
 
-        private void SignupClicked(object sender, EventArgs e)
-        {
-            Navigation.PushModalAsync(new SignupPage());
-        }
     }
 }

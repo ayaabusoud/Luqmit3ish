@@ -16,12 +16,8 @@ namespace Luqmit3ish.Views
         public EditProfilePage()
         {
             InitializeComponent();
-            this.BindingContext = new EditProfileViewModel();
+            this.BindingContext = new EditProfileViewModel(Navigation);
         }
 
-        private void DoneClicked(object sender, EventArgs e)
-        {
-            Navigation.PopAsync();
-        }
     }
 }

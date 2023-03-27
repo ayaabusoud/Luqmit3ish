@@ -17,17 +17,9 @@ namespace Luqmit3ish.Views
         public SignupPage()
         {
             InitializeComponent();
-            this.BindingContext = new SignupViewModel();
+            this.BindingContext = new SignupViewModel(Navigation);
         }
 
-        private void SignupClicked(object sender, EventArgs e)
-        {
-            Navigation.PushModalAsync(new VerificationPage());
-        }
 
-        private void LoginClicked(object sender, EventArgs e)
-        {
-            Navigation.PushModalAsync(new LoginPage());
-        }
     }
 }

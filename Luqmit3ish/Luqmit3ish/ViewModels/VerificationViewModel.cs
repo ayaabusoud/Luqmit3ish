@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Luqmit3ish.ViewModels
 {
-    class VerificationViewModel : BaseViewModel
+    class VerificationViewModel 
     {
         public Command SignupCommand { get; }
 

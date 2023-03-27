@@ -5,7 +5,7 @@
              Title="Edit Profile">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Icon="icon_check.png"  Clicked="DoneClicked"/>
+        <ToolbarItem Icon="icon_check.png"  Command="{Binding DoneCommand}"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>

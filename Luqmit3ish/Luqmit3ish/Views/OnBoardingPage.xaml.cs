@@ -16,12 +16,8 @@ namespace Luqmit3ish.Views
         public OnBoardingPage()
         {
             InitializeComponent();
-            this.BindingContext = new OnBoardingViewModel();
+            this.BindingContext = new OnBoardingViewModel(Navigation);
         }
 
-        private void SignupClicked(object sender, EventArgs e)
-        {
-            Navigation.PushModalAsync(new SignupPage());
-        }
     }
 }

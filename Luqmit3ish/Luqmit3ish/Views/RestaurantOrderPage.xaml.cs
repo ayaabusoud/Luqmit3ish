@@ -16,7 +16,7 @@ namespace Luqmit3ish.Views
         public RestaurantOrderPage()
         {
             InitializeComponent();
-            this.BindingContext = new RestaurantOrderViewModel();
+            this.BindingContext = new RestaurantOrderViewModel(Navigation);
         }
     }
 }

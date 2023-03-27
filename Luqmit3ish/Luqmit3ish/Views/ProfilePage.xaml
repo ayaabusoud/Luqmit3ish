@@ -4,13 +4,10 @@
              x:Class="Luqmit3ish.Views.ProfilePage"
              xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
              Title="Profile">
-    <ContentPage.BindingContext>
-        <vm:ProfileViewModel />
-    </ContentPage.BindingContext>
-    
+
     <ContentPage.Content>
         <StackLayout Margin="16,64,16,35" VerticalOptions="Center">
-            <Button VerticalOptions="Center" Text="Edit Profile" Clicked="EditClicked" Style="{StaticResource BorderButton}"/>
+            <Button VerticalOptions="Center" Text="Edit Profile" Command="{Binding EditCommand}" Style="{StaticResource BorderButton}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

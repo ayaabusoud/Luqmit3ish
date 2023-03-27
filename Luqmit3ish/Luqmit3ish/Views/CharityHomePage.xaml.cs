@@ -16,27 +16,7 @@ namespace Luqmit3ish.Views
         public CharityHomePage()
         {
             InitializeComponent();
-            this.BindingContext = new CharityHomeViewModel();
-        }
-
-        private void FilterClicked(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new FilterFoodPage());
-        }
-
-        private void FrameTapped(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new FoodDetailPage());
-        }
-
-        private void SearchClicked(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new SearchPage());
-        }
-
-        private async void ProfileTapped(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new OtherProfilePage());
+            this.BindingContext = new CharityHomeViewModel(Navigation);
         }
     }
 }

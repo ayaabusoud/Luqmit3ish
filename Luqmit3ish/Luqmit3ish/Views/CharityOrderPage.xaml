@@ -5,9 +5,7 @@
              xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
              Title="Orders">
 
-    <ContentPage.BindingContext>
-        <vm:CharityOrderViewModel />
-    </ContentPage.BindingContext>
+ 
 
     <ContentPage.Content>
         <StackLayout Margin="16,64,16,35">
@@ -33,7 +31,7 @@
                             <FormattedString>
                                 <Span Text="Restaurant name: "  FontSize="Medium">
                                     <Span.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="ProfileTapped"></TapGestureRecognizer>
+                                        <TapGestureRecognizer Command="{Binding ProfileCommand}" ></TapGestureRecognizer>
                                     </Span.GestureRecognizers>
                                 </Span>
                                 <Span Text="..." FontAttributes="Italic" FontSize="Small" />
@@ -58,7 +56,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <ImageButton Grid.Row="2" Grid.Column="2" Source="icon_edit.png" WidthRequest="25" VerticalOptions="Center" Clicked="EditClicked" BackgroundColor="White"/>
+                    <ImageButton Grid.Row="2" Grid.Column="2" Source="icon_edit.png" WidthRequest="25" VerticalOptions="Center" Command="{Binding EditCommand}" BackgroundColor="White"/>
                 </Grid>
             </Frame>
         </StackLayout>

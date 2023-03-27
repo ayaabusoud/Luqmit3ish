@@ -2,10 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.CheckEmailPage"
+             xmlns:local="clr-namespace:Luqmit3ish.ViewModels" 
              Title="Check Email">
     <ContentPage.Content>
         <StackLayout Margin="16,64,16,35" VerticalOptions="Center">
-            <Button VerticalOptions="Center" Text="Reset Password" Clicked="ResetClicked" Style="{StaticResource BorderButton}"/>
+            <Button VerticalOptions="Center" Text="Reset Password" Command="{Binding ButtonCommand}" Style="{StaticResource BorderButton}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

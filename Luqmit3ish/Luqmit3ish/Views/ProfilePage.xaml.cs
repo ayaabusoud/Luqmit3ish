@@ -16,12 +16,9 @@ namespace Luqmit3ish.Views
         public ProfilePage()
         {
             InitializeComponent();
-            this.BindingContext = new ProfileViewModel();
+            this.BindingContext = new ProfileViewModel(Navigation);
         }
 
-        private async void EditClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new EditProfilePage());
-        }
+
     }
 }

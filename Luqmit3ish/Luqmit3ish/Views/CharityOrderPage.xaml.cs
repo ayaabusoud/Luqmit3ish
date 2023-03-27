@@ -16,17 +16,9 @@ namespace Luqmit3ish.Views
         public CharityOrderPage()
         {
             InitializeComponent();
-            this.BindingContext = new CharityOrderViewModel();
+            this.BindingContext = new CharityOrderViewModel(Navigation);
         }
 
-        private async void ProfileTapped(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new OtherProfilePage());
-        }
 
-        private async void EditClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new EditOrderPage());
-        }
     }
 }

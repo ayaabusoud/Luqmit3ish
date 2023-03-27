@@ -16,11 +16,8 @@ namespace Luqmit3ish.Views
         public AddFoodPage()
         {
             InitializeComponent();
-            this.BindingContext = new AddFoodViewModel();
+            this.BindingContext = new AddFoodViewModel(Navigation);
         }
-        private void SubmitClicked(object sender, EventArgs e)
-        {
-            Navigation.PopAsync();
-        }
+
     }
 }

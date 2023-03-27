@@ -13,15 +13,13 @@ namespace Luqmit3ish.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ForgotPasswordPage : ContentPage
     {
+       
         public ForgotPasswordPage()
         {
             InitializeComponent();
-            this.BindingContext = new ForgotPasswordViewModel();
+            this.BindingContext = new ForgotPasswordViewModel(Navigation);
         }
 
-        private async void Button_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new CheckEmailPage());
-        }
+   
     }
 }

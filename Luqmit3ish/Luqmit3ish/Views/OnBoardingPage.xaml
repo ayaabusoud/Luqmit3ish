@@ -9,7 +9,8 @@
 
     <ContentPage>
         <StackLayout Margin="16,64,16,35" VerticalOptions="Center">
-            <Button VerticalOptions="Center" Text="Join us" Clicked="SignupClicked" Style="{StaticResource BorderButton}"/>
+            <Button VerticalOptions="Center" Text="Join us" Command="{Binding ButtonCommand}" Style="{StaticResource BorderButton}"/>
         </StackLayout>    
     </ContentPage>
 </CarouselPage>
+    
