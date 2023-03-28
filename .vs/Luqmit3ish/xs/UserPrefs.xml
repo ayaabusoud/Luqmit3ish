@@ -1,0 +1,41 @@
+﻿<Properties StartupConfiguration="{E55C4D42-4D1A-471A-A653-6F6529E6805E}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Luqmit3ish/Luqmit3ish/ViewModels/SignupViewModel.cs">
+    <Files>
+      <File FileName="Luqmit3ish/Luqmit3ish/Services/BaseService.cs" />
+      <File FileName="Luqmit3ish/Luqmit3ish/Services/UserServices.cs" />
+      <File FileName="Luqmit3ish/Luqmit3ish/ViewModels/SignupViewModel.cs" Line="9" Column="28" />
+      <File FileName="Luqmit3ish/Luqmit3ish/ViewModels/RestaurantOrderViewModel.cs" Line="26" Column="10" />
+      <File FileName="Luqmit3ish/Luqmit3ish/ViewModels/BaseViewModel.cs" />
+      <File FileName="Luqmit3ish/Luqmit3ish/Views/SignupPage.xaml" />
+      <File FileName="Luqmit3ish/Luqmit3ish/Views/SignupPage.xaml.cs" />
+      <File FileName="Luqmit3ish/Luqmit3ish/Models/User.cs" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Luqmit3ish" expanded="True">
+            <Node name="Luqmit3ish" expanded="True">
+              <Node name="Dependencies" selected="True" />
+              <Node name="Fonts" expanded="True" />
+              <Node name="Models" expanded="True" />
+              <Node name="Services" expanded="True" />
+              <Node name="ViewModels" expanded="True" />
+              <Node name="Views" expanded="True">
+                <Node name="SignupPage.xaml" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.MonoDroid LastDeploySdkVersion="13.2.0.0" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Luqmit3ish.Android PreferredExecutionTarget="Android.pixel_4_xl_-_api_33" />
+  <Xamarin.Addins.Core.Project ActiveDebugTarget="Android.pixel_4_xl_-_api_33" />
+</Properties>

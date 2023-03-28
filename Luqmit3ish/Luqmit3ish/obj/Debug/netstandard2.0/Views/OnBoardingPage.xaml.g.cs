@@ -13,7 +13,7 @@
 namespace Luqmit3ish.Views {
     
     
-    [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("Views\\OnBoardingPage.xaml")]
+    [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("Views/OnBoardingPage.xaml")]
     public partial class OnBoardingPage : global::Xamarin.Forms.CarouselPage {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "2.0.0.0")]

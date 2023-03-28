@@ -32,7 +32,7 @@
             <Style x:Key="NoBorderButton" TargetType="Button">
                 <Setter Property="FontSize" Value="Small" />
                 <Setter Property="TextColor" Value="Black" />
-                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
                 <Setter Property="BorderColor" Value="Transparent" />
                 <Setter Property="BackgroundColor" Value="Transparent" />
             </Style>
@@ -46,6 +46,16 @@
                 <Setter Property="CornerRadius" Value="50" />
                 <Setter Property="MinimumWidthRequest" Value="100" />
                 <Setter Property="Margin" Value="10" />
+            </Style>
+
+            <Style x:Key="LargeBorderButton" TargetType="Button">
+                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="BorderColor" Value="{StaticResource PrimaryVariant2Light}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="Margin" Value="15" />
             </Style>
 
             <Style x:Key="OrderCard" TargetType="Frame">
@@ -92,7 +102,7 @@
                 <Setter Property="Padding" Value="10" />
                 <Setter Property="HasShadow" Value="False" />
                 <Setter Property="BorderColor" Value="DarkGray" />
-                <Setter Property="Margin" Value="0,5,0,0"/>
+                <Setter Property="Margin" Value="15,5,15,0"/>
             </Style>
 
             <Style x:Key="textFeild" TargetType="Entry">
@@ -102,6 +112,22 @@
                 <Setter Property="TextColor" Value="Black" />
                 <Setter Property="PlaceholderColor" Value="DarkGray" />
             </Style>
+
+             <Style x:Key="validIcon" TargetType="Label">
+                <Setter Property="Text" Value="&#xf058;" />
+                <Setter Property="FontFamily" Value="FontAwesomeIcons" />
+                <Setter Property="FontSize" Value="25" />
+                <Setter Property="TextColor" Value="Green"/>
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+
+            <Style x:Key="invalidIcon" TargetType="Label">
+                <Setter Property="Text" Value="&#xf057;" />
+                <Setter Property="FontFamily" Value="FontAwesomeIcons" />
+                <Setter Property="FontSize" Value="25" />
+                <Setter Property="TextColor" Value="red"/>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
