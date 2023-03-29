@@ -1,23 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Msys\\OneDrive\\Desktop\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj": {}
+    "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Msys\\OneDrive\\Desktop\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj": {
+    "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Msys\\OneDrive\\Desktop\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj",
         "projectName": "Luqmit3ish",
-        "projectPath": "C:\\Users\\Msys\\OneDrive\\Desktop\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj",
-        "packagesPath": "C:\\Users\\Msys\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Msys\\OneDrive\\Desktop\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\obj\\",
+        "projectPath": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
           "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Msys\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],

@@ -2142,24 +2142,27 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Msys\\.nuget\\packages\\": {},
+    "C:\\Users\\HP\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
     "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Msys\\OneDrive\\Desktop\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.Android\\Luqmit3ish.Android.csproj",
+      "projectUniqueName": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.Android\\Luqmit3ish.Android.csproj",
       "projectName": "Luqmit3ish.Android",
-      "projectPath": "C:\\Users\\Msys\\OneDrive\\Desktop\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.Android\\Luqmit3ish.Android.csproj",
-      "packagesPath": "C:\\Users\\Msys\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Msys\\OneDrive\\Desktop\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.Android\\obj\\",
+      "projectPath": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.Android\\Luqmit3ish.Android.csproj",
+      "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.Android\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
         "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\Msys\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -2173,8 +2176,8 @@
       "frameworks": {
         "monoandroid11.0": {
           "projectReferences": {
-            "C:\\Users\\Msys\\OneDrive\\Desktop\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj": {
-              "projectPath": "C:\\Users\\Msys\\OneDrive\\Desktop\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj"
+            "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj": {
+              "projectPath": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj"
             }
           }
         }
