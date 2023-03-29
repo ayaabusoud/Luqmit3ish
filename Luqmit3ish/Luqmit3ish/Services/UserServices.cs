@@ -20,22 +20,7 @@ namespace Luqmit3ish.Services
         {
             _http = new HttpClient();
         }
-
-        public async Task<ObservableCollection<User>> GetUsers()
-        {
-            var response = await _http.GetAsync(ApiUrl);
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ObservableCollection<User>>(content);
-        }
-
-        public async Task<bool> InsertUser(User user)
-        {
-            var json = JsonConvert.SerializeObject(user);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _http.PostAsync(ApiUrl, content);
-
-            return response.IsSuccessStatusCode;
-        }
+     
         public async Task<bool> Login(LoginRequest loginRequest)
         {
             var json = JsonConvert.SerializeObject(loginRequest);
