@@ -1,41 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.Android\\Luqmit3ish.Android.csproj": {}
+    "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish.Android/Luqmit3ish.Android.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.Android\\Luqmit3ish.Android.csproj": {
+    "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish.Android/Luqmit3ish.Android.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.Android\\Luqmit3ish.Android.csproj",
+        "projectUniqueName": "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish.Android/Luqmit3ish.Android.csproj",
         "projectName": "Luqmit3ish.Android",
-        "projectPath": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.Android\\Luqmit3ish.Android.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.Android\\obj\\",
+        "projectPath": "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish.Android/Luqmit3ish.Android.csproj",
+        "packagesPath": "/Users/ibtihaj/.nuget/packages/",
+        "outputPath": "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish.Android/obj/",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "/Users/ibtihaj/.config/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "monoandroid11.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "monoandroid11.0": {
             "projectReferences": {
-              "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj"
+              "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish/Luqmit3ish.csproj": {
+                "projectPath": "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish/Luqmit3ish.csproj"
               }
             }
           }
@@ -56,30 +48,22 @@
         }
       }
     },
-    "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj": {
+    "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish/Luqmit3ish.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj",
+        "projectUniqueName": "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish/Luqmit3ish.csproj",
         "projectName": "Luqmit3ish",
-        "projectPath": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\obj\\",
+        "projectPath": "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish/Luqmit3ish.csproj",
+        "packagesPath": "/Users/ibtihaj/.nuget/packages/",
+        "outputPath": "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "/Users/ibtihaj/.config/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -104,10 +88,6 @@
               "version": "[2.0.3, )",
               "autoReferenced": true
             },
-            "Newtonsoft.Json": {
-              "target": "Package",
-              "version": "[13.0.3, )"
-            },
             "Xamarin.Essentials": {
               "target": "Package",
               "version": "[1.6.1, )"
@@ -127,7 +107,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.416\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/Users/ibtihaj/Library/Caches/VisualStudio/17.0/MSBuild/23940_3/RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -16,7 +16,6 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v11.0</TargetFrameworkVersion>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
@@ -70,7 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Luqmit3ish\Luqmit3ish.csproj">
-      <Project>{2464DA18-DFDA-47CD-BEB7-01E1F620DA1B}</Project>
+      <Project>{3ECBF24D-FD97-40ED-A041-E0FBC21AF70D}</Project>
       <Name>Luqmit3ish</Name>
     </ProjectReference>
   </ItemGroup>
