@@ -797,7 +797,7 @@ namespace Luqmit3ish.ViewModels
 
                         
                         Console.WriteLine("Doneeeee");
-                        Navigation.PushModalAsync(new VerificationPage());
+                        Application.Current.MainPage = new AppShellCharity();
 
                     }
 

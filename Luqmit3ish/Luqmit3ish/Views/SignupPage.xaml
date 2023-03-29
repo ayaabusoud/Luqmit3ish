@@ -6,12 +6,12 @@
              x:Class="Luqmit3ish.Views.SignupPage">
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Margin="16,40,16,35"  VerticalOptions="StartAndExpand">
+            <StackLayout Margin="26,40,26,35"  VerticalOptions="StartAndExpand">
                 <Label VerticalOptions="Start" HorizontalOptions="Center" Text="Create a new account" FontSize="30" FontAttributes="Bold" TextColor="Black"/>
                 <StackLayout Margin="0,20,0,0">
                     <Frame Style="{StaticResource textFeildFrame}" BorderColor="{Binding NameFrameColor}">
                         <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0">
-                            <Label Text="&#xf007;" FontFamily="FontAwesomeIcons" FontSize="25" />
+                            <Label Text="&#xf007;" FontFamily="FontAwesomeIcons" FontSize="20" />
                             <Entry Placeholder="Name" Keyboard="Text" Style="{StaticResource textFeild}" Text="{Binding Name}" />
                             <Label Style="{StaticResource validIcon}"  IsVisible="{Binding NameValid}" />
                             <Label Style="{StaticResource invalidIcon}"  IsVisible="{Binding NameInvalid}" />
@@ -73,7 +73,7 @@
                     <Frame Style="{StaticResource textFeildFrame}" BorderColor="{Binding LocationFrameColor}">
                         <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0">
                             <Label Text="&#xf3c5;" FontFamily="FontAwesomeIcons" FontSize="20" />
-                            <Picker Title="Location" FontSize="Title" HorizontalOptions="FillAndExpand" Margin="0,-30,0,-30" SelectedIndex="{Binding Location}" SelectedItem="{Binding SelectedLocation}" >
+                            <Picker Title="Location" FontSize="Medium" HorizontalOptions="FillAndExpand" Margin="0,-30,0,-30" SelectedIndex="{Binding Location}" SelectedItem="{Binding SelectedLocation}" >
                                 <Picker.Items>
                                     <x:String>Nablus</x:String>
                                     <x:String>Ramallah</x:String>
@@ -92,7 +92,7 @@
                     <Frame Style="{StaticResource textFeildFrame}" BorderColor="{Binding TtypeFrameColor}" >
                         <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0">
                             <Label Text="&#xf4be;" FontFamily="FontAwesomeIcons" FontSize="20" />
-                            <Picker Title="Type" FontSize="Title" HorizontalOptions="FillAndExpand" Margin="0,-30,0,-30" SelectedIndex= "{Binding Ttype}" SelectedItem="{Binding SelectedType}" >
+                            <Picker Title="Type" FontSize="Medium" HorizontalOptions="FillAndExpand" Margin="0,-30,0,-30" SelectedIndex= "{Binding Ttype}" SelectedItem="{Binding SelectedType}" >
                                 <Picker.Items>
                                     <x:String>Restaurant</x:String>
                                     <x:String>Charity</x:String>
@@ -118,7 +118,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Already have an account?" TextColor="Black" FontSize="16"/>
-                        <Span Text="  Log in" TextColor="Orange" TextDecorations="Underline" FontAttributes="Bold" FontSize="16" />
+                        <Span Text="  Log in" TextColor="{StaticResource PrimaryLight}" TextDecorations="Underline" FontAttributes="Bold" FontSize="16" />
                     </FormattedString>
                 </Label.FormattedText>
                 <Label.GestureRecognizers>

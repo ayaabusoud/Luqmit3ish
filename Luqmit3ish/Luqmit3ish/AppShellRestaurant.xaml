@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Shell xmlns="http://xamarin.com/schemas/2014/forms" 
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:Luqmit3ish.Views"
        Title="Luqmit3ish"
-       x:Class="Luqmit3ish.AppShell">
+       x:Class="Luqmit3ish.AppShellRestaurant">
 
 
     <Shell.Resources>
@@ -72,10 +72,10 @@
 
     <FlyoutItem Title="Home" Icon="icon_home.png">
         <Tab Title="Home" Icon="icon_home.png">
-            <ShellContent Route="HomePage" ContentTemplate="{DataTemplate local:CharityHomePage}" />
+            <ShellContent Route="HomePage" ContentTemplate="{DataTemplate local:RestaurantHomePage}" />
         </Tab>
         <Tab Title="Order" Icon="icon_list.png">
-            <ShellContent Route="AboutPage" ContentTemplate="{DataTemplate local:CharityOrderPage}" />
+            <ShellContent Route="AboutPage" ContentTemplate="{DataTemplate local:RestaurantHomePage}" />
         </Tab>
         <Tab Title="Profile" Icon="icon_profile.png">
             <ShellContent Route="AboutPage" ContentTemplate="{DataTemplate local:ProfilePage}" />

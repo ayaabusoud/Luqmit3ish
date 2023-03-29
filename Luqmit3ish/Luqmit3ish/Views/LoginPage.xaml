@@ -34,7 +34,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Don't have an account? " TextColor="Black" FontSize="16"/>
-                        <Span Text="Sign Up" TextColor="Black" TextDecorations="Underline" FontAttributes="Bold" FontSize="16"/>
+                        <Span Text="Sign Up" TextColor="{StaticResource PrimaryLight}" TextDecorations="Underline" FontAttributes="Bold" FontSize="16"/>
                     </FormattedString>
                 </Label.FormattedText>
                 <Label.GestureRecognizers>
