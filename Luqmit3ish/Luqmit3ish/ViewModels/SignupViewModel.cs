@@ -130,6 +130,9 @@ namespace Luqmit3ish.ViewModels
         private bool isValidName(string name)
         {
             string namePattern = @"^[a-zA-Z0-9_-]{4,16}$";
+            if (string.IsNullOrEmpty(name)) {
+                return false;
+            }
 
             if (Regex.IsMatch(name, namePattern))
             {
@@ -233,6 +236,7 @@ namespace Luqmit3ish.ViewModels
         {
             string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
+            if (string.IsNullOrEmpty(email)) return false;
             if (Regex.IsMatch(email, emailPattern))
             {
                 return true;
@@ -277,6 +281,7 @@ namespace Luqmit3ish.ViewModels
 
                 if (isValidPassword(password))
                 {
+                   
                     passwordErrorVisible = false;
                     passwordValid = true;
                     passwordInvalid = false;
@@ -334,7 +339,7 @@ namespace Luqmit3ish.ViewModels
         private bool isValidPassword(string password)
         {
             string passwordPattern = @"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
-
+            if (string.IsNullOrEmpty(password)) return false;
             if (Regex.IsMatch(password, passwordPattern))
             {
                 return true;
@@ -534,7 +539,7 @@ namespace Luqmit3ish.ViewModels
         private bool isValidPhone(string phone)
         {
             string phonePattern = @"^(?:(?:(?:\+|00)970)|0)?5[69]\d{7}$";
-
+            if (string.IsNullOrEmpty(phone)) return false;
             if (Regex.IsMatch(phone, phonePattern))
             {
                 return true;
@@ -790,6 +795,7 @@ namespace Luqmit3ish.ViewModels
                         var res = InsertNewUser(newUser);
                         Console.WriteLine("res = " + res);
 
+                        
                         Console.WriteLine("Doneeeee");
                         Navigation.PushModalAsync(new VerificationPage());
 
