@@ -5,6 +5,7 @@ public class MonoPackageManager_Resources {
 		"Luqmit3ish.Android.dll",
 		"FormsViewGroup.dll",
 		"Luqmit3ish.dll",
+		"Newtonsoft.Json.dll",
 		"Xamarin.AndroidX.Activity.dll",
 		"Xamarin.AndroidX.Annotation.dll",
 		"Xamarin.AndroidX.Annotation.Experimental.dll",

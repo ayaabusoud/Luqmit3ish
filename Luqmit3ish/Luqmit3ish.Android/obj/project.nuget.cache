@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "tuNl1uP1314TyOa/+h3O7wio9MtLTY/PDFLz/q8VO9P+V+p7nyBqfGWl0hwn/OotmleQ9i/1khY5/CHjrt3hmw==",
+  "dgSpecHash": "zzSY7AI5dxe/LabYiPF99iICKC+NMaf7VrOUsJxY98CvVvrwelAa4xVTK9R9XVr4V9k4fZbeJR7K6YDcFHbilQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Msys\\OneDrive\\Desktop\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.Android\\Luqmit3ish.Android.csproj",
+  "projectFilePath": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.Android\\Luqmit3ish.Android.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Msys\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\xamarin.androidx.activity\\1.1.0.5\\xamarin.androidx.activity.1.1.0.5.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\xamarin.androidx.annotation\\1.1.0.8\\xamarin.androidx.annotation.1.1.0.8.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\xamarin.androidx.annotation.experimental\\1.0.0.8\\xamarin.androidx.annotation.experimental.1.0.0.8.nupkg.sha512",
