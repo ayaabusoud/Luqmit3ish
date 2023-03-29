@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Z/8hpdvF4JNFQC16p4a098nL4uEVWPYhq7cNApR+P7KAuEcjHP7J9Rusl/2hLRfzXfn7DGXBqbYd9K7ma8pIEw==",
+  "dgSpecHash": "zzSY7AI5dxe/LabYiPF99iICKC+NMaf7VrOUsJxY98CvVvrwelAa4xVTK9R9XVr4V9k4fZbeJR7K6YDcFHbilQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\HP\\Desktop\\Luqmit-3ish-Mobile\\Xamarin\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.Android\\Luqmit3ish.Android.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\HP\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\xamarin.androidx.activity\\1.1.0.5\\xamarin.androidx.activity.1.1.0.5.nupkg.sha512",
     "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\xamarin.androidx.annotation\\1.1.0.8\\xamarin.androidx.annotation.1.1.0.8.nupkg.sha512",
