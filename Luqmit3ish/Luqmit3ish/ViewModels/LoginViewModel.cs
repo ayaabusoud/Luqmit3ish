@@ -15,29 +15,29 @@ namespace Luqmit3ish.ViewModels
         public INavigation Navigation { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public ICommand ForgotPassCommand { protected set; get; }
-        public ICommand SignupCommand { protected set; get; }
-        public Command LoginCommand { protected set; get; }
+        public ICommand ForgotPassCommand { get; }
+        public ICommand SignupCommand { get; }
+        public ICommand LoginCommand {  get; }
         public LoginViewModel(INavigation navigation)
         {
             this.Navigation = navigation;
-            ForgotPassCommand = new Command(async () => await OnForgotPassClicked());
-            SignupCommand = new Command(async () => await OnSignupClicked());
+            ForgotPassCommand = new Command(() => OnForgotPassClicked());
+            SignupCommand = new Command(() => OnSignupClicked());
             LoginCommand = new Command(OnLoginClicked);
         }
 
-        private async Task OnForgotPassClicked()
+        private async void OnForgotPassClicked()
         {
-            await Navigation.PushModalAsync(new NavigationPage(new ForgotPasswordPage()));
+            await Navigation.PushAsync(new ForgotPasswordPage());
         }
-        private async Task OnSignupClicked()
+        private async void OnSignupClicked()
         {
             await Navigation.PushModalAsync(new SignupPage());
         }
 
-        private void OnLoginClicked(object obj)
+        private void OnLoginClicked()
         {
-            Application.Current.MainPage = new AppShell();
+              Application.Current.MainPage = new AppShell();
         }
     }
 }
