@@ -1187,3 +1187,4 @@ C:\Users\HP\Desktop\Luqmit-3ish-Mobile\Xamarin\Luqmit3ish\Luqmit3ish\Luqmit3ish.
 C:\Users\HP\Desktop\Luqmit-3ish-Mobile\Xamarin\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\src\crc641ecc8640bd125adc\CustomEntryRenderer.java
 C:\Users\HP\Desktop\Luqmit-3ish-Mobile\Xamarin\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\res\drawable\facebook.png
 C:\Users\HP\Desktop\Luqmit-3ish-Mobile\Xamarin\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\res\drawable\google.png
+C:\Users\HP\Desktop\Luqmit-3ish-Mobile\Xamarin\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\assets\Newtonsoft.Json.dll
