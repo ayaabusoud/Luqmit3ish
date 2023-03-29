@@ -29,10 +29,14 @@
       "System.Numerics.Vectors/4.5.0": {
         "type": "package",
         "compile": {
-          "ref/netstandard2.0/System.Numerics.Vectors.dll": {}
+          "ref/netstandard2.0/System.Numerics.Vectors.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/netstandard2.0/System.Numerics.Vectors.dll": {}
+          "lib/netstandard2.0/System.Numerics.Vectors.dll": {
+            "related": ".xml"
+          }
         }
       },
       "Xamarin.Essentials/1.6.1": {
@@ -41,23 +45,35 @@
           "System.Numerics.Vectors": "4.5.0"
         },
         "compile": {
-          "lib/netstandard2.0/Xamarin.Essentials.dll": {}
+          "lib/netstandard2.0/Xamarin.Essentials.dll": {
+            "related": ".pdb;.xml"
+          }
         },
         "runtime": {
-          "lib/netstandard2.0/Xamarin.Essentials.dll": {}
+          "lib/netstandard2.0/Xamarin.Essentials.dll": {
+            "related": ".pdb;.xml"
+          }
         }
       },
       "Xamarin.Forms/5.0.0.2012": {
         "type": "package",
         "compile": {
-          "lib/netstandard2.0/Xamarin.Forms.Core.dll": {},
+          "lib/netstandard2.0/Xamarin.Forms.Core.dll": {
+            "related": ".pdb;.xml"
+          },
           "lib/netstandard2.0/Xamarin.Forms.Platform.dll": {},
-          "lib/netstandard2.0/Xamarin.Forms.Xaml.dll": {}
+          "lib/netstandard2.0/Xamarin.Forms.Xaml.dll": {
+            "related": ".pdb;.xml"
+          }
         },
         "runtime": {
-          "lib/netstandard2.0/Xamarin.Forms.Core.dll": {},
+          "lib/netstandard2.0/Xamarin.Forms.Core.dll": {
+            "related": ".pdb;.xml"
+          },
           "lib/netstandard2.0/Xamarin.Forms.Platform.dll": {},
-          "lib/netstandard2.0/Xamarin.Forms.Xaml.dll": {}
+          "lib/netstandard2.0/Xamarin.Forms.Xaml.dll": {
+            "related": ".pdb;.xml"
+          }
         },
         "build": {
           "buildTransitive/Xamarin.Forms.props": {},
@@ -534,31 +550,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Msys\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "/Users/ibtihaj/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Msys\\OneDrive\\Desktop\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj",
+      "projectUniqueName": "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish/Luqmit3ish.csproj",
       "projectName": "Luqmit3ish",
-      "projectPath": "C:\\Users\\Msys\\OneDrive\\Desktop\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish.csproj",
-      "packagesPath": "C:\\Users\\Msys\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Msys\\OneDrive\\Desktop\\Luqmit3ish\\Luqmit3ish\\Luqmit3ish\\obj\\",
+      "projectPath": "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish/Luqmit3ish.csproj",
+      "packagesPath": "/Users/ibtihaj/.nuget/packages/",
+      "outputPath": "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Msys\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "/Users/ibtihaj/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -602,7 +611,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.416\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/Users/ibtihaj/Library/Caches/VisualStudio/17.0/MSBuild/23940_3/RuntimeIdentifierGraph.json"
       }
     }
   }
