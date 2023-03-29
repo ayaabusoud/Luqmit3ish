@@ -114,11 +114,11 @@
            
 
                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                   <Label VerticalOptions="Center" HorizontalOptions="Center" Margin="0,50,0,0" >
+                   <Label VerticalOptions="Center" HorizontalOptions="Center" Margin="0" >
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Already have an account?" TextColor="Black" FontSize="16"/>
-                        <Span Text="Log in" TextColor="Orange" TextDecorations="Underline" FontAttributes="Bold" FontSize="16" />
+                        <Span Text="  Log in" TextColor="Orange" TextDecorations="Underline" FontAttributes="Bold" FontSize="16" />
                     </FormattedString>
                 </Label.FormattedText>
                 <Label.GestureRecognizers>
