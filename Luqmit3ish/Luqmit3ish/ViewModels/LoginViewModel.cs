@@ -4,9 +4,11 @@ using Luqmit3ish.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 
@@ -37,11 +39,34 @@ namespace Luqmit3ish.ViewModels
        
         private async void OnForgotPassClicked()
         {
+            try
+            {
             await Navigation.PushAsync(new ForgotPasswordPage());
+
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
         private async void OnSignupClicked()
         {
-            await Navigation.PushModalAsync(new SignupPage());
+            try
+            {
+                await Navigation.PushModalAsync(new SignupPage());
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         private async void OnLoginClicked()
@@ -55,14 +80,28 @@ namespace Luqmit3ish.ViewModels
         }
         public async Task<bool> canLogin(LoginRequest loginRequest)
         {
-            bool hasAccount = await userServices.Login(loginRequest);
-            if (hasAccount)
+            try
             {
-                Application.Current.MainPage = new AppShell();
-                return true;
+                bool hasAccount = await userServices.Login(loginRequest);
+                if (hasAccount)
+                {
+                    Preferences.Set("userEmail", Email);
+                    Application.Current.MainPage = new AppShellCharity();
+                    return true;
+                }
+                await Application.Current.MainPage.DisplayAlert("Invalid input", "You have entered an invalid username or password", "Ok");
+                return false;
             }
-            await Application.Current.MainPage.DisplayAlert("Invalid input", "You have entered an invalid username or password", "Ok");
-            return false;
+            catch (ArgumentException e)
+            {
+                return false;
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                return false;
+                Debug.WriteLine(e.Message);
+            }
         }
         private bool loginButtonEnable = false;
         public bool LoginButtonEnable

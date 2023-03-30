@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -25,11 +26,35 @@ namespace Luqmit3ish.ViewModels
         }
         private async Task OnEditClicked()
         {
+            try
+            {
             await Navigation.PushAsync(new EditOrderPage());
+
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
         private async Task OnProfileClicked()
         {
-            await Navigation.PushAsync(new OtherProfilePage());
+            try
+            {
+                await Navigation.PushAsync(new OtherProfilePage());
+
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
     }
 }

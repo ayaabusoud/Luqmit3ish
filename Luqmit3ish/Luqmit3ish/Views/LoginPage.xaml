@@ -13,7 +13,7 @@
             <Frame Style="{StaticResource textFeildFrame}"  Margin="0,30,0,0" HorizontalOptions="Start" WidthRequest="310">
                 <StackLayout Orientation="Horizontal" Margin="10,0,0,0" Padding="0">
                     <Label Text="&#xf0e0;" FontFamily="FontAwesomeIcons" FontSize="20"/>
-                    <Entry FontSize="Medium" Placeholder="Email" Keyboard="Email" Style="{StaticResource textFeild}" Text="{Binding Email}" ClearButtonVisibility="WhileEditing" />
+                    <Entry  FontSize="Medium" Placeholder="Email" Keyboard="Email" Style="{StaticResource textFeild}" Text="{Binding Email}" ClearButtonVisibility="WhileEditing" />
                 </StackLayout>
             </Frame>
 

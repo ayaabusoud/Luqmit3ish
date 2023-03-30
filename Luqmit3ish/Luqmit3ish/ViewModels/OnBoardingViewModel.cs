@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -24,7 +25,19 @@ namespace Luqmit3ish.ViewModels
 
     private async Task OnButtonClicked()
     {
-        await Navigation.PushModalAsync(new SignupPage());
+            try
+            {
+            await Navigation.PushModalAsync(new SignupPage());
+
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
     }
 
 }

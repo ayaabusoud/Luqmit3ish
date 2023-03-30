@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Xamarin.Essentials;
+using System.Diagnostics;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -25,22 +27,71 @@ namespace Luqmit3ish.ViewModels
             SearchCommand = new Command(async () => await OnSearchClicked());
             ProfileCommand = new Command(async () => await OnProfileClicked());
             FoodDetailCommand = new Command(async () => await OnFoodDetailClicked());
+           
         }
         private async Task OnFilterClicked()
         {
-            await Navigation.PushAsync(new FilterFoodPage());
+            try
+            {
+                await Navigation.PushAsync(new FilterFoodPage());
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+
         }
         private async Task OnSearchClicked()
         {
+            try
+            {
             await Navigation.PushAsync(new SearchPage());
+
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
         private async Task OnProfileClicked()
         {
+            try
+            {
             await Navigation.PushAsync(new OtherProfilePage());
+
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
         private async Task OnFoodDetailClicked()
         {
+            try
+            {
             await Navigation.PushAsync(new FoodDetailPage());
+
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
     }
 }

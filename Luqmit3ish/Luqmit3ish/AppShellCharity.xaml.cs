@@ -11,23 +11,10 @@ namespace Luqmit3ish
         public AppShellCharity()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(EditProfilePage), typeof(EditProfilePage));
-            Routing.RegisterRoute(nameof(ResetPasswordPage), typeof(ResetPasswordPage));
-            Routing.RegisterRoute(nameof(LocationPage), typeof(LocationPage));
-            Routing.RegisterRoute(nameof(VerificationPage), typeof(VerificationPage));
-            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
-        }
-        private async void OnLogoutClicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync("//LoginPage");
-        }
-        private async void OnDeleteClicked(object sender, EventArgs e)
-        {
-            //delete code
-        }
-        private async void OnDarkModeClicked(object sender, EventArgs e)
-        {
-            //dark mode code
+            Routing.RegisterRoute(nameof(CharityHomePage), typeof(CharityHomePage));
+            Routing.RegisterRoute(nameof(CharityOrderPage), typeof(CharityOrderPage));
+            Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
+
         }
     }
 }

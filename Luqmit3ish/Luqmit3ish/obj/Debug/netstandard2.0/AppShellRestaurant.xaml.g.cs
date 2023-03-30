@@ -8,17 +8,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Xamarin.Forms.Xaml.XamlResourceIdAttribute("Luqmit3ish.AppShell.xaml", "AppShell.xaml", typeof(global::Luqmit3ish.AppShell))]
+[assembly: global::Xamarin.Forms.Xaml.XamlResourceIdAttribute("Luqmit3ish.AppShellRestaurant.xaml", "AppShellRestaurant.xaml", typeof(global::Luqmit3ish.AppShellRestaurant))]
 
 namespace Luqmit3ish {
     
     
-    [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("AppShell.xaml")]
-    public partial class AppShell : global::Xamarin.Forms.Shell {
+    [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("AppShellRestaurant.xaml")]
+    public partial class AppShellRestaurant : global::Xamarin.Forms.Shell {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "2.0.0.0")]
         private void InitializeComponent() {
-            global::Xamarin.Forms.Xaml.Extensions.LoadFromXaml(this, typeof(AppShell));
+            global::Xamarin.Forms.Xaml.Extensions.LoadFromXaml(this, typeof(AppShellRestaurant));
         }
     }
 }

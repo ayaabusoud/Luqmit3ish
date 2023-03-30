@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -27,15 +28,51 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnAddClicked()
         {
+            try
+            {
             await Navigation.PushAsync(new AddFoodPage());
+
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
         private async Task OnEditClicked()
         {
+            try
+            {
             await Navigation.PushAsync(new EditFoodPage());
+
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
         private async Task OnTapClicked()
         {
+            try
+            {
             await Navigation.PushAsync(new FoodDetailPage());
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+
         }
     }
 }

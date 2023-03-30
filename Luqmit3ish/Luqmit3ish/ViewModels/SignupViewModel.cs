@@ -13,7 +13,7 @@ using System.Xml.Linq;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using static Xamarin.Essentials.Permissions;
-using Luqmit3ish.Services;
+using System.Diagnostics;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -780,25 +780,36 @@ namespace Luqmit3ish.ViewModels
             {
                 return new Command(()=>
                 {
-                    if (isValidName(name) && isValidEmail(email) && isValidPassword(password) && isValidConfirm(confirm) && isValidPhone(phone) && location != -1 && type != -1)
+                    try
                     {
-                        User newUser = new User()
+                        if (isValidName(name) && isValidEmail(email) && isValidPassword(password) && isValidConfirm(confirm) && isValidPhone(phone) && location != -1 && type != -1)
                         {
-                            Name = name,
-                            Email = email,
-                            Password = password,
-                            Phone = phone,
-                            Location = selectedLocation.ToString(),
-                            Type = selectedType.ToString()
-                        };
+                            User newUser = new User()
+                            {
+                                Name = name,
+                                Email = email,
+                                Password = password,
+                                Phone = phone,
+                                Location = selectedLocation.ToString(),
+                                Type = selectedType.ToString()
+                            };
 
-                        var res = InsertNewUser(newUser);
-                        Console.WriteLine("res = " + res);
+                            var res = InsertNewUser(newUser);
+                            Console.WriteLine("res = " + res);
 
-                        
-                        Console.WriteLine("Doneeeee");
-                        Application.Current.MainPage = new AppShellCharity();
 
+                            Console.WriteLine("Doneeeee");
+                            Application.Current.MainPage = new AppShellCharity();
+
+                        }
+                    }
+                    catch (ArgumentException e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message);
                     }
 
                 });

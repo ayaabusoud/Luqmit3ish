@@ -12,7 +12,7 @@ namespace Luqmit3ish
         public App()
         {
             InitializeComponent();
-            MainPage = new NavigationPage(new OnBoardingPage());
+            MainPage = new NavigationPage(new LoginPage());
 
         }
 
