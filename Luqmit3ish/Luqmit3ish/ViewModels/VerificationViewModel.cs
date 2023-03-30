@@ -15,9 +15,10 @@ namespace Luqmit3ish.ViewModels
             SignupCommand = new Command(OnSignupClicked);
         }
 
-        private void OnSignupClicked(object obj)
+        private void OnSignupClicked()
         {
-            Application.Current.MainPage  = new AppShell();
+
+            Application.Current.MainPage  = new AppShellCharity();
         }
     }
 }

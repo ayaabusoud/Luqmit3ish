@@ -6,9 +6,9 @@ using Xamarin.Forms;
 
 namespace Luqmit3ish
 {
-    public partial class AppShell : Xamarin.Forms.Shell
+    public partial class AppShellCharity : Xamarin.Forms.Shell
     {
-        public AppShell()
+        public AppShellCharity()
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(EditProfilePage), typeof(EditProfilePage));
