@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "St+W6kqMoz/rfZtqvNr986EIJTbvIk2/hYAXtGgQ/vq5AsF3qRSaLtYiyqf6c2QdU0E0+6wUKSZBA9viVAFOWw==",
+  "dgSpecHash": "PtiNZjxyE0AKChkmoWovr1dgX0AlYe0yr5lT/uXKOSouRHs5jzyLMjb2Hkyg4EF1jOtHL+fUOtGv9ESAloA8bw==",
   "success": true,
-  "projectFilePath": "/Users/ibtihaj/Desktop/sprint1/Luqmit3ish/Luqmit3ish/Luqmit3ish.Android/Luqmit3ish.Android.csproj",
+  "projectFilePath": "/Users/ibtihaj/Desktop/mobile/Luqmit3ish/Luqmit3ish/Luqmit3ish.Android/Luqmit3ish.Android.csproj",
   "expectedPackageFiles": [
+    "/Users/ibtihaj/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/Users/ibtihaj/.nuget/packages/system.numerics.vectors/4.5.0/system.numerics.vectors.4.5.0.nupkg.sha512",
     "/Users/ibtihaj/.nuget/packages/xamarin.androidx.activity/1.1.0.5/xamarin.androidx.activity.1.1.0.5.nupkg.sha512",
     "/Users/ibtihaj/.nuget/packages/xamarin.androidx.annotation/1.1.0.8/xamarin.androidx.annotation.1.1.0.8.nupkg.sha512",

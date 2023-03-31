@@ -22,7 +22,7 @@ namespace Luqmit3ish.ViewModels
         public INavigation Navigation { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public ICommand SignupCommand { protected set; get; }
+        public ICommand signupClicked { protected set; get; }
         public ICommand LoginCommand { protected set; get; }
 
         public SignupViewModel(INavigation navigation)
@@ -37,7 +37,7 @@ namespace Luqmit3ish.ViewModels
             nameFrameColor = emailFrameColor = passwordFrameColor = confirmFrameColor = phoneFrameColor = locationFrameColor = typeFrameColor = Color.DarkGray;
             nameErrorVisible = emailErrorVisible = passwordErrorVisible = confirmErrorVisible = phoneErrorVisible = locationErrorVisible = typeErrorVisible = false;
             this.Navigation = navigation;
-            SignupCommand = new Command(async () => await OnSignupClicked());
+            signupClicked = new Command(async () => await OnSignupClicked());
             LoginCommand = new Command(async () => await OnLoginClicked());
 
             userServices = new UserServices();
@@ -48,11 +48,49 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnSignupClicked()
         {
-            await Navigation.PushModalAsync(new VerificationPage());
+            try
+            {
+                if (isValidName(name) && isValidEmail(email) && isValidPassword(password) && isValidConfirm(confirm) && isValidPhone(phone) && location != -1 && type != -1)
+                {
+                    SignUpRequest signUpRequest = new SignUpRequest()
+                    {
+                        Name = name,
+                        Email = email,
+                        Password = password,
+                        Phone = phone,
+                        Location = selectedLocation.ToString(),
+                        Type = selectedType.ToString()
+                    };
+                    await InsertNewUser(signUpRequest);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
+
+        public async Task<bool> InsertNewUser(SignUpRequest newUser)
+        {
+            bool isInserted = await userServices.InsertUser(newUser);
+
+            if (isInserted)
+            {
+                await Navigation.PushModalAsync(new VerificationPage());
+                return true;
+            }
+            await Application.Current.MainPage.DisplayAlert("", "This email already exist", "Ok");
+
+            return false;
+        }
+
         private async Task OnLoginClicked()
         {
-            Navigation.PushModalAsync(new LoginPage());
+            await Navigation.PushModalAsync(new LoginPage());
         }
 
         public void OnPropertyChanged(string PrpertyName)
@@ -774,61 +812,8 @@ namespace Luqmit3ish.ViewModels
         }
         #endregion
 
-        public ICommand signupClicked
-        {
-            get
-            {
-                return new Command(()=>
-                {
-                    try
-                    {
-                        if (isValidName(name) && isValidEmail(email) && isValidPassword(password) && isValidConfirm(confirm) && isValidPhone(phone) && location != -1 && type != -1)
-                        {
-                            User newUser = new User()
-                            {
-                                Name = name,
-                                Email = email,
-                                Password = password,
-                                Phone = phone,
-                                Location = selectedLocation.ToString(),
-                                Type = selectedType.ToString()
-                            };
 
-                            var res = InsertNewUser(newUser);
-                            Console.WriteLine("res = " + res);
-
-
-                            Console.WriteLine("Doneeeee");
-                            Application.Current.MainPage = new AppShellCharity();
-
-                        }
-                    }
-                    catch (ArgumentException e)
-                    {
-                        Debug.WriteLine(e.Message);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine(e.Message);
-                    }
-
-                });
-            }
-        }
-
-
-        public async Task<bool> InsertNewUser(User newUser)
-        {
-            bool isInserted = await userServices.InsertUser(newUser);
-
-            if (isInserted)
-            {
-                Navigation.PushModalAsync(new VerificationPage());
-                return true;
-            }
-
-            return false;
-        }
+       
 
         private readonly UserServices userServices;
 
