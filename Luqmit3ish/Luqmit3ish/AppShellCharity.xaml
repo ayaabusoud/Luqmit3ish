@@ -2,7 +2,6 @@
 <Shell xmlns="http://xamarin.com/schemas/2014/forms" 
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:Luqmit3ish.Views"
-       Title="Luqmit3ish"
        x:Class="Luqmit3ish.AppShellCharity">
 
     <!--
@@ -31,8 +30,8 @@
 
     <TabBar>
         <ShellContent Title="Home" Icon="icon_home.png"  Route="CharityHomePage"  ContentTemplate="{DataTemplate local:CharityHomePage}" />
-        <ShellContent Title="Order" Icon="icon_list.png"  ContentTemplate="{DataTemplate local:CharityOrderPage}" />
-        <ShellContent Title="profilr" Icon="icon_profile.png" ContentTemplate="{DataTemplate local:ProfilePage}" />
+        <ShellContent Title="Order" Icon="icon_list.png" Route="CharityOrderPage"  ContentTemplate="{DataTemplate local:CharityOrderPage}" />
+        <ShellContent Title="profile" Icon="icon_profile.png" Route="ProfilePage" ContentTemplate="{DataTemplate local:ProfilePage}" />
     </TabBar>
 
     <!--

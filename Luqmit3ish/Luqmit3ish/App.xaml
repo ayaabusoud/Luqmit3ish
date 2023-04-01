@@ -6,17 +6,11 @@
     
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="PrimaryLight">#F98836</Color>
-            <Color x:Key="PrimaryVariantLight">#FF7816</Color>
-            <Color x:Key="PrimaryVariant2Light">#DA6D1C</Color>
-            <Color x:Key="ErrorLight">#FFA768</Color>
-            <Color x:Key="PrimaryDark">#FFA768</Color>
-            <Color x:Key="PrimaryVariantDark">#FF8E3D</Color>
-            <Color x:Key="ErrorDark">#FFA768</Color>
-            <Color x:Key="CardDark">#424242</Color>
+            <Color x:Key="PrimaryLight">#4D6BA3</Color>
+            <Color x:Key="SecondaryLight">#35C9B7</Color>
 
             <Style x:Key="FloatingButton" TargetType="Button">
-                <Setter Property="BorderColor" Value="{StaticResource PrimaryVariant2Light}" />
+                <Setter Property="BorderColor" Value="{StaticResource SecondaryLight}" />
                 <Setter Property="BorderWidth" Value="1" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="BackgroundColor" Value="{StaticResource PrimaryLight}" />
@@ -41,7 +35,7 @@
                 <Setter Property="FontSize" Value="Small" />
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="HorizontalOptions" Value="Center" />
-                <Setter Property="BorderColor" Value="{StaticResource PrimaryVariant2Light}" />
+                <Setter Property="BorderColor" Value="{StaticResource SecondaryLight}" />
                 <Setter Property="BackgroundColor" Value="{StaticResource PrimaryLight}" />
                 <Setter Property="CornerRadius" Value="50" />
                 <Setter Property="MinimumWidthRequest" Value="100" />
@@ -52,7 +46,7 @@
                 <Setter Property="FontSize" Value="Small" />
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-                <Setter Property="BorderColor" Value="{StaticResource PrimaryVariant2Light}" />
+                <Setter Property="BorderColor" Value="{StaticResource SecondaryLight}" />
                 <Setter Property="BackgroundColor" Value="{StaticResource PrimaryLight}" />
                 <Setter Property="CornerRadius" Value="5" />
                 <Setter Property="Margin" Value="15" />
