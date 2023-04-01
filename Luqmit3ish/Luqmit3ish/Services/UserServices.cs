@@ -14,6 +14,7 @@ namespace Luqmit3ish.Services
     {
         private readonly HttpClient _http;
         private static readonly string ApiUrl = "https://luqmit3ishserver.azurewebsites.net/api/Users";
+        private static readonly string ApiSignUp = "https://luqmit3ishserver.azurewebsites.net/api/Users";
         private static readonly string ApiLoginUrl = "https://luqmit3ishserver.azurewebsites.net/api/Users/login";
 
         public UserServices()
@@ -38,11 +39,11 @@ namespace Luqmit3ish.Services
             return JsonConvert.DeserializeObject<ObservableCollection<User>>(content);
         }
 
-        public async Task<bool> InsertUser(User user)
+        public async Task<bool> InsertUser(SignUpRequest user)
         {
             var json = JsonConvert.SerializeObject(user);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _http.PostAsync(ApiUrl, content);
+            var response = await _http.PostAsync(ApiSignUp, content);
 
             return response.IsSuccessStatusCode;
         }
