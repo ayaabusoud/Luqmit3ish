@@ -85,10 +85,21 @@ namespace Luqmit3ish.ViewModels
                 bool hasAccount = await userServices.Login(loginRequest);
                 if (hasAccount)
                 {
+                    User user = await userServices.GetUserByEmail(Email);
+
                     Preferences.Set("userEmail", Email);
-                    Application.Current.MainPage = new AppShellCharity();
+                    Preferences.Set("userId", user.id.ToString());
+                    if (user.Type.Equals("Restaurant"))
+                    {
+                        Application.Current.MainPage = new AppShellRestaurant();
+                    }
+                    else
+                    {
+                        Application.Current.MainPage = new AppShellCharity();
+                    }
                     return true;
                 }
+
                 await Application.Current.MainPage.DisplayAlert("Invalid input", "You have entered an invalid username or password", "Ok");
                 return false;
             }
