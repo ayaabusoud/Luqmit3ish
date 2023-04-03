@@ -5,7 +5,7 @@
              xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Title="Home"
-              xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
+             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"> 
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="icon_search.png" Command="{Binding SearchCommand}" />
         <ToolbarItem Icon="icon_filter.png" Command="{Binding FilterCommand}" />
@@ -18,14 +18,13 @@
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="FillAndExpand"
                                     SelectionMode="None"
-                                    ItemsSource="{Binding Dishes}">
+                                    ItemsSource="{Binding DishCard}">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" 
                                                ItemSpacing="20"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-
 
                             <pv:PancakeView  BackgroundColor="White" VerticalOptions="StartAndExpand"
                                             HorizontalOptions="FillAndExpand">
@@ -53,8 +52,8 @@
                                                 <BoxView Grid.Column="1" BackgroundColor="#F2F4F8" WidthRequest="1" HorizontalOptions="Start" 
                                                  VerticalOptions="FillAndExpand"/>
                                                 <StackLayout Grid.Column="2" HorizontalOptions="Start" VerticalOptions="Center" Margin="15">
-                                                    <Label Text="{Binding name}" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
-                                                    <Label Text="Pizza Time Restaurant" TextColor="DimGray" FontSize="Small" Margin="0,-10,0,0"/>
+                                                    <Label Text="{Binding dishName}" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
+                                                    <Label Text="{Binding restaurantName}" TextColor="DimGray" FontSize="Small" Margin="0,-10,0,0"/>
                                                 </StackLayout>
                                             </Grid>
                                         </xct:Expander.Header>
@@ -82,7 +81,7 @@
                                                         <FormattedString>
                                                             <FormattedString.Spans>
                                                                 <Span Text="Quantity: " FontAttributes="Bold"/>
-                                                                <Span Text="{Binding number}"/>
+                                                                <Span Text="{Binding quantity}"/>
                                                                 <Span Text=" Dishes" />
                                                             </FormattedString.Spans>
                                                         </FormattedString>
@@ -93,7 +92,7 @@
                                                         <FormattedString>
                                                             <FormattedString.Spans>
                                                                 <Span Text="Remains valid for: " FontAttributes="Bold"/>
-                                                                <Span Text="{Binding keep_listed}"/>
+                                                                <Span Text="{Binding keepValid}"/>
                                                                 <Span Text=" days"/>
                                                             </FormattedString.Spans>
                                                         </FormattedString>
@@ -104,18 +103,18 @@
                                                         <FormattedString>
                                                             <FormattedString.Spans>
                                                                 <Span Text="Pick-up Time: " FontAttributes="Bold"/>
-                                                                <Span Text="{Binding pick_up_time}" />
+                                                                <Span Text="{Binding pickUpTime}" />
                                                             </FormattedString.Spans>
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
                                                 <StackLayout Orientation="Horizontal" Margin="0,0,0,10" HorizontalOptions="Center">
-                                                    <Button Text="+" BackgroundColor="Transparent" BorderWidth="2" BorderColor="LightGray" CornerRadius="20" WidthRequest="40" HeightRequest="40" />
+                                                    <Label Text="&#xf055;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,8,0,0"/>
                                                     <Label Text="0" FontAttributes="Bold" Margin="3,7,3,0" FontSize="Medium"/>
-                                                    <Button Text="-" BackgroundColor="Transparent" BorderWidth="2" BorderColor="LightGray" CornerRadius="20" WidthRequest="40" HeightRequest="40" />
+                                                    <Label Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,8,0,0"/>
                                                     <Button TextColor="{StaticResource PrimaryLight}" Text="Reserve" Margin="10,0,0,0" HeightRequest="40" BackgroundColor="Transparent" FontAttributes="Bold"/>
                                                 </StackLayout>
-                                            </StackLayout>
+                                            </StackLayout> 
                                         </Grid>
                                     </xct:Expander>
 

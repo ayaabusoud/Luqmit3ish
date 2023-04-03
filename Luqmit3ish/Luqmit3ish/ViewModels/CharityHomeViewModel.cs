@@ -23,6 +23,8 @@ namespace Luqmit3ish.ViewModels
         public ICommand FoodDetailCommand { protected set; get; }
 
         public FoodServices foodServices;
+        public UserServices userServices;
+
 
         private ObservableCollection<Dish> _dishes;
 
@@ -31,7 +33,15 @@ namespace Luqmit3ish.ViewModels
             get => _dishes;
             set => SetProperty(ref _dishes, value);
         }
-        public CharityHomeViewModel(INavigation navigation)
+        private ObservableCollection<DishCard> _dishCard;
+
+        public ObservableCollection<DishCard> DishCard
+        {
+            get => _dishCard;
+            set => SetProperty(ref _dishCard, value);
+        }
+
+        public  CharityHomeViewModel(INavigation navigation)
         {
             this.Navigation = navigation;
             FilterCommand = new Command(async () => await OnFilterClicked());
@@ -39,12 +49,14 @@ namespace Luqmit3ish.ViewModels
             ProfileCommand = new Command(async () => await OnProfileClicked());
             FoodDetailCommand = new Command(async () => await OnFoodDetailClicked());
             foodServices = new FoodServices();
+            userServices = new UserServices();
             OnInit();
         }
 
-        private void OnInit()
+        private async Task OnInit()
         {
-            Dishes = foodServices.GetFoodTest();
+            DishCard = await foodServices.GetDishCards();
+            Debug.WriteLine(DishCard[0].dishName);
         }
 
         private async Task OnFilterClicked()
