@@ -23,16 +23,14 @@ namespace Luqmit3ish.Models
                 {
                     isSelected = value;
                     OnPropertyChanged(nameof(IsSelected));
-                    OnPropertyChanged(nameof(StackLayoutBackgroundColor)); // notify the property change of StackLayoutBackgroundColor when IsSelected is changed
-                    OnPropertyChanged(nameof(StackLayoutBackgroundColor1)); // notify the property change of StackLayoutBackgroundColor when IsSelected is changed
+                    OnPropertyChanged(nameof(StackLayoutBackgroundColor));
+                    OnPropertyChanged(nameof(StackLayoutBackgroundColor1));
                 }
             }
         }
 
-        // your existing properties and methods...
-
-        public Color StackLayoutBackgroundColor => IsSelected ? Color.White : Color.White; // define a computed property to determine the background color of the StackLayout based on the IsSelected value
-        public Color StackLayoutBackgroundColor1 => IsSelected ? Color.FromArgb(0x4D, 0x6B, 0xA3, 0xFF) : Color.White; // define a computed property to determine the background color of the StackLayout based on the IsSelected value
+        public Color StackLayoutBackgroundColor => IsSelected ? Color.White : Color.White; 
+        public Color StackLayoutBackgroundColor1 => IsSelected ? Color.FromArgb(0x4D, 0x6B, 0xA3, 0xFF) : Color.White;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
