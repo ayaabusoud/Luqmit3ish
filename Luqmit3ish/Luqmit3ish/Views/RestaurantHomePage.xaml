@@ -5,6 +5,7 @@
              xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Title="Home"
+             x:Name="Charity"
               xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
     <ContentPage.Content>
 
@@ -30,9 +31,9 @@
                             <DataTemplate>
 
 
-                                <pv:PancakeView  BackgroundColor="White" VerticalOptions="StartAndExpand"
+                                <pv:PancakeView  BackgroundColor="White" VerticalOptions="StartAndExpand" 
                                             HorizontalOptions="FillAndExpand">
-                                    <Grid VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Grid VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand" >
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*"/>
@@ -42,23 +43,33 @@
                                              HorizontalOptions="Start"
                                              VerticalOptions="FillAndExpand"/>
                                         <xct:Expander Grid.Column="1">
-                                            <xct:Expander.Header>
-                                                <Grid HorizontalOptions="FillAndExpand">
+                                            <xct:Expander.Header >
+                                                <Grid HorizontalOptions="FillAndExpand" Margin="0,15">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="Auto"/>
                                                         <ColumnDefinition Width="3.5*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                                                        <Image HeightRequest="100" Source="{Binding photo}" />
+                                                        <Image HeightRequest="50" Source="{Binding photo}" />
                                                     </StackLayout>
                                                     <BoxView Grid.Column="1" BackgroundColor="#F2F4F8" WidthRequest="1" HorizontalOptions="Start" 
                                                  VerticalOptions="FillAndExpand"/>
-                                                    <StackLayout Grid.Column="2" HorizontalOptions="Start" VerticalOptions="Center" Margin="15">
-                                                        <Label Text="{Binding name}" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
-                                                    </StackLayout>
+                                                    <Grid Grid.Column="2" Margin="15">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="0.85*"/>
+                                                            <ColumnDefinition Width="0.15*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Grid.Column="0" Text="{Binding name}" TextColor="Black" FontSize="Medium"/>
+                                                        <Label Grid.Column="1" Text="&#xf304;" FontFamily="FontAwesomeIcons" Margin="0,2,0,0" FontSize="20" >
+                                                            <Label.GestureRecognizers>
+                                                                <TapGestureRecognizer Command="{Binding BindingContext.EditCommand , Source={x:Reference Charity}}"
+                                                                                      CommandParameter="{Binding id}"/>
+                                                            </Label.GestureRecognizers>
+                                                        </Label>
+                                                    </Grid>
                                                 </Grid>
-                                            </xct:Expander.Header>
+                                            </xct:Expander.Header >
                                             <Grid HorizontalOptions="FillAndExpand">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -100,7 +111,7 @@
                                                             </FormattedString>
                                                         </Label.FormattedText>
                                                     </Label>
-                                                    <Label TextColor="#2F3246" FontSize="Small" Margin="15,0" >
+                                                    <Label TextColor="#2F3246" FontSize="Small" Margin="15,0,15,15" >
                                                         <Label.FormattedText>
                                                             <FormattedString>
                                                                 <FormattedString.Spans>
@@ -110,13 +121,6 @@
                                                             </FormattedString>
                                                         </Label.FormattedText>
                                                     </Label>
-                                                        <Button 
-                                                                Command="{Binding AddCommand}"
-                                                                TextColor="{StaticResource SecondaryLight}" 
-                                                                Text="Edit"
-                                                                BackgroundColor="Transparent"
-                                                                HorizontalOptions="Center"/>
-                                                   
                                                 </StackLayout>
                                             </Grid>
                                         </xct:Expander>
@@ -136,12 +140,14 @@
                              BorderWidth="1"
                              BackgroundColor="{StaticResource SecondaryLight}" 
                              HorizontalOptions="End" 
-                             WidthRequest="50"
-                             HeightRequest="50"
-                             CornerRadius="25"
+                             WidthRequest="56"
+                             HeightRequest="56"
+                             CornerRadius="28"
                              Margin="20"
-                             Padding="20"
-                             VerticalOptions="End" />
+                             Padding="19"
+                             VerticalOptions="End" 
+                          xct:IconTintColorEffect.TintColor="White"
+                           />
 
 
         </Grid>
