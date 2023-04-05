@@ -18,7 +18,7 @@ namespace Luqmit3ish.ViewModels
     {
         public INavigation Navigation { get; set; }
         public ICommand AddCommand { protected set; get; }
-        public ICommand EditCommand { protected set; get; }
+        public Command<int> EditCommand { protected set; get; }
         public ICommand NameTapCommand { protected set; get; }
         public FoodServices foodServices;
 
@@ -33,7 +33,7 @@ namespace Luqmit3ish.ViewModels
         {
             this.Navigation = navigation;
             AddCommand = new Command(async () => await OnAddClicked());
-            EditCommand = new Command(async () => await OnEditClicked());
+            EditCommand = new Command<int>(async (int id) => await OnEditClicked(id));
             NameTapCommand = new Command(async () => await OnTapClicked());
             foodServices = new FoodServices();
             OnInit();
@@ -44,13 +44,6 @@ namespace Luqmit3ish.ViewModels
             string id = Preferences.Get("userId", "0");
             int userId = int.Parse(id);
             Dishes = await foodServices.GetFoodByResId(userId);
-            foreach(Dish dish in Dishes)
-            {
-                if(dish.photo == "")
-                {
-                    dish.photo = "https://st.depositphotos.com/1059926/2823/i/950/depositphotos_28233673-stock-photo-vegetables-on-a-white-background.jpg";
-                }
-            }
         }
 
         private async Task OnAddClicked()
@@ -69,7 +62,7 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
-        private async Task OnEditClicked()
+        private async Task OnEditClicked(int id)
         {
             try
             {
