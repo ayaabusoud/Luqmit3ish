@@ -5,7 +5,7 @@
              xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Title="Home"
-             x:Name="Charity"
+             x:Name="RestaurantPage"
               xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
     <ContentPage.Content>
 
@@ -63,7 +63,7 @@
                                                         <Label Grid.Column="0" Text="{Binding name}" TextColor="Black" FontSize="Medium"/>
                                                         <Label Grid.Column="1" Text="&#xf304;" FontFamily="FontAwesomeIcons" Margin="0,2,0,0" FontSize="20" >
                                                             <Label.GestureRecognizers>
-                                                                <TapGestureRecognizer Command="{Binding BindingContext.EditCommand , Source={x:Reference Charity}}"
+                                                                <TapGestureRecognizer Command="{Binding BindingContext.EditCommand , Source={x:Reference RestaurantPage}}"
                                                                                       CommandParameter="{Binding id}"/>
                                                             </Label.GestureRecognizers>
                                                         </Label>
