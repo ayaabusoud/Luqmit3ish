@@ -19,12 +19,21 @@ namespace Luqmit3ish.ViewModels
         public INavigation Navigation { get; set; }
         public ICommand FilterCommand { protected set; get; }
         public ICommand SearchCommand { protected set; get; }
-        public ICommand ProfileCommand { protected set; get; }
-        public ICommand FoodDetailCommand { protected set; get; }
+        public Command<int> PlusCommand { protected set; get; }
+        public ICommand MinusCommand { protected set; get; }
+        public ICommand ReserveCommand { protected set; get; }
+        public Command<int> ProfileCommand { protected set; get; }
 
         public FoodServices foodServices;
-        public UserServices userServices;
+        public UserServices userServices; 
 
+        private int _counter = 0;
+
+        public int Counter
+        {
+            get => _counter;
+            set => SetProperty(ref _counter, value);
+        }
 
         private ObservableCollection<Dish> _dishes;
 
@@ -46,17 +55,54 @@ namespace Luqmit3ish.ViewModels
             this.Navigation = navigation;
             FilterCommand = new Command(async () => await OnFilterClicked());
             SearchCommand = new Command(async () => await OnSearchClicked());
-            ProfileCommand = new Command(async () => await OnProfileClicked());
-            FoodDetailCommand = new Command(async () => await OnFoodDetailClicked());
+            ProfileCommand = new Command<int>(async (int restaurantId) => await OnProfileClicked(restaurantId));
+            PlusCommand = new Command<int>(OnPlusClicked);
+            MinusCommand = new Command(OnMinusClicked);
+            ReserveCommand = new Command(OnReserveClicked);
             foodServices = new FoodServices();
-            userServices = new UserServices();
+            userServices = new UserServices(); 
             OnInit();
+        }
+        private void OnReserveClicked()
+        {
+           //imp
+        }
+
+        private void OnMinusClicked()
+        {
+            if (Counter == 0)
+            {
+                return;
+            }
+            else
+            {
+              Counter--;
+            }
+           
+        }
+
+        private void OnPlusClicked(int quantity)
+        {
+            if(Counter == quantity)
+            {
+                return;
+            }
+            else
+            {
+               Counter++;
+            }
+            
         }
 
         private async Task OnInit()
         {
-            DishCard = await foodServices.GetDishCards();
-            Debug.WriteLine(DishCard[0].dishName);
+            try
+            {
+               DishCard = await foodServices.GetDishCards();
+            }catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         private async Task OnFilterClicked()
@@ -91,7 +137,7 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
-        private async Task OnProfileClicked()
+        private async Task OnProfileClicked(int restaurantId)
         {
             try
             {
@@ -107,21 +153,6 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
-        private async Task OnFoodDetailClicked()
-        {
-            try
-            {
-                await Navigation.PushAsync(new FoodDetailPage());
-
-            }
-            catch (ArgumentException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }
+     
     }
 }

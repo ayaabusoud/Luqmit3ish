@@ -5,7 +5,8 @@
              xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Title="Home"
-             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"> 
+             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             x:Name="CharityPage"> 
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="icon_search.png" Command="{Binding SearchCommand}" />
         <ToolbarItem Icon="icon_filter.png" Command="{Binding FilterCommand}" />
@@ -53,7 +54,12 @@
                                                  VerticalOptions="FillAndExpand"/>
                                                 <StackLayout Grid.Column="2" HorizontalOptions="Start" VerticalOptions="Center" Margin="15">
                                                     <Label Text="{Binding dishName}" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
-                                                    <Label Text="{Binding restaurantName}" TextColor="DimGray" FontSize="Small" Margin="0,-10,0,0"/>
+                                                    <Label Text="{Binding restaurantName}" TextColor="DimGray" FontSize="Small" Margin="0,-10,0,0">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding BindingContext.ProfileCommand , Source={x:Reference CharityPage}}"
+                                                                                      CommandParameter="{Binding restaurantId}"/>
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
                                                 </StackLayout>
                                             </Grid>
                                         </xct:Expander.Header>
@@ -109,10 +115,18 @@
                                                     </Label.FormattedText>
                                                 </Label>
                                                 <StackLayout Orientation="Horizontal" Margin="0,0,0,10" HorizontalOptions="Center">
-                                                    <Label Text="&#xf055;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,8,0,0"/>
-                                                    <Label Text="0" FontAttributes="Bold" Margin="3,7,3,0" FontSize="Medium"/>
-                                                    <Label Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,8,0,0"/>
-                                                    <Button TextColor="{StaticResource PrimaryLight}" Text="Reserve" Margin="10,0,0,0" HeightRequest="40" BackgroundColor="Transparent" FontAttributes="Bold"/>
+                                                    <Label Text="&#xf055;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,10,0,0">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer CommandParameter="{Binding quantity}" Command="{Binding BindingContext.PlusCommand , Source={x:Reference CharityPage}}"/>
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                    <Label Text="{Binding BindingContext.Counter , Source={x:Reference CharityPage}}" FontAttributes="Bold" Margin="3,7,3,0" FontSize="Medium"/>
+                                                    <Label Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,10,0,0">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding BindingContext.MinusCommand , Source={x:Reference CharityPage}}"/>
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                    <Button  Command="{Binding BindingContext.ReserveCommand , Source={x:Reference CharityPage}}" TextColor="{StaticResource PrimaryLight}" Text="Reserve" Margin="10,0,0,0" HeightRequest="40" BackgroundColor="Transparent" FontAttributes="Bold"/>
                                                 </StackLayout>
                                             </StackLayout> 
                                         </Grid>
