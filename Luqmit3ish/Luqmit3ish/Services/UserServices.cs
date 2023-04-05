@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,6 +47,26 @@ namespace Luqmit3ish.Services
             var response = await _http.PostAsync(ApiSignUp, content);
 
             return response.IsSuccessStatusCode;
+        }
+
+        public async Task<User> GetUserById(int id)
+        {
+            var response = await _http.GetAsync($"{ApiUrl}/id/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var user = JsonConvert.DeserializeObject<User>(content);
+                return user;
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+            else
+            {
+                throw new Exception($"Failed to retrieve user_id: {response.StatusCode} - {response.ReasonPhrase}");
+            }
         }
 
     }
