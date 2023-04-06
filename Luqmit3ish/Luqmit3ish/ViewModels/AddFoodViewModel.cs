@@ -126,6 +126,16 @@ namespace Luqmit3ish.ViewModels
         }
 
         #region type
+
+        public string SelectedTypeName
+        {
+            get { return SelectedType?.name; }
+        }
+
+        public ICommand MyCollectionSelectedCommand => new Command(() =>
+        {
+            _type = SelectedTypeName;
+        });
         #endregion
 
         #region color
@@ -234,6 +244,12 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
+                Console.WriteLine("_type " + _type);
+                Console.WriteLine("_title " + _title);
+                Console.WriteLine("_description " + _description);
+                Console.WriteLine("Counter " + Counter);
+                Console.WriteLine("_packTime " + _packTime);
+                Console.WriteLine("Counter1 " + Counter1);
                 if(_type == null || _title == null || _description == null || Counter == 0 || _packTime == null || Counter1 == 0)
                 {
                     await App.Current.MainPage.DisplayAlert("Error", "Please fill in all fields", "ok");
