@@ -43,8 +43,34 @@ namespace Luqmit3ish.Services
                 throw new Exception($"Failed to retrieve food: {response.StatusCode} - {response.ReasonPhrase}");
             }
         }
-
         
+        public async Task<Dish> GetFoodById(int food_id)
+        {
+            var response = await _http.GetAsync($"{ApiUrl}/{food_id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<Dish>(content);
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+            else
+            {
+                throw new Exception($"Failed to retrieve food: {response.StatusCode} - {response.ReasonPhrase}");
+            }
+        }
+
+        public async Task<bool> UpdateDish(DishRequest dishRequest, int food_id)
+        {
+            var json = JsonConvert.SerializeObject(dishRequest);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _http.PutAsync(ApiUrl + "/" + food_id, content);
+
+            return response.IsSuccessStatusCode;
+        }
 
     }
 }
