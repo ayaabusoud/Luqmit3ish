@@ -1,4 +1,5 @@
-﻿using Luqmit3ish.Models;
+using Luqmit3ish.Models;
+using Luqmit3ish.Views;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Luqmit3ish.Services
     {
         private readonly HttpClient _http;
         private static readonly string ApiUrl = "https://luqmit3ishserver.azurewebsites.net/api/Food";
+        private static readonly string AddDishUrl = "https://luqmit3ishserver.azurewebsites.net/api/Food/AddDish";
         
         public FoodServices()
         {
@@ -43,8 +45,9 @@ namespace Luqmit3ish.Services
                 throw new Exception($"Failed to retrieve food: {response.StatusCode} - {response.ReasonPhrase}");
             }
         }
+
         
-        public async Task<Dish> GetFoodById(int food_id)
+   public async Task<Dish> GetFoodById(int food_id)
         {
             var response = await _http.GetAsync($"{ApiUrl}/{food_id}");
 
@@ -68,6 +71,15 @@ namespace Luqmit3ish.Services
             var json = JsonConvert.SerializeObject(dishRequest);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _http.PutAsync(ApiUrl + "/" + food_id, content);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> AddNewDish(DishRequest dishRequest)
+        {
+            var json = JsonConvert.SerializeObject(dishRequest);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _http.PostAsync(AddDishUrl, content);
 
             return response.IsSuccessStatusCode;
         }
