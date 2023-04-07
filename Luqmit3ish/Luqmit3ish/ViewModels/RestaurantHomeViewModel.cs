@@ -19,6 +19,7 @@ namespace Luqmit3ish.ViewModels
         public INavigation Navigation { get; set; }
         public ICommand AddCommand { protected set; get; }
         public Command<int> EditCommand { protected set; get; }
+        public Command<int> DeleteCommand { protected set; get; }
         public ICommand NameTapCommand { protected set; get; }
         public FoodServices foodServices;
 
@@ -34,6 +35,7 @@ namespace Luqmit3ish.ViewModels
             this.Navigation = navigation;
             AddCommand = new Command(async () => await OnAddClicked());
             EditCommand = new Command<int>(async (int id) => await OnEditClicked(id));
+            DeleteCommand = new Command<int>(async (int id) => await OnDeleteClicked(id));
             NameTapCommand = new Command(async () => await OnTapClicked());
             foodServices = new FoodServices();
             OnInit();
@@ -77,6 +79,10 @@ namespace Luqmit3ish.ViewModels
             {
                 Debug.WriteLine(e.Message);
             }
+        }
+        private async Task OnDeleteClicked(int id)
+        {
+            //imp
         }
         private async Task OnTapClicked()
         {
