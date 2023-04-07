@@ -1,4 +1,4 @@
-﻿using Luqmit3ish.ViewModels;
+using Luqmit3ish.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +13,10 @@ namespace Luqmit3ish.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class OtherProfilePage : ContentPage
     {
-        public OtherProfilePage()
+        public OtherProfilePage(int id)
         {
             InitializeComponent();
-            this.BindingContext = new OtherProfileViewModel();
+            this.BindingContext = new OtherProfileViewModel(id);
         }
     }
 }
