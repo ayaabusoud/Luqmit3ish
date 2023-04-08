@@ -82,7 +82,12 @@ namespace Luqmit3ish.ViewModels
         }
         private async Task OnDeleteClicked(int id)
         {
-            //imp
+            var deleteConfirm = await Application.Current.MainPage.DisplayAlert("", "Are you sure that you want to delete this dish?", "Yes", "No");
+            if (deleteConfirm)
+            {
+                await foodServices.DeleteFood(id);
+                Application.Current.MainPage = new AppShellRestaurant();
+            }
         }
         private async Task OnTapClicked()
         {
