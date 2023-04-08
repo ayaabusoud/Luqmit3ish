@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.OtherProfilePage"
-             Title="Restaurant">
+             Title="{Binding Name}">
     <ContentPage.Content>
         <StackLayout Margin="16,64,16,35">
             <Frame BackgroundColor="White" BorderColor="LightGray" Margin="15,70,15,0" >
