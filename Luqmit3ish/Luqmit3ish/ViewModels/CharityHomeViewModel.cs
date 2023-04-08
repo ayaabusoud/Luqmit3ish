@@ -141,7 +141,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await Navigation.PushAsync(new OtherProfilePage());
+                await Navigation.PushAsync(new OtherProfilePage(restaurantId));
 
             }
             catch (ArgumentException e)

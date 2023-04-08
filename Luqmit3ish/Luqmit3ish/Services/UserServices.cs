@@ -67,26 +67,6 @@ namespace Luqmit3ish.Services
 
             return response.IsSuccessStatusCode;
         }
-        
-        public async Task<User> GetUserByEmail(string Email)
-        {
-            var response = await _http.GetAsync($"{ApiUrl}/{Email}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var user = JsonConvert.DeserializeObject<User>(content);
-                return user;
-            }
-            else if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                return null;
-            }
-            else
-            {
-                throw new Exception($"Failed to retrieve user_email: {response.StatusCode} - {response.ReasonPhrase}");
-            }
-        }
 
         public async Task<User> GetUserById(int id)
         {
@@ -106,6 +86,15 @@ namespace Luqmit3ish.Services
             {
                 throw new Exception($"Failed to retrieve user_id: {response.StatusCode} - {response.ReasonPhrase}");
             }
+        }
+
+        public async Task EditProfile(User user)
+        {
+
+            var content = JsonConvert.SerializeObject(user);
+            var response = await _http.PutAsync($"{ApiUrl}/{user.id}", new StringContent(content, UnicodeEncoding.UTF8, "application/json"));
+
+
         }
 
     }

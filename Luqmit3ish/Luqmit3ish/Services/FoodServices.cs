@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -90,7 +91,14 @@ namespace Luqmit3ish.Services
             }
             return 0;
         }
-        
+
+        public async Task<ObservableCollection<DishCard>> GetDishCards()
+        {
+            var response = await _http.GetAsync(ApiUrl + "/DishCard");
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
+        }
+
         public async Task DeleteFood(int food_id)
         {
             var response = await _http.DeleteAsync($"{ApiUrl}/{food_id}");

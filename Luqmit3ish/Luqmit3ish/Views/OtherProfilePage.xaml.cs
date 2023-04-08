@@ -13,10 +13,10 @@ namespace Luqmit3ish.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class OtherProfilePage : ContentPage
     {
-        public OtherProfilePage()
+        public OtherProfilePage(int id)
         {
             InitializeComponent();
-            this.BindingContext = new OtherProfileViewModel();
+            this.BindingContext = new OtherProfileViewModel(id);
         }
     }
 }

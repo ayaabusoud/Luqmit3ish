@@ -13,7 +13,7 @@
 namespace Luqmit3ish.Views {
     
     
-    [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("Views\\ResetPassSettingsPage.xaml")]
+    [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("Views/ResetPassSettingsPage.xaml")]
     public partial class ResetPassSettingsPage : global::Xamarin.Forms.ContentPage {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "2.0.0.0")]

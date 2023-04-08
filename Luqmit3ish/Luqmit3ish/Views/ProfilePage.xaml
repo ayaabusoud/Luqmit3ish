@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.ProfilePage"
@@ -13,47 +13,47 @@
             <Frame  VerticalOptions="Center" Padding="0"
                             HorizontalOptions="CenterAndExpand"
                             CornerRadius="100" IsClippedToBounds="True" HeightRequest="120" WidthRequest="120">
-                <Image Source="{Binding Photo}" 
+                <Image Source="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" 
                               VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="AspectFill"/>
             </Frame>
 
             <StackLayout Margin="16,16" VerticalOptions="Center">
                 <StackLayout>
-                <Frame Style="{StaticResource textFeildFrame}">
-                    <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0" VerticalOptions="Center">
+                <Frame Style="{StaticResource textFeildFrame}" BackgroundColor="White" BorderColor="Gray" Margin="0,5">
+                    <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0" VerticalOptions="Center" Spacing="10">
                         <Label TextColor="Gray"  Text="&#xf007;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" />
                         <Label Text="Name:" TextColor="DimGray"  FontSize="Medium" />
-                            <Entry  TextColor="Black" IsReadOnly="{Binding EditEnable}" PlaceholderColor="Black" Placeholder="{Binding Name}" Text="{Binding Name}"  Style="{StaticResource textFeild}"  FontSize="Medium"/>
+                            <Entry  TextColor="Black" IsEnabled="{Binding EditEnable}" PlaceholderColor="Black" Placeholder="{Binding Name}" Text="{Binding Name}"  Style="{StaticResource textFeild}"  FontSize="Medium"/>
                     </StackLayout>
                 </Frame>
                 <Label  Margin="15,0" Text="{Binding NameErrorMessage}" IsVisible="{Binding NameErrorVisible}" TextColor="Red"></Label>
                 </StackLayout>
                 <StackLayout>
-                <Frame  Style="{StaticResource textFeildFrame}" >
-                    <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0" VerticalOptions="Center">
+                <Frame  Style="{StaticResource textFeildFrame}"  BackgroundColor="White" BorderColor="Gray" Margin="0,5" >
+                    <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0" VerticalOptions="Center" Spacing="10">
                         <Label TextColor="Gray"  Text="&#xf3c5;" FontFamily="FontAwesomeIcons" FontSize="20"  Margin="0,2,0,0" />
                         <Label Text="Location:" TextColor="DimGray" FontSize="Medium" />
-                            <Entry  TextColor="Black" IsReadOnly="{Binding EditEnable}" Placeholder="{Binding Location}" Text="{Binding Location}"  Style="{StaticResource textFeild}" FontSize="Medium" />
+                            <Entry  TextColor="Black" IsEnabled="{Binding EditEnable}" Placeholder="{Binding Location}" Text="{Binding Location}"  Style="{StaticResource textFeild}" FontSize="Medium" />
                     </StackLayout>
                 </Frame>
                 <Label  Margin="15,0" Text="{Binding LocationErrorMessage}" IsVisible="{Binding LocationErrorVisible}" TextColor="Red"></Label>
                 </StackLayout>
                 <StackLayout>
-                <Frame Style="{StaticResource textFeildFrame}" >
-                    <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0" VerticalOptions="Center">
+                <Frame Style="{StaticResource textFeildFrame}"  BackgroundColor="White" BorderColor="Gray" Margin="0,5">
+                    <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0" VerticalOptions="Center" Spacing="10">
                         <Label TextColor="Gray" Text="&#xf095;"  FontFamily="FontAwesomeIcons" FontSize="20"  Margin="0,2,0,0" />
                         <Label Text="Phone number:" TextColor="DimGray"  FontSize="Medium"/>
-                        <Entry  TextColor="Black" IsReadOnly="{Binding EditEnable}" Placeholder="{Binding Phone}" Text="{Binding Phone}"  Style="{StaticResource textFeild}" FontSize="Medium" />
+                        <Entry  TextColor="Black" IsEnabled="{Binding EditEnable}" Placeholder="{Binding Phone}" Text="{Binding Phone}"  Style="{StaticResource textFeild}" FontSize="Medium" />
                     </StackLayout>
                 </Frame>
                 <Label  Margin="15,0" Text="{Binding PhoneErrorMessage}" IsVisible="{Binding PhoneErrorVisible}" TextColor="Red"></Label>
                 </StackLayout>
                 <StackLayout>
-                <Frame Style="{StaticResource textFeildFrame}">
-                    <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0" VerticalOptions="Center">
+                <Frame Style="{StaticResource textFeildFrame}"  BackgroundColor="White" BorderColor="Gray" Margin="0,5">
+                    <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0" VerticalOptions="Center" Spacing="10">
                         <Label TextColor="Gray" Text="&#xf0e0;" FontFamily="FontAwesomeIcons" FontSize="20"  Margin="0,2,0,0" />
                         <Label Text="Email:" TextColor="DimGray"  FontSize="Medium"/>
-                        <Entry  TextColor="Black" IsReadOnly="{Binding EditEnable}" Placeholder="{Binding Email}" Text="{Binding Email}"  Style="{StaticResource textFeild}" FontSize="Medium" />
+                        <Entry  TextColor="Black" IsEnabled="{Binding EditEnable}" Placeholder="{Binding Email}" Text="{Binding Email}"  Style="{StaticResource textFeild}" FontSize="Medium" />
                     </StackLayout>
                 </Frame>
                 <Label   Margin="15,0" Text="{Binding EmailErrorMessage}" IsVisible="{Binding EmailErrorVisible}" TextColor="Red"></Label>

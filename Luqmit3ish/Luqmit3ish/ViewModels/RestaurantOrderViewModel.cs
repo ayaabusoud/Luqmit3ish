@@ -25,7 +25,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-            await Navigation.PushAsync(new OtherProfilePage());
+            await Navigation.PushAsync(new OtherProfilePage(1));
 
             }
             catch (ArgumentException e)

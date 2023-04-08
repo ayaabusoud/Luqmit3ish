@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Luqmit3ish.ViewModels"
              xmlns:local1="clr-namespace:Luqmit3ish.Models"
              xmlns:model="clr-namespace:Luqmit3ish.Models" 
              x:Class="Luqmit3ish.Views.AddFoodPage"
+             Shell.TabBarIsVisible="False"
              BackgroundColor="#EDF2F5">
 
     <ContentPage.Content>
@@ -47,14 +48,14 @@
                         <Frame Padding="0" HasShadow="False">
                             <StackLayout  Spacing="-10" >
                                 <Label Text="Title" TextColor="Black"/>
-                                <Entry Placeholder="ex: Pizza" FontSize="Small" TextColor="Gray" Text="{Binding Title}"/>
+                                <Entry Placeholder="ex: Pizza" FontSize="Small" TextColor="Black" Text="{Binding Title}"/>
                             </StackLayout>
                         </Frame>
                         
                         <Frame Padding="0" HasShadow="False">
                             <StackLayout Spacing="-10" >
                                 <Label Text="Description" TextColor="Black"/>
-                                <Entry Placeholder="ex: mini pizza with chees" FontSize="Small" TextColor="Gray" Text="{Binding Description}"/>
+                                <Entry Placeholder="ex: mini pizza with chees" FontSize="Small" TextColor="Black" Text="{Binding Description}"/>
                             </StackLayout>
                         </Frame>
                         
@@ -93,7 +94,7 @@
                         <Frame Padding="0" HasShadow="False">
                             <StackLayout  Spacing="-10" >
                                 <Label Text="Pack-up Time" TextColor="Black"/>
-                                <Entry Placeholder="e.g weekday every evening only" FontSize="Small" TextColor="Gray" Text="{Binding Pack_time}"/>
+                                <Entry Placeholder="e.g weekday every evening only" FontSize="Small" TextColor="Black" Text="{Binding Pack_time}"/>
                             </StackLayout>
                         </Frame>
                     </StackLayout>

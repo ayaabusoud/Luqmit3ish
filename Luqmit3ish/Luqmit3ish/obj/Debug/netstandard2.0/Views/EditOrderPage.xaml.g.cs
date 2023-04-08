@@ -13,7 +13,7 @@
 namespace Luqmit3ish.Views {
     
     
-    [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("Views\\EditOrderPage.xaml")]
+    [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("Views/EditOrderPage.xaml")]
     public partial class EditOrderPage : global::Xamarin.Forms.ContentPage {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "2.0.0.0")]
