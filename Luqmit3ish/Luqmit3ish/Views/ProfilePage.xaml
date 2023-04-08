@@ -23,7 +23,7 @@
                     <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0" VerticalOptions="Center">
                         <Label TextColor="Gray"  Text="&#xf007;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" />
                         <Label Text="Name:" TextColor="DimGray"  FontSize="Medium" />
-                            <Entry TextColor="Black" IsEnabled="{Binding EditEnable}" PlaceholderColor="Black" Placeholder="{Binding Name}" Text="{Binding Name}"  Style="{StaticResource textFeild}"  FontSize="Medium"/>
+                            <Entry  TextColor="Black" IsReadOnly="{Binding EditEnable}" PlaceholderColor="Black" Placeholder="{Binding Name}" Text="{Binding Name}"  Style="{StaticResource textFeild}"  FontSize="Medium"/>
                     </StackLayout>
                 </Frame>
                 <Label  Margin="15,0" Text="{Binding NameErrorMessage}" IsVisible="{Binding NameErrorVisible}" TextColor="Red"></Label>
@@ -33,7 +33,7 @@
                     <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0" VerticalOptions="Center">
                         <Label TextColor="Gray"  Text="&#xf3c5;" FontFamily="FontAwesomeIcons" FontSize="20"  Margin="0,2,0,0" />
                         <Label Text="Location:" TextColor="DimGray" FontSize="Medium" />
-                            <Entry  TextColor="Black" IsEnabled="{Binding EditEnable}" Placeholder="{Binding Location}" Text="{Binding Location}"  Style="{StaticResource textFeild}" FontSize="Medium" />
+                            <Entry  TextColor="Black" IsReadOnly="{Binding EditEnable}" Placeholder="{Binding Location}" Text="{Binding Location}"  Style="{StaticResource textFeild}" FontSize="Medium" />
                     </StackLayout>
                 </Frame>
                 <Label  Margin="15,0" Text="{Binding LocationErrorMessage}" IsVisible="{Binding LocationErrorVisible}" TextColor="Red"></Label>
@@ -43,7 +43,7 @@
                     <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0" VerticalOptions="Center">
                         <Label TextColor="Gray" Text="&#xf095;"  FontFamily="FontAwesomeIcons" FontSize="20"  Margin="0,2,0,0" />
                         <Label Text="Phone number:" TextColor="DimGray"  FontSize="Medium"/>
-                        <Entry  TextColor="Black" IsEnabled="{Binding EditEnable}" Placeholder="{Binding Phone}" Text="{Binding Phone}"  Style="{StaticResource textFeild}" FontSize="Medium" />
+                        <Entry  TextColor="Black" IsReadOnly="{Binding EditEnable}" Placeholder="{Binding Phone}" Text="{Binding Phone}"  Style="{StaticResource textFeild}" FontSize="Medium" />
                     </StackLayout>
                 </Frame>
                 <Label  Margin="15,0" Text="{Binding PhoneErrorMessage}" IsVisible="{Binding PhoneErrorVisible}" TextColor="Red"></Label>
@@ -53,7 +53,7 @@
                     <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0" VerticalOptions="Center">
                         <Label TextColor="Gray" Text="&#xf0e0;" FontFamily="FontAwesomeIcons" FontSize="20"  Margin="0,2,0,0" />
                         <Label Text="Email:" TextColor="DimGray"  FontSize="Medium"/>
-                        <Entry  TextColor="Black" IsEnabled="{Binding EditEnable}" Placeholder="{Binding Email}" Text="{Binding Email}"  Style="{StaticResource textFeild}" FontSize="Medium" />
+                        <Entry  TextColor="Black" IsReadOnly="{Binding EditEnable}" Placeholder="{Binding Email}" Text="{Binding Email}"  Style="{StaticResource textFeild}" FontSize="Medium" />
                     </StackLayout>
                 </Frame>
                 <Label   Margin="15,0" Text="{Binding EmailErrorMessage}" IsVisible="{Binding EmailErrorVisible}" TextColor="Red"></Label>
