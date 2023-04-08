@@ -25,11 +25,11 @@ androidgeneratejnimarshalmethods=false
 os=unix
 androidincludedebugsymbols=true
 androidpackagenamingpolicy=lowercasecrc64
-_nugetassetstimestamp=638158659795538614
+_nugetassetstimestamp=638165869567556392
 typemapkind=strings-asm
 androidsupportedabis=arm64-v8a
 armeabi-v7a
 x86
 x86_64
 androidmanifestplaceholders=
-projectfullpath=/users/ibtihaj/desktop/mobile/luqmit3ish/luqmit3ish/luqmit3ish.android/luqmit3ish.android.csproj
+projectfullpath=/users/ibtihaj/desktop/sprint22/luqmit3ish/luqmit3ish/luqmit3ish.android/luqmit3ish.android.csproj

@@ -1,4 +1,4 @@
-﻿using Luqmit3ish.Models;
+using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using System;
@@ -22,7 +22,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand ForgotPassCommand { get; }
         public ICommand SignupCommand { get; }
         public ICommand LoginCommand { get; }
-       
+
         public UserServices userServices;
         public LoginViewModel(INavigation navigation)
         {
@@ -36,12 +36,12 @@ namespace Luqmit3ish.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
-       
+
         private async void OnForgotPassClicked()
         {
             try
             {
-            await Navigation.PushAsync(new ForgotPasswordPage());
+                await Navigation.PushAsync(new ForgotPasswordPage());
 
             }
             catch (ArgumentException e)
@@ -85,10 +85,21 @@ namespace Luqmit3ish.ViewModels
                 bool hasAccount = await userServices.Login(loginRequest);
                 if (hasAccount)
                 {
+                    User user = await userServices.GetUserByEmail(Email);
+
                     Preferences.Set("userEmail", Email);
-                    Application.Current.MainPage = new AppShellCharity();
+                    Preferences.Set("userId", user.id.ToString());
+                    if (user.Type.Equals("Restaurant"))
+                    {
+                        Application.Current.MainPage = new AppShellRestaurant();
+                    }
+                    else
+                    {
+                        Application.Current.MainPage = new AppShellCharity();
+                    }
                     return true;
                 }
+
                 await Application.Current.MainPage.DisplayAlert("Invalid input", "You have entered an invalid username or password", "Ok");
                 return false;
             }
@@ -143,4 +154,3 @@ namespace Luqmit3ish.ViewModels
         }
     }
 }
-

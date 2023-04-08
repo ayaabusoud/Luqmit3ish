@@ -42,9 +42,10 @@ namespace Luqmit3ish.ViewModels
         }
         private async Task OnProfileClicked()
         {
+
             try
             {
-                await Navigation.PushAsync(new OtherProfilePage());
+                await Navigation.PushAsync(new OtherProfilePage(1));
 
             }
             catch (ArgumentException e)

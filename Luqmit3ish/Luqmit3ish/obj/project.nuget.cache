@@ -1,15 +1,26 @@
 {
   "version": 2,
-  "dgSpecHash": "bhz+6NZYqpGmUxvNT2/yTX4s3q+ban3Abaoke0TJIrgJ9g3mcabBDD8g/zOMfBkh4w8+rqcqnSH3bECv8kTGuw==",
+  "dgSpecHash": "2k+cMqexsUPFLK+L9b6Rr1GDWmpdbK65mPr7GBA0bz15PAaeFTI2+s9Gcfgj3VGUwWypiWCa2ZP2cdWA/wrnFQ==",
   "success": true,
-  "projectFilePath": "/Users/ibtihaj/Desktop/mobile/Luqmit3ish/Luqmit3ish/Luqmit3ish/Luqmit3ish.csproj",
+  "projectFilePath": "/Users/ibtihaj/Desktop/sprint22/Luqmit3ish/Luqmit3ish/Luqmit3ish/Luqmit3ish.csproj",
   "expectedPackageFiles": [
+    "/Users/ibtihaj/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
     "/Users/ibtihaj/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "/Users/ibtihaj/.nuget/packages/microsoft.netcore.targets/1.1.0/microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "/Users/ibtihaj/.nuget/packages/netstandard.library/2.0.3/netstandard.library.2.0.3.nupkg.sha512",
     "/Users/ibtihaj/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
+    "/Users/ibtihaj/.nuget/packages/system.componentmodel/4.3.0/system.componentmodel.4.3.0.nupkg.sha512",
     "/Users/ibtihaj/.nuget/packages/system.numerics.vectors/4.5.0/system.numerics.vectors.4.5.0.nupkg.sha512",
+    "/Users/ibtihaj/.nuget/packages/system.reflection.emit.ilgeneration/4.7.0/system.reflection.emit.ilgeneration.4.7.0.nupkg.sha512",
+    "/Users/ibtihaj/.nuget/packages/system.reflection.emit.lightweight/4.7.0/system.reflection.emit.lightweight.4.7.0.nupkg.sha512",
+    "/Users/ibtihaj/.nuget/packages/system.runtime/4.3.0/system.runtime.4.3.0.nupkg.sha512",
+    "/Users/ibtihaj/.nuget/packages/system.runtime.compilerservices.unsafe/4.5.3/system.runtime.compilerservices.unsafe.4.5.3.nupkg.sha512",
+    "/Users/ibtihaj/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512",
+    "/Users/ibtihaj/.nuget/packages/xam.plugin.media/5.0.1/xam.plugin.media.5.0.1.nupkg.sha512",
+    "/Users/ibtihaj/.nuget/packages/xamarin.communitytoolkit/2.0.5/xamarin.communitytoolkit.2.0.5.nupkg.sha512",
     "/Users/ibtihaj/.nuget/packages/xamarin.essentials/1.6.1/xamarin.essentials.1.6.1.nupkg.sha512",
-    "/Users/ibtihaj/.nuget/packages/xamarin.forms/5.0.0.2012/xamarin.forms.5.0.0.2012.nupkg.sha512"
+    "/Users/ibtihaj/.nuget/packages/xamarin.forms/5.0.0.2578/xamarin.forms.5.0.0.2578.nupkg.sha512",
+    "/Users/ibtihaj/.nuget/packages/xamarin.forms.pancakeview/2.3.0.759/xamarin.forms.pancakeview.2.3.0.759.nupkg.sha512"
   ],
   "logs": []
 }

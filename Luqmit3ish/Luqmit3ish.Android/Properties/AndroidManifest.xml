@@ -3,4 +3,5 @@
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="30" />
 	<application android:label="Luqmit3ish.Android" android:theme="@style/MainTheme" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"></application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.CAMERA" />
 </manifest>

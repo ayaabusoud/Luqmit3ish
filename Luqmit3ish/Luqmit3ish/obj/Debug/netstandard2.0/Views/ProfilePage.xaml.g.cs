@@ -13,7 +13,7 @@
 namespace Luqmit3ish.Views {
     
     
-    [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("Views\\ProfilePage.xaml")]
+    [global::Xamarin.Forms.Xaml.XamlFilePathAttribute("Views/ProfilePage.xaml")]
     public partial class ProfilePage : global::Xamarin.Forms.ContentPage {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "2.0.0.0")]
