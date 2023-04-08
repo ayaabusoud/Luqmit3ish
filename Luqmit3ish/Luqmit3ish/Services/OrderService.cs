@@ -13,7 +13,7 @@ namespace Luqmit3ish.Services
     class OrderService
     {
         private readonly HttpClient _http;
-        private static readonly string ApiUrl = "https://luqmit3ishserver.azurewebsites.net/api/Orders";
+        private static readonly string ApiUrl = "https://luqmit3ish.azurewebsites.net/api/Orders";
 
         public OrderService()
         {

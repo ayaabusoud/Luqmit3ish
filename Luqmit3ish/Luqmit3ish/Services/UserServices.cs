@@ -14,9 +14,9 @@ namespace Luqmit3ish.Services
     public class UserServices
     {
         private readonly HttpClient _http;
-        private static readonly string ApiUrl = "https://luqmit3ishserver.azurewebsites.net/api/Users";
-        private static readonly string ApiSignUp = "https://luqmit3ishserver.azurewebsites.net/api/Users";
-        private static readonly string ApiLoginUrl = "https://luqmit3ishserver.azurewebsites.net/api/Users/login";
+        private static readonly string ApiUrl = "https://luqmit3ish.azurewebsites.net/api/Users";
+        private static readonly string ApiSignUp = "https://luqmit3ish.azurewebsites.net/api/Users";
+        private static readonly string ApiLoginUrl = "https://luqmit3ish.azurewebsites.net/api/Users/login";
 
         public UserServices()
         {
@@ -31,6 +31,25 @@ namespace Luqmit3ish.Services
             Console.WriteLine(response.StatusCode);
 
             return response.IsSuccessStatusCode;
+        }
+        public async Task<User> GetUserByEmail(string email)
+        {
+            var response = await _http.GetAsync($"{ApiUrl}/{email}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var user = JsonConvert.DeserializeObject<User>(content);
+                return user;
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+            else
+            {
+                throw new Exception($"Failed to retrieve user_id: {response.StatusCode} - {response.ReasonPhrase}");
+            }
         }
 
         public async Task<ObservableCollection<User>> GetUsers()
