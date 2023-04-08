@@ -1,46 +1,50 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Luqmit3ish.Views.LoginPage"
-             Shell.NavBarIsVisible="False" NavigationPage.HasNavigationBar="False">
+             Shell.NavBarIsVisible="False" NavigationPage.HasNavigationBar="False"
+             BackgroundImageSource="login_background.jpeg">
+
     <ContentPage.Content>
-        <StackLayout Margin="16,64,16,35" Padding="20,40,0,0" >
-            <Label FontSize="30" FontAttributes="Bold" TextColor="Black">Welcome!</Label>
-            <Label TextColor="Black" FontSize="17">Sign in to continue</Label>
-            <Frame Style="{StaticResource textFeildFrame}"  Margin="0,30,0,0" HorizontalOptions="Start" WidthRequest="310">
-                <StackLayout Orientation="Horizontal" Margin="10,0,0,0" Padding="0">
-                    <Label Text="&#xf0e0;" FontFamily="FontAwesomeIcons" FontSize="20"/>
-                    <Entry  FontSize="Medium" Placeholder="Email" Keyboard="Email" Style="{StaticResource textFeild}" Text="{Binding Email}" ClearButtonVisibility="WhileEditing" />
+        <StackLayout Margin="0">
+            <Image Source="icon3.png" WidthRequest="100" Margin="0,40,0,0"/>
+            <Frame HorizontalOptions="Fill" VerticalOptions="EndAndExpand"  Margin="0,0,0,-40" HeightRequest="450" CornerRadius="30" HasShadow="True">
+                <StackLayout Margin="10" HorizontalOptions="Fill" Spacing="15" Padding="20">
+                    <Label Text="Sign In" HorizontalOptions="Center" FontSize="30" FontAttributes="Bold" TextColor="Black" Margin="-20"/>
+                    <Label Text="Email" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
+                    <Frame Style="{StaticResource textFeildFrame}">
+                        <StackLayout Orientation="Horizontal" Margin="10,0,0,0" Padding="0">
+                            <Label Text="&#xf0e0;" FontFamily="FontAwesomeIcons" FontSize="20" TextColor="Black"/>
+                            <Entry  FontSize="Medium" Placeholder="Enter your email" Keyboard="Email" Style="{StaticResource textFeild}" Text="{Binding Email}" ClearButtonVisibility="WhileEditing" />
+                        </StackLayout>
+                    </Frame>
+
+                    <Label Text="Password" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
+                    <Frame Style="{StaticResource textFeildFrame}" >
+                        <StackLayout Orientation="Horizontal" Margin="10,0,0,0" Padding="0">
+                            <Label Text="&#xf023;" FontFamily="FontAwesomeIcons" FontSize="20" TextColor="Black"/>
+                            <Entry FontSize="Medium" Placeholder="Enter your password" IsPassword="True" Keyboard="Text" Style="{StaticResource textFeild}" Text="{Binding Password}" ClearButtonVisibility="WhileEditing" />
+                        </StackLayout>
+                    </Frame>
+
+                    <Button Margin="0,30,0,0" Text="Sign in" Command="{Binding LoginCommand}" Style="{StaticResource LargeBorderButton}" IsEnabled="{Binding LoginButtonEnable}"/>
+
+                    <Label VerticalOptions="Center" HorizontalOptions="Center" Margin="0,50,0,0">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Don't have an account? " TextColor="Black" FontSize="16"/>
+                                <Span Text="Sign Up" TextColor="{StaticResource PrimaryLight}" TextDecorations="Underline" FontAttributes="Bold" FontSize="16"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SignupCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
                 </StackLayout>
             </Frame>
-
-            <Frame Style="{StaticResource textFeildFrame}"  Margin="0,12,0,0" HorizontalOptions="Start" WidthRequest="310">
-                <StackLayout Orientation="Horizontal" Margin="10,0,0,0" Padding="0">
-                    <Label Text="&#xf023;" FontFamily="FontAwesomeIcons" FontSize="20"/>
-                    <Entry FontSize="Medium" Placeholder="Password" IsPassword="True" Keyboard="Text" Style="{StaticResource textFeild}" Text="{Binding Password}" ClearButtonVisibility="WhileEditing" />
-                </StackLayout>
-            </Frame>
-
-            <Button Margin="0,30,0,0" HorizontalOptions="Center" HeightRequest="36" WidthRequest="100" VerticalOptions="Center" Text="Sign in" Command="{Binding LoginCommand}" Style="{StaticResource BorderButton}" IsEnabled="{Binding LoginButtonEnable}"/>
-            <StackLayout Margin="0,20,0,0" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
-                <BoxView Margin="0,10,12,10" BackgroundColor="LightGray" HeightRequest="2" WidthRequest="125"/>
-                <Label Text="or" TextColor="black" FontAttributes="Bold" FontSize="16"/>
-                <BoxView Margin="12,10,0,10" BackgroundColor="LightGray" HeightRequest="2" WidthRequest="125"/>
-            </StackLayout>
-            <Label VerticalOptions="Center" HorizontalOptions="Center" Margin="0,50,0,0">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Don't have an account? " TextColor="Black" FontSize="16"/>
-                        <Span Text="Sign Up" TextColor="{StaticResource PrimaryLight}" TextDecorations="Underline" FontAttributes="Bold" FontSize="16"/>
-                    </FormattedString>
-                </Label.FormattedText>
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SignupCommand}" />
-                </Label.GestureRecognizers>
-            </Label>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
