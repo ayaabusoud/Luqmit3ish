@@ -14,9 +14,9 @@ namespace Luqmit3ish.Services
     public class UserServices
     {
         private readonly HttpClient _http;
-        private static readonly string ApiUrl = "https://luqmit3ishserver.azurewebsites.net/api/Users";
-        private static readonly string ApiSignUp = "https://luqmit3ishserver.azurewebsites.net/api/Users";
-        private static readonly string ApiLoginUrl = "https://luqmit3ishserver.azurewebsites.net/api/Users/login";
+        private static readonly string ApiUrl = "https://luqmit3ish.azurewebsites.net/api/Users";
+        private static readonly string ApiSignUp = "https://luqmit3ish.azurewebsites.net/api/Users";
+        private static readonly string ApiLoginUrl = "https://luqmit3ish.azurewebsites.net/api/Users/login";
 
         public UserServices()
         {
