@@ -11,8 +11,7 @@ using System.Windows.Input;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
-//using Plugin.Media;
-//using Plugin.Media.Abstractions;
+
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -90,9 +89,9 @@ namespace Luqmit3ish.ViewModels
                 {
                     var selectedTypeName = firstDish.type;
 
-                    var selectedType = TypeValues1.FirstOrDefault(tf => tf.name == selectedTypeName);
+                    var selectedType = TypeValues.FirstOrDefault(tf => tf.name == selectedTypeName);
                     SelectedType = selectedType;
-
+                    _type = firstDish.type;
                     Title = firstDish.name;
                     Description = firstDish.description;
                     Counter = firstDish.keep_listed;
@@ -266,31 +265,8 @@ namespace Luqmit3ish.ViewModels
 
         private async Task PhotoClicked()
         {
-            //await CrossMedia.Current.Initialize();
-            //if (!CrossMedia.Current.IsCameraAvailable
-            //|| CrossMedia.Current.IsTakePhotoSupported)
-            //{
-            //    await App.Current.MainPage.DisplayAlert("No Camera", ": ( No camera available.", "OK");
-            //    return;
-            //}
-            //var file = await CrossMedia.Current.TakePhotoAsync(
-            //new StoreCameraMediaOptions
-            //{
-            //    SaveToAlbum = true,
-            //});
-            //if (file == null)
-            //    return;
-            //var img1 = file.AlbumPath;
-            //Console.WriteLine("imaagee " + img1);
-            //img = ImageSource.FromStream(() =>
-            //{
-            //    var stream = file.GetStream();
-            //    file.Dispose();
-            //    return stream;
-            //});
+
         }
-
-
 
         private async Task OnSubmitClicked()
         {
