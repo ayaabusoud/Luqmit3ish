@@ -10,8 +10,7 @@ using System.Windows.Input;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
-using Plugin.Media;
-using Plugin.Media.Abstractions;
+
 using Xamarin.Essentials;
 using Xamarin.Forms;
 namespace Luqmit3ish.ViewModels
@@ -215,28 +214,16 @@ namespace Luqmit3ish.ViewModels
 
         private async Task PhotoClicked()
         {
-            await CrossMedia.Current.Initialize();
-            if (!CrossMedia.Current.IsCameraAvailable
-            || CrossMedia.Current.IsTakePhotoSupported)
+            var result = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
             {
-                await App.Current.MainPage.DisplayAlert("No Camera", ": ( No camera available.", "OK");
-                return;
+                Title = "Take Photo"
+            });
+
+            if (result != null)
+            {
+                _photoPath = result.FullPath;
             }
-            var file = await CrossMedia.Current.TakePhotoAsync(
-            new StoreCameraMediaOptions
-            {
-                SaveToAlbum = true,
-            });
-            if (file == null)
-                return;
-            var img1 = file.AlbumPath;
-            Console.WriteLine("imaagee " + img1);
-            img = ImageSource.FromStream(() =>
-                        {
-                var stream = file.GetStream();
-                file.Dispose();
-                return stream;
-            });
+            Console.WriteLine("_photoPath = " + _photoPath);
         }
 
 
@@ -271,33 +258,57 @@ namespace Luqmit3ish.ViewModels
                    number = Counter1
                 };
 
-                await AddNewDish(foodRequest);
-
-            }catch(Exception e)
+                int? food_id = await AddNewDish(foodRequest);
+                if (food_id != null)
+                {
+                    food_id = (int)food_id;
+                    Console.WriteLine("food_id = " + food_id);
+                    await AddNewPhoto(_photoPath,(int) food_id);
+                }
+            }
+            catch(Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
         }
-
-        public async Task<bool> AddNewDish(DishRequest foodRequest)
+        private async Task AddNewPhoto(string photoPath, int foodId)
+        {
+           var response = await foodServices.UploadPhoto(photoPath, foodId);
+            if(response)
+            {
+                await Navigation.PopAsync();
+                await App.Current.MainPage.DisplayAlert("success", "the dish added successfully", "ok");
+                return;
+            }
+            await App.Current.MainPage.DisplayAlert("Error", "the dish not added", "ok");
+        }
+        public async Task<int?> AddNewDish(DishRequest foodRequest)
         {
             try
             {
-                var request = await foodServices.AddNewDish(foodRequest);
-                if (request)
+                int food_id = await foodServices.AddNewDish(foodRequest);
+                if (food_id != 0)
                 {
-                    await App.Current.MainPage.DisplayAlert("Added successfuly", "the dish added successfuly", "ok");
-                    await Navigation.PopAsync();
-                    return true;
+                    return food_id;
+                    //await App.Current.MainPage.DisplayAlert("Added successfully", "the dish added successfully", "ok");
+                    //await Navigation.PopAsync();
+                    //return request.id; // Return the dish ID
                 }
-                await App.Current.MainPage.DisplayAlert("Error", "the dish not added", "ok");
-                return false;
+                //await App.Current.MainPage.DisplayAlert("Error", "the dish not added", "ok");
+                return null;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                return false;
+                return null;
             }
+        }
+
+        private string _photoPath;
+        public string PhotoPath
+        {
+            get => _photoPath;
+            set { SetProperty(ref _photoPath, value); }
         }
 
         private string _type;
