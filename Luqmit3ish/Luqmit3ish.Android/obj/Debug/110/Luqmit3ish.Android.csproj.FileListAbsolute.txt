@@ -1188,12 +1188,14 @@ C:\Users\HP\Desktop\Luqmit-3ish-Mobile\Xamarin\Luqmit3ish\Luqmit3ish\Luqmit3ish.
 C:\Users\HP\Desktop\Luqmit-3ish-Mobile\Xamarin\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\res\drawable\facebook.png
 C:\Users\HP\Desktop\Luqmit-3ish-Mobile\Xamarin\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\res\drawable\google.png
 C:\Users\HP\Desktop\Luqmit-3ish-Mobile\Xamarin\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\assets\Newtonsoft.Json.dll
+
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\MonoAndroid,Version=v11.0.AssemblyAttributes.cs
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\build.props
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\adb.props
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\Luqmit3ish.Android.csproj.AssemblyReference.cache
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\Luqmit3ish.Android.dll
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\Luqmit3ish.Android.pdb
+
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\bin\Debug\Luqmit3ish.Android.dll
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\bin\Debug\Luqmit3ish.Android.pdb
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\bin\Debug\com.companyname.luqmit3ish.apk
@@ -1203,6 +1205,12 @@ C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\b
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\bin\Debug\com.companyname.luqmit3ish-Signed.apk.idsig
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\bin\Debug\Luqmit3ish.dll
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\bin\Debug\Luqmit3ish.pdb
+
+C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\MonoAndroid,Version=v11.0.AssemblyAttributes.cs
+C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\build.props
+C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\adb.props
+C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\Luqmit3ish.Android.csproj.AssemblyReference.cache
+
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\stamp\_BuildLibraryImportsCache.stamp
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\res.flag
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\lp\53\jl\files.cache
@@ -1231,9 +1239,11 @@ C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\o
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\lp\99\jl\files.cache
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\lp\100\jl\files.cache
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\lp\105\jl\files.cache
+
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\R.cs.flag
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\Luqmit3ish.Android.csproj.CoreCompileInputs.cache
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\Luqmit3ish.Android.csproj.CopyComplete
+
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\bin\com.companyname.luqmit3ish.apk
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\bin\base.zip
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\bin\com.companyname.luqmit3ish.aab
@@ -1273,6 +1283,7 @@ C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\o
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\res\drawable\google.png
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\res\drawable\icon_plus.png
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\R.txt
+
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\uploadflags.txt
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\resolvedassemblies.hash
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\assets\FormsViewGroup.dll
@@ -1282,7 +1293,7 @@ C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\o
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\assets\Luqmit3ish.Android.pdb
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\assets\Luqmit3ish.dll
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\assets\Luqmit3ish.pdb
-C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\assets\machine.config
+
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\assets\Mono.Android.dll
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\assets\Mono.Android.pdb
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\assets\Mono.Security.dll
@@ -1454,6 +1465,9 @@ C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\o
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\AndroidManifest.xml
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\__environment__.txt
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\src\mono\MonoRuntimeProvider.java
+
+C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\assets\machine.config
+
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\bin\mono.android.jar
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\static.flag
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\buildid.txt
@@ -1489,6 +1503,7 @@ C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\o
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\src\androidx\transition\R.java
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\src\androidx\viewpager2\R.java
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\src\com\companyname\luqmit3ish\R.java
+
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\src\com\google\android\material\R.java
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\src\com\google\android\material\snackbar\Snackbar_SnackbarActionClickImplementor.java
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\src\crc6414252951f3f66c67\CarouselViewAdapter_2.java
@@ -1854,6 +1869,9 @@ C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\o
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\src\mono\MonoPackageManager_Resources.java
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\src\xamarin\essentials\fileProvider.java
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\bin\packaged_resources
+
+C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\src\com\companyname\luqmit3ish\R.java
+
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\compressed_assemblies.arm64-v8a.s
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\compressed_assemblies.armeabi-v7a.s
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\android\compressed_assemblies.x86.s
@@ -1883,3 +1901,4 @@ C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\o
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\stamp\_GeneratePackageManagerJava.stamp
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\stamp\_ResolveLibraryProjectImports.stamp
 C:\Users\Msys\OneDrive\Desktop\mobile\Luqmit3ish\Luqmit3ish\Luqmit3ish.Android\obj\Debug\110\res\drawable\plus_icon.png
+

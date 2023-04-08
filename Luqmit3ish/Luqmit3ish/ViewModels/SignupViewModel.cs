@@ -34,7 +34,6 @@ namespace Luqmit3ish.ViewModels
             phoneErrorMessage = "This phone number invalid.";
             location = type = -1;
 
-            nameFrameColor = emailFrameColor = passwordFrameColor = confirmFrameColor = phoneFrameColor = locationFrameColor = typeFrameColor = Color.DarkGray;
             nameErrorVisible = emailErrorVisible = passwordErrorVisible = confirmErrorVisible = phoneErrorVisible = locationErrorVisible = typeErrorVisible = false;
             this.Navigation = navigation;
             signupClicked = new Command(async () => await OnSignupClicked());
@@ -44,7 +43,6 @@ namespace Luqmit3ish.ViewModels
             OnInit();
 
         }
-
 
         private async Task OnSignupClicked()
         {

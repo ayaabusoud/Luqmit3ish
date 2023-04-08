@@ -1,4 +1,4 @@
-﻿using Luqmit3ish.Models;
+using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using System;
@@ -22,7 +22,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand ForgotPassCommand { get; }
         public ICommand SignupCommand { get; }
         public ICommand LoginCommand { get; }
-       
+
         public UserServices userServices;
         public LoginViewModel(INavigation navigation)
         {
@@ -36,12 +36,12 @@ namespace Luqmit3ish.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
-       
+
         private async void OnForgotPassClicked()
         {
             try
             {
-            await Navigation.PushAsync(new ForgotPasswordPage());
+                await Navigation.PushAsync(new ForgotPasswordPage());
 
             }
             catch (ArgumentException e)
@@ -154,4 +154,3 @@ namespace Luqmit3ish.ViewModels
         }
     }
 }
-
