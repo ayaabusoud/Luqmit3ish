@@ -20,6 +20,12 @@ namespace Luqmit3ish.ViewModels
             user = new User();
             OnInit(id);
         }
+        
+        public OtherProfileViewModel()
+        {
+            userServices = new UserServices();
+            user = new User();
+        }
 
         private string _name;
         public string Name
