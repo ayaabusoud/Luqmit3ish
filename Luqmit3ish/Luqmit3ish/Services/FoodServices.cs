@@ -83,6 +83,16 @@ namespace Luqmit3ish.Services
 
             return response.IsSuccessStatusCode;
         }
+        
+        public async Task DeleteFood(int food_id)
+        {
+            var response = await _http.DeleteAsync($"{ApiUrl}/{food_id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Debug.WriteLine("failed to delete item");
+            }
+        }
 
     }
 }
