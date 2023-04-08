@@ -4,8 +4,10 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,9 +16,9 @@ namespace Luqmit3ish.Services
     class FoodServices
     {
         private readonly HttpClient _http;
-        private static readonly string ApiUrl = "https://luqmit3ishserver.azurewebsites.net/api/Food";
-        private static readonly string AddDishUrl = "https://luqmit3ishserver.azurewebsites.net/api/Food/AddDish";
-        
+        private static readonly string ApiUrl = "https://luqmit3ish.azurewebsites.net/api/Food";
+        private static readonly string AddDishUrl = "https://luqmit3ish.azurewebsites.net/api/Food/AddDish";
+        private static readonly string uploadPhotoUrl = "https://luqmit3ish.azurewebsites.net/api/Food/UploadPhoto";
         public FoodServices()
         {
             _http = new HttpClient();
@@ -75,16 +77,30 @@ namespace Luqmit3ish.Services
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> AddNewDish(DishRequest dishRequest)
+        public async Task<int> AddNewDish(DishRequest dishRequest)
         {
             var json = JsonConvert.SerializeObject(dishRequest);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _http.PostAsync(AddDishUrl, content);
-
-            return response.IsSuccessStatusCode;
+            var responseContent = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                dynamic responseObject = JsonConvert.DeserializeObject(responseContent);
+                return (int)responseObject.id;
+            }
+            return 0;
         }
 
+        internal async Task<bool> UploadPhoto(string photoPath, int foodId)
+        {
+            var fileContent = new ByteArrayContent(File.ReadAllBytes(photoPath));
+            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/jpeg");
+            using (var formData = new MultipartFormDataContent())
+            {
+                formData.Add(fileContent, "photo", Path.GetFileName(photoPath));
+                var response = await _http.PostAsync($"{uploadPhotoUrl}/{foodId}", formData);
+                return response.IsSuccessStatusCode;
+            }
+        }
     }
 }
-
-
