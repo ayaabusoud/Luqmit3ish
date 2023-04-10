@@ -59,12 +59,14 @@
                                                     <Label Grid.Column="0" Text="{Binding name}" TextColor="Black" FontSize="Medium"/>
                                                     <Label Grid.Column="1" Text="&#xf304;" FontFamily="FontAwesomeIcons" Margin="0,2,0,0" FontSize="20" >
                                                         <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand , Source={x:Reference CharityOrder}}"/>
+                                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand , Source={x:Reference CharityOrder}}"
+                                                                                  CommandParameter="{Binding id}"/>
                                                         </Label.GestureRecognizers>
                                                     </Label>
                                                     <Label Grid.Column="2" Text="&#xf1f8;" FontFamily="FontAwesomeIcons" Margin="0,2,0,0" FontSize="20" >
                                                         <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}" />
+                                                            <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}"
+                                                                                  CommandParameter="{Binding id}"/>
                                                         </Label.GestureRecognizers>
                                                     </Label>
                                                 </Grid>

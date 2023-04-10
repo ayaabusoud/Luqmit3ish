@@ -28,14 +28,13 @@ namespace Luqmit3ish.ViewModels
         public CharityOrderViewModel(INavigation navigation)
         {
             this.Navigation = navigation;
-            EditCommand = new Command(async () => await OnEditClicked());
-            ProfileCommand = new Command(async () => await OnProfileClicked());
-            DeleteCommand = new Command(OnDeleteClicked);
+            EditCommand = new Command<int>(async (int id) => await OnEditClicked(id));
+            DeleteCommand = new Command<int>(async (int id) => await OnDeleteClicked(id));
             orderService = new OrderService();
             OnInit();
         }
 
-        private void OnDeleteClicked()
+        private async Task OnDeleteClicked(int Restaurantid)
         {
             //imp
         }
@@ -57,7 +56,7 @@ namespace Luqmit3ish.ViewModels
             
         }
 
-        private async Task OnEditClicked()
+        private async Task OnEditClicked(int Restaurantid)
         {
             try
             {
