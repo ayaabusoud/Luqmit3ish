@@ -52,17 +52,11 @@
                                                  VerticalOptions="FillAndExpand"/>
                                                 <Grid Grid.Column="2" Margin="15">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="0.72*"/>
-                                                        <ColumnDefinition Width="0.13*"/>
+                                                        <ColumnDefinition Width="0.85*"/>
                                                         <ColumnDefinition Width="0.15*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Label Grid.Column="0" Text="{Binding name}" TextColor="Black" FontSize="Medium"/>
-                                                    <Label Grid.Column="1" Text="&#xf304;" FontFamily="FontAwesomeIcons" Margin="0,2,0,0" FontSize="20" >
-                                                        <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand , Source={x:Reference CharityOrder}}"
-                                                                                  CommandParameter="{Binding id}"/>
-                                                        </Label.GestureRecognizers>
-                                                    </Label>
+                                                   
                                                     <Label Grid.Column="2" Text="&#xf1f8;" FontFamily="FontAwesomeIcons" Margin="0,2,0,0" FontSize="20" >
                                                         <Label.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}"
@@ -83,7 +77,7 @@
                                                         </Grid.ColumnDefinitions>
                                                         <BoxView Grid.Column="1" BackgroundColor="#F2F4F8" WidthRequest="1" HorizontalOptions="Start" 
                                                       VerticalOptions="FillAndExpand"/>
-                                                        <StackLayout Grid.Column="2" Spacing="10">
+                                                        <StackLayout Grid.Column="2" Spacing="10" Orientation="Horizontal">
 
                                                             <Label TextColor="#2F3246" FontSize="Small"  Margin="15,0">
                                                                 <Label.FormattedText>
@@ -92,11 +86,22 @@
                                                                             <Span Text="{Binding dishName}"/>
                                                                             <Span Text=": "/>
                                                                             <Span Text="{Binding number_of_dish}"  />
-                                                                            <Span Text=" Dishes"  />
                                                                         </FormattedString.Spans>
                                                                     </FormattedString>
                                                                 </Label.FormattedText>
                                                             </Label>
+                                                         
+                                                                <Label Text="&#xf055;" FontFamily="FontAwesomeIcons" FontSize="18" Margin="5,2,5,0" >
+                                                                <Label.GestureRecognizers>
+                                                                        <TapGestureRecognizer CommandParameter="{Binding id}" Command="{Binding BindingContext.PlusCommand , Source={x:Reference CharityOrder}}" />
+                                                                    </Label.GestureRecognizers>
+                                                                </Label>
+                                                            <Label  Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="18" Margin="5,2,5,0" >
+                                                                <Label.GestureRecognizers>
+                                                                        <TapGestureRecognizer  CommandParameter="{Binding id}" Command="{Binding BindingContext.MinusCommand , Source={x:Reference CharityOrder}}" />
+                                                                    </Label.GestureRecognizers>
+                                                                </Label>
+                                                          
                                                         </StackLayout>
                                                     </Grid>
                                                 </DataTemplate>
