@@ -18,7 +18,7 @@
 
 
                     <CollectionView 
-                                    Margin="25" 
+                                    Margin="10,25"  
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="FillAndExpand"
                                     SelectionMode="None"

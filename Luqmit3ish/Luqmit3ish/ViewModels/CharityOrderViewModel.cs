@@ -21,17 +21,38 @@ namespace Luqmit3ish.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand EditCommand { protected set; get; }
+        public ICommand Search { protected set; get; }
+
         public ICommand ProfileCommand { protected set; get; }
         public OrderService orderService;
         public ICommand DeleteCommand { protected set; get; }
+        public Command<int> PlusCommand { protected set; get; }
+        public Command<int> MinusCommand { protected set; get; }
 
         public CharityOrderViewModel(INavigation navigation)
         {
             this.Navigation = navigation;
             EditCommand = new Command<int>(async (int id) => await OnEditClicked(id));
             DeleteCommand = new Command<int>(async (int id) => await OnDeleteClicked(id));
+            Search = new Command(async () => await OnSearchClicked());
+            PlusCommand = new Command<int>(OnPlusClicked);
+            MinusCommand = new Command<int>(OnMinusClicked);
             orderService = new OrderService();
             OnInit();
+        }
+        private void OnMinusClicked(int orderId)
+        {
+           
+        }
+
+        private void OnPlusClicked(int orderId)
+        {
+            
+        }
+
+        private async Task OnSearchClicked()
+        {
+            await Navigation.PushAsync(new SearchPage());
         }
 
         private async Task OnDeleteClicked(int Restaurantid)
@@ -52,6 +73,10 @@ namespace Luqmit3ish.ViewModels
             var id = Preferences.Get("userId", null);
             var userId = int.Parse(id);
             OrderCard = await orderService.GetOrders(userId);
+            if(OrderCard is null)
+            {
+                //no orders yet
+            }
 
             
         }
