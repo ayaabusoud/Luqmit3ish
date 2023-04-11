@@ -26,5 +26,12 @@ namespace Luqmit3ish.Services
             var content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
         }
+         public async Task<bool> ReserveOrder(Order orderRequest)
+        {
+            var json = JsonConvert.SerializeObject(orderRequest);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _http.PostAsync(ApiUrl, content);
+            return response.IsSuccessStatusCode;
+        }
     }
 }

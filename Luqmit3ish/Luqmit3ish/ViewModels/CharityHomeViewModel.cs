@@ -21,18 +21,37 @@ namespace Luqmit3ish.ViewModels
         public ICommand SearchCommand { protected set; get; }
         public Command<int> PlusCommand { protected set; get; }
         public ICommand MinusCommand { protected set; get; }
-        public ICommand ReserveCommand { protected set; get; }
+        public Command<int> ReserveCommand { protected set; get; }
         public Command<int> ProfileCommand { protected set; get; }
 
         public FoodServices foodServices;
         public UserServices userServices; 
-
+        public OrderService orderService;
+        
+         private bool _isEnabled = false;
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set => SetProperty(ref _isEnabled, value);
+        }
+        
         private int _counter = 0;
 
         public int Counter
         {
             get => _counter;
-            set => SetProperty(ref _counter, value);
+            set
+            {
+                SetProperty(ref _counter, value);
+                if(_counter > 0)
+                {
+                    IsEnabled = true;
+                }
+                if(_counter == 0)
+                {
+                    IsEnabled = false;
+                }
+            }
         }
 
         private ObservableCollection<Dish> _dishes;
@@ -58,14 +77,25 @@ namespace Luqmit3ish.ViewModels
             ProfileCommand = new Command<int>(async (int restaurantId) => await OnProfileClicked(restaurantId));
             PlusCommand = new Command<int>(OnPlusClicked);
             MinusCommand = new Command(OnMinusClicked);
-            ReserveCommand = new Command(OnReserveClicked);
+            ReserveCommand = new Command<int>(async (int FoodId) => await OnReserveClicked(FoodId));
             foodServices = new FoodServices();
             userServices = new UserServices(); 
             OnInit();
         }
         private void OnReserveClicked()
         {
-           //imp
+            var id = Preferences.Get("userId", "null");
+            int UserId = int.Parse(id);
+            Dish dish = await foodServices.GetFoodById(FoodId);
+            Order newOrder = new Order();
+            newOrder.char_id = UserId;
+            newOrder.res_id = dish.user_id;
+            newOrder.dish_id = dish.id;
+            newOrder.date = DateTime.Now;
+            newOrder.number_of_dish = Counter;
+            newOrder.receive = false;
+            orderService.ReserveOrder(newOrder);
+            if(Counter > 0) Counter--;
         }
 
         private void OnMinusClicked()
@@ -74,11 +104,13 @@ namespace Luqmit3ish.ViewModels
             {
                 return;
             }
-            else
+             if (Counter < 0)
             {
-              Counter--;
+                Counter = 0;
+                return;
             }
-           
+            
+              Counter--;
         }
 
         private void OnPlusClicked(int quantity)
