@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="Luqmit3ish.App">
 
     
@@ -37,6 +38,18 @@
                 <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="BorderColor" Value="{StaticResource SecondaryLight}" />
                 <Setter Property="BackgroundColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="CornerRadius" Value="50" />
+                <Setter Property="MinimumWidthRequest" Value="100" />
+                <Setter Property="Margin" Value="10" />
+            </Style>
+
+            <Style x:Key="BorderButtonFill" TargetType="Button">
+                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="TextColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="BorderColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
                 <Setter Property="CornerRadius" Value="50" />
                 <Setter Property="MinimumWidthRequest" Value="100" />
                 <Setter Property="Margin" Value="10" />
@@ -121,6 +134,18 @@
                 <Setter Property="Margin" Value="0,-30,0,-30"/>
                 <Setter Property="TextColor" Value="Black" />
                 <Setter Property="PlaceholderColor" Value="Gray"/>
+            </Style>
+
+            <Style x:Key="RangeSlider" TargetType="xct:RangeSlider">
+                <Setter Property="LowerThumbBorderColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="LowerThumbColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="ThumbBorderColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="TrackBorderColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="TrackColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="UpperThumbColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="UpperThumbBorderColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="TrackHighlightColor" Value="{StaticResource PrimaryLight}" />
+                
             </Style>
         </ResourceDictionary>
     </Application.Resources>

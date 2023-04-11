@@ -12,7 +12,7 @@
                 <Frame CornerRadius="10" Padding="0" BackgroundColor="Transparent">
                     <StackLayout Margin="5" >
                         <Label Text="Type" TextColor="Black" FontAttributes="Bold"/>
-                        <CollectionView ItemsSource="{Binding TypeValues}" HeightRequest="100" SelectionMode="Single" SelectedItem="{Binding SelectedType}" SelectionChangedCommand="{Binding MyCollectionSelectedCommand}" >
+                        <CollectionView ItemsSource="{Binding TypeValues}" HeightRequest="100" SelectionMode="Multiple" SelectedItem="{Binding SelectedType}" SelectionChangedCommand="{Binding MyCollectionSelectedCommand}" >
                             <CollectionView.ItemsLayout>
                                 <GridItemsLayout HorizontalItemSpacing="15" Orientation="Horizontal"/>
                             </CollectionView.ItemsLayout>
@@ -35,7 +35,7 @@
                 <Frame CornerRadius="10" Padding="0" BackgroundColor="Transparent">
                     <StackLayout Margin="5">
                         <Label Text="Location" TextColor="Black" FontAttributes="Bold"/>
-                        <CollectionView ItemsSource="{Binding LocationValues}" HeightRequest="120" SelectionMode="Single" SelectedItem="{Binding SelectedLocation}" SelectionChangedCommand="{Binding MyCollectionSelectedCommand}">
+                        <CollectionView ItemsSource="{Binding LocationValues}" HeightRequest="120" SelectionMode="Multiple" SelectedItem="{Binding SelectedLocation}" SelectionChangedCommand="{Binding MyCollectionSelectedCommand}">
                             <CollectionView.ItemsLayout>
                                 <GridItemsLayout Orientation="Vertical" 
                                                   Span="3" 
