@@ -126,7 +126,7 @@
                                                             <TapGestureRecognizer Command="{Binding BindingContext.MinusCommand , Source={x:Reference CharityPage}}"/>
                                                         </Label.GestureRecognizers>
                                                     </Label>
-                                                    <Button  Command="{Binding BindingContext.ReserveCommand , Source={x:Reference CharityPage}}" TextColor="{StaticResource PrimaryLight}" Text="Reserve" Margin="10,0,0,0" HeightRequest="40" BackgroundColor="Transparent" FontAttributes="Bold"/>
+                                                    <Button CommandParameter="{Binding id}" Command="{Binding BindingContext.ReserveCommand , Source={x:Reference CharityPage}}" TextColor="{StaticResource PrimaryLight}" Text="Reserve" Margin="10,0,0,0" HeightRequest="40" BackgroundColor="Transparent" FontAttributes="Bold" IsVisible="{Binding BindingContext.IsEnabled, Source={x:Reference CharityPage}}"/>
                                                 </StackLayout>
                                             </StackLayout> 
                                         </Grid>
