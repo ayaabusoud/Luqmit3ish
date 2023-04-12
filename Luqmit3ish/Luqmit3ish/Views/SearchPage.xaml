@@ -4,17 +4,32 @@
              x:Class="Luqmit3ish.Views.SearchPage"
              xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             Shell.NavBarIsVisible="False"
              x:Name="SearchFoodPage">
 
     <ContentPage.Content>
 
-        <StackLayout Margin="16,64,16,35">
-            <SearchBar Placeholder="Search" Text="{Binding SearchText}"
-           SearchCommand="{Binding SearchCommand}"/>
-            <StackLayout Orientation="Horizontal" >
-                <Button Text="All" Command="{Binding AllFilter}"/>
-                <Button Text="Restaurants" Command="{Binding RestaurantFilter}"/>
-                <Button Text="Dishes" Command="{Binding CharitiesFilter}"/>
+        <StackLayout Margin="0,0,0,35">
+            <Grid  BackgroundColor="{StaticResource PrimaryLight}" HeightRequest="80" Padding="0" Margin="0">
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="0.1*"/>
+                    <ColumnDefinition Width="0.9*"/>
+                </Grid.ColumnDefinitions>
+                <Label Margin="0,12,0,0" VerticalOptions="Center" HorizontalOptions="End" Grid.Column="0" HeightRequest="56" TextColor="white" Text="&#xf060;" FontFamily="FontAwesomeIcons" FontSize="20" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <SearchBar PlaceholderColor="White" CancelButtonColor="White" xct:IconTintColorEffect.TintColor="White" TextColor="white"  Grid.Column="1" Placeholder="Search" Text="{Binding SearchText}" 
+           SearchCommand="{Binding SearchCommand}" HeightRequest="56"/>
+            </Grid>
+
+            <StackLayout Orientation="Horizontal"  >
+
+                <Button   Text="All" Command="{Binding AllFilter}" FontSize="Small" BackgroundColor="Transparent" TextColor="{Binding AllColor}"/>
+                <Button  Text="Restaurants" Command="{Binding RestaurantFilter}" FontSize="Small" BackgroundColor="Transparent"  TextColor="{Binding RestaurantColor}"/>
+                <Button  Text="Dishes" Command="{Binding CharitiesFilter}" FontSize="Small" BackgroundColor="Transparent"  TextColor="{Binding CharityColor}"/>
+
             </StackLayout>
             <CollectionView 
                                     Margin="25" 

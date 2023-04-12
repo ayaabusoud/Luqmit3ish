@@ -23,8 +23,29 @@ namespace Luqmit3ish.ViewModels
         public ICommand MinusCommand { protected set; get; }
         public ICommand AllFilter { protected set; get; }
         public ICommand RestaurantFilter { protected set; get; }
+        public ICommand BackCommand { protected set; get; }
+
+
         public ICommand CharitiesFilter { protected set; get; }
         public Command<int> ProfileCommand { protected set; get; }
+        private string _allColor = "#4D6BA3";
+        public string AllColor
+        {
+            get => _allColor;
+            set => SetProperty(ref _allColor, value);
+        }
+        private string _restaurantColor = "Black";
+        public string RestaurantColor
+        {
+            get => _restaurantColor;
+            set => SetProperty(ref _restaurantColor, value);
+        }
+        private string _charityColor = "Black";
+        public string CharityColor
+        {
+            get => _charityColor;
+            set => SetProperty(ref _charityColor, value);
+        }
 
         private int _counter = 0;
         public int Counter
@@ -66,11 +87,18 @@ namespace Luqmit3ish.ViewModels
             ReserveCommand = new Command<int>(async (int FoodId) => await OnReserveClicked(FoodId));
             AllFilter = new Command(OnAllClicked);
             RestaurantFilter = new Command(OnRestaurantClicked);
+            BackCommand = new Command(OnBackClicked);
             CharitiesFilter = new Command(OnCharitiesClicked);
             foodServices = new FoodServices();
             userServices = new UserServices();
             OnInit();
         }
+
+        private void OnBackClicked()
+        {
+            Navigation.PopAsync();
+        }
+
         private string _searchText = string.Empty;
 
         public string SearchText
@@ -120,16 +148,25 @@ namespace Luqmit3ish.ViewModels
         private void OnAllClicked()
         {
             Filter = "All";
+            AllColor = "#4D6BA3";
+            RestaurantColor = "Black";
+            CharityColor = "Black";
             OnInit();
         }
         private void OnRestaurantClicked()
         {
             Filter = "Restaurants";
+            AllColor = "Black";
+            RestaurantColor = "#4D6BA3";
+            CharityColor = "Black";
             OnInit();
         }
         private void OnCharitiesClicked()
         {
             Filter = "Dishes";
+            AllColor = "Black";
+            RestaurantColor = "Black";
+            CharityColor = "#4D6BA3";
             OnInit();
         }
 
@@ -191,5 +228,4 @@ namespace Luqmit3ish.ViewModels
 
 
     }
-
 }
