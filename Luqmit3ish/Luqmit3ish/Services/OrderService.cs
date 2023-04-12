@@ -88,5 +88,14 @@ namespace Luqmit3ish.Services
             var response = await _http.PostAsync(ApiUrl, content);
             return response.IsSuccessStatusCode;
         }
+        public async Task DeleteOrder(int charityId, int restaurantId)
+        {
+            var response = await _http.DeleteAsync($"{ApiUrl}/delete/{charityId}/{restaurantId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("delete failed");
+            }
+        }
     }
 }

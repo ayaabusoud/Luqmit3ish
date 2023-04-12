@@ -94,7 +94,7 @@ namespace Luqmit3ish.ViewModels
             newOrder.date = DateTime.Now;
             newOrder.number_of_dish = Counter;
             newOrder.receive = false;
-            orderService.ReserveOrder(newOrder);
+           await orderService.ReserveOrder(newOrder);
             if(Counter > 0) Counter--;
         }
 

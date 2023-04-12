@@ -128,12 +128,28 @@ namespace Luqmit3ish.ViewModels
 
         }
 
-
-
-        private async Task OnDeleteClicked(int Restaurantid)
+private async Task OnDeleteClicked(int restaurantId)
         {
-            //imp
-        }
+            var deleteConfirm = await Application.Current.MainPage.DisplayAlert("Delete Order", "Are you sure that you want to delete this Order?", "Yes", "No");
+            if (deleteConfirm)
+            {
+                var id = Preferences.Get("userId", null);
+                var userId = int.Parse(id);
+                try
+                {
+                    await orderService.DeleteOrder(userId, restaurantId);
+                    await App.Current.MainPage.DisplayAlert("Success", "The order have been deleted successfully", "ok");
+                    OnInit();
+                }
+                catch (Exception e)
+                {
+                    await App.Current.MainPage.DisplayAlert("Error", "An error occur, please try again", "ok");
+
+                }
+
+            }
+
+        }
 
         private ObservableCollection<OrderCard> _orderCard;
 
