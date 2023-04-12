@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Text;
+using System.Windows.Input;
 using Luqmit3ish.Models;
 using Xamarin.Forms;
 
@@ -11,7 +13,9 @@ namespace Luqmit3ish.ViewModels
 {
     class FilterFoodViewModel : BindableObject, INotifyPropertyChanged
     {
-       public FilterFoodViewModel()
+        public ICommand Apply { get; set; }
+        public ICommand ClearAll { get; set; }
+        public FilterFoodViewModel()
         {
             _typeValues = new ObservableCollection<TypeField>
             {
@@ -32,6 +36,131 @@ namespace Luqmit3ish.ViewModels
                  new LocationField{ Value = LocationValue.Jerusalem, Name="Jerusalem" },
                  new LocationField{ Value = LocationValue.Tulkarm, Name="Tulkarm" },
             };
+            Apply = new Command(OnApply);
+            ClearAll = new Command(OnClearAll);
+            _upperQuantity = _upperKeepValid = 10;
+            _lowerQuantity = _lowerKeepValid = 0;
+            
+        }
+
+        private void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            foreach (var item in e.PreviousSelection)
+            {
+                var typeField = item as TypeField;
+                typeField.IsSelected = false;
+            }
+
+            foreach (var item in e.CurrentSelection)
+            {
+                var typeField = item as TypeField;
+                typeField.IsSelected = true;
+            }
+        }
+
+
+        private ObservableCollection<TypeField> _selectedItems = new ObservableCollection<TypeField>();
+        public ObservableCollection<TypeField> SelectedItems
+        {
+            get
+            {
+                var selectedTypes = _typeValues.Where(t => t.IsSelected).ToList();
+                _selectedItems.Clear();
+                foreach (var type in selectedTypes)
+                {
+                    _selectedItems.Add(type);
+                }
+                return _selectedItems;
+            }
+            set
+            {
+                if (_selectedItems == value)
+                {
+                    return;
+                }
+                _selectedItems = value;
+                OnPropertyChanged(nameof(SelectedItems));
+            }
+        }
+
+        private void OnClearAll()
+        {
+            foreach (var type in _typeValues)
+            {
+                Console.WriteLine("Selected Type: "+ type.Name +" " + type.IsSelected);
+            }
+            Console.WriteLine("___________________");
+
+            foreach (var type in SelectedItems)
+            {
+                Console.WriteLine("Selected Type: " + type.Name);
+            }
+            SelectedItems.Clear();
+        }
+
+        private void OnApply()
+        {
+            throw new NotImplementedException();
+        }
+
+        private int _upperKeepValid;
+        public int UpperKeepValid
+        {
+            get => _upperKeepValid;
+            set
+            {
+                if(_upperKeepValid == value)
+                {
+                    return;
+                }
+                _upperKeepValid = value;
+                OnPropertyChanged(nameof(UpperKeepValid));
+            }
+        }
+
+        private int _lowerKeepValid;
+        public int LowerKeepValid
+        {
+            get => _lowerKeepValid;
+            set
+            {
+                if (_lowerKeepValid == value)
+                {
+                    return;
+                }
+                _lowerKeepValid = value;
+                OnPropertyChanged(nameof(LowerKeepValid));
+            }
+        }
+
+        private int _lowerQuantity;
+        public int LowerQuantity
+        {
+            get => _lowerQuantity;
+            set
+            {
+                if (_lowerQuantity == value)
+                {
+                    return;
+                }
+                _lowerQuantity = value;
+                OnPropertyChanged(nameof(LowerQuantity));
+            }
+        }
+
+        private int _upperQuantity;
+        public int UpperQuantity
+        {
+            get => _upperQuantity;
+            set
+            {
+                if (_upperQuantity == value)
+                {
+                    return;
+                }
+                _upperQuantity = value;
+                OnPropertyChanged(nameof(_upperQuantity));
+            }
         }
 
         private ObservableCollection<TypeField> _typeValues;
@@ -80,42 +209,30 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private TypeField selectedType;
+        private TypeField _selectedType;
         public TypeField SelectedType
         {
-            get { return selectedType; }
+            get { return _selectedType; }
             set
             {
-                if (selectedType != value)
+                if (_selectedType != value)
                 {
-                    selectedType = value;
-                    OnPropertyChanged(nameof(SelectedType));
+                    if (_selectedType != null)
+                    {
+                        _selectedType.IsSelected = false;
+                    }
+                    _selectedType = value;
+                    OnPropertyChanged(nameof(_selectedType));
 
-                    if (selectedType != null)
+                    if (_selectedType != null)
                     {
                         foreach (var type in TypeValues)
                         {
-                            type.IsSelected = type == selectedType;
+                            type.IsSelected = type == _selectedType;
                         }
                     }
                 }
             }
         }
-
-        
-        private bool isSelected;
-        public bool IsSelected
-        {
-            get { return isSelected; }
-            set
-            {
-                if (isSelected != value)
-                {
-                    isSelected = value;
-                    OnPropertyChanged(nameof(IsSelected));
-                }
-            }
-        }
-
     }
 }

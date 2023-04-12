@@ -8,11 +8,12 @@
              Shell.TabBarIsVisible="False">
     <ContentPage.Content>
         <ScrollView>
+           
             <StackLayout Margin="20" Spacing="20" >
                 <Frame CornerRadius="10" Padding="0" BackgroundColor="Transparent">
-                    <StackLayout Margin="5" >
+                    <StackLayout Margin="5">
                         <Label Text="Type" TextColor="Black" FontAttributes="Bold"/>
-                        <CollectionView ItemsSource="{Binding TypeValues}" HeightRequest="100" SelectionMode="Multiple" SelectedItem="{Binding SelectedType}" SelectionChangedCommand="{Binding MyCollectionSelectedCommand}" >
+                        <CollectionView ItemsSource="{Binding TypeValues}" HeightRequest="100" SelectionMode="Multiple" SelectedItems="{Binding SelectedItems}" >
                             <CollectionView.ItemsLayout>
                                 <GridItemsLayout HorizontalItemSpacing="15" Orientation="Horizontal"/>
                             </CollectionView.ItemsLayout>
@@ -30,6 +31,7 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
                     </StackLayout>
+
                 </Frame>
 
                 <Frame CornerRadius="10" Padding="0" BackgroundColor="Transparent">
@@ -44,7 +46,7 @@
                             </CollectionView.ItemsLayout>
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Padding="5" BackgroundColor="{Binding StackLayoutBackgroundColor}">
+                                    <StackLayout Padding="5" >
                                         <Frame Padding="0" CornerRadius="50" HeightRequest="40" BackgroundColor="{Binding FrameBackgroundColor}" BorderColor="{StaticResource PrimaryLight}" >
                                             <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
                                                 <Label Text="{Binding Name}" FontSize="Medium" TextColor="{Binding TextBackgroundColor}"/>
@@ -60,20 +62,20 @@
                 <Frame CornerRadius="10" Padding="0" BackgroundColor="Transparent">
                     <StackLayout Margin="5">
                         <Label Text="Keep valid for" TextColor="Black" FontAttributes="Bold"/>
-                         <xct:RangeSlider x:Name="KeepListedSlider" MaximumValue="10" UpperValue="7" LowerValue="2"  Style="{StaticResource RangeSlider}" ValueLabelStringFormat="{}{0:F0} day" />
+                         <xct:RangeSlider x:Name="KeepListedSlider" MaximumValue="10" UpperValue="{Binding UpperKeepValid}" LowerValue="{Binding LowerKeepValid}"  Style="{StaticResource RangeSlider}" ValueLabelStringFormat="{}{0:F0} day" />
                     </StackLayout>
                 </Frame>
 
                 <Frame CornerRadius="10" Padding="0" BackgroundColor="Transparent">
                     <StackLayout Margin="5">
                         <Label Text="Quantity" TextColor="Black" FontAttributes="Bold"/>
-                         <xct:RangeSlider x:Name="QuantitySlider" MaximumValue="20" LowerValue="4" UpperValue="10" Style="{StaticResource RangeSlider}" ValueLabelStringFormat="{}{0:F0}" />
+                         <xct:RangeSlider x:Name="QuantitySlider" MaximumValue="20" LowerValue="{Binding LowerQuantity}" UpperValue="{Binding UpperQuantity}" Style="{StaticResource RangeSlider}" ValueLabelStringFormat="{}{0:F0}" />
                     </StackLayout>
                 </Frame>
 
                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center"  VerticalOptions="EndAndExpand">
-                    <Button Text="Clear all" Style="{StaticResource BorderButtonFill}"/>
-                    <Button Text="Apply" Style="{StaticResource BorderButton}"/>
+                    <Button Text="Clear all" Style="{StaticResource BorderButtonFill}" Command="{Binding ClearAll}"/>
+                    <Button Text="Apply" Style="{StaticResource BorderButton}" Command="{Binding Apply}"/>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

@@ -141,7 +141,7 @@
                 <Setter Property="LowerThumbColor" Value="{StaticResource PrimaryLight}" />
                 <Setter Property="ThumbBorderColor" Value="{StaticResource PrimaryLight}" />
                 <Setter Property="TrackBorderColor" Value="{StaticResource PrimaryLight}" />
-                <Setter Property="TrackColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="TrackColor" Value="Gray" />
                 <Setter Property="UpperThumbColor" Value="{StaticResource PrimaryLight}" />
                 <Setter Property="UpperThumbBorderColor" Value="{StaticResource PrimaryLight}" />
                 <Setter Property="TrackHighlightColor" Value="{StaticResource PrimaryLight}" />
