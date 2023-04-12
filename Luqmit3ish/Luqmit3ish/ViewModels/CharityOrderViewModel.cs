@@ -54,15 +54,7 @@ namespace Luqmit3ish.ViewModels
             foodService = new FoodServices();
             OnInit();
         }
-        private void OnMinusClicked(int orderId)
-        {
-           
-        }
 
-        private void OnPlusClicked(int orderId)
-        {
-            
-        }
 
         private async Task OnSearchClicked()
         {
@@ -122,7 +114,7 @@ namespace Luqmit3ish.ViewModels
             {
                 return;
             }
-            await orderService.UpdateOrderDishCount(order.id, "plus");
+            await orderService.UpdateOrderDishCount(orderId, "plus");
             var id = Preferences.Get("userId", null);
             var userId = int.Parse(id);
             OrderCard = await orderService.GetOrders(userId);
@@ -137,10 +129,6 @@ namespace Luqmit3ish.ViewModels
         }
 
 
-        private async Task OnSearchClicked()
-        {
-            await Navigation.PushAsync(new SearchPage());
-        }
 
         private async Task OnDeleteClicked(int Restaurantid)
         {

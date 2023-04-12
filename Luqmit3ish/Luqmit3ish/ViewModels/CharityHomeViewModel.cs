@@ -82,7 +82,7 @@ namespace Luqmit3ish.ViewModels
             userServices = new UserServices(); 
             OnInit();
         }
-        private void OnReserveClicked()
+        private async Task OnReserveClicked(int FoodId)
         {
             var id = Preferences.Get("userId", "null");
             int UserId = int.Parse(id);

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,7 +54,7 @@ namespace Luqmit3ish.Services
             var patchData = JsonConvert.SerializeObject(patchObject);
             var httpContent = new StringContent(patchData, Encoding.UTF8, "application/json");
 
-            var request = new HttpRequestMessage(new HttpMethod("PATCH"), "https://luqmit3ish.azurewebsites.net/api/CharityOrders/"+id+"/"+operation)
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), "https://luqmit3ish.azurewebsites.net/api/CharityOrders/" + id + "/" + operation)
             {
                 Content = httpContent
             };
@@ -77,6 +79,7 @@ namespace Luqmit3ish.Services
                 Console.WriteLine("Exception caught: " + ex.Message);
                 return false;
             }
+        }
 
          public async Task<bool> ReserveOrder(Order orderRequest)
         {
