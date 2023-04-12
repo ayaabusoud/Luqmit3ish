@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:Luqmit3ish.ViewModels" x:DataType="viewmodels:UserSettingsViewModel"
+             x:Class="Luqmit3ish.Views.settingsPage" 
+             Shell.NavBarIsVisible="False"
+             Background="#EDF2F5">
+    <ContentPage.Content >
+        <StackLayout Margin="0"  >
+                <Frame      Padding="0"
+                            HorizontalOptions="CenterAndExpand"
+                            Margin="0,60,0,0"
+                            CornerRadius="100" IsClippedToBounds="True" HeightRequest="120" WidthRequest="120">
+                    <Image Source="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" 
+                              VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="AspectFill"/>
+                </Frame>
+             <Label TextColor="Black" FontSize="Medium" Text="{Binding Name}" HorizontalTextAlignment="Center"/>
+            
+            <Frame  HorizontalOptions="Fill" VerticalOptions="EndAndExpand" Padding="40,20,0,20" Margin="0,0,0,-40"  CornerRadius="30" HasShadow="True" >
+                <Grid  ColumnDefinitions="Auto,Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto" HorizontalOptions="Center" Padding="20" RowSpacing="20" ColumnSpacing="10">
+                    <Label Margin="0,0,5,0" Text="&#xf235;" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="3" Grid.Column="0"  VerticalTextAlignment="Center"/>
+                            <Label Text="Delete Account" FontAttributes="Bold" TextColor="Black" FontSize="15"   VerticalOptions="Center"  Grid.Row="3" Grid.Column="1"  ></Label>
+                    <Label Margin="0,0,5,0" Text="&#xf007;" TextColor="Black"   FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" />
+                            <Label Text="My profile" FontAttributes="Bold" TextColor="Black" FontSize="15" VerticalOptions="Center"  Grid.Row="0" Grid.Column="1" ></Label>
+                    <Label Margin="0,0,5,0" Text="&#xf186;" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="28" Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center"/>
+                            <Label Text="Dark Mode" FontAttributes="Bold" TextColor="Black" FontSize="15" VerticalOptions="Center"  Grid.Row="1" Grid.Column="1" ></Label>
+                            <Switch  ThumbColor="Black" OnColor="LightGray"  Grid.Row="1" Grid.Column="3" HorizontalOptions="Center"/>
+                            <Label Margin="0,0,10,20" Text="&#xf2f5;"  BackgroundColor="White" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" FontFamily="FontAwesomeIcons" Grid.Column="0" Grid.Row="4" FontSize="25" ></Label>
+                            <Label Margin="0,0,0,20" Text="Log Out"  BackgroundColor="White" FontAttributes="Bold" TextColor="Black"  FontSize="15" VerticalOptions="Center"   Grid.Column="1" Grid.Row="4" ></Label>
+                    <Label Margin="0,0,5,0" Text="&#xf084;" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center"/>
+                            <Label Text="Reset password"  HorizontalTextAlignment="Start" FontAttributes="Bold" TextColor="Black" FontSize="15" VerticalOptions="Center" Grid.Row="2" Grid.Column="1" ></Label>
+                            <Button Text="&#xf105;" Background="white"  TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="0" Grid.Column="3" Command="{Binding MyProfileCommand}" ></Button>
+                            <Button Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="3" Grid.Column="3" HorizontalOptions="End"></Button>
+                            <Button Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="2" Grid.Column="3" Command="{Binding ResetPassCommand}" HorizontalOptions="End"></Button>
+                    <Button Margin="0,0,0,20" Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="4" Grid.Column="3" Command="{Binding LogOutCommand}" HorizontalOptions="End"></Button>
+                </Grid>
+                    </Frame>
+            
+        </StackLayout>
+        
+    </ContentPage.Content>
+</ContentPage>

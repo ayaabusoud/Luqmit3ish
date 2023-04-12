@@ -39,10 +39,10 @@ namespace Luqmit3ish.ViewModels
             OnInit();
         }
 
-        private async Task OnLogOutClicked()
+     private async Task OnLogOutClicked()
         {
+            Preferences.Clear();
             await Navigation.PushModalAsync(new LoginPage());
-
         }
 
         private async  Task OnResetClicked()
