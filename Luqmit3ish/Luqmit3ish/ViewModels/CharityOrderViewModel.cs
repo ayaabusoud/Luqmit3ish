@@ -32,8 +32,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand DeleteCommand { protected set; get; }
         public Command<int> PlusCommand { protected set; get; }
         public Command<int> MinusCommand { protected set; get; }
-        private const string MINUS_OPERATION = "minus";
-        private const string PLUS_OPERATION = "plus";
+
 
         private ObservableCollection<Dish> _dishes;
 
@@ -54,6 +53,20 @@ namespace Luqmit3ish.ViewModels
             orderService = new OrderService();
             foodService = new FoodServices();
             OnInit();
+        }
+        private void OnMinusClicked(int orderId)
+        {
+           
+        }
+
+        private void OnPlusClicked(int orderId)
+        {
+            
+        }
+
+        private async Task OnSearchClicked()
+        {
+            await Navigation.PushAsync(new SearchPage());
         }
 
 

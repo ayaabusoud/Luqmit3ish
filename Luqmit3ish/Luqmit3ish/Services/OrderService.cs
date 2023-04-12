@@ -77,6 +77,13 @@ namespace Luqmit3ish.Services
                 Console.WriteLine("Exception caught: " + ex.Message);
                 return false;
             }
+
+         public async Task<bool> ReserveOrder(Order orderRequest)
+        {
+            var json = JsonConvert.SerializeObject(orderRequest);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _http.PostAsync(ApiUrl, content);
+            return response.IsSuccessStatusCode;
         }
     }
 }
