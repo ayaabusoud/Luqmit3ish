@@ -35,7 +35,6 @@ namespace Luqmit3ish.ViewModels
         private const string MINUS_OPERATION = "minus";
         private const string PLUS_OPERATION = "plus";
 
-
         private ObservableCollection<Dish> _dishes;
 
         public ObservableCollection<Dish> Dishes
