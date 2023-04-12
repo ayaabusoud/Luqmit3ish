@@ -1,4 +1,4 @@
-﻿using Luqmit3ish.Views;
+using Luqmit3ish.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,6 +11,7 @@ using System.Diagnostics;
 using Luqmit3ish.Services;
 using System.Collections.ObjectModel;
 using Luqmit3ish.Models;
+using System.Linq;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -79,23 +80,43 @@ namespace Luqmit3ish.ViewModels
             MinusCommand = new Command(OnMinusClicked);
             ReserveCommand = new Command<int>(async (int FoodId) => await OnReserveClicked(FoodId));
             foodServices = new FoodServices();
+            orderService = new OrderService();
             userServices = new UserServices(); 
             OnInit();
         }
         private async Task OnReserveClicked(int FoodId)
         {
-            var id = Preferences.Get("userId", "null");
-            int UserId = int.Parse(id);
-            Dish dish = await foodServices.GetFoodById(FoodId);
-            Order newOrder = new Order();
-            newOrder.char_id = UserId;
-            newOrder.res_id = dish.user_id;
-            newOrder.dish_id = dish.id;
-            newOrder.date = DateTime.Now;
-            newOrder.number_of_dish = Counter;
-            newOrder.receive = false;
-           await orderService.ReserveOrder(newOrder);
-            if(Counter > 0) Counter--;
+            try
+            {
+                var id = Preferences.Get("userId", "null");
+                int UserId = int.Parse(id);
+                Dish dish = await foodServices.GetFoodById(FoodId);
+
+                Order newOrder = new Order();
+                newOrder.char_id = UserId;
+                newOrder.res_id = dish.user_id;
+                newOrder.dish_id = dish.id;
+                newOrder.date = DateTime.Now;
+                newOrder.number_of_dish = Counter;
+                newOrder.receive = false;
+
+                await orderService.ReserveOrder(newOrder);
+
+                DishCard quantityDish = _dishCard.FirstOrDefault(d => d.id == dish.id);
+                if (quantityDish != null)
+                {
+                    quantityDish.quantity -=Counter;
+                }
+
+                if (Counter > 0) Counter=0;
+                await App.Current.MainPage.DisplayAlert("successfuly", "Your order has been successfully booked", "ok");
+
+            }
+            catch (Exception e)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
+            }
+           
         }
 
         private void OnMinusClicked()
@@ -188,3 +209,4 @@ namespace Luqmit3ish.ViewModels
      
     }
 }
+
