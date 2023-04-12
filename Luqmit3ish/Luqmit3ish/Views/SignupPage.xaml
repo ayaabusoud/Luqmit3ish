@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Luqmit3ish.ViewModels"  
@@ -78,7 +78,9 @@
                                         <x:String>Nablus</x:String>
                                         <x:String>Ramallah</x:String>
                                         <x:String>Jenin</x:String>
-                                        <x:String>Tolkarm</x:String>
+                                        <x:String>Jericho</x:String>
+                                        <x:String>Tulkarm</x:String>
+                                        <x:String>Jerusalem</x:String>
                                     </Picker.Items>
                                 </Picker>
                                 <Label Style="{StaticResource validIcon}"  IsVisible="{Binding LocationValid}" />
