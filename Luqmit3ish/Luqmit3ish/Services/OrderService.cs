@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -24,7 +24,13 @@ namespace Luqmit3ish.Services
         }
         public async Task<ObservableCollection<OrderCard>> GetOrders(int id)
         {
-            var response = await _http.GetAsync($"{ OrderApiUrl}/{id}");
+            var response = await _http.GetAsync($"{OrderApiUrl}/{id}");
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
+        }
+        public async Task<ObservableCollection<OrderCard>> GetRestaurantOrders(int id,bool receieve)
+        {
+            var response = await _http.GetAsync("https://luqmit3ish.azurewebsites.net/api/RestaurantOrders/"+id+"/"+ receieve);
             var content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
         }
