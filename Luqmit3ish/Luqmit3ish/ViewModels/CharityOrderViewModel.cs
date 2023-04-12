@@ -1,4 +1,4 @@
-﻿using Luqmit3ish.Models;
+using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using System;
@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-
+using Xamarin.Forms.Internals;
+using Xamarin.Forms.PancakeView;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -25,10 +27,20 @@ namespace Luqmit3ish.ViewModels
 
         public ICommand ProfileCommand { protected set; get; }
         public OrderService orderService;
+        public FoodServices foodService;
+
         public ICommand DeleteCommand { protected set; get; }
         public Command<int> PlusCommand { protected set; get; }
         public Command<int> MinusCommand { protected set; get; }
 
+
+        private ObservableCollection<Dish> _dishes;
+
+        public ObservableCollection<Dish> Dishes
+        {
+            get => _dishes;
+            set => SetProperty(ref _dishes, value);
+        }
         public CharityOrderViewModel(INavigation navigation)
         {
             this.Navigation = navigation;
@@ -37,25 +49,86 @@ namespace Luqmit3ish.ViewModels
             Search = new Command(async () => await OnSearchClicked());
             PlusCommand = new Command<int>(OnPlusClicked);
             MinusCommand = new Command<int>(OnMinusClicked);
+            ExpanderCommand = new Command<int>(OnExpanderClicked);
             orderService = new OrderService();
+            foodService = new FoodServices();
             OnInit();
         }
-        private void OnMinusClicked(int orderId)
-        {
-           
-        }
 
-        private void OnPlusClicked(int orderId)
-        {
-            
-        }
 
         private async Task OnSearchClicked()
         {
             await Navigation.PushAsync(new SearchPage());
         }
 
-        private async Task OnDeleteClicked(int restaurantId)
+
+
+        private bool _isExpanded = false;
+
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set => SetProperty(ref _isExpanded, value);
+        }
+        public Command<int> ExpanderCommand { protected set; get; }
+        private void OnExpanderClicked(int id)
+        {
+            var item = OrderCard.FirstOrDefault(i => i.id == id);
+            if (item != null)
+            {
+                if (item.IsExpanded)
+                {
+                    item.IsExpanded = false;
+                }
+                else
+                {
+                    item.IsExpanded = true;
+                }
+            }
+
+        }
+        private async void OnMinusClicked(int orderId)
+        {
+            await orderService.UpdateOrderDishCount(orderId, "Minus");
+            var order = await orderService.GetOrderById(orderId);
+            Dish dish = await foodService.GetFoodById(order.dish_id);
+            var id = Preferences.Get("userId", null);
+            var userId = int.Parse(id);
+            OrderCard = await orderService.GetOrders(userId);
+            foreach (OrderCard item in OrderCard)
+            {
+                if (item.id == dish.user_id)
+                {
+                    item.IsExpanded = true;
+                }
+            }
+
+
+        }
+
+        private async void OnPlusClicked(int orderId)
+        {
+            var order = await orderService.GetOrderById(orderId);
+            Dish dish = await foodService.GetFoodById(order.dish_id);
+            if (dish.number == 0)
+            {
+                return;
+            }
+            await orderService.UpdateOrderDishCount(orderId, "plus");
+            var id = Preferences.Get("userId", null);
+            var userId = int.Parse(id);
+            OrderCard = await orderService.GetOrders(userId);
+            foreach (OrderCard item in OrderCard)
+            {
+                if (item.id == dish.user_id)
+                {
+                    item.IsExpanded = true;
+                }
+            }
+
+        }
+
+private async Task OnDeleteClicked(int restaurantId)
         {
             var deleteConfirm = await Application.Current.MainPage.DisplayAlert("Delete Order", "Are you sure that you want to delete this Order?", "Yes", "No");
             if (deleteConfirm)
@@ -74,9 +147,9 @@ namespace Luqmit3ish.ViewModels
 
                 }
 
-            }
+            }
 
-        }
+        }
 
         private ObservableCollection<OrderCard> _orderCard;
 
