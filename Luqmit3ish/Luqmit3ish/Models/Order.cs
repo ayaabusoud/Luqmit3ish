@@ -6,7 +6,6 @@ namespace Luqmit3ish.Models
 {
     class Order
     {
-        public int id { get; set; }
         public int res_id { get; set; }
         public int char_id { get; set; }
         public int dish_id { get; set; }
@@ -14,4 +13,5 @@ namespace Luqmit3ish.Models
         public int number_of_dish { get; set; }
         public Boolean receive { get; set; }
     }
+    
 }

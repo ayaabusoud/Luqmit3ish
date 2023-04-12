@@ -18,7 +18,11 @@ namespace Luqmit3ish.Views
             InitializeComponent();
             this.BindingContext = new CharityOrderViewModel(Navigation);
         }
-
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            this.BindingContext = new CharityOrderViewModel(Navigation);
+        }
 
     }
 }

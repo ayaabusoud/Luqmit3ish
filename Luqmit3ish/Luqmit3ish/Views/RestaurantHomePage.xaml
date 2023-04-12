@@ -18,7 +18,7 @@
 
 
                     <CollectionView 
-                                    Margin="25" 
+                                    Margin="10,25"  
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="FillAndExpand"
                                     SelectionMode="None"
@@ -51,7 +51,7 @@
                                                         <ColumnDefinition Width="3.5*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                                                        <Image HeightRequest="50" Source="{Binding photo}" />
+                                                        <Image HeightRequest="50" Source="https://assets.simon.com/tenantlogos/2939.png" />
                                                     </StackLayout>
                                                     <BoxView Grid.Column="1" BackgroundColor="#F2F4F8" WidthRequest="1" HorizontalOptions="Start" 
                                                  VerticalOptions="FillAndExpand"/>

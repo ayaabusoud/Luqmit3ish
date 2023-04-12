@@ -9,16 +9,17 @@
              Title="Orders">
 
 
-
     <ContentPage.Content>
+        
         <ScrollView BackgroundColor="#EDF2F5" >
             <StackLayout  Margin="20,35,20,20">
                 <CollectionView 
-                                    Margin="25" 
+                                    Margin="10,25" 
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="FillAndExpand"
                                     SelectionMode="None"
-                                    ItemsSource="{Binding OrderCard}">
+                                    ItemsSource="{Binding OrderCard}"
+                                    SelectedItem="{Binding ExpandedItem}">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" 
                                                ItemSpacing="20"/>
@@ -37,7 +38,10 @@
                                              WidthRequest="3"
                                              HorizontalOptions="Start"
                                              VerticalOptions="FillAndExpand"/>
-                                    <xct:Expander Grid.Column="1">
+                                    <xct:Expander Grid.Column="1" IsExpanded="{Binding IsExpanded}" >
+                                        <xct:Expander.GestureRecognizers>
+                                            <TapGestureRecognizer CommandParameter="{Binding id}" Command="{Binding BindingContext.ExpanderCommand , Source={x:Reference CharityOrder}}"/>
+                                        </xct:Expander.GestureRecognizers>
                                         <xct:Expander.Header >
                                             <Grid HorizontalOptions="FillAndExpand" Margin="0,15">
                                                 <Grid.ColumnDefinitions>
@@ -46,24 +50,18 @@
                                                     <ColumnDefinition Width="3.5*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                                                    <Image HeightRequest="50" Source="{Binding photo}" />
+                                                    <Image HeightRequest="50" Source="https://st4.depositphotos.com/2370557/19947/i/1600/depositphotos_199479084-stock-photo-hot-pizza-cheese-tomatoes-white.jpg" />
                                                 </StackLayout>
                                                 <BoxView Grid.Column="1" BackgroundColor="#F2F4F8" WidthRequest="1" HorizontalOptions="Start" 
                                                  VerticalOptions="FillAndExpand"/>
                                                 <Grid Grid.Column="2" Margin="15">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="0.72*"/>
-                                                        <ColumnDefinition Width="0.13*"/>
-                                                        <ColumnDefinition Width="0.15*"/>
+                                                        <ColumnDefinition Width="0.9*"/>
+                                                        <ColumnDefinition Width="0.1*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Label Grid.Column="0" Text="{Binding name}" TextColor="Black" FontSize="Medium"/>
-                                                    <Label Grid.Column="1" Text="&#xf304;" FontFamily="FontAwesomeIcons" Margin="0,2,0,0" FontSize="20" >
-                                                        <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand , Source={x:Reference CharityOrder}}"
-                                                                                  CommandParameter="{Binding id}"/>
-                                                        </Label.GestureRecognizers>
-                                                    </Label>
-                                                    <Label Grid.Column="2" Text="&#xf1f8;" FontFamily="FontAwesomeIcons" Margin="0,2,0,0" FontSize="20" >
+                                                   
+                                                    <Label Grid.Column="2" Text="&#xf1f8;" FontFamily="FontAwesomeIcons"  FontSize="20" HorizontalOptions="End" Margin="0,2,20,0">
                                                         <Label.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}"
                                                                                   CommandParameter="{Binding id}"/>
@@ -72,8 +70,8 @@
                                                 </Grid>
                                             </Grid>
                                         </xct:Expander.Header >
-                                        <CollectionView ItemsSource="{Binding data}" >
-                                                <CollectionView.ItemTemplate >
+                                        <FlexLayout  BindableLayout.ItemsSource="{Binding data}" Margin="10,0,0,0" Direction="Column" >
+                                                <BindableLayout.ItemTemplate >
                                                     <DataTemplate>
                                                     <Grid HorizontalOptions="FillAndExpand">
                                                         <Grid.ColumnDefinitions>
@@ -83,25 +81,41 @@
                                                         </Grid.ColumnDefinitions>
                                                         <BoxView Grid.Column="1" BackgroundColor="#F2F4F8" WidthRequest="1" HorizontalOptions="Start" 
                                                       VerticalOptions="FillAndExpand"/>
-                                                        <StackLayout Grid.Column="2" Spacing="10">
-
-                                                            <Label TextColor="#2F3246" FontSize="Small"  Margin="15,0">
+                                                        <Grid Grid.Column="2" RowSpacing="10" >
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="0.68*"/>
+                                                                <ColumnDefinition Width="0.15*"/>
+                                                                <ColumnDefinition Width="0.17*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Label TextColor="#2F3246" FontSize="Small"  Margin="15,0" Grid.Column="0" Padding="0,0,15,0">
                                                                 <Label.FormattedText>
                                                                     <FormattedString>
                                                                         <FormattedString.Spans>
                                                                             <Span Text="{Binding dishName}"/>
                                                                             <Span Text=": "/>
                                                                             <Span Text="{Binding number_of_dish}"  />
-                                                                            <Span Text=" Dishes"  />
                                                                         </FormattedString.Spans>
                                                                     </FormattedString>
                                                                 </Label.FormattedText>
                                                             </Label>
-                                                        </StackLayout>
+                                                           
+
+                                                            <Label Text="&#xf055;" FontFamily="FontAwesomeIcons" FontSize="18" Margin="2,2,0,0"  Grid.Column="1" HorizontalOptions="End" >
+                                                                <Label.GestureRecognizers>
+                                                                        <TapGestureRecognizer CommandParameter="{Binding id}" Command="{Binding BindingContext.PlusCommand , Source={x:Reference CharityOrder}}" />
+                                                                    </Label.GestureRecognizers>
+                                                                </Label>
+                                                            <Label  Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="18" Margin="2,2,2,0" Grid.Column="2" HorizontalOptions="Start" >
+                                                                <Label.GestureRecognizers>
+                                                                    <TapGestureRecognizer  CommandParameter="{Binding id }" Command="{Binding BindingContext.MinusCommand , Source={x:Reference CharityOrder}}"  />
+                                                                    </Label.GestureRecognizers>
+                                                                </Label>
+                                                          
+                                                        </Grid>
                                                     </Grid>
                                                 </DataTemplate>
-                                                </CollectionView.ItemTemplate>
-                                            </CollectionView>
+                                                </BindableLayout.ItemTemplate>
+                                            </FlexLayout>
                                            
                                     </xct:Expander>
 

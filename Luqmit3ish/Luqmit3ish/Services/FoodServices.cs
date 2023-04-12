@@ -49,8 +49,13 @@ namespace Luqmit3ish.Services
             }
         }
 
-        
-   public async Task<Dish> GetFoodById(int food_id)
+        public async Task<ObservableCollection<DishCard>> GetSearchCards(string searchRequest, string type)
+        {
+            var response = await _http.GetAsync($"{ApiUrl}/Search/{searchRequest}/{type}");
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
+        }
+        public async Task<Dish> GetFoodById(int food_id)
         {
             var response = await _http.GetAsync($"{ApiUrl}/{food_id}");
 

@@ -14,7 +14,7 @@ namespace Luqmit3ish
                 InitializeComponent();
                 Routing.RegisterRoute(nameof(RestaurantHomePage), typeof(RestaurantHomePage));
                 Routing.RegisterRoute(nameof(RestaurantOrderPage), typeof(RestaurantOrderPage));
-                Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
+                Routing.RegisterRoute(nameof(settingsPage), typeof(settingsPage));
 
             }
         }

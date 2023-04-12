@@ -13,7 +13,7 @@ namespace Luqmit3ish
             InitializeComponent();
             Routing.RegisterRoute(nameof(CharityHomePage), typeof(CharityHomePage));
             Routing.RegisterRoute(nameof(CharityOrderPage), typeof(CharityOrderPage));
-            Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
+            Routing.RegisterRoute(nameof(settingsPage), typeof(settingsPage));
 
         }
     }
