@@ -96,14 +96,14 @@ namespace Luqmit3ish.ViewModels
             MinusCommand = new Command(OnMinusClicked);
             PlusCommand1 = new Command(OnPlusClicked1);
             MinusCommand1 = new Command(OnMinusClicked1);
-            typeValues = new ObservableCollection<TypeField>
+            _typeValues = new ObservableCollection<TypeField>
             {
-                new TypeField{ name="Food", iconText="\ue4c6;"},
-                new TypeField{ name="Drink", iconText="\uf4e3;"},
-                new TypeField{ name="Cake", iconText="\uf1fd;"},
-                new TypeField{ name="Snack", iconText="\uf564;"},
-                new TypeField{ name="Candies", iconText="\uf786;"},
-                new TypeField{ name="Fish", iconText="\uf578"},
+                 new TypeField { Value = TypeFieldValue.Food, Name = "Food", IconText = "\ue4c6;" },
+                new TypeField { Value = TypeFieldValue.Drink, Name = "Drink", IconText = "\uf4e3;" },
+                new TypeField { Value = TypeFieldValue.Cake, Name = "Cake", IconText = "\uf1fd;" },
+                new TypeField { Value = TypeFieldValue.Snack, Name = "Snack", IconText = "\uf564;" },
+                new TypeField { Value = TypeFieldValue.Candies, Name = "Candies", IconText = "\uf786;" },
+                new TypeField { Value = TypeFieldValue.Fish, Name = "Fish", IconText = "\uf578;" },
             };
 
         }
@@ -128,7 +128,7 @@ namespace Luqmit3ish.ViewModels
 
         public string SelectedTypeName
         {
-            get { return SelectedType?.name; }
+            get { return SelectedType?.Name; }
         }
 
         public ICommand MyCollectionSelectedCommand => new Command(() =>
@@ -179,14 +179,14 @@ namespace Luqmit3ish.ViewModels
             }
         }
         #endregion
-        private ObservableCollection<TypeField> typeValues;
+        private ObservableCollection<TypeField> _typeValues;
         public ObservableCollection<TypeField> TypeValues
         {
-            get => typeValues;
+            get => _typeValues;
             set
             {
-                if (typeValues == value) return;
-                typeValues = value;
+                if (_typeValues == value) return;
+                _typeValues = value;
                 OnPropertyChanged();
             }
         }

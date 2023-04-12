@@ -16,7 +16,9 @@ namespace Luqmit3ish.Views
         public SearchPage()
         {
             InitializeComponent();
-            this.BindingContext = new SearchViewModel();
+            this.BindingContext = new SearchViewModel(Navigation);
         }
+
+
     }
 }
