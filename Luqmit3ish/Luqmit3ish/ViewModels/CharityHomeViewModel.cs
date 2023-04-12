@@ -1,17 +1,19 @@
+using Luqmit3ish.Models;
+using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Forms;
 using Xamarin.Essentials;
-using System.Diagnostics;
-using Luqmit3ish.Services;
-using System.Collections.ObjectModel;
-using Luqmit3ish.Models;
-using System.Linq;
+using Xamarin.Forms;
+using Xamarin.Forms.Internals;
+using Xamarin.Forms.PancakeView;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -80,9 +82,34 @@ namespace Luqmit3ish.ViewModels
             MinusCommand = new Command(OnMinusClicked);
             ReserveCommand = new Command<int>(async (int FoodId) => await OnReserveClicked(FoodId));
             foodServices = new FoodServices();
+            ExpanderCommand = new Command<int>(OnExpanderClicked);
             orderService = new OrderService();
             userServices = new UserServices(); 
             OnInit();
+        }
+        private bool _isExpanded = false;
+
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set => SetProperty(ref _isExpanded, value);
+        }
+        public Command<int> ExpanderCommand { protected set; get; }
+        private void OnExpanderClicked(int id)
+        {
+            var item = DishCard.FirstOrDefault(i => i.id == id);
+            if (item != null)
+            {
+                if (item.IsExpanded)
+                {
+                    item.IsExpanded = false;
+                }
+                else
+                {
+                    item.IsExpanded = true;
+                }
+            }
+
         }
         private async Task OnReserveClicked(int FoodId)
         {
@@ -109,6 +136,20 @@ namespace Luqmit3ish.ViewModels
                 }
 
                 if (Counter > 0) Counter=0;
+
+                DishCard = await foodServices.GetDishCards();
+                
+                foreach(DishCard item in DishCard)
+                {
+                    if(item.quantity == 0)
+                    {
+                        DishCard.Remove(item);
+                    }
+                    if (item.id == FoodId)
+                    {
+                        item.IsExpanded = true;
+                    }
+                }
                 await App.Current.MainPage.DisplayAlert("successfuly", "Your order has been successfully booked", "ok");
 
             }
@@ -152,6 +193,16 @@ namespace Luqmit3ish.ViewModels
             try
             {
                DishCard = await foodServices.GetDishCards();
+                if(DishCard != null)
+                {
+                    foreach(DishCard dish in DishCard)
+                    {
+                        if(dish.quantity == 0)
+                        {
+                            DishCard.Remove(dish);
+                        }
+                    }
+                }
             }catch(Exception e)
             {
                 Debug.WriteLine(e.Message);

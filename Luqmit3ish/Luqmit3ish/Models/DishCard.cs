@@ -16,5 +16,7 @@ namespace Luqmit3ish.Models
         public String pickUpTime { get; set; }
         public int quantity { get; set; }
         public String restaurantName { get; set; }
+        public bool IsExpanded { get; set; }
+
     }
 }

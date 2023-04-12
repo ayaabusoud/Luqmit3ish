@@ -50,7 +50,7 @@
                                                     <ColumnDefinition Width="3.5*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                                                    <Image HeightRequest="50" Source="{Binding image}" />
+                                                    <Image HeightRequest="50" Source="https://st4.depositphotos.com/2370557/19947/i/1600/depositphotos_199479084-stock-photo-hot-pizza-cheese-tomatoes-white.jpg" />
                                                 </StackLayout>
                                                 <BoxView Grid.Column="1" BackgroundColor="#F2F4F8" WidthRequest="1" HorizontalOptions="Start" 
                                                  VerticalOptions="FillAndExpand"/>

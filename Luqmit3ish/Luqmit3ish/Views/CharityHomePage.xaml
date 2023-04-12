@@ -19,7 +19,8 @@
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="FillAndExpand"
                                     SelectionMode="None"
-                                    ItemsSource="{Binding DishCard}">
+                                    ItemsSource="{Binding DishCard}"
+                                    SelectedItem="{Binding ExpandedItem}">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" 
                                                ItemSpacing="20"/>
@@ -38,7 +39,10 @@
                                              WidthRequest="3"
                                              HorizontalOptions="Start"
                                              VerticalOptions="FillAndExpand"/>
-                                    <xct:Expander Grid.Column="1">
+                                    <xct:Expander Grid.Column="1" IsExpanded="{Binding IsExpanded}" >
+                                        <xct:Expander.GestureRecognizers>
+                                            <TapGestureRecognizer CommandParameter="{Binding id}" Command="{Binding BindingContext.ExpanderCommand , Source={x:Reference CharityPage}}"/>
+                                        </xct:Expander.GestureRecognizers>
                                         <xct:Expander.Header>
                                             <Grid HorizontalOptions="FillAndExpand">
                                                 <Grid.ColumnDefinitions>
