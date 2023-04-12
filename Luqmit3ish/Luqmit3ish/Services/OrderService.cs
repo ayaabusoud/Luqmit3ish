@@ -26,5 +26,11 @@ namespace Luqmit3ish.Services
             var content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
         }
+        public async Task<ObservableCollection<OrderCard>> GetRestaurantOrders(int id,bool receieve)
+        {
+            var response = await _http.GetAsync("https://luqmit3ish.azurewebsites.net/api/RestaurantOrders/"+id+"/"+ receieve);
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
+        }
     }
 }
