@@ -46,6 +46,17 @@ namespace Luqmit3ish.ViewModels
             string id = Preferences.Get("userId", "0");
             int userId = int.Parse(id);
             Dishes = await foodServices.GetFoodByResId(userId);
+
+            if (Dishes != null)
+            {
+                foreach (Dish dish in Dishes)
+                {
+                    if (dish.number == 0)
+                    {
+                        Dishes.Remove(dish);
+                    }
+                }
+            }
         }
 
         private async Task OnAddClicked()
@@ -86,7 +97,7 @@ namespace Luqmit3ish.ViewModels
             if (deleteConfirm)
             {
                 await foodServices.DeleteFood(id);
-                Application.Current.MainPage = new AppShellRestaurant();
+                OnInit();
             }
         }
         private async Task OnTapClicked()
