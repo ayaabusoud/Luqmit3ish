@@ -18,12 +18,12 @@ namespace Luqmit3ish.ViewModels
 {
     class RestaurantHomeViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
         public ICommand AddCommand { protected set; get; }
         public Command<int> EditCommand { protected set; get; }
         public Command<int> DeleteCommand { protected set; get; }
         public ICommand NameTapCommand { protected set; get; }
-        public FoodServices foodServices;
+        private FoodServices _foodServices;
 
         private ObservableCollection<Dish> _dishes;
 
@@ -34,12 +34,12 @@ namespace Luqmit3ish.ViewModels
         }
         public RestaurantHomeViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
+            this._navigation = navigation;
             AddCommand = new Command(async () => await OnAddClicked());
             EditCommand = new Command<int>(async (int id) => await OnEditClicked(id));
             DeleteCommand = new Command<int>(async (int id) => await OnDeleteClicked(id));
             NameTapCommand = new Command(async () => await OnTapClicked());
-            foodServices = new FoodServices();
+            _foodServices = new FoodServices();
             OnInit();
         }
 
@@ -53,7 +53,7 @@ namespace Luqmit3ish.ViewModels
             var userId = int.Parse(id);
             try
             {
-                Dishes = await foodServices.GetFoodByResId(userId);
+                Dishes = await _foodServices.GetFoodByResId(userId);
             }
             catch (ConnectionException e)
             {
@@ -83,7 +83,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-            await Navigation.PushAsync(new AddFoodPage());
+            await _navigation.PushAsync(new AddFoodPage());
 
             }
             catch (ArgumentException e)
@@ -99,7 +99,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-            await Navigation.PushAsync(new EditFoodPage(id));
+            await _navigation.PushAsync(new EditFoodPage(id));
 
             }
             catch (ArgumentException e)
@@ -116,7 +116,7 @@ namespace Luqmit3ish.ViewModels
             var deleteConfirm = await Application.Current.MainPage.DisplayAlert("", "Are you sure that you want to delete this dish?", "Yes", "No");
             if (deleteConfirm)
             {
-                await foodServices.DeleteFood(id);
+                await _foodServices.DeleteFood(id);
                 OnInit();
             }
         }
@@ -124,7 +124,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-            await Navigation.PushAsync(new FoodDetailPage());
+            await _navigation.PushAsync(new FoodDetailPage());
             }
             catch (ArgumentException e)
             {

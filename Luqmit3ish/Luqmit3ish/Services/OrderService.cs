@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Luqmit3ish.Connection;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.ViewModels;
@@ -18,15 +19,17 @@ namespace Luqmit3ish.Services
         private readonly HttpClient _http;
         private static readonly string ApiUrl = "https://luqmit3ish.azurewebsites.net/api/Orders";
         private static readonly string OrderApiUrl = "https://luqmit3ish.azurewebsites.net/api/CharityOrders";
+        private IConnection _connection;
 
-        public OrderService()
+            public OrderService()
         {
             _http = new HttpClient();
+            _connection = new Connection();
         }
 
         public async Task<ObservableCollection<OrderCard>> GetOrders(int id)
         {
-            if (!ConnectionChecker.CheckInternetConnection())
+            if (!_connection.CheckInternetConnection())
             {
                 throw new ConnectionException("There is no internet connection");
             }

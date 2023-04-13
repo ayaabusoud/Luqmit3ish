@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Luqmit3ish.Connection;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.ViewModels;
@@ -18,12 +19,15 @@ namespace Luqmit3ish.Services
         private static readonly string ApiUrl = "https://luqmit3ish.azurewebsites.net/api/Users";
         private static readonly string ApiSignUp = "https://luqmit3ish.azurewebsites.net/api/Users";
         private static readonly string ApiLoginUrl = "https://luqmit3ish.azurewebsites.net/api/Users/login";
+        private IConnection _connection;
+
 
         public UserServices()
         {
             _http = new HttpClient();
+            _connection = new Connection();
         }
-     
+
         public async Task<bool> Login(LoginRequest loginRequest)
         {
             var json = JsonConvert.SerializeObject(loginRequest);
@@ -71,7 +75,7 @@ namespace Luqmit3ish.Services
 
         public async Task<User> GetUserById(int id)
         {
-            if (!ConnectionChecker.CheckInternetConnection())
+            if (!_connection.CheckInternetConnection())
             {
                 throw new ConnectionException("There is no internet connection");
             }
