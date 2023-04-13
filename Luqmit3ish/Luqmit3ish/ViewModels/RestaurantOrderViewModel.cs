@@ -1,3 +1,4 @@
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -7,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -93,11 +95,26 @@ namespace Luqmit3ish.ViewModels
         private async void OnInit()
         {
             var id = Preferences.Get("userId", null);
-            var userId = int.Parse(id);
-            OrderCard = await orderService.GetRestaurantOrders(userId,false);
-            if (OrderCard is null)
+            if(id is null)
             {
-                //no orders yet
+                return;
+            }
+            var userId = int.Parse(id);
+            try
+            {
+                OrderCard = await orderService.GetRestaurantOrders(userId, false);
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
             }
 
 

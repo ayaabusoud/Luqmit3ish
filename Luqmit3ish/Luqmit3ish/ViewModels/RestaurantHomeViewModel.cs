@@ -11,6 +11,8 @@ using System.Diagnostics;
 using Luqmit3ish.Services;
 using System.Collections.ObjectModel;
 using Luqmit3ish.Models;
+using Luqmit3ish.Exceptions;
+using System.Net.Http;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -43,10 +45,28 @@ namespace Luqmit3ish.ViewModels
 
         private async void OnInit()
         {
-            string id = Preferences.Get("userId", "0");
-            int userId = int.Parse(id);
-            Dishes = await foodServices.GetFoodByResId(userId);
-
+            var id = Preferences.Get("userId", null);
+            if (id is null)
+            {
+                return;
+            }
+            var userId = int.Parse(id);
+            try
+            {
+                Dishes = await foodServices.GetFoodByResId(userId);
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
             if (Dishes != null)
             {
                 foreach (Dish dish in Dishes)

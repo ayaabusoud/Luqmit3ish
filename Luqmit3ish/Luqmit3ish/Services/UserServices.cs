@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.ViewModels;
 using Newtonsoft.Json;
@@ -70,22 +71,26 @@ namespace Luqmit3ish.Services
 
         public async Task<User> GetUserById(int id)
         {
-            var response = await _http.GetAsync($"{ApiUrl}/id/{id}");
-
-            if (response.IsSuccessStatusCode)
+            if (!ConnectionChecker.CheckInternetConnection())
             {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _http.GetAsync($"{ApiUrl}/id/{id}");
                 var content = await response.Content.ReadAsStringAsync();
-                var user = JsonConvert.DeserializeObject<User>(content);
-                return user;
+                return JsonConvert.DeserializeObject<User>(content);
+
             }
-            else if (response.StatusCode == HttpStatusCode.NotFound)
+            catch (HttpRequestException e)
             {
-                return null;
+                throw new HttpRequestException(e.Message);
             }
-            else
+            catch (Exception e)
             {
-                throw new Exception($"Failed to retrieve user_id: {response.StatusCode} - {response.ReasonPhrase}");
+                throw new Exception(e.Message);
             }
+      
         }
 
         public async Task EditProfile(User user)
