@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Luqmit3ish.ViewModels"  
              xmlns:model="clr-namespace:Luqmit3ish.Models" 
              x:Class="Luqmit3ish.Views.SignupPage"
-             BackgroundImageSource="login_background.jpeg">
+             BackgroundImageSource="background2.jpeg">
     <ContentPage.Content>
         <StackLayout Margin="0">
             <Frame HorizontalOptions="Fill" VerticalOptions="EndAndExpand"  Margin="0,0,0,-30" HeightRequest="550" CornerRadius="30" HasShadow="True">
@@ -78,7 +78,9 @@
                                         <x:String>Nablus</x:String>
                                         <x:String>Ramallah</x:String>
                                         <x:String>Jenin</x:String>
-                                        <x:String>Tolkarm</x:String>
+                                        <x:String>Jericho</x:String>
+                                        <x:String>Tulkarm</x:String>
+                                        <x:String>Jerusalem</x:String>
                                     </Picker.Items>
                                 </Picker>
                                 <Label Style="{StaticResource validIcon}"  IsVisible="{Binding LocationValid}" />

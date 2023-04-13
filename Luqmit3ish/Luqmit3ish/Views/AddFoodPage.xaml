@@ -29,13 +29,13 @@
                             </CollectionView.ItemsLayout>
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Padding="5" BackgroundColor="{Binding StackLayoutBackgroundColor}">
-                                        <Frame Padding="0" CornerRadius="10" WidthRequest="70" HeightRequest="70"  BackgroundColor="{Binding StackLayoutBackgroundColor1}" BorderColor="{StaticResource PrimaryLight}" >
+                                    <StackLayout Padding="5" BackgroundColor="White">
+                                        <Frame Padding="0" CornerRadius="10" WidthRequest="70" HeightRequest="70"  BackgroundColor="{Binding FrameBackgroundColor}" BorderColor="{StaticResource PrimaryLight}" >
                                             <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-                                                <Label Text="{Binding iconText}" FontFamily="FontAwesomeIcons" FontSize="Title" TextColor="{StaticResource PrimaryLight}" />
+                                                <Label Text="{Binding IconText}" FontFamily="FontAwesomeIcons" FontSize="Title" TextColor="{Binding TextBackgroundColor}" />
                                             </StackLayout>
                                         </Frame>
-                                        <Label Text="{Binding name}"  FontSize="Small" HorizontalOptions="Center" FontAttributes="Bold" TextColor="Black"/>
+                                        <Label Text="{Binding Name}"  FontSize="Small" HorizontalOptions="Center" FontAttributes="Bold" TextColor="Black"/>
                                     </StackLayout>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
