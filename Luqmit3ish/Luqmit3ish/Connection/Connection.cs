@@ -1,16 +1,17 @@
-﻿using System;
+﻿using Luqmit3ish.Connection;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Essentials;
 
 namespace Luqmit3ish.Services
 {
-    class ConnectionChecker
+    class Connection : IConnection
     {
-        public static bool CheckInternetConnection()
+        public bool CheckInternetConnection()
         {
             var connection = Connectivity.NetworkAccess;
-            if(connection == NetworkAccess.None)
+            if (connection == NetworkAccess.None)
             {
                 return false;
             }
@@ -19,5 +20,6 @@ namespace Luqmit3ish.Services
                 return true;
             }
         }
+       
     }
 }

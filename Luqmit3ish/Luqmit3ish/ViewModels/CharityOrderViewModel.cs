@@ -21,14 +21,14 @@ namespace Luqmit3ish.ViewModels
 {
     class CharityOrderViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
 
         public ICommand EditCommand { protected set; get; }
         public ICommand Search { protected set; get; }
 
         public ICommand ProfileCommand { protected set; get; }
-        public OrderService orderService;
-        public FoodServices foodService;
+        private OrderService _orderService;
+        private FoodServices _foodService;
 
         public ICommand DeleteCommand { protected set; get; }
         public Command<int> PlusCommand { protected set; get; }
@@ -44,22 +44,22 @@ namespace Luqmit3ish.ViewModels
         }
         public CharityOrderViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
+            this._navigation = navigation;
             EditCommand = new Command<int>(async (int id) => await OnEditClicked(id));
             DeleteCommand = new Command<int>(async (int id) => await OnDeleteClicked(id));
             Search = new Command(async () => await OnSearchClicked());
             PlusCommand = new Command<int>(OnPlusClicked);
             MinusCommand = new Command<int>(OnMinusClicked);
             ExpanderCommand = new Command<int>(OnExpanderClicked);
-            orderService = new OrderService();
-            foodService = new FoodServices();
+            _orderService = new OrderService();
+            _foodService = new FoodServices();
             OnInit();
         }
 
 
         private async Task OnSearchClicked()
         {
-            await Navigation.PushAsync(new SearchPage());
+            await _navigation.PushAsync(new SearchPage());
         }
 
 
@@ -90,12 +90,12 @@ namespace Luqmit3ish.ViewModels
         }
         private async void OnMinusClicked(int orderId)
         {
-            await orderService.UpdateOrderDishCount(orderId, "Minus");
-            var order = await orderService.GetOrderById(orderId);
-            Dish dish = await foodService.GetFoodById(order.dish_id);
+            await _orderService.UpdateOrderDishCount(orderId, "Minus");
+            var order = await _orderService.GetOrderById(orderId);
+            Dish dish = await _foodService.GetFoodById(order.dish_id);
             var id = Preferences.Get("userId", null);
             var userId = int.Parse(id);
-            OrderCard = await orderService.GetOrders(userId);
+            OrderCard = await _orderService.GetOrders(userId);
             foreach (OrderCard item in OrderCard)
             {
                 if (item.id == dish.user_id)
@@ -109,16 +109,16 @@ namespace Luqmit3ish.ViewModels
 
         private async void OnPlusClicked(int orderId)
         {
-            var order = await orderService.GetOrderById(orderId);
-            Dish dish = await foodService.GetFoodById(order.dish_id);
+            var order = await _orderService.GetOrderById(orderId);
+            Dish dish = await _foodService.GetFoodById(order.dish_id);
             if (dish.number == 0)
             {
                 return;
             }
-            await orderService.UpdateOrderDishCount(orderId, "plus");
+            await _orderService.UpdateOrderDishCount(orderId, "plus");
             var id = Preferences.Get("userId", null);
             var userId = int.Parse(id);
-            OrderCard = await orderService.GetOrders(userId);
+            OrderCard = await _orderService.GetOrders(userId);
             foreach (OrderCard item in OrderCard)
             {
                 if (item.id == dish.user_id)
@@ -138,7 +138,7 @@ private async Task OnDeleteClicked(int restaurantId)
                 var userId = int.Parse(id);
                 try
                 {
-                    await orderService.DeleteOrder(userId, restaurantId);
+                    await _orderService.DeleteOrder(userId, restaurantId);
                     await App.Current.MainPage.DisplayAlert("Success", "The order have been deleted successfully", "ok");
                     OnInit();
                 }
@@ -170,7 +170,7 @@ private async Task OnDeleteClicked(int restaurantId)
             var userId = int.Parse(id);
             try
             {
-                OrderCard = await orderService.GetOrders(userId);
+                OrderCard = await _orderService.GetOrders(userId);
             }
             catch (ConnectionException e)
             {
@@ -191,7 +191,7 @@ private async Task OnDeleteClicked(int restaurantId)
         {
             try
             {
-            await Navigation.PushAsync(new EditOrderPage());
+            await _navigation.PushAsync(new EditOrderPage());
 
             }
             catch (ArgumentException e)
@@ -208,7 +208,7 @@ private async Task OnDeleteClicked(int restaurantId)
 
             try
             {
-                await Navigation.PushAsync(new OtherProfilePage(1));
+                await _navigation.PushAsync(new OtherProfilePage(1));
 
             }
             catch (ArgumentException e)

@@ -1,3 +1,4 @@
+using Luqmit3ish.Connection;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Views;
@@ -21,13 +22,15 @@ namespace Luqmit3ish.Services
         private static readonly string ApiUrl = "https://luqmit3ish.azurewebsites.net/api/Food";
         private static readonly string AddDishUrl = "https://luqmit3ish.azurewebsites.net/api/Food/AddDish";
         private static readonly string uploadPhotoUrl = "https://luqmit3ish.azurewebsites.net/api/Food/UploadPhoto";
+        private IConnection _connection;
         public FoodServices()
         {
             _http = new HttpClient();
+            _connection = new Connection();
         }
         public async Task<ObservableCollection<Dish>> GetFood()
         {
-            if (!ConnectionChecker.CheckInternetConnection())
+            if (!_connection.CheckInternetConnection())
             {
                 throw new ConnectionException("There is no internet connection");
             }
@@ -49,7 +52,7 @@ namespace Luqmit3ish.Services
         }
         public async Task<ObservableCollection<Dish>> GetFoodByResId(int userId)
         {
-            if (!ConnectionChecker.CheckInternetConnection())
+            if (!_connection.CheckInternetConnection())
             {
                 throw new ConnectionException("There is no internet connection");
             }
@@ -120,7 +123,7 @@ namespace Luqmit3ish.Services
 
         public async Task<ObservableCollection<DishCard>> GetDishCards()
         {
-            if (!ConnectionChecker.CheckInternetConnection())
+            if (!_connection.CheckInternetConnection())
             {
                 throw new ConnectionException("There is no internet connection");
             }

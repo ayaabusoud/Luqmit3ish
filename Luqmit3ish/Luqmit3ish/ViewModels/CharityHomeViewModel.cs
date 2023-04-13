@@ -21,7 +21,7 @@ namespace Luqmit3ish.ViewModels
 {
     class CharityHomeViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
         public ICommand FilterCommand { protected set; get; }
         public ICommand SearchCommand { protected set; get; }
         public Command<int> PlusCommand { protected set; get; }
@@ -29,9 +29,9 @@ namespace Luqmit3ish.ViewModels
         public Command<int> ReserveCommand { protected set; get; }
         public Command<int> ProfileCommand { protected set; get; }
 
-        public FoodServices foodServices;
-        public UserServices userServices; 
-        public OrderService orderService;
+        private FoodServices _foodServices;
+        private UserServices _userServices; 
+        private OrderService _orderService;
         
          private bool _isEnabled = false;
         public bool IsEnabled
@@ -76,17 +76,17 @@ namespace Luqmit3ish.ViewModels
 
         public  CharityHomeViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
+            this._navigation = navigation;
             FilterCommand = new Command(async () => await OnFilterClicked());
             SearchCommand = new Command(async () => await OnSearchClicked());
             ProfileCommand = new Command<int>(async (int restaurantId) => await OnProfileClicked(restaurantId));
             PlusCommand = new Command<int>(OnPlusClicked);
             MinusCommand = new Command(OnMinusClicked);
             ReserveCommand = new Command<int>(async (int FoodId) => await OnReserveClicked(FoodId));
-            foodServices = new FoodServices();
+            _foodServices = new FoodServices();
             ExpanderCommand = new Command<int>(OnExpanderClicked);
-            orderService = new OrderService();
-            userServices = new UserServices(); 
+            _orderService = new OrderService();
+            _userServices = new UserServices(); 
             OnInit();
         }
         private bool _isExpanded = false;
@@ -119,7 +119,7 @@ namespace Luqmit3ish.ViewModels
             {
                 var id = Preferences.Get("userId", "null");
                 int UserId = int.Parse(id);
-                Dish dish = await foodServices.GetFoodById(FoodId);
+                Dish dish = await _foodServices.GetFoodById(FoodId);
 
                 Order newOrder = new Order();
                 newOrder.char_id = UserId;
@@ -129,7 +129,7 @@ namespace Luqmit3ish.ViewModels
                 newOrder.number_of_dish = Counter;
                 newOrder.receive = false;
 
-                await orderService.ReserveOrder(newOrder);
+                await _orderService.ReserveOrder(newOrder);
 
                 DishCard quantityDish = _dishCard.FirstOrDefault(d => d.id == dish.id);
                 if (quantityDish != null)
@@ -139,7 +139,7 @@ namespace Luqmit3ish.ViewModels
 
                 if (Counter > 0) Counter=0;
 
-                DishCard = await foodServices.GetDishCards();
+                DishCard = await _foodServices.GetDishCards();
                 
                 foreach(DishCard item in DishCard)
                 {
@@ -194,7 +194,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                DishCard = await foodServices.GetDishCards();
+                DishCard = await _foodServices.GetDishCards();
             }
             catch (ConnectionException e)
             {
@@ -225,7 +225,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await Navigation.PushAsync(new FilterFoodPage());
+                await _navigation.PushAsync(new FilterFoodPage());
             }
             catch (ArgumentException e)
             {
@@ -241,7 +241,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await Navigation.PushAsync(new SearchPage());
+                await _navigation.PushAsync(new SearchPage());
 
             }
             catch (ArgumentException e)
@@ -257,7 +257,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await Navigation.PushAsync(new OtherProfilePage(restaurantId));
+                await _navigation.PushAsync(new OtherProfilePage(restaurantId));
 
             }
             catch (ArgumentException e)
