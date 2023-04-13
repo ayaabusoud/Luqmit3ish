@@ -1,3 +1,4 @@
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Views;
 using Newtonsoft.Json;
@@ -26,27 +27,47 @@ namespace Luqmit3ish.Services
         }
         public async Task<ObservableCollection<Dish>> GetFood()
         {
-            var response = await _http.GetAsync(ApiUrl);
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ObservableCollection<Dish>>(content);
-        }
-        public async Task<ObservableCollection<Dish>> GetFoodByResId(int userId)
-        {
-            var response = await _http.GetAsync($"{ApiUrl}/Restaurant/{userId}");
-
-            if (response.IsSuccessStatusCode)
+            if (!ConnectionChecker.CheckInternetConnection())
             {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _http.GetAsync(ApiUrl);
                 var content = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ObservableCollection<Dish>>(content);
             }
-            else if (response.StatusCode == HttpStatusCode.NotFound)
+            catch (HttpRequestException e)
             {
-                return null;
+                throw new HttpRequestException(e.Message);
             }
-            else
+            catch (Exception e)
             {
-                throw new Exception($"Failed to retrieve food: {response.StatusCode} - {response.ReasonPhrase}");
+                throw new Exception(e.Message);
             }
+           
+        }
+        public async Task<ObservableCollection<Dish>> GetFoodByResId(int userId)
+        {
+            if (!ConnectionChecker.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _http.GetAsync($"{ApiUrl}/Restaurant/{userId}");
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ObservableCollection<Dish>>(content);
+
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }      
         }
 
         public async Task<ObservableCollection<DishCard>> GetSearchCards(string searchRequest, string type)
@@ -99,9 +120,26 @@ namespace Luqmit3ish.Services
 
         public async Task<ObservableCollection<DishCard>> GetDishCards()
         {
-            var response = await _http.GetAsync(ApiUrl + "/DishCard");
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
+            if (!ConnectionChecker.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _http.GetAsync(ApiUrl + "/DishCard");
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
+
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
         }
 
         public async Task DeleteFood(int food_id)

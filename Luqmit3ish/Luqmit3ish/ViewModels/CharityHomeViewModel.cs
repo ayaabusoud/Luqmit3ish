@@ -1,3 +1,4 @@
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -7,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -192,21 +194,31 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-               DishCard = await foodServices.GetDishCards();
-                if(DishCard != null)
-                {
-                    foreach(DishCard dish in DishCard)
-                    {
-                        if(dish.quantity == 0)
-                        {
-                            DishCard.Remove(dish);
-                        }
-                    }
-                }
-            }catch(Exception e)
+                DishCard = await foodServices.GetDishCards();
+            }
+            catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
             }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            if (DishCard != null)
+            {
+                foreach (DishCard dish in DishCard)
+                {
+                    if (dish.quantity == 0)
+                    {
+                        DishCard.Remove(dish);
+                    }
+                }
+            }
+
         }
 
         private async Task OnFilterClicked()

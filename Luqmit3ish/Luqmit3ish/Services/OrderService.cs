@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.ViewModels;
 using Newtonsoft.Json;
@@ -22,11 +23,29 @@ namespace Luqmit3ish.Services
         {
             _http = new HttpClient();
         }
+
         public async Task<ObservableCollection<OrderCard>> GetOrders(int id)
         {
-            var response = await _http.GetAsync($"{OrderApiUrl}/{id}");
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
+            if (!ConnectionChecker.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _http.GetAsync($"{OrderApiUrl}/{id}");
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
+
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
         }
         public async Task<ObservableCollection<OrderCard>> GetRestaurantOrders(int id,bool receieve)
         {
