@@ -29,7 +29,7 @@
                             </CollectionView.ItemsLayout>
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Padding="5" BackgroundColor="{Binding StackLayoutBackgroundColor}">
+                                    <StackLayout Padding="5" BackgroundColor="White">
                                         <Frame Padding="0" CornerRadius="10" WidthRequest="70" HeightRequest="70"  BackgroundColor="{Binding FrameBackgroundColor}" BorderColor="{StaticResource PrimaryLight}" >
                                             <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
                                                 <Label Text="{Binding IconText}" FontFamily="FontAwesomeIcons" FontSize="Title" TextColor="{Binding TextBackgroundColor}" />

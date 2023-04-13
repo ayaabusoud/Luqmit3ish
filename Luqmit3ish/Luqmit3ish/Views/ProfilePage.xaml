@@ -5,7 +5,7 @@
              xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
              xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView" x:DataType="vm:ProfileViewModel"
                     BackgroundColor="white"
-             Shell.NavBarIsVisible="False"
+             Shell.NavBarIsVisible="True"
              Title="Profile">
 
     <ContentPage.Content >
