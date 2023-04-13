@@ -28,7 +28,7 @@ namespace Luqmit3ish.ViewModels
 
         public ICommand CharitiesFilter { protected set; get; }
         public Command<int> ProfileCommand { protected set; get; }
-        private string _allColor = "#4D6BA3";
+        private string _allColor = "#F98836";
         public string AllColor
         {
             get => _allColor;
@@ -148,7 +148,7 @@ namespace Luqmit3ish.ViewModels
         private void OnAllClicked()
         {
             Filter = "All";
-            AllColor = "#4D6BA3";
+            AllColor = "#F98836";
             RestaurantColor = "Black";
             CharityColor = "Black";
             OnInit();
@@ -157,7 +157,7 @@ namespace Luqmit3ish.ViewModels
         {
             Filter = "Restaurants";
             AllColor = "Black";
-            RestaurantColor = "#4D6BA3";
+            RestaurantColor = "#F98836";
             CharityColor = "Black";
             OnInit();
         }
@@ -166,7 +166,7 @@ namespace Luqmit3ish.ViewModels
             Filter = "Dishes";
             AllColor = "Black";
             RestaurantColor = "Black";
-            CharityColor = "#4D6BA3";
+            CharityColor = "#F98836";
             OnInit();
         }
 

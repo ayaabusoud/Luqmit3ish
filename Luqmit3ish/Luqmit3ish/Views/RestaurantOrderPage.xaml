@@ -1,4 +1,4 @@
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.RestaurantOrderPage"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
@@ -27,7 +27,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <BoxView BackgroundColor="#4D6BA3"
+                                    <BoxView BackgroundColor="#F98836"
                                              WidthRequest="3"
                                              HorizontalOptions="Start"
                                              VerticalOptions="FillAndExpand"/>

@@ -5,6 +5,7 @@
              xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
              x:Name="SearchFoodPage">
 
     <ContentPage.Content>
@@ -51,7 +52,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <BoxView BackgroundColor="#4D6BA3"
+                                <BoxView BackgroundColor="#F98836"
                                              WidthRequest="3"
                                              HorizontalOptions="Start"
                                              VerticalOptions="FillAndExpand"/>
@@ -65,7 +66,7 @@
                                             </Grid.ColumnDefinitions>
                                             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
                                                 <Image HeightRequest="100"
-                                               Source="{Binding photo}" />
+                                               Source="https://s1.1zoom.me/big0/106/The_second_dishes_Potato_Meat_products_Vegetables_566163_1280x853.jpg" />
                                             </StackLayout>
                                             <BoxView Grid.Column="1" BackgroundColor="#F2F4F8" WidthRequest="1" HorizontalOptions="Start" 
                                                  VerticalOptions="FillAndExpand"/>

@@ -6,7 +6,8 @@
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              x:Name="CharityOrder"
-             Title="Orders">
+             Title="Orders"
+            >
 
 
     <ContentPage.Content>
@@ -34,7 +35,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <BoxView BackgroundColor="#4D6BA3"
+                                    <BoxView BackgroundColor="#F98836"
                                              WidthRequest="3"
                                              HorizontalOptions="Start"
                                              VerticalOptions="FillAndExpand"/>
@@ -100,12 +101,12 @@
                                                             </Label>
                                                            
 
-                                                            <Label Text="&#xf055;" FontFamily="FontAwesomeIcons" FontSize="18" Margin="2,2,0,0"  Grid.Column="1" HorizontalOptions="End" >
+                                                            <Label Text="&#xf055;" FontFamily="FontAwesomeIcons" FontSize="18" Margin="2,2,0,0"  Grid.Column="1" HorizontalOptions="End">
                                                                 <Label.GestureRecognizers>
                                                                         <TapGestureRecognizer CommandParameter="{Binding id}" Command="{Binding BindingContext.PlusCommand , Source={x:Reference CharityOrder}}" />
                                                                     </Label.GestureRecognizers>
                                                                 </Label>
-                                                            <Label  Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="18" Margin="2,2,2,0" Grid.Column="2" HorizontalOptions="Start" >
+                                                            <Label  Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="18" Margin="2,2,2,0" Grid.Column="2" HorizontalOptions="Start">
                                                                 <Label.GestureRecognizers>
                                                                     <TapGestureRecognizer  CommandParameter="{Binding id }" Command="{Binding BindingContext.MinusCommand , Source={x:Reference CharityOrder}}"  />
                                                                     </Label.GestureRecognizers>

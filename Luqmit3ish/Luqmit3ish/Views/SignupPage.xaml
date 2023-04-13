@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:Luqmit3ish.ViewModels"  
              xmlns:model="clr-namespace:Luqmit3ish.Models" 
              x:Class="Luqmit3ish.Views.SignupPage"
-             BackgroundImageSource="login_background.jpeg">
+             BackgroundImageSource="background2.jpeg">
     <ContentPage.Content>
         <StackLayout Margin="0">
             <Frame HorizontalOptions="Fill" VerticalOptions="EndAndExpand"  Margin="0,0,0,-30" HeightRequest="550" CornerRadius="30" HasShadow="True">
