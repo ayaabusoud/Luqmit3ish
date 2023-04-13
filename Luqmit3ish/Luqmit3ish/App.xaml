@@ -7,7 +7,7 @@
     
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="PrimaryLight">#F98836</Color>
+            <Color x:Key="PrimaryLight">#F97515</Color>
             <Color x:Key="SecondaryLight">#35C9B7</Color>
 
             <Style x:Key="FloatingButton" TargetType="Button">
