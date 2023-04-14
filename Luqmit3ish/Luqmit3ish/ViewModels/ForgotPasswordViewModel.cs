@@ -15,20 +15,37 @@ namespace Luqmit3ish.ViewModels
     {
         private INavigation _navigation { get; set; }
 
-        public ICommand ButtonCommand { protected set; get; }
+        public ICommand SendEmailCommand { protected set; get; }
+        public ICommand LoginCommand { protected set; get; }
 
         public ForgotPasswordViewModel(INavigation navigation)
         {
             this._navigation = navigation;
-            ButtonCommand = new Command(async () => await OnButtonClicked());
+            SendEmailCommand = new Command(async () => await OnSendEmailClicked());
+            LoginCommand = new Command(async () => await OnLoginClicked());
         }
 
-        private async Task OnButtonClicked()
+        private async Task OnSendEmailClicked()
         {
             try
             {
             await Navigation.PushModalAsync(new CheckEmailPage());
 
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+        private async Task OnLoginClicked()
+        {
+            try
+            {
+                Application.Current.MainPage = new LoginPage();
             }
             catch (ArgumentException e)
             {
