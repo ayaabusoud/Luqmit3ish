@@ -75,9 +75,26 @@ namespace Luqmit3ish.Services
 
         public async Task<ObservableCollection<DishCard>> GetSearchCards(string searchRequest, string type)
         {
-            var response = await _httpClient.GetAsync($"{_apiUrl}/Search/{searchRequest}/{type}");
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+            var response = await _http.GetAsync($"{ApiUrl}/Search/{searchRequest}/{type}");
+           
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
         }
 
         public async Task<Dish> GetFoodById(int food_id)

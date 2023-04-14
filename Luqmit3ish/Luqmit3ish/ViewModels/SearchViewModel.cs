@@ -11,6 +11,8 @@ using System.Diagnostics;
 using Luqmit3ish.Services;
 using System.Collections.ObjectModel;
 using Luqmit3ish.Models;
+using System.Net.Http;
+using Luqmit3ish.Exceptions;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -202,10 +204,19 @@ namespace Luqmit3ish.ViewModels
             {
                 DishCard = await foodServices.GetSearchCards(_searchText, Filter);
             }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
+        
         }
         private async Task OnProfileClicked(int restaurantId)
         {

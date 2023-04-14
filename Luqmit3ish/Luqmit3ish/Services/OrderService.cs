@@ -175,14 +175,36 @@ namespace Luqmit3ish.Services
             }
 
         }
-        public async Task DeleteOrder(int charityId, int restaurantId)
+        public async Task<bool> DeleteOrder(int charityId, int restaurantId)
         {
-            var response = await _http.DeleteAsync($"{ApiUrl}/delete/{charityId}/{restaurantId}");
-
-            if (!response.IsSuccessStatusCode)
+            if (!_connection.CheckInternetConnection())
             {
-                throw new Exception("delete failed");
+                throw new ConnectionException("There is no internet connection");
             }
+            try
+            {
+            var response = await _http.DeleteAsync($"{ApiUrl}/delete/{charityId}/{restaurantId}");
+                if (!response.IsSuccessStatusCode)
+                {
+                    return false; 
+                } 
+                else
+                {
+                    return true; 
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                return false;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+
         }
     }
 }
+
+
