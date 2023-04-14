@@ -15,7 +15,7 @@
                 <StackLayout Margin="10" HorizontalOptions="Fill" Spacing="15" Padding="20">
                     <Label Text="Sign In" HorizontalOptions="Center" FontSize="30" FontAttributes="Bold" TextColor="Black" Margin="-20"/>
                     <Label Text="Email" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
-                    <Frame Style="{StaticResource textFeildFrame}" BackgroundColor="#FFF3AF">
+                    <Frame Style="{StaticResource textFeildFrame}">
                         <StackLayout Orientation="Horizontal" Margin="10,0,0,0" Padding="0">
                             <Label Text="&#xf0e0;" FontFamily="FontAwesomeIcons" FontSize="20" TextColor="Black"/>
                             <Entry   FontSize="Medium" Placeholder="Enter your email" Keyboard="Email" Style="{StaticResource textFeild}" Text="{Binding Email}" ClearButtonVisibility="WhileEditing" />
@@ -23,7 +23,7 @@
                     </Frame>
 
                     <Label Text="Password" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
-                    <Frame Style="{StaticResource textFeildFrame}" BackgroundColor="#FFF3AF">
+                    <Frame Style="{StaticResource textFeildFrame}" >
                         <StackLayout Orientation="Horizontal" Margin="10,0,0,0" Padding="0">
                             <Label Text="&#xf023;" FontFamily="FontAwesomeIcons" FontSize="20" TextColor="Black"/>
                             <Entry FontSize="Medium" Placeholder="Enter your password" IsPassword="True" Keyboard="Text" Style="{StaticResource textFeild}" Text="{Binding Password}" ClearButtonVisibility="WhileEditing" />
