@@ -28,14 +28,27 @@ namespace Luqmit3ish.Services
             _connection = new Connection();
         }
 
-        public async Task<bool> Login(LoginRequest loginRequest)
+       public async Task<bool> Login(LoginRequest loginRequest)
         {
-            var json = JsonConvert.SerializeObject(loginRequest);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _http.PostAsync(ApiLoginUrl, content);
-            Console.WriteLine(response.StatusCode);
+            if (_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var json = JsonConvert.SerializeObject(loginRequest);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _http.PostAsync(ApiLoginUrl, content);
+                return response.IsSuccessStatusCode;
+            }
+            catch(HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
 
-            return response.IsSuccessStatusCode;
         }
         public async Task<User> GetUserByEmail(string email)
         {

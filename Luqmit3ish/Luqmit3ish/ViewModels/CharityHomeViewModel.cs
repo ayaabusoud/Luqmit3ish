@@ -30,7 +30,6 @@ namespace Luqmit3ish.ViewModels
         public Command<int> ProfileCommand { protected set; get; }
 
         private FoodServices _foodServices;
-        private UserServices _userServices; 
         private OrderService _orderService;
         
          private bool _isEnabled = false;
@@ -86,7 +85,6 @@ namespace Luqmit3ish.ViewModels
             _foodServices = new FoodServices();
             ExpanderCommand = new Command<int>(OnExpanderClicked);
             _orderService = new OrderService();
-            _userServices = new UserServices(); 
             OnInit();
         }
         private bool _isExpanded = false;
@@ -117,8 +115,14 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                var id = Preferences.Get("userId", "null");
-                int UserId = int.Parse(id);
+                var id = Preferences.Get("userId", null);
+                if (id == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Your login session has been expired", "Ok");
+                   await _navigation.PushAsync(new LoginPage());
+                    return;
+                }
+                var UserId = int.Parse(id);
                 Dish dish = await _foodServices.GetFoodById(FoodId);
 
                 Order newOrder = new Order();
@@ -134,30 +138,28 @@ namespace Luqmit3ish.ViewModels
                 DishCard quantityDish = _dishCard.FirstOrDefault(d => d.id == dish.id);
                 if (quantityDish != null)
                 {
-                    quantityDish.quantity -=Counter;
+                    quantityDish.quantity -= Counter;
                 }
 
-                if (Counter > 0) Counter=0;
+                if (Counter > 0) Counter = 0;
+                await Application.Current.MainPage.DisplayAlert("Successfuly", "Your order has been successfully reserved", "ok");
 
-                DishCard = await _foodServices.GetDishCards();
-                
-                foreach(DishCard item in DishCard)
-                {
-                    if(item.quantity == 0)
-                    {
-                        DishCard.Remove(item);
-                    }
-                    if (item.id == FoodId)
-                    {
-                        item.IsExpanded = true;
-                    }
-                }
-                await App.Current.MainPage.DisplayAlert("successfuly", "Your order has been successfully booked", "ok");
-
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (ConnectionException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+            }
+            catch (HttpRequestException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Something went bad on this reservation, you can try again", "Ok");
             }
             catch (Exception e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
+                await Application.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
             }
            
         }
