@@ -10,23 +10,22 @@ using Xamarin.Forms;
 
 namespace Luqmit3ish.ViewModels
 {
-    class CheckEmailViewModel : INotifyPropertyChanged
+    class CheckEmailViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         public ICommand ButtonCommand { protected set; get; }
 
         public CheckEmailViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
+            this._navigation = navigation;
             ButtonCommand = new Command(async () => await OnButtonClicked());
         }
         private async Task OnButtonClicked()
         {
             try
             {
-            await Navigation.PushModalAsync(new ResetPasswordPage());
+            await _navigation.PushModalAsync(new ResetPasswordPage());
 
             }
             catch (ArgumentException e)

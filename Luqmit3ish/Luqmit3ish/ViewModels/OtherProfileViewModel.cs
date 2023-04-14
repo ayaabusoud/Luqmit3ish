@@ -74,8 +74,6 @@ namespace Luqmit3ish.ViewModels
             catch (HttpRequestException )
             {
                 Debug.WriteLine("Something went wrong while viewing the profile, Retrying...");
-                await Task.Delay(5000);
-                await OnInit(id);
             }
             catch (ConnectionException)
             {

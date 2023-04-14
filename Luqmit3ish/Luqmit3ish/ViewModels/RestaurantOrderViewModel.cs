@@ -95,7 +95,7 @@ namespace Luqmit3ish.ViewModels
             var userId = int.Parse(id);
             try
             {
-                OrderCard = await orderService.GetRestaurantOrders(userId, false);
+                OrderCard = await _orderService.GetRestaurantOrders(userId, false);
             }
              catch (HttpRequestException e)
             {
@@ -119,7 +119,7 @@ namespace Luqmit3ish.ViewModels
 
             try
             {
-                await Navigation.PushAsync(new OtherProfilePage(1));
+                await _navigation.PushAsync(new OtherProfilePage(1));
 
             }
             catch (ArgumentException e)

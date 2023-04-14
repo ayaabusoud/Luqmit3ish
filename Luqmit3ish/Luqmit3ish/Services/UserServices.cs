@@ -35,7 +35,7 @@ namespace Luqmit3ish.Services
             {
                 var json = JsonConvert.SerializeObject(loginRequest);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await _http.PostAsync($"{_apiUrl}/login", content);
+                var response = await _httpClient.PostAsync($"{_apiUrl}/login", content);
                 return response.IsSuccessStatusCode;
             }
             catch(HttpRequestException e)
@@ -81,9 +81,24 @@ namespace Luqmit3ish.Services
 
         public async Task<ObservableCollection<User>> GetUsers()
         {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
             var response = await _httpClient.GetAsync(_apiUrl);
             var content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ObservableCollection<User>>(content);
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public async Task<bool> InsertUser(SignUpRequest user)
@@ -120,6 +135,11 @@ namespace Luqmit3ish.Services
             {
                 var response = await _httpClient.GetAsync($"{_apiUrl}/id/{id}");
                 var content = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+                throw new Exception($"Failed to retrieve user_id: {response.StatusCode} - {response.ReasonPhrase}");
                 return JsonConvert.DeserializeObject<User>(content);
 
             }
@@ -139,11 +159,22 @@ namespace Luqmit3ish.Services
             {
                 throw new ConnectionException("There is no internet connection");
             }
-            var content = JsonConvert.SerializeObject(user);
-            var response = await _http.PutAsync($"{_apiUrl}/{user.id}", new StringContent(content, UnicodeEncoding.UTF8, "application/json"));
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                throw new HttpRequestException(response.StatusCode + ": failed to update data " + response.ReasonPhrase);
+                var content = JsonConvert.SerializeObject(user);
+                var response = await _httpClient.PutAsync($"{_apiUrl}/{user.id}", new StringContent(content, UnicodeEncoding.UTF8, "application/json"));
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new HttpRequestException(response.StatusCode + ": failed to update data " + response.ReasonPhrase);
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
 
         }

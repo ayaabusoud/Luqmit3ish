@@ -18,7 +18,7 @@ namespace Luqmit3ish.ViewModels
 {
     public class UserSettingsViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
         public ICommand MyProfileCommand { protected set; get; }
  
         public ICommand ResetPassCommand { protected set; get; }
@@ -35,7 +35,7 @@ namespace Luqmit3ish.ViewModels
 
 
         public UserSettingsViewModel(INavigation navigation) {
-               this.Navigation = navigation;
+               this._navigation = navigation;
                MyProfileCommand= new Command(async () => await OnProfileClicked());
                ResetPassCommand = new Command(async () => await OnResetClicked());
                LogOutCommand= new Command(async () => await OnLogOutClicked());
@@ -128,18 +128,18 @@ namespace Luqmit3ish.ViewModels
         {
             Preferences.Clear();
             Application.Current.MainPage = new NavigationPage(new LoginPage());
-            await Navigation.PopToRootAsync();
+            await _navigation.PopToRootAsync();
         }
 
 
         private async Task OnResetClicked()
         {
-            await Navigation.PushModalAsync(new ResetPassSettingsPage());
+            await _navigation.PushModalAsync(new ResetPassSettingsPage());
 
         }
         private async Task OnProfileClicked()
         {
-            await Navigation.PushModalAsync(new ProfilePage());   
+            await _navigation.PushModalAsync(new ProfilePage());   
         }
     }
 }

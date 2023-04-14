@@ -11,16 +11,15 @@ using Xamarin.Forms;
 namespace Luqmit3ish.ViewModels
 {
    
-    class ForgotPasswordViewModel : INotifyPropertyChanged
+    class ForgotPasswordViewModel : View
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         public ICommand ButtonCommand { protected set; get; }
 
         public ForgotPasswordViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
+            this._navigation = navigation;
             ButtonCommand = new Command(async () => await OnButtonClicked());
         }
 

@@ -18,7 +18,7 @@ namespace Luqmit3ish.ViewModels
 {
     class SearchViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
         public FoodServices foodServices;
         public UserServices userServices;
         public Command<int> PlusCommand { protected set; get; }
@@ -81,7 +81,7 @@ namespace Luqmit3ish.ViewModels
 
         public SearchViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
+            this._navigation = navigation;
 
             ProfileCommand = new Command<int>(async (int restaurantId) => await OnProfileClicked(restaurantId));
             PlusCommand = new Command<int>(OnPlusClicked);
@@ -98,7 +98,7 @@ namespace Luqmit3ish.ViewModels
 
         private void OnBackClicked()
         {
-            Navigation.PopAsync();
+            _navigation.PopAsync();
         }
 
         private string _searchText = string.Empty;
@@ -222,7 +222,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await Navigation.PushAsync(new OtherProfilePage(restaurantId));
+                await _navigation.PushAsync(new OtherProfilePage(restaurantId));
 
             }
             catch (ArgumentException e)

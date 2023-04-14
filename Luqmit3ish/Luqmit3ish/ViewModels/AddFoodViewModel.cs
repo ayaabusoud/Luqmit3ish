@@ -19,7 +19,7 @@ namespace Luqmit3ish.ViewModels
 {
     class AddFoodViewModel : ViewModelBase
     {
-        private INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
         private FoodServices _foodServices;
 
         public ICommand SubmitCommand { protected set; get; }
@@ -36,7 +36,7 @@ namespace Luqmit3ish.ViewModels
 
         public AddFoodViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
+            this._navigation = navigation;
             SubmitCommand = new Command(async () => await OnSubmitClicked());
             _foodServices = new FoodServices();
             Photo_clicked = new Command(async () => await PhotoClicked());
@@ -143,7 +143,7 @@ namespace Luqmit3ish.ViewModels
 
             if (response)
             {
-                await Navigation.PopAsync();
+                await _navigation.PopAsync();
                 await App.Current.MainPage.DisplayAlert("Success", "The dish added successfully", "OK");
             }
             else

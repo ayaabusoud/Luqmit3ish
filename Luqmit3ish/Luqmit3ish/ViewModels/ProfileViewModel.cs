@@ -20,7 +20,7 @@ namespace Luqmit3ish.ViewModels
 {
     class ProfileViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
         public ICommand EditCommand { protected set; get; }
         public ICommand DoneCommand { protected set; get; }
         public ICommand CancelCommand { protected set; get; }
@@ -29,7 +29,7 @@ namespace Luqmit3ish.ViewModels
        
         public ProfileViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
+            this._navigation = navigation;
             EditCommand = new Command(async () => await OnEditClicked());
             DoneCommand = new Command(async () => await OnDoneClicked());
             CancelCommand=new Command(async () => await OnCancelClicked());

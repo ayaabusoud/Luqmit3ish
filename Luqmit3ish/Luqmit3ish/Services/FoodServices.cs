@@ -81,7 +81,7 @@ namespace Luqmit3ish.Services
             }
             try
             {
-            var response = await _http.GetAsync($"{ApiUrl}/Search/{searchRequest}/{type}");
+            var response = await _httpClient.GetAsync($"{_apiUrl}/Search/{searchRequest}/{type}");
            
                 var content = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
