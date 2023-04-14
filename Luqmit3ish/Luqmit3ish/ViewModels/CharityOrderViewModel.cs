@@ -126,7 +126,7 @@ namespace Luqmit3ish.ViewModels
                     item.IsExpanded = true;
                 }
             }
-
+             
         }
 
 private async Task OnDeleteClicked(int restaurantId)
@@ -135,19 +135,29 @@ private async Task OnDeleteClicked(int restaurantId)
             if (deleteConfirm)
             {
                 var id = Preferences.Get("userId", null);
+                if(id is null)
+                {
+                    return;
+                }
                 var userId = int.Parse(id);
                 try
                 {
-                    await _orderService.DeleteOrder(userId, restaurantId);
+                    bool result =  await _orderService.DeleteOrder(userId, restaurantId);
+                    if(result == true)
+                    {
                     await App.Current.MainPage.DisplayAlert("Success", "The order have been deleted successfully", "ok");
                     OnInit();
+                    }
+                    else
+                    {
+                        await App.Current.MainPage.DisplayAlert("Faild", "The Order has not been deleted , please try again", "ok");
+                    }
                 }
                 catch (Exception e)
                 {
                     await App.Current.MainPage.DisplayAlert("Error", "An error occur, please try again", "ok");
 
                 }
-
             }
 
         }
