@@ -14,61 +14,66 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using static Xamarin.Essentials.Permissions;
 using System.Diagnostics;
+using Luqmit3ish.Exceptions;
+using System.Net.Http;
+using System.Runtime.CompilerServices;
 
 namespace Luqmit3ish.ViewModels
 {
-    class SignupViewModel : INotifyPropertyChanged
+    class SignupViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
+        public INavigation _navigation { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         public ICommand signupClicked { protected set; get; }
         public ICommand LoginCommand { protected set; get; }
 
         public SignupViewModel(INavigation navigation)
         {
-            nameErrorMessage = "Please choose a username between 4 and 16 characters, using only letters (upper and lowercase), numbers, underscores, and hyphens.";
-            emailErrorMessage = "Please enter a valid email address with a username and domain name separated by \"@\". The domain name should include at least one dot (.) and no spaces.";
-            passwordErrorMessage = "Your password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.";
-            confirmErrorMessage = "Password does not match.";
-            phoneErrorMessage = "This phone number invalid.";
-            location = type = -1;
-
-            nameErrorVisible = emailErrorVisible = passwordErrorVisible = confirmErrorVisible = phoneErrorVisible = locationErrorVisible = typeErrorVisible = false;
-            this.Navigation = navigation;
+            this._navigation = navigation;
             signupClicked = new Command(async () => await OnSignupClicked());
             LoginCommand = new Command(async () => await OnLoginClicked());
 
             userServices = new UserServices();
             OnInit();
-
         }
 
         private async Task OnSignupClicked()
         {
             try
             {
-                if (isValidName(name) && isValidEmail(email) && isValidPassword(password) && isValidConfirm(confirm) && isValidPhone(phone) && location != -1 && type != -1)
+                if (isValidName(_name) && isValidEmail(_email) && isValidPassword(_password) && isValidConfirm(_confirm) && isValidPhone(_phone) && _location != -1 && _type != -1)
                 {
                     SignUpRequest signUpRequest = new SignUpRequest()
                     {
-                        Name = name,
-                        Email = email,
-                        Password = password,
-                        Phone = phone,
-                        Location = selectedLocation.ToString(),
-                        Type = selectedType.ToString()
+                        Name = _name,
+                        Email = _email,
+                        Password = _password,
+                        Phone = _phone,
+                        Location = _selectedLocation.ToString(),
+                        Type = _selectedType.ToString()
                     };
                     await InsertNewUser(signUpRequest);
                 }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("Error", "Please fill in all the required fields correctly.", "OK");
+                }
             }
-            catch (ArgumentException e)
+            catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
+                await App.Current.MainPage.DisplayAlert("Error", "There was a problem with your internet connection.", "OK");
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await App.Current.MainPage.DisplayAlert("Error", "Unable to connect to the server. Please check your internet connection and try again.", "OK");
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+                await App.Current.MainPage.DisplayAlert("Error", "An unexpected error has occurred. Please try again later.", "OK");
+
             }
         }
 
@@ -78,7 +83,7 @@ namespace Luqmit3ish.ViewModels
 
             if (isInserted)
             {
-                await Navigation.PushModalAsync(new VerificationPage());
+                await _navigation.PushModalAsync(new VerificationPage());
                 return true;
             }
             await Application.Current.MainPage.DisplayAlert("", "This email already exist", "Ok");
@@ -88,79 +93,59 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnLoginClicked()
         {
-            await Navigation.PushModalAsync(new LoginPage());
-        }
-
-        public void OnPropertyChanged(string PrpertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PrpertyName));
+            await _navigation.PushModalAsync(new LoginPage());
         }
 
         #region NameField
-        private string name;
+        private string _name;
         public string Name
         {
-            get => name;
+            get => _name;
             set
             {
-                if (name == value) return;
-                name = value;
-                OnPropertyChanged(nameof(Name));
+                SetProperty(ref _name, value);
 
-                if (isValidName(name))
+                if (isValidName(_name))
                 {
-                    nameErrorVisible = false;
-                    nameValid = true;
-                    nameInvalid = false;
-                    nameFrameColor = Color.Green;
+                    _nameErrorVisible = false;
+                    _nameValid = true;
+                    _nameInvalid = false;
+                    _nameFrameColor = Color.Green;
                 }
                 else
                 {
-                    nameErrorVisible = true;
-                    nameValid = false;
-                    nameInvalid = true;
-                    nameFrameColor = Color.Red;
+                    _nameErrorVisible = true;
+                    _nameValid = false;
+                    _nameInvalid = true;
+                    _nameFrameColor = Color.Red;
                 }
                 OnPropertyChanged(nameof(NameErrorVisible));
                 OnPropertyChanged(nameof(NameValid));
                 OnPropertyChanged(nameof(NameInvalid));
                 OnPropertyChanged(nameof(NameFrameColor));
                 OnPropertyChanged(nameof(NameErrorMessage));
-
             }
         }
 
-        private bool nameErrorVisible;
+        private bool _nameErrorVisible = false;
         public bool NameErrorVisible
         {
-            get => nameErrorVisible;
-            set
-            {
-                if (nameErrorVisible == value) return;
-                nameErrorVisible = value;
-            }
+            get => _nameErrorVisible;
+            set => SetProperty(ref _nameErrorVisible, value);
         }
 
-        private bool nameValid;
+        private bool _nameValid;
         public bool NameValid
         {
-            get => nameValid;
-            set
-            {
-                if (nameValid == value) return;
-                nameValid = value;
-            }
+            get => _nameValid;
+            set => SetProperty(ref _nameValid, value);
         }
 
-        private bool nameInvalid;
+        private bool _nameInvalid;
         public bool NameInvalid
         {
-            get => nameInvalid;
-            set
-            {
-                if (nameInvalid == value) return;
-                nameInvalid = value;
-            }
+            get => _nameInvalid;
+            set => SetProperty(ref _nameInvalid, value);
         }
 
         private bool isValidName(string name)
@@ -177,54 +162,43 @@ namespace Luqmit3ish.ViewModels
             return false;
         }
 
-        private Color nameFrameColor;
+        private Color _nameFrameColor;
         public Color NameFrameColor
         {
-            get => nameFrameColor;
-            set
-            {
-                if (nameFrameColor == value) return;
-
-                nameFrameColor = value;
-            }
+            get => _nameFrameColor;
+            set => SetProperty(ref _nameFrameColor, value);
         }
 
-        private string nameErrorMessage;
+        private string _nameErrorMessage = "Please choose a username between 4 and 16 characters, using only letters (upper and lowercase), numbers, underscores, and hyphens.";
         public string NameErrorMessage
         {
-            get => nameErrorMessage;
-            set
-            {
-                if (nameErrorMessage == value) return;
-                nameErrorMessage = value;
-            }
+            get => _nameErrorMessage;
+            set => SetProperty(ref _nameErrorMessage, value);
         }
         #endregion
 
         #region EmailField
-        private string email;
+        private string _email;
         public string Email
         {
-            get => email;
+            get => _email;
             set
             {
-                if (email == value) return;
-                email = value;
-                OnPropertyChanged(nameof(Email));
+                SetProperty(ref _email, value);
 
-                if (isValidEmail(email))
+                if (isValidEmail(_email))
                 {
-                    emailErrorVisible = false;
-                    emailValid = true;
-                    emailInValid = false;
-                    emailFrameColor = Color.Green;
+                    _emailErrorVisible = false;
+                    _emailValid = true;
+                    _emailInValid = false;
+                    _emailFrameColor = Color.Green;
                 }
                 else
                 {
-                    emailErrorVisible = true;
-                    emailValid = false;
-                    emailInValid = true;
-                    emailFrameColor = Color.Red;
+                    _emailErrorVisible = true;
+                    _emailValid = false;
+                    _emailInValid = true;
+                    _emailFrameColor = Color.Red;
                 }
                 OnPropertyChanged(nameof(EmailErrorVisible));
                 OnPropertyChanged(nameof(EmailValid));
@@ -235,37 +209,25 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private bool emailErrorVisible;
+        private bool _emailErrorVisible = false;
         public bool EmailErrorVisible
         {
-            get => emailErrorVisible;
-            set
-            {
-                if (emailErrorVisible == value) return;
-                emailErrorVisible = value;
-            }
+            get => _emailErrorVisible;
+            set => SetProperty(ref _emailErrorVisible, value);
         }
 
-        private bool emailValid;
+        private bool _emailValid;
         public bool EmailValid
         {
-            get => emailValid;
-            set
-            {
-                if (emailValid == value) return;
-                emailValid = value;
-            }
+            get => _emailValid;
+            set => SetProperty(ref _emailValid, value);
         }
 
-        private bool emailInValid;
+        private bool _emailInValid;
         public bool EmailInValid
         {
-            get => emailInValid;
-            set
-            {
-                if (emailInValid == value) return;
-                emailInValid = value;
-            }
+            get => _emailInValid;
+            set => SetProperty(ref _emailInValid, value);
         }
 
         private bool isValidEmail(string email)
@@ -280,55 +242,44 @@ namespace Luqmit3ish.ViewModels
             return false;
         }
 
-        private Color emailFrameColor;
+        private Color _emailFrameColor;
         public Color EmailFrameColor
         {
-            get => emailFrameColor;
-            set
-            {
-                if (emailFrameColor == value) return;
-
-                emailFrameColor = value;
-            }
+            get => _emailFrameColor;
+            set => SetProperty(ref _emailFrameColor, value);
         }
 
-        private string emailErrorMessage;
+        private string _emailErrorMessage = "Please enter a valid email address with a username and domain name separated by \"@\". The domain name should include at least one dot (.) and no spaces.";
         public string EmailErrorMessage
         {
-            get => emailErrorMessage;
-            set
-            {
-                if (emailErrorMessage == value) return;
-                emailErrorMessage = value;
-            }
+            get => _emailErrorMessage;
+            set => SetProperty(ref _emailErrorMessage, value);
         }
         #endregion
 
         #region PasswordField
-        private string password;
+        private string _password;
         public string Password
         {
-            get => password;
+            get => _password;
             set
             {
-                if (password == value) return;
-                password = value;
-                OnPropertyChanged(nameof(Password));
+                SetProperty(ref _password, value);
 
-                if (isValidPassword(password))
+                if (isValidPassword(_password))
                 {
                    
-                    passwordErrorVisible = false;
-                    passwordValid = true;
-                    passwordInvalid = false;
-                    passwordFrameColor = Color.Green;
+                    _passwordErrorVisible = false;
+                    _passwordValid = true;
+                    _passwordInvalid = false;
+                    _passwordFrameColor = Color.Green;
                 }
                 else
                 {
-                    passwordErrorVisible = true;
-                    passwordValid = false;
-                    passwordInvalid = true;
-                    passwordFrameColor = Color.Red;
+                    _passwordErrorVisible = true;
+                    _passwordValid = false;
+                    _passwordInvalid = true;
+                    _passwordFrameColor = Color.Red;
                 }
                 OnPropertyChanged(nameof(PasswordErrorVisible));
                 OnPropertyChanged(nameof(PasswordValid));
@@ -339,37 +290,25 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private bool passwordErrorVisible;
+        private bool _passwordErrorVisible = false;
         public bool PasswordErrorVisible
         {
-            get => passwordErrorVisible;
-            set
-            {
-                if (passwordErrorVisible == value) return;
-                passwordErrorVisible = value;
-            }
+            get => _passwordErrorVisible;
+            set => SetProperty(ref _passwordErrorVisible, value);
         }
 
-        private bool passwordValid;
+        private bool _passwordValid;
         public bool PasswordValid
         {
-            get => passwordValid;
-            set
-            {
-                if (passwordValid == value) return;
-                passwordValid = value;
-            }
+            get => _passwordValid;
+            set => SetProperty(ref _passwordValid, value);
         }
 
-        private bool passwordInvalid;
+        private bool _passwordInvalid;
         public bool PasswordInvalid
         {
-            get => passwordInvalid;
-            set
-            {
-                if (passwordInvalid == value) return;
-                passwordInvalid = value;
-            }
+            get => _passwordInvalid;
+            set => SetProperty(ref _passwordInvalid, value);
         }
 
         private bool isValidPassword(string password)
@@ -383,54 +322,43 @@ namespace Luqmit3ish.ViewModels
             return false;
         }
 
-        private Color passwordFrameColor;
+        private Color _passwordFrameColor;
         public Color PasswordFrameColor
         {
-            get => passwordFrameColor;
-            set
-            {
-                if (passwordFrameColor == value) return;
-
-                passwordFrameColor = value;
-            }
+            get => _passwordFrameColor;
+            set => SetProperty(ref _passwordFrameColor, value);
         }
 
-        private string passwordErrorMessage;
+        private string _passwordErrorMessage = "Your password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.";
         public string PasswordErrorMessage
         {
-            get => passwordErrorMessage;
-            set
-            {
-                if (passwordErrorMessage == value) return;
-                passwordErrorMessage = value;
-            }
+            get => _passwordErrorMessage;
+            set => SetProperty(ref _passwordErrorMessage, value);
         }
         #endregion
 
         #region ConfirmField
-        private string confirm;
+        private string _confirm;
         public string Confirm
         {
-            get => confirm;
+            get => _confirm;
             set
             {
-                if (confirm == value) return;
-                confirm = value;
-                OnPropertyChanged(nameof(Confirm));
+                SetProperty(ref _confirm, value);
 
-                if (isValidConfirm(confirm) && isValidPassword(confirm))
+                if (isValidConfirm(_confirm) && isValidPassword(_confirm))
                 {
-                    confirmErrorVisible = false;
-                    confirmValid = true;
-                    confirmInvalid = false;
-                    confirmFrameColor = Color.Green;
+                    _confirmErrorVisible = false;
+                    _confirmValid = true;
+                    _confirmInvalid = false;
+                    _confirmFrameColor = Color.Green;
                 }
                 else
                 {
-                    confirmErrorVisible = true;
-                    confirmValid = false;
-                    confirmInvalid = true;
-                    confirmFrameColor = Color.Red;
+                    _confirmErrorVisible = true;
+                    _confirmValid = false;
+                    _confirmInvalid = true;
+                    _confirmFrameColor = Color.Red;
                 }
                 OnPropertyChanged(nameof(ConfirmErrorVisible));
                 OnPropertyChanged(nameof(ConfirmValid));
@@ -441,94 +369,71 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private bool confirmErrorVisible;
+        private bool _confirmErrorVisible = false;
         public bool ConfirmErrorVisible
         {
-            get => confirmErrorVisible;
-            set
-            {
-                if (confirmErrorVisible == value) return;
-                confirmErrorVisible = value;
-            }
+            get => _confirmErrorVisible;
+            set => SetProperty(ref _confirmErrorVisible, value);
         }
 
-        private bool confirmValid;
+        private bool _confirmValid;
         public bool ConfirmValid
         {
-            get => confirmValid;
-            set
-            {
-                if (confirmValid == value) return;
-                confirmValid = value;
-            }
+            get => _confirmValid;
+            set => SetProperty(ref _confirmValid, value);
         }
 
-        private bool confirmInvalid;
+        private bool _confirmInvalid;
         public bool ConfirmInvalid
         {
-            get => confirmInvalid;
-            set
-            {
-                if (confirmInvalid == value) return;
-                confirmInvalid = value;
-            }
+            get => _confirmInvalid;
+            set => SetProperty(ref _confirmInvalid, value);
         }
 
         private bool isValidConfirm(string confirm)
         {
             if (string.IsNullOrEmpty(confirm)) return false;
 
-            return confirm.Equals(password);
+            return confirm.Equals(_password);
         }
 
-        private Color confirmFrameColor;
+        private Color _confirmFrameColor;
         public Color ConfirmFrameColor
         {
-            get => confirmFrameColor;
-            set
-            {
-                if (confirmFrameColor == value) return;
-
-                confirmFrameColor = value;
-            }
+            get => _confirmFrameColor;
+            set => SetProperty(ref _confirmFrameColor, value);
         }
 
-        private string confirmErrorMessage;
+        private string _confirmErrorMessage = "Password does not match.";
         public string ConfirmErrorMessage
         {
-            get => confirmErrorMessage;
-            set
-            {
-                if (confirmErrorMessage == value) return;
-                confirmErrorMessage = value;
-            }
+            get => _confirmErrorMessage;
+            set => SetProperty(ref _confirmErrorMessage, value);
         }
         #endregion
 
         #region PhoneField
-        private string phone;
+        private string _phone;
         public string Phone
         {
-            get => phone;
+            get => _phone;
             set
             {
-                if (phone == value) return;
-                phone = value;
-                OnPropertyChanged(nameof(Phone));
+                SetProperty(ref _phone, value);
 
-                if (isValidPhone(phone))
+                if (isValidPhone(_phone))
                 {
-                    phoneErrorVisible = false;
-                    phoneValid = true;
-                    phoneInvalid = false;
-                    phoneFrameColor = Color.Green;
+                    _phoneErrorVisible = false;
+                    _phoneValid = true;
+                    _phoneInvalid = false;
+                    _phoneFrameColor = Color.Green;
                 }
                 else
                 {
-                    phoneErrorVisible = true;
-                    phoneValid = false;
-                    phoneInvalid = true;
-                    phoneFrameColor = Color.Red;
+                    _phoneErrorVisible = true;
+                    _phoneValid = false;
+                    _phoneInvalid = true;
+                    _phoneFrameColor = Color.Red;
                 }
                 OnPropertyChanged(nameof(PhoneErrorVisible));
                 OnPropertyChanged(nameof(PhoneValid));
@@ -539,37 +444,25 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private bool phoneErrorVisible;
+        private bool _phoneErrorVisible = false;
         public bool PhoneErrorVisible
         {
-            get => phoneErrorVisible;
-            set
-            {
-                if (phoneErrorVisible == value) return;
-                phoneErrorVisible = value;
-            }
+            get => _phoneErrorVisible;
+            set => SetProperty(ref _phoneErrorVisible, value);
         }
 
-        private bool phoneValid;
+        private bool _phoneValid;
         public bool PhoneValid
         {
-            get => phoneValid;
-            set
-            {
-                if (phoneValid == value) return;
-                phoneValid = value;
-            }
+            get => _phoneValid;
+            set => SetProperty(ref _phoneValid, value);
         }
 
-        private bool phoneInvalid;
+        private bool _phoneInvalid;
         public bool PhoneInvalid
         {
-            get => phoneInvalid;
-            set
-            {
-                if (phoneInvalid == value) return;
-                phoneInvalid = value;
-            }
+            get => _phoneInvalid;
+            set => SetProperty(ref _phoneInvalid, value);
         }
 
         private bool isValidPhone(string phone)
@@ -583,55 +476,44 @@ namespace Luqmit3ish.ViewModels
             return false;
         }
 
-        private Color phoneFrameColor;
+        private Color _phoneFrameColor;
         public Color PhoneFrameColor
         {
-            get => phoneFrameColor;
-            set
-            {
-                if (phoneFrameColor == value) return;
-
-                phoneFrameColor = value;
-            }
+            get => _phoneFrameColor;
+            set => SetProperty(ref _phoneFrameColor, value);
         }
 
-        private string phoneErrorMessage;
+        private string _phoneErrorMessage = "This phone number invalid.";
         public string PhoneErrorMessage
         {
-            get => phoneErrorMessage;
-            set
-            {
-                if (phoneErrorMessage == value) return;
-                phoneErrorMessage = value;
-            }
+            get => _phoneErrorMessage;
+            set => SetProperty(ref _phoneErrorMessage, value);
         }
 
         #endregion
 
         #region LocationField
-        private int location;
+        private int _location = -1; 
         public int Location
         {
-            get => location;
+            get => _location;
             set
             {
-                if (location == value) return;
-                location = value;
-                OnPropertyChanged(nameof(Location));
+                SetProperty(ref _location, value);
 
-                if (location != -1)
+                if (_location != -1)
                 {
-                    locationErrorVisible = false;
-                    locationValid = true;
-                    locationInvalid = false;
-                    locationFrameColor = Color.Green;
+                    _locationErrorVisible = false;
+                    _locationValid = true;
+                    _locationInvalid = false;
+                    _locationFrameColor = Color.Green;
                 }
                 else
                 {
-                    locationErrorVisible = true;
-                    locationValid = false;
-                    locationInvalid = true;
-                    locationFrameColor = Color.Red;
+                    _locationErrorVisible = true;
+                    _locationValid = false;
+                    _locationInvalid = true;
+                    _locationFrameColor = Color.Red;
                 }
                 OnPropertyChanged(nameof(LocationErrorVisible));
                 OnPropertyChanged(nameof(LocationValid));
@@ -642,96 +524,70 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private bool locationErrorVisible;
+        private bool _locationErrorVisible = false;
         public bool LocationErrorVisible
         {
-            get => locationErrorVisible;
-            set
-            {
-                if (locationErrorVisible == value) return;
-                locationErrorVisible = value;
-            }
+            get => _locationErrorVisible;
+            set => SetProperty(ref _locationErrorVisible, value);
         }
 
-        private bool locationValid;
+        private bool _locationValid;
         public bool LocationValid
         {
-            get => locationValid;
-            set
-            {
-                if (locationValid == value) return;
-                locationValid = value;
-            }
+            get => _locationValid;
+            set => SetProperty(ref _locationValid, value);
         }
 
-        private bool locationInvalid;
+        private bool _locationInvalid;
         public bool LocationInvalid
         {
-            get => locationInvalid;
-            set
-            {
-                if (locationInvalid == value) return;
-                locationInvalid = value;
-            }
+            get => _locationInvalid;
+            set => SetProperty(ref _locationInvalid, value);
         }
 
-        private Color locationFrameColor;
+        private Color _locationFrameColor;
         public Color LocationFrameColor
         {
-            get => locationFrameColor;
-            set
-            {
-                if (locationFrameColor == value) return;
-
-                locationFrameColor = value;
-            }
+            get => _locationFrameColor;
+            set => SetProperty(ref _locationFrameColor, value);
         }
 
-        private string locationErrorMessage;
+        private string _locationErrorMessage;
         public string LocationErrorMessage
         {
-            get => locationErrorMessage;
-            set
-            {
-                if (locationErrorMessage == value) return;
-                locationErrorMessage = value;
-            }
+            get => _locationErrorMessage;
+            set => SetProperty(ref _locationErrorMessage, value);
         }
 
-        private string selectedLocation;
+        private string _selectedLocation;
         public string SelectedLocation {
-            get => selectedLocation;
-            set {
-                if (selectedLocation == value) return;
-                selectedLocation = value;
-            }
+            get => _selectedLocation;
+            set => SetProperty(ref _selectedLocation, value);
         }
         #endregion
 
         #region TypeField
-        private int type;
+        private int _type = -1;
         public int Ttype
         {
-            get => type;
+            get => _type;
             set
             {
-                if (type == value) return;
-                type = value;
-                OnPropertyChanged(nameof(Ttype));
+                SetProperty(ref _type, value);
 
-                if (type != -1)
+                if (_type != -1)
                 {
-                    typeErrorVisible = false;
-                    typeValid = true;
-                    typeInvalid = false;
-                    typeFrameColor = Color.Green;
+                    _typeErrorVisible = false;
+                    _typeValid = true;
+                    _typeInvalid = false;
+                    _typeFrameColor = Color.Green;
                 }
                 else
                 {
-                    typeErrorVisible = true;
-                    typeValid = false;
-                    typeInvalid = true;
-                    typeFrameColor = Color.Red;
+                    _typeErrorVisible = true;
+                    _typeValid = false;
+                    _typeInvalid = true;
+                    _typeFrameColor = Color.Red;
                 }
                 OnPropertyChanged(nameof(TtypeErrorVisible));
                 OnPropertyChanged(nameof(TtypeValid));
@@ -742,76 +598,49 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private bool typeErrorVisible;
+        private bool _typeErrorVisible = false;
         public bool TtypeErrorVisible
         {
-            get => typeErrorVisible;
-            set
-            {
-                if (typeErrorVisible == value) return;
-                typeErrorVisible = value;
-            }
+            get => _typeErrorVisible;
+            set => SetProperty(ref _typeErrorVisible, value);
         }
 
-        private bool typeValid;
+        private bool _typeValid;
         public bool TtypeValid
         {
-            get => typeValid;
-            set
-            {
-                if (typeValid == value) return;
-                typeValid = value;
-            }
+            get => _typeValid;
+            set => SetProperty(ref _typeValid, value);
         }
 
-        private bool typeInvalid;
+        private bool _typeInvalid;
         public bool TtypeInvalid
         {
-            get => typeInvalid;
-            set
-            {
-                if (typeInvalid == value) return;
-                typeInvalid = value;
-            }
+            get => _typeInvalid;
+            set => SetProperty(ref _typeInvalid, value);
         }
 
-        private Color typeFrameColor;
+        private Color _typeFrameColor;
         public Color TtypeFrameColor
         {
-            get => typeFrameColor;
-            set
-            {
-                if (typeFrameColor == value) return;
-
-                typeFrameColor = value;
-            }
+            get => _typeFrameColor;
+            set => SetProperty(ref _typeFrameColor, value);
         }
 
-        private string typeErrorMessage;
+        private string _typeErrorMessage;
         public string TtypeErrorMessage
         {
-            get => typeErrorMessage;
-            set
-            {
-                if (typeErrorMessage == value) return;
-                typeErrorMessage = value;
-            }
+            get => _typeErrorMessage;
+            set => SetProperty(ref _typeErrorMessage, value);
         }
 
-        private string selectedType;
+        private string _selectedType;
         public string SelectedType
         {
-            get => selectedType;
-            set
-            {
-                if (selectedType == value) return;
-                selectedType = value;
-            }
+            get => _selectedType;
+            set => SetProperty(ref _selectedType, value);
         }
         #endregion
 
-
-       
 
         private readonly UserServices userServices;
 
@@ -819,10 +648,7 @@ namespace Luqmit3ish.ViewModels
         public ObservableCollection<User> Users
         {
             get => _users;
-            set {
-                if (_users == value) return;
-                _users = value;
-            }
+            set => SetProperty(ref _users, value);
         }
 
 
@@ -838,7 +664,7 @@ namespace Luqmit3ish.ViewModels
             {
                 return new Command(() =>
                 {
-                    Navigation.PushModalAsync(new LoginPage());
+                    _navigation.PushModalAsync(new LoginPage());
                 });
             }
         }
