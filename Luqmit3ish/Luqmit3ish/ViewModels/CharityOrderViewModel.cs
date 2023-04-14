@@ -90,41 +90,100 @@ namespace Luqmit3ish.ViewModels
         }
         private async void OnMinusClicked(int orderId)
         {
-            await _orderService.UpdateOrderDishCount(orderId, "Minus");
-            var order = await _orderService.GetOrderById(orderId);
-            Dish dish = await _foodService.GetFoodById(order.dish_id);
+            Order order;
+            Dish dish;
+            const string MinusString = "Minus";
+
             var id = Preferences.Get("userId", null);
-            var userId = int.Parse(id);
-            OrderCard = await _orderService.GetOrders(userId);
-            foreach (OrderCard item in OrderCard)
+            if (id == null)
             {
-                if (item.id == dish.user_id)
-                {
-                    item.IsExpanded = true;
-                }
+                return;
             }
+            var userId = int.Parse(id);
+            try
+            {
+                await _orderService.UpdateOrderDishCount(orderId,MinusString );
+                order = await _orderService.GetOrderById(orderId);
+                dish = await _foodService.GetFoodById(order.dish_id);
+                OrderCard = await _orderService.GetOrders(userId);
+                if (OrderCard == null || order == null || dish == null)
+                {
+                    return;
+                }
+                foreach (OrderCard item in OrderCard)
+                {
+                    if (item.id == dish.user_id)
+                    {
+                        item.IsExpanded = true;
+                    }
+                }
+
+            }
+            catch (ConnectionException e)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+            }
+            catch (HttpRequestException e)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
+
+            }
+            catch (Exception e)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
+            }
+
 
 
         }
 
         private async void OnPlusClicked(int orderId)
         {
-            var order = await _orderService.GetOrderById(orderId);
-            Dish dish = await _foodService.GetFoodById(order.dish_id);
-            if (dish.number == 0)
+          
+            Dish dish;
+            Order order;
+            const string PlusString = "plus";
+
+            var id = Preferences.Get("userId", null);
+            if (id == null)
             {
                 return;
             }
-            await _orderService.UpdateOrderDishCount(orderId, "plus");
-            var id = Preferences.Get("userId", null);
             var userId = int.Parse(id);
-            OrderCard = await _orderService.GetOrders(userId);
-            foreach (OrderCard item in OrderCard)
+            try
             {
-                if (item.id == dish.user_id)
+                order = await _orderService.GetOrderById(orderId);
+                dish = await _foodService.GetFoodById(order.dish_id);
+                OrderCard = await _orderService.GetOrders(userId);
+                if (dish.number == 0)
                 {
-                    item.IsExpanded = true;
+                    return;
                 }
+                if (OrderCard == null || order == null || dish == null)
+                {
+                    return;
+                }
+                await _orderService.UpdateOrderDishCount(orderId,PlusString );            
+                foreach (OrderCard item in OrderCard)
+                {
+                    if (item.id == dish.user_id)
+                    {
+                        item.IsExpanded = true;
+                    }
+                }
+            }
+            catch (ConnectionException e)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+            }
+            catch (HttpRequestException e)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
+
+            }
+            catch (Exception e)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
             }
 
         }
