@@ -10,7 +10,7 @@
                             HorizontalOptions="CenterAndExpand"
                             Margin="0,60,0,0"
                             CornerRadius="100" IsClippedToBounds="True" HeightRequest="120" WidthRequest="120">
-                    <Image Source="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" 
+                    <Image Source="{Binding Photo}" 
                               VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="AspectFill"/>
                 </Frame>
              <Label TextColor="Black" FontSize="Medium" Text="{Binding Name}" HorizontalTextAlignment="Center"/>
