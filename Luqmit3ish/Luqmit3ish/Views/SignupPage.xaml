@@ -50,14 +50,14 @@
                             <Frame Style="{StaticResource textFeildFrame}" BorderColor="{Binding ConfirmFrameColor}">
                                 <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0">
                                     <Label Text="&#xf023;" FontFamily="FontAwesomeIcons" FontSize="20" TextColor="Black"/>
-                                    <Entry Placeholder="Enter Confirm Password" IsPassword="True" Keyboard="Text" Style="{StaticResource textFeild}" Text="{Binding Confirm}" ClearButtonVisibility="WhileEditing"/>
+                                    <Entry Placeholder="Enter Confirm password" IsPassword="True" Style="{StaticResource textFeild}" Text="{Binding Confirm}" ClearButtonVisibility="WhileEditing" />
                                     <Label Style="{StaticResource validIcon}"  IsVisible="{Binding ConfirmValid}" />
                                     <Label Style="{StaticResource invalidIcon}"  IsVisible="{Binding ConfirmInvalid}" />
                                 </StackLayout>
                             </Frame>
                         <Label Text="{Binding ConfirmErrorMessage}" TextColor="Red" FontSize="Small" Margin="15,0" IsVisible="{Binding ConfirmErrorVisible}"/>
 
-                        <Label Text="Confirm Password" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
+                        <Label Text="Phone Number" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
 
                         <Frame Style="{StaticResource textFeildFrame}" BorderColor="{Binding PhoneFrameColor}">
                             <StackLayout Orientation="Horizontal" Margin="10,0" Padding="0">

@@ -78,7 +78,7 @@
                                             <TapGestureRecognizer Command="{Binding PlusCommand}"/>
                                         </Label.GestureRecognizers>
                                     </Label>
-                                    <Label Text="{Binding Counter}" FontAttributes="Bold" Margin="3,7,3,0" FontSize="Medium" TextColor="Black"/>
+                                    <Label Text="{Binding KeepValid}" FontAttributes="Bold" Margin="3,7,3,0" FontSize="Medium" TextColor="Black"/>
                                     <Label Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
                                         <Label.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding MinusCommand}"/>
@@ -116,7 +116,7 @@
                                             <TapGestureRecognizer Command="{Binding PlusCommand1}"/>
                                         </Label.GestureRecognizers>
                                     </Label>
-                                    <Label Text="{Binding Counter1}" FontAttributes="Bold" Margin="3,7,3,0" FontSize="Medium" TextColor="Black"/>
+                                    <Label Text="{Binding Quantity}" FontAttributes="Bold" Margin="3,7,3,0" FontSize="Medium" TextColor="Black"/>
                                     <Label Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
                                         <Label.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding MinusCommand1}"/>

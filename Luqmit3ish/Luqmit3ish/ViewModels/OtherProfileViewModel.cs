@@ -1,9 +1,9 @@
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Luqmit3ish.ViewModels
@@ -11,14 +11,14 @@ namespace Luqmit3ish.ViewModels
     class OtherProfileViewModel : ViewModelBase
     {
 
-        public UserServices userServices;
-        public User user;
+        private UserServices _userServices;
+        private User _user;
 
         public OtherProfileViewModel(int id)
         {
-            userServices = new UserServices();
-            user = new User();
-            OnInit(id);
+            _userServices = new UserServices();
+            _user = new User();
+            _ = OnInit(id);
         }
 
         private string _name;
@@ -60,17 +60,36 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                user = await userServices.GetUserById(id);
-                Name = user.Name;
-                Location = user.Location;
-                PhoneNumber = user.Phone;
-                Email = user.Email;
-                Photo = user.Photo;
+                _user = await _userServices.GetUserById(id);
+                Name = _user.Name;
+                Location = _user.Location;
+                PhoneNumber = _user.Phone;
+                Email = _user.Email;
+                Photo = _user.Photo;
+            }
+            catch(ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (HttpRequestException )
+            {
+                Debug.WriteLine("Something went wrong while viewing the profile, Retrying...");
+                await Task.Delay(5000);
+                await OnInit(id);
+            }
+            catch (ConnectionException)
+            {
+                Debug.WriteLine("There is no internet connection, please check your connection");
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+                if (_user == null)
+                {
+                   Debug.WriteLine($"User with id {id} not found");
+                }
             }
         }
+
     }
 }
