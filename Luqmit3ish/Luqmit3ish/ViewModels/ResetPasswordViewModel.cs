@@ -11,16 +11,15 @@ using Xamarin.Forms;
 
 namespace Luqmit3ish.ViewModels
 {
-    class ResetPasswordViewModel : INotifyPropertyChanged
+    class ResetPasswordViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         public ICommand ButtonCommand { protected set; get; }
 
         public ResetPasswordViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
+            this._navigation = navigation;
             ButtonCommand = new Command(async () => await OnButtonClicked());
         }
 
@@ -28,7 +27,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-            await Navigation.PushModalAsync(new LoginPage());
+            await _navigation.PushModalAsync(new LoginPage());
 
             }
             catch (ArgumentException e)

@@ -1,3 +1,4 @@
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -7,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -19,16 +21,11 @@ namespace Luqmit3ish.ViewModels
 {
     class RestaurantOrderViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
+          private INavigation _navigation { get; set; }
 
         public ICommand ProfileCommand { protected set; get; }
-        public OrderService orderService;
-        public FoodServices foodService;
         public ICommand DoneCommand { protected set; get; }
-
-
+        private OrderService _orderService;
 
 
         private ObservableCollection<Dish> _dishes;
@@ -40,11 +37,10 @@ namespace Luqmit3ish.ViewModels
         }
         public RestaurantOrderViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
+           _navigation = navigation;
             ExpanderCommand = new Command<int>(OnExpanderClicked);
-            orderService = new OrderService();
-            foodService = new FoodServices();
             DoneCommand = new Command(OnDoneClick);
+            _orderService = new OrderService();
             OnInit();
         }
 
@@ -77,10 +73,7 @@ namespace Luqmit3ish.ViewModels
             }
 
         }
-    
-
-       
-
+   
 
         private ObservableCollection<OrderCard> _orderCard;
 
@@ -93,11 +86,28 @@ namespace Luqmit3ish.ViewModels
         private async void OnInit()
         {
             var id = Preferences.Get("userId", null);
+            if (id == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Your login session has been expired", "Ok");
+                   await _navigation.PushAsync(new LoginPage());
+                    return;
+                }
             var userId = int.Parse(id);
-            OrderCard = await orderService.GetRestaurantOrders(userId,false);
-            if (OrderCard is null)
+            try
             {
-                //no orders yet
+                OrderCard = await _orderService.GetRestaurantOrders(userId, false);
+            }
+             catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
             }
 
 
@@ -109,7 +119,7 @@ namespace Luqmit3ish.ViewModels
 
             try
             {
-                await Navigation.PushAsync(new OtherProfilePage(1));
+                await _navigation.PushAsync(new OtherProfilePage(1));
 
             }
             catch (ArgumentException e)

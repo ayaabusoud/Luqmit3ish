@@ -10,16 +10,16 @@ using Xamarin.Forms;
 
 namespace Luqmit3ish.ViewModels
 {
-    class OnBoardingViewModel :  INotifyPropertyChanged
+    class OnBoardingViewModel :  ViewModelBase
     {
-    public INavigation Navigation { get; set; }
+    private INavigation _navigation { get; set; }
 
     public event PropertyChangedEventHandler PropertyChanged;
     public ICommand ButtonCommand { protected set; get; }
 
     public OnBoardingViewModel(INavigation navigation)
     {
-        this.Navigation = navigation;
+        this._navigation = navigation;
         ButtonCommand = new Command(async () => await OnButtonClicked());
     }
 
@@ -27,7 +27,7 @@ namespace Luqmit3ish.ViewModels
     {
             try
             {
-            await Navigation.PushModalAsync(new SignupPage());
+            await _navigation.PushModalAsync(new SignupPage());
 
             }
             catch (ArgumentException e)

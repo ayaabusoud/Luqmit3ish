@@ -1,3 +1,4 @@
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -5,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -18,16 +20,16 @@ namespace Luqmit3ish.ViewModels
 {
     class ProfileViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
         public ICommand EditCommand { protected set; get; }
         public ICommand DoneCommand { protected set; get; }
         public ICommand CancelCommand { protected set; get; }
 
-        public const string DEFULY_IMAGE= "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+        public const string DefultImage= "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
        
         public ProfileViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
+            this._navigation = navigation;
             EditCommand = new Command(async () => await OnEditClicked());
             DoneCommand = new Command(async () => await OnDoneClicked());
             CancelCommand=new Command(async () => await OnCancelClicked());
@@ -203,42 +205,47 @@ namespace Luqmit3ish.ViewModels
         private async void OnInit()
         {
             string email;
-            Photo = DEFULY_IMAGE;
+            Photo = DefultImage;
 
             try
             {
               email = Preferences.Get("userEmail", null);
                 if (string.IsNullOrEmpty(email))
                 {
-                    throw new Exception("Email not found in Preferences");
+                    return;
                 }
                 UserInfo = await userServices.GetUserByEmail(email);
 
-
-            }
-      
-            catch (Exception)
-            {
-                throw new Exception("Get User Filed");
-            }
-
-
-
-            if (UserInfo != null)
-            {
-                if (UserInfo.Photo == null)
+                if (UserInfo != null)
                 {
-                    Photo = DEFULY_IMAGE;
+                    if (UserInfo.Photo == null)
+                    {
+                        Photo = DefultImage;
+                    }
+                    else
+                    {
+                        Photo = UserInfo.Photo;
+                    }
+                    Email = UserInfo.Email;
+                    Phone = UserInfo.Phone;
+                    Name = UserInfo.Name;
+                    Location = UserInfo.Location;
                 }
-                else
-                {
-                    Photo = UserInfo.Photo;
-                }
-                Email = UserInfo.Email;
-                Phone = UserInfo.Phone;
-                Name = UserInfo.Name;
-                Location = UserInfo.Location;
             }
+            catch (ConnectionException )
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+            }
+            catch (HttpRequestException )
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
+
+            }
+            catch (Exception )
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
+            }
+
         }
         private async Task OnDoneClicked()
         {
@@ -250,102 +257,111 @@ namespace Luqmit3ish.ViewModels
                 email = Preferences.Get("userEmail", null);
                 if (string.IsNullOrEmpty(email))
                 {
-                    throw new Exception("Email not found in Preferences");
-                }
-                UserInfo = await userServices.GetUserByEmail(email);
-
-            }
-            catch (Exception e )
-            {
-                Debug.WriteLine(e.Message);
-
-            }
-       
-            if (UserInfo != null)
-            {
-                if (UserInfo.Photo == null)
-                {
-                    Photo = DEFULY_IMAGE;
-                }
-                else
-                {
-                    Photo = UserInfo.Photo;
-                }
-
-                User user = new User
-                {
-                    id = UserInfo.id,
-                    Name = Name,
-                    Email = Email,
-                    Location = Location,
-                    Phone = Phone,
-                    Photo = UserInfo.Photo,
-                    Type = UserInfo.Type,
-                    Password = UserInfo.Password
-                };
-                if ((EmailErrorVisible || PhoneErrorVisible || LocationErrorVisible || NameErrorVisible)) {
-                    await Application.Current.MainPage.DisplayAlert("Warning", "Please make sure all information is valid before saving changes.", "OK");
                     return;
                 }
-                try
+                UserInfo = await userServices.GetUserByEmail(email);
+                if (UserInfo != null)
                 {
+                    if (UserInfo.Photo == null)
+                    {
+                        Photo = DefultImage;
+                    }
+                    else
+                    {
+                        Photo = UserInfo.Photo;
+                    }
+
+                    User user = new User
+                    {
+                        id = UserInfo.id,
+                        Name = Name,
+                        Email = Email,
+                        Location = Location,
+                        Phone = Phone,
+                        Photo = UserInfo.Photo,
+                        Type = UserInfo.Type,
+                        Password = UserInfo.Password
+                    };
+                    if ((EmailErrorVisible || PhoneErrorVisible || LocationErrorVisible || NameErrorVisible))
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Warning", "Please make sure all information is valid before saving changes.", "OK");
+                        return;
+                    }
+
                     await userServices.EditProfile(user);
                     EditEnable = false;
                     ViewEnable = true;
                 }
-                
-
-            catch (ArgumentException e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
-                catch (Exception  e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
             }
-            
+            catch (ConnectionException )
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+            }
+            catch (HttpRequestException )
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
+
+            }
+            catch (Exception )
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
+            }
+        
+
         }
+            
+        
         private async Task OnCancelClicked()
         {
             string email;
-            Photo = DEFULY_IMAGE;
+            Photo = DefultImage;
 
             try
             {
                 email = Preferences.Get("userEmail", null);
                 if (string.IsNullOrEmpty(email))
                 {
-                    throw new Exception("Email not found in Preferences");
+                    return;
                 }
                 UserInfo = await userServices.GetUserByEmail(email);
 
+
+                if (UserInfo != null)
+                {
+                    if (UserInfo.Photo == null)
+                    {
+                        Photo = DefultImage;
+                    }
+                    else
+                    {
+                        Photo = UserInfo.Photo;
+                    }
+                    Email = UserInfo.Email;
+                    Phone = UserInfo.Phone;
+                    Name = UserInfo.Name;
+                    Location = UserInfo.Location;
+                }
+                ViewEnable = true;
+                EditEnable = false;
+
             }
-        
+            catch (ConnectionException)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+            }
+            catch (HttpRequestException)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
+
+            }
             catch (Exception)
             {
-                throw new Exception("Get User Filed");
+                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
             }
 
 
 
-            if (UserInfo != null)
-            {
-                if (UserInfo.Photo == null)
-                {
-                    Photo = DEFULY_IMAGE;
-                }
-                else
-                {
-                    Photo = UserInfo.Photo;
-                }
-                Email = UserInfo.Email;
-                Phone = UserInfo.Phone;
-                Name = UserInfo.Name;
-                Location = UserInfo.Location;
-            }
-            ViewEnable = true;
-            EditEnable = false;
+
         }
 
         private async Task OnEditClicked()

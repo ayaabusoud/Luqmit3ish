@@ -1,3 +1,4 @@
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -7,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -19,7 +21,7 @@ namespace Luqmit3ish.ViewModels
 {
     class CharityHomeViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
         public ICommand FilterCommand { protected set; get; }
         public ICommand SearchCommand { protected set; get; }
         public Command<int> PlusCommand { protected set; get; }
@@ -27,9 +29,8 @@ namespace Luqmit3ish.ViewModels
         public Command<int> ReserveCommand { protected set; get; }
         public Command<int> ProfileCommand { protected set; get; }
 
-        public FoodServices foodServices;
-        public UserServices userServices; 
-        public OrderService orderService;
+        private FoodServices _foodServices;
+        private OrderService _orderService;
         
          private bool _isEnabled = false;
         public bool IsEnabled
@@ -74,17 +75,16 @@ namespace Luqmit3ish.ViewModels
 
         public  CharityHomeViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
+            this._navigation = navigation;
             FilterCommand = new Command(async () => await OnFilterClicked());
             SearchCommand = new Command(async () => await OnSearchClicked());
             ProfileCommand = new Command<int>(async (int restaurantId) => await OnProfileClicked(restaurantId));
             PlusCommand = new Command<int>(OnPlusClicked);
             MinusCommand = new Command(OnMinusClicked);
             ReserveCommand = new Command<int>(async (int FoodId) => await OnReserveClicked(FoodId));
-            foodServices = new FoodServices();
+            _foodServices = new FoodServices();
             ExpanderCommand = new Command<int>(OnExpanderClicked);
-            orderService = new OrderService();
-            userServices = new UserServices(); 
+            _orderService = new OrderService();
             OnInit();
         }
         private bool _isExpanded = false;
@@ -115,9 +115,15 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                var id = Preferences.Get("userId", "null");
-                int UserId = int.Parse(id);
-                Dish dish = await foodServices.GetFoodById(FoodId);
+                var id = Preferences.Get("userId", null);
+                if (id == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Your login session has been expired", "Ok");
+                   await _navigation.PushAsync(new LoginPage());
+                    return;
+                }
+                var UserId = int.Parse(id);
+                Dish dish = await _foodServices.GetFoodById(FoodId);
 
                 Order newOrder = new Order();
                 newOrder.char_id = UserId;
@@ -127,35 +133,33 @@ namespace Luqmit3ish.ViewModels
                 newOrder.number_of_dish = Counter;
                 newOrder.receive = false;
 
-                await orderService.ReserveOrder(newOrder);
+                await _orderService.ReserveOrder(newOrder);
 
                 DishCard quantityDish = _dishCard.FirstOrDefault(d => d.id == dish.id);
                 if (quantityDish != null)
                 {
-                    quantityDish.quantity -=Counter;
+                    quantityDish.quantity -= Counter;
                 }
 
-                if (Counter > 0) Counter=0;
+                if (Counter > 0) Counter = 0;
+                await Application.Current.MainPage.DisplayAlert("Successfuly", "Your order has been successfully reserved", "ok");
 
-                DishCard = await foodServices.GetDishCards();
-                
-                foreach(DishCard item in DishCard)
-                {
-                    if(item.quantity == 0)
-                    {
-                        DishCard.Remove(item);
-                    }
-                    if (item.id == FoodId)
-                    {
-                        item.IsExpanded = true;
-                    }
-                }
-                await App.Current.MainPage.DisplayAlert("successfuly", "Your order has been successfully booked", "ok");
-
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (ConnectionException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+            }
+            catch (HttpRequestException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Something went bad on this reservation, you can try again", "Ok");
             }
             catch (Exception e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
+                await Application.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
             }
            
         }
@@ -192,28 +196,38 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-               DishCard = await foodServices.GetDishCards();
-                if(DishCard != null)
-                {
-                    foreach(DishCard dish in DishCard)
-                    {
-                        if(dish.quantity == 0)
-                        {
-                            DishCard.Remove(dish);
-                        }
-                    }
-                }
-            }catch(Exception e)
+                DishCard = await _foodServices.GetDishCards();
+            }
+            catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
             }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            if (DishCard != null)
+            {
+                foreach (DishCard dish in DishCard)
+                {
+                    if (dish.quantity == 0)
+                    {
+                        DishCard.Remove(dish);
+                    }
+                }
+            }
+
         }
 
         private async Task OnFilterClicked()
         {
             try
             {
-                await Navigation.PushAsync(new FilterFoodPage());
+                await _navigation.PushAsync(new FilterFoodPage());
             }
             catch (ArgumentException e)
             {
@@ -229,7 +243,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await Navigation.PushAsync(new SearchPage());
+                await _navigation.PushAsync(new SearchPage());
 
             }
             catch (ArgumentException e)
@@ -245,7 +259,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await Navigation.PushAsync(new OtherProfilePage(restaurantId));
+                await _navigation.PushAsync(new OtherProfilePage(restaurantId));
 
             }
             catch (ArgumentException e)
