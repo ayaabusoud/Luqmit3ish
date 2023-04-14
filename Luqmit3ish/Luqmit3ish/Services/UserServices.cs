@@ -133,10 +133,19 @@ namespace Luqmit3ish.Services
             }
         }
 
-        public async Task EditProfile(User user)
+         public async Task EditProfile(User user)
         {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
             var content = JsonConvert.SerializeObject(user);
-            var response = await _httpClient.PutAsync($"{_apiUrl}/{user.id}", new StringContent(content, UnicodeEncoding.UTF8, "application/json"));
+            var response = await _http.PutAsync($"{_apiUrl}/{user.id}", new StringContent(content, UnicodeEncoding.UTF8, "application/json"));
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException(response.StatusCode + ": failed to update data " + response.ReasonPhrase);
+            }
+
         }
     }
 }

@@ -71,40 +71,59 @@ namespace Luqmit3ish.Services
             }
             
         }
-        
-        public async Task<Order> GetOrderById(int id)
-        {
-            var response = await _http.GetAsync($"{ApiUrl}/{id}");
+              public async Task<Order> GetOrderById(int id)
 
-            if (response.IsSuccessStatusCode)
+        {
+            if (!_connection.CheckInternetConnection())
             {
-                var content = await response.Content.ReadAsStringAsync();
-                var order = JsonConvert.DeserializeObject<Order>(content);
-                return order;
+                throw new ConnectionException("There is no internet connection");
             }
-            else if (response.StatusCode == HttpStatusCode.NotFound)
+            try
             {
-                return null;
+                var response = await _http.GetAsync($"{ApiUrl}/{id}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var order = JsonConvert.DeserializeObject<Order>(content);
+                    return order;
+                }
+                else if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
             }
-            else
+            catch (HttpRequestException e)
             {
-                throw new Exception($"Failed to retrieve user_id: {response.StatusCode} - {response.ReasonPhrase}");
+                throw new HttpRequestException(e.Message);
             }
+            catch (Exception e)
+            {
+
+                throw new Exception($"Failed to retrieve user"+e.Message);
+            }
+            return null;
+            
         }
 
         public async Task<bool> UpdateOrderDishCount(int id, string operation)
         {
-            var patchObject = new { id = id, operation = operation };
-            var patchData = JsonConvert.SerializeObject(patchObject);
-            var httpContent = new StringContent(patchData, Encoding.UTF8, "application/json");
-
-            var request = new HttpRequestMessage(new HttpMethod("PATCH"), "https://luqmit3ish.azurewebsites.net/api/CharityOrders/" + id + "/" + operation)
+            if (!_connection.CheckInternetConnection())
             {
-                Content = httpContent
-            };
-
+                throw new ConnectionException("There is no internet connection");
+            }
             try
             {
+
+                var patchObject = new { id, operation };
+                var patchData = JsonConvert.SerializeObject(patchObject);
+                var httpContent = new StringContent(patchData, Encoding.UTF8, "application/json");
+
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), "https://luqmit3ish.azurewebsites.net/api/CharityOrders/" + id + "/" + operation)
+                {
+                    Content = httpContent
+                };
+
                 var response = await _http.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
@@ -117,12 +136,20 @@ namespace Luqmit3ish.Services
                     Debug.WriteLine(response.StatusCode);
                     return false;
                 }
+
             }
-            catch (Exception ex)
+            catch (HttpRequestException e)
             {
-                Console.WriteLine("Exception caught: " + ex.Message);
-                return false;
+                throw new HttpRequestException(e.Message);
             }
+
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+
+
+            } 
+         
         }
 
         public async Task<bool> ReserveOrder(Order orderRequest)
