@@ -29,10 +29,14 @@
                             <Entry FontSize="Medium" Placeholder="Enter your password" IsPassword="True" Keyboard="Text" Style="{StaticResource textFeild}" Text="{Binding Password}" ClearButtonVisibility="WhileEditing" />
                         </StackLayout>
                     </Frame>
+                    <Label Text="Forgot password?" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Start" >
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ForgotPassCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Button Margin="0,20,0,0"  Text="Sign in" Command="{Binding LoginCommand}" Style="{StaticResource LargeBorderButton}" IsEnabled="{Binding LoginButtonEnable}"/>
 
-                    <Button Margin="0,30,0,0" Text="Sign in" Command="{Binding LoginCommand}" Style="{StaticResource LargeBorderButton}" IsEnabled="{Binding LoginButtonEnable}"/>
-
-                    <Label VerticalOptions="Center" HorizontalOptions="Center" Margin="0,50,0,0">
+                    <Label VerticalOptions="Center" HorizontalOptions="Center" Margin="0,40,0,0">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="Don't have an account? " TextColor="Black" FontSize="16"/>
