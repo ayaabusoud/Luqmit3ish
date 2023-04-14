@@ -50,13 +50,29 @@ namespace Luqmit3ish.Services
             }
 
         }
-        public async Task<ObservableCollection<OrderCard>> GetRestaurantOrders(int id,bool receieve)
+        
+       public async Task<ObservableCollection<OrderCard>> GetRestaurantOrders(int id,bool receieve)
         {
-            var response = await _http.GetAsync("https://luqmit3ish.azurewebsites.net/api/RestaurantOrders/"+id+"/"+ receieve);
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
+            if (_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _http.GetAsync("https://luqmit3ish.azurewebsites.net/api/RestaurantOrders/"+id+"/"+ receieve);
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
+            }catch(HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            
         }
               public async Task<Order> GetOrderById(int id)
+
         {
             if (!_connection.CheckInternetConnection())
             {
@@ -135,12 +151,29 @@ namespace Luqmit3ish.Services
             } 
          
         }
-         public async Task<bool> ReserveOrder(Order orderRequest)
+
+        public async Task<bool> ReserveOrder(Order orderRequest)
         {
-            var json = JsonConvert.SerializeObject(orderRequest);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _http.PostAsync(ApiUrl, content);
-            return response.IsSuccessStatusCode;
+            if (_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var json = JsonConvert.SerializeObject(orderRequest);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _http.PostAsync(ApiUrl, content);
+                return response.IsSuccessStatusCode;
+            }
+            catch(HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
         }
         public async Task DeleteOrder(int charityId, int restaurantId)
         {
