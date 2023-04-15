@@ -2,15 +2,14 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.CheckEmailPage"
-             xmlns:local="clr-namespace:Luqmit3ish.ViewModels" 
              xmlns:xfpinview="clr-namespace:XFPINView;assembly=XFPINView"
-             Title="Check Email">
+             Title="Check Your Email">
     <ContentPage.Content>
-        <StackLayout Margin="16,64,16,35" VerticalOptions="Center" HorizontalOptions="Center">
+        <StackLayout Margin="16,34,16,35" VerticalOptions="Center" HorizontalOptions="Center">
             <Image Source="https://freeiconshop.com/wp-content/uploads/edd/mail-open-outline-filled.png" 
                    HeightRequest="160" 
                    WidthRequest="160"></Image>
-            <Label Text="Verify Your Email"
+            <Label Text="Check Your Email"
                    FontSize="Title"
                    TextColor="black"
                    HorizontalOptions="Fill" 
@@ -22,7 +21,7 @@
                    HorizontalOptions="Fill" 
                    HorizontalTextAlignment="Center"
                    Margin="0,0,0,10"/>
-            <!--<xfpinview:PINView
+            <xfpinview:PINView
                    BoxBackgroundColor="White"
                    BoxShape="Squere"
                    PINLength="4"
@@ -32,28 +31,23 @@
                    BoxBorderColor="Black"
                    AutoDismissKeyboard="True"
                    PINInputType="Numeric"
-                   IsPassword="False"/>-->
+                   IsPassword="False"/>
+            <Button VerticalOptions="Center" 
+                    Text="Continue"
+                    Command="{Binding ResetCommand}" 
+                    Style="{StaticResource BorderButton}"
+                    WidthRequest="150"
+                    Margin="0,20,0,15"/>
             <Label FontSize="Small"
                    HorizontalOptions="Fill" 
-                   HorizontalTextAlignment="Center"
-                   Margin="0,5,0,0">
+                   HorizontalTextAlignment="Center">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="if you haven't recieved a code" />
-                        <Span FontAttributes="Bold" TextColor="{StaticResource PrimaryLight}" Text=" Click Here">
-                            <Span.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ResendCodeCommand}"/>
-                            </Span.GestureRecognizers>
-                        </Span>
+                        <Span FontAttributes="Bold" TextColor="{StaticResource PrimaryLight}" Text=" Click Here"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Button VerticalOptions="Center" 
-                    Text="Continue"
-                    Command="{Binding ButtonCommand}" 
-                    Style="{StaticResource BorderButton}"
-                    WidthRequest="150"/>
         </StackLayout>
-
     </ContentPage.Content>
 </ContentPage>

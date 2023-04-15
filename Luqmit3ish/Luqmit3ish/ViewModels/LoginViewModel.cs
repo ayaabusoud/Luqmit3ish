@@ -35,7 +35,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                Application.Current.MainPage = new ForgotPasswordPage();
+                Application.Current.MainPage = new NavigationPage(new ForgotPasswordPage()) ;
 
             }
             catch (ArgumentException e)

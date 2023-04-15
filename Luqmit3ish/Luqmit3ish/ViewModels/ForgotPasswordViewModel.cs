@@ -21,15 +21,15 @@ namespace Luqmit3ish.ViewModels
         public ForgotPasswordViewModel(INavigation navigation)
         {
             this._navigation = navigation;
-            SendEmailCommand = new Command(async () => await OnSendEmailClicked());
+            SendEmailCommand = new Command(OnSendEmailClicked);
             LoginCommand = new Command(async () => await OnLoginClicked());
         }
 
-        private async Task OnSendEmailClicked()
+        private void OnSendEmailClicked()
         {
             try
             {
-            await Navigation.PushModalAsync(new CheckEmailPage());
+                _navigation.PushAsync(new CheckEmailPage());
 
             }
             catch (ArgumentException e)
