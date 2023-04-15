@@ -13,19 +13,21 @@ namespace Luqmit3ish.ViewModels
     class CheckEmailViewModel : ViewModelBase
     {
         private INavigation _navigation { get; set; }
+        
 
-        public ICommand ButtonCommand { protected set; get; }
-
+        public ICommand ResetCommand { protected set; get; }
         public CheckEmailViewModel(INavigation navigation)
         {
             this._navigation = navigation;
-            ButtonCommand = new Command(async () => await OnButtonClicked());
+            ResetCommand = new Command(OnResetClicked);
+
         }
-        private async Task OnButtonClicked()
+
+        private void OnResetClicked()
         {
             try
             {
-            await _navigation.PushModalAsync(new ResetPasswordPage());
+                 Application.Current.MainPage = new ResetPasswordPage();
 
             }
             catch (ArgumentException e)
