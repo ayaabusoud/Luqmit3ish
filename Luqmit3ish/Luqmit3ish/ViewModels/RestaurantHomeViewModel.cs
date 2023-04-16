@@ -20,9 +20,8 @@ namespace Luqmit3ish.ViewModels
     {
         private INavigation _navigation { get; set; }
         public ICommand AddCommand { protected set; get; }
-        public Command<int> EditCommand { protected set; get; }
         public Command<int> DeleteCommand { protected set; get; }
-        public ICommand NameTapCommand { protected set; get; }
+        public Command<Dish> FoodDetailCommand { protected set; get; }
         private FoodServices _foodServices;
 
         private ObservableCollection<Dish> _dishes;
@@ -32,13 +31,19 @@ namespace Luqmit3ish.ViewModels
             get => _dishes;
             set => SetProperty(ref _dishes, value);
         }
+        private bool _emptyResult;
+
+        public bool EmptyResult
+        {
+            get => _emptyResult;
+            set => SetProperty(ref _emptyResult, value);
+        }
         public RestaurantHomeViewModel(INavigation navigation)
         {
             this._navigation = navigation;
             AddCommand = new Command(async () => await OnAddClicked());
-            EditCommand = new Command<int>(async (int id) => await OnEditClicked(id));
             DeleteCommand = new Command<int>(async (int id) => await OnDeleteClicked(id));
-            NameTapCommand = new Command(async () => await OnTapClicked());
+            FoodDetailCommand = new Command<Dish>(async (Dish dish) => await OnFrameClicked(dish));
             _foodServices = new FoodServices();
             OnInit();
         }
@@ -57,7 +62,7 @@ namespace Luqmit3ish.ViewModels
             }
             catch (ConnectionException e)
             {
-                Debug.WriteLine(e.Message);
+                await Application.Current.MainPage.DisplayAlert("", "There is no internet connection, please check your connection", "Ok");
             }
             catch (HttpRequestException e)
             {
@@ -69,6 +74,7 @@ namespace Luqmit3ish.ViewModels
             }
             if (Dishes != null)
             {
+                EmptyResult = false;
                 foreach (Dish dish in Dishes)
                 {
                     if (dish.number == 0)
@@ -76,6 +82,25 @@ namespace Luqmit3ish.ViewModels
                         Dishes.Remove(dish);
                     }
                 }
+            }
+            else
+            {
+                EmptyResult = true;
+            }
+        }
+        private async Task OnFrameClicked(Dish dish)
+        {
+            try
+            {
+                await _navigation.PushAsync(new EditFoodPage(dish.id));
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
             }
         }
 
@@ -95,22 +120,7 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
-        private async Task OnEditClicked(int id)
-        {
-            try
-            {
-            await _navigation.PushAsync(new EditFoodPage(id));
 
-            }
-            catch (ArgumentException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }
         private async Task OnDeleteClicked(int id)
         {
             var deleteConfirm = await Application.Current.MainPage.DisplayAlert("", "Are you sure that you want to delete this dish?", "Yes", "No");
@@ -120,21 +130,6 @@ namespace Luqmit3ish.ViewModels
                 OnInit();
             }
         }
-        private async Task OnTapClicked()
-        {
-            try
-            {
-            await _navigation.PushAsync(new FoodDetailPage());
-            }
-            catch (ArgumentException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-
-        }
+    
     }
 }
