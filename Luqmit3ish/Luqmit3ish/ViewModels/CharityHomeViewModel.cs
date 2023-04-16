@@ -196,6 +196,13 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
+                MessagingCenter.Subscribe<FilterFoodViewModel, object>(this, "FilterDishes", (sender, filterDishes) =>
+                {
+                    // Handle the filterDishes object here
+                    Console.WriteLine("yeees");
+                    Console.WriteLine(sender);
+                });
+
                 DishCard = await _foodServices.GetDishCards();
             }
             catch (ConnectionException e)

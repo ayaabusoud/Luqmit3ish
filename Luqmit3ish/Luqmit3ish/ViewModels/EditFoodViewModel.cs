@@ -64,12 +64,12 @@ namespace Luqmit3ish.ViewModels
         {
             _typeValues = new ObservableCollection<TypeField>
             {
-                 new TypeField { Value = TypeFieldValue.Food, Name = "Food", IconText = "\ue4c6;" },
-                new TypeField { Value = TypeFieldValue.Drink, Name = "Drink", IconText = "\uf4e3;" },
-                new TypeField { Value = TypeFieldValue.Cake, Name = "Cake", IconText = "\uf1fd;" },
-                new TypeField { Value = TypeFieldValue.Snack, Name = "Snack", IconText = "\uf564;" },
-                new TypeField { Value = TypeFieldValue.Candies, Name = "Candies", IconText = "\uf786;" },
-                new TypeField { Value = TypeFieldValue.Fish, Name = "Fish", IconText = "\uf578;" },
+               new TypeField { Name = "Food", IconText = "\ue4c6;" },
+                new TypeField { Name = "Drink", IconText = "\uf4e3;" },
+                new TypeField { Name = "Cake", IconText = "\uf7ef;" },
+                new TypeField { Name = "Snack", IconText = "\uf787;" },
+                new TypeField { Name = "Candies", IconText = "\uf786;" },
+                new TypeField { Name = "Fish", IconText = "\uf578;" }
             };
         }
 
