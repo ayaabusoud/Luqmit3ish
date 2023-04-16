@@ -7,9 +7,26 @@
 
 
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout  Margin="20,35,20,20">
-                <CollectionView ItemsSource="{Binding OrderCard}">
+            <Grid Margin="20,35,20,20" HorizontalOptions="Fill" VerticalOptions="Fill">
+                <StackLayout IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
+                    <Image Source="EmptyCart.png"
+                           HeightRequest="200" 
+                           WidthRequest="200"
+                           VerticalOptions="Center"/>
+                    <Label Text="Your cart is empty"
+                           FontSize="Medium"
+                           TextColor="DimGray"
+                           HorizontalOptions="Fill" 
+                           HorizontalTextAlignment="Center"
+                           FontAttributes="Bold"
+                           Margin="0,2,0,0"/>
+                  <Label Text="Go ahead and receive food."
+                         FontSize="Small"
+                         HorizontalOptions="Fill" 
+                         HorizontalTextAlignment="Center"
+                         Margin="0,0,0,10"/>
+                   </StackLayout>
+                <CollectionView ItemsSource="{Binding OrderCard}" >
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" 
                                                ItemSpacing="10"/>
@@ -22,7 +39,7 @@
                                         <TapGestureRecognizer CommandParameter="{Binding .}" Command="{Binding BindingContext.OrderCommand , Source={x:Reference CharityOrder}}"/>
                                     </Frame.GestureRecognizers>
                                     <StackLayout Orientation="Horizontal" Padding="0" Margin="0" HorizontalOptions="Start">
-                                        <Image HeightRequest="60" WidthRequest="60" VerticalOptions="Center" HorizontalOptions="Center" Source="https://yummy.ps/upload/1550862362-13413719_595924817243979_6559566022527145368_n-(1).png" />
+                                    <Image HeightRequest="60" WidthRequest="60" VerticalOptions="Center" HorizontalOptions="Center" Source="{Binding image}" />
                                         <StackLayout Margin="20,0,0,0">
                                             <Label MaxLines="1" HorizontalTextAlignment="Start" Text="{Binding name}" TextColor="Black" FontSize="Medium" FontAttributes="Bold"/>
                                             <CollectionView  HorizontalOptions="Start" ItemsSource="{Binding data}">
@@ -62,8 +79,7 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-            </StackLayout>
-        </ScrollView>
+            </Grid>
     </ContentPage.Content>
 </ContentPage>
 

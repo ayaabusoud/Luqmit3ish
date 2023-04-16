@@ -29,7 +29,13 @@ namespace Luqmit3ish.ViewModels
        
         private OrderService _orderService;
 
+        private bool _emptyResult;
 
+        public bool EmptyResult
+        {
+            get => _emptyResult;
+            set => SetProperty(ref _emptyResult, value);
+        }
 
         private ObservableCollection<Dish> _dishes;
 
@@ -54,7 +60,8 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnDeleteClicked(int restaurantId)
         {
-            var deleteConfirm = await Application.Current.MainPage.DisplayAlert("Delete Order", "Are you sure that you want to delete this Order?", "Yes", "No");
+            var deleteConfirm = await Application.Current.MainPage.DisplayAlert("Delete Order",
+                "Are you sure that you want to delete this Order?", "Yes", "No");
             if (deleteConfirm)
             {
                 var id = Preferences.Get("userId", null);
@@ -68,12 +75,14 @@ namespace Luqmit3ish.ViewModels
                     bool result =  await _orderService.DeleteOrder(userId, restaurantId);
                     if(result == true)
                     {
-                    await App.Current.MainPage.DisplayAlert("Success", "The order have been deleted successfully", "ok");
+                    await App.Current.MainPage.DisplayAlert("Success", 
+                        "The order have been deleted successfully", "ok");
                     OnInit();
                     }
                     else
                     {
-                        await App.Current.MainPage.DisplayAlert("Faild", "The Order has not been deleted , please try again", "ok");
+                        await App.Current.MainPage.DisplayAlert("Faild", 
+                            "The Order has not been deleted , please try again", "ok");
                     }
                 }
                 catch (Exception e)
@@ -116,6 +125,14 @@ namespace Luqmit3ish.ViewModels
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+            }
+            if (OrderCard.Count > 0)
+            {
+                EmptyResult = false;
+            }
+            else
+            {
+                EmptyResult = true;
             }
         }
 

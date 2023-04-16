@@ -38,9 +38,8 @@
                                     <TapGestureRecognizer CommandParameter="{Binding .}"  Command="{Binding BindingContext.FoodDetailCommand , Source={x:Reference RestaurantPage}}"></TapGestureRecognizer>
                                 </Frame.GestureRecognizers>
                                 <StackLayout Spacing="5">
-                                    <Image Source="https://s1.1zoom.me/big0/106/The_second_dishes_Potato_Meat_products_Vegetables_566163_1280x853.jpg"  Style="{StaticResource ImageFoodCard}" />
+                                    <Image Source="{Binding photo}"  Style="{StaticResource ImageFoodCard}" />
                                     <Label Margin="15,0,0,0" MaxLines="1" Text="{Binding name}" TextColor="Black" FontSize="Medium"/>
-
                                     <Grid Margin="15,0,15,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="0.85*"/>
