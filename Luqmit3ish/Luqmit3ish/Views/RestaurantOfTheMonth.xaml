@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Luqmit3ish.Views.RestaurantOfTheMonth"
+             Title="Best Restaurant">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+            <Label Text="Restaurant Of The Month" HorizontalTextAlignment="Center" FontAttributes="Bold"  TextColor="Black" FontSize="20"/>
+            <Image Source="https://img.freepik.com/premium-vector/donation-boxes-with-canned-food-illustration-freshly-prepared-food-packaged-sealed-jars-helping-people-need-poor-people-giving-out-charities-saving-from-hunger-vector-kindness_146957-1033.jpg"  HorizontalOptions="Fill" />
+                    <Label HorizontalTextAlignment="Center" TextColor="Black" FontSize="Small">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <FormattedString.Spans>
+                                    <Span  Text="{Binding Dishes}"/>
+                                    <Span Text=" Dishes"  />
+                                </FormattedString.Spans>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label  Text="{Binding RestaurantName}" HorizontalTextAlignment="Center" FontAttributes="Bold"  TextColor="Black" FontSize="Medium"/>
+           
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

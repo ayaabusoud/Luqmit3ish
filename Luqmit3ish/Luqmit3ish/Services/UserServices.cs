@@ -27,7 +27,7 @@ namespace Luqmit3ish.Services
 
        public async Task<bool> Login(LoginRequest loginRequest)
         {
-            if (_connection.CheckInternetConnection())
+            if (!_connection.CheckInternetConnection())
             {
                 throw new ConnectionException("There is no internet connection");
             }

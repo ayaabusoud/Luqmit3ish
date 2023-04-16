@@ -4,6 +4,7 @@ using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -20,8 +21,8 @@ namespace Luqmit3ish.ViewModels
     {
         private INavigation _navigation { get; set; }
         public ICommand MyProfileCommand { protected set; get; }
- 
         public ICommand ResetPassCommand { protected set; get; }
+        public ICommand RestaurantCommand { protected set; get; }
         public ICommand LogOutCommand { protected set; get; }
         public ICommand DeleteAccountCommand { protected set; get; }
         public ICommand DarkModeCommand { protected set; get; }
@@ -41,11 +42,28 @@ namespace Luqmit3ish.ViewModels
                LogOutCommand= new Command(async () => await OnLogOutClicked());
                DeleteAccountCommand = new Command(async () => await OnDeleteAccountClicked());
                DarkModeCommand = new Command(async () => await OnDarkModeClicked());
+               RestaurantCommand = new Command(async () => await OnRestaurantClicked());
             _userServices = new UserServices();
               OnInit();
         }
 
- 
+        private async Task OnRestaurantClicked()
+        {
+            try
+            {
+                await _navigation.PushAsync(new RestaurantOfTheMonth());
+
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
         private User _userInfo;
         public User UserInfo
         {
