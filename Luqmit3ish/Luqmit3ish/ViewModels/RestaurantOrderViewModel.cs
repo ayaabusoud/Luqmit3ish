@@ -46,13 +46,38 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnDoneClick(int id)
         {
-
-            var charity = OrderCard.FirstOrDefault(i => i.id == id);
-            var numberOfCharityOrders = charity.data.Count;
-            for (int i = numberOfCharityOrders - 1; i >= 0; i--)
+            try
             {
-                await _orderService.UpdateOrderReceiveStatus(charity.data[i].id);
-                charity.data.RemoveAt(i);
+                var userId = Preferences.Get("userId", null);
+                if (userId == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Your login session has been expired", "Ok");
+                    await _navigation.PushAsync(new LoginPage());
+                    return;
+                }
+                var charity = OrderCard.FirstOrDefault(i => i.id == id);
+                var numberOfCharityOrders = charity.data.Count;
+                for (int i = numberOfCharityOrders - 1; i >= 0; i--)
+                {
+                    await _orderService.UpdateOrderReceiveStatus(charity.data[i].id);
+                    charity.data.RemoveAt(i);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (ConnectionException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+            }
+            catch (HttpRequestException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Sorry", "Something went bad here, you can try again", "Ok");
+            }
+            catch (Exception e)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
             }
         }
 
