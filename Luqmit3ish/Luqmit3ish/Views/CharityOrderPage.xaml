@@ -2,132 +2,66 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.CharityOrderPage"
-             xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
-             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              x:Name="CharityOrder"
-             Title="Orders"
-            >
+             Title="Orders">
 
 
     <ContentPage.Content>
-        
-        <ScrollView BackgroundColor="#EDF2F5" >
+        <ScrollView>
             <StackLayout  Margin="20,35,20,20">
-                <CollectionView 
-                                    Margin="10,25" 
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="FillAndExpand"
-                                    SelectionMode="None"
-                                    ItemsSource="{Binding OrderCard}"
-                                    SelectedItem="{Binding ExpandedItem}">
+                <CollectionView ItemsSource="{Binding OrderCard}">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" 
-                                               ItemSpacing="20"/>
+                                               ItemSpacing="10"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-
-                            <pv:PancakeView  BackgroundColor="White" VerticalOptions="StartAndExpand"
-                                            HorizontalOptions="FillAndExpand">
-                                <Grid VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <BoxView BackgroundColor="#F98836"
-                                             WidthRequest="3"
-                                             HorizontalOptions="Start"
-                                             VerticalOptions="FillAndExpand"/>
-                                    <xct:Expander Grid.Column="1" IsExpanded="{Binding IsExpanded}" >
-                                        <xct:Expander.GestureRecognizers>
-                                            <TapGestureRecognizer CommandParameter="{Binding id}" Command="{Binding BindingContext.ExpanderCommand , Source={x:Reference CharityOrder}}"/>
-                                        </xct:Expander.GestureRecognizers>
-                                        <xct:Expander.Header >
-                                            <Grid HorizontalOptions="FillAndExpand" Margin="0,15">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="3.5*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                                                    <Image HeightRequest="50" Source="https://st4.depositphotos.com/2370557/19947/i/1600/depositphotos_199479084-stock-photo-hot-pizza-cheese-tomatoes-white.jpg" />
-                                                </StackLayout>
-                                                <BoxView Grid.Column="1" BackgroundColor="#F2F4F8" WidthRequest="1" HorizontalOptions="Start" 
-                                                 VerticalOptions="FillAndExpand"/>
-                                                <Grid Grid.Column="2" Margin="15">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="0.9*"/>
-                                                        <ColumnDefinition Width="0.1*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Grid.Column="0" Text="{Binding name}" TextColor="Black" FontSize="Medium"/>
-                                                   
-                                                    <Label Grid.Column="2" Text="&#xf1f8;" FontFamily="FontAwesomeIcons"  FontSize="20" HorizontalOptions="End" Margin="0,2,20,0">
-                                                        <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}"
-                                                                                  CommandParameter="{Binding id}"/>
-                                                        </Label.GestureRecognizers>
-                                                    </Label>
-                                                </Grid>
-                                            </Grid>
-                                        </xct:Expander.Header >
-                                        <FlexLayout  BindableLayout.ItemsSource="{Binding data}" Margin="10,0,0,0" Direction="Column" >
-                                                <BindableLayout.ItemTemplate >
-                                                    <DataTemplate>
-                                                    <Grid HorizontalOptions="FillAndExpand">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                            <ColumnDefinition Width="3.5*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <BoxView Grid.Column="1" BackgroundColor="#F2F4F8" WidthRequest="1" HorizontalOptions="Start" 
-                                                      VerticalOptions="FillAndExpand"/>
-                                                        <Grid Grid.Column="2" RowSpacing="10" >
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="0.68*"/>
-                                                                <ColumnDefinition Width="0.15*"/>
-                                                                <ColumnDefinition Width="0.17*"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Label TextColor="#2F3246" FontSize="Small"  Margin="15,0" Grid.Column="0" Padding="0,0,15,0">
-                                                                <Label.FormattedText>
-                                                                    <FormattedString>
-                                                                        <FormattedString.Spans>
-                                                                            <Span Text="{Binding dishName}"/>
-                                                                            <Span Text=": "/>
-                                                                            <Span Text="{Binding number_of_dish}"  />
-                                                                        </FormattedString.Spans>
-                                                                    </FormattedString>
-                                                                </Label.FormattedText>
-                                                            </Label>
-                                                           
-
-                                                            <Label Text="&#xf055;" FontFamily="FontAwesomeIcons" FontSize="18" Margin="2,2,0,0"  Grid.Column="1" HorizontalOptions="End">
-                                                                <Label.GestureRecognizers>
-                                                                        <TapGestureRecognizer CommandParameter="{Binding id}" Command="{Binding BindingContext.PlusCommand , Source={x:Reference CharityOrder}}" />
-                                                                    </Label.GestureRecognizers>
-                                                                </Label>
-                                                            <Label  Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="18" Margin="2,2,2,0" Grid.Column="2" HorizontalOptions="Start">
-                                                                <Label.GestureRecognizers>
-                                                                    <TapGestureRecognizer  CommandParameter="{Binding id }" Command="{Binding BindingContext.MinusCommand , Source={x:Reference CharityOrder}}"  />
-                                                                    </Label.GestureRecognizers>
-                                                                </Label>
-                                                          
-                                                        </Grid>
-                                                    </Grid>
+                            <StackLayout>
+                               <Frame BorderColor="LightGray" CornerRadius="10" HeightRequest="80" HasShadow="True"  >
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}" Command="{Binding BindingContext.OrderCommand , Source={x:Reference CharityOrder}}"/>
+                                    </Frame.GestureRecognizers>
+                                    <StackLayout Orientation="Horizontal" Padding="0" Margin="0" HorizontalOptions="Start">
+                                        <Image HeightRequest="60" WidthRequest="60" VerticalOptions="Center" HorizontalOptions="Center" Source="https://yummy.ps/upload/1550862362-13413719_595924817243979_6559566022527145368_n-(1).png" />
+                                        <StackLayout Margin="20,0,0,0">
+                                            <Label MaxLines="1" HorizontalTextAlignment="Start" Text="{Binding name}" TextColor="Black" FontSize="Medium" FontAttributes="Bold"/>
+                                            <CollectionView  HorizontalOptions="Start" ItemsSource="{Binding data}">
+                                            <CollectionView.ItemsLayout>
+                                                <LinearItemsLayout Orientation="Vertical" 
+                                               ItemSpacing="5"/>
+                                            </CollectionView.ItemsLayout>
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackLayout>
+                                                        <Label MaxLines="1" HorizontalTextAlignment="Start" TextColor="#2F3246" FontSize="Small">
+                                                            <Label.FormattedText>
+                                                                <FormattedString>
+                                                                    <FormattedString.Spans>
+                                                                        <Span Text="{Binding dishName}"/>
+                                                                        <Span Text=": "/>
+                                                                        <Span Text="{Binding number_of_dish}"  />
+                                                                    </FormattedString.Spans>
+                                                                </FormattedString>
+                                                            </Label.FormattedText>
+                                                        </Label>
+                                                    </StackLayout>
                                                 </DataTemplate>
-                                                </BindableLayout.ItemTemplate>
-                                            </FlexLayout>
-                                           
-                                    </xct:Expander>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+                                        </StackLayout>
+                                        <Label WidthRequest="30"  HorizontalOptions="Start" VerticalOptions="End" TextColor="{StaticResource SecondaryLight}" Text="&#xf2ed;" FontFamily="FontAwesomeIcons"  FontSize="20" >
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}"
+                                                                                  CommandParameter="{Binding id}"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
 
-                                </Grid>
-
-                            </pv:PancakeView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
-
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

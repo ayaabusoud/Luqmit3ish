@@ -38,7 +38,6 @@ namespace Luqmit3ish.ViewModels
         public RestaurantOrderViewModel(INavigation navigation)
         {
            _navigation = navigation;
-            ExpanderCommand = new Command<int>(OnExpanderClicked);
             DoneCommand = new Command(OnDoneClick);
             _orderService = new OrderService();
             OnInit();
@@ -49,30 +48,7 @@ namespace Luqmit3ish.ViewModels
             throw new NotImplementedException();
         }
 
-        private bool _isExpanded = false;
 
-        public bool IsExpanded
-        {
-            get => _isExpanded;
-            set => SetProperty(ref _isExpanded, value);
-        }
-        public Command<int> ExpanderCommand { protected set; get; }
-        private void OnExpanderClicked(int id)
-        {
-            var item = OrderCard.FirstOrDefault(i => i.id == id);
-            if (item != null)
-            {
-                if (item.IsExpanded)
-                {
-                    item.IsExpanded = false;
-                }
-                else
-                {
-                    item.IsExpanded = true;
-                }
-            }
-
-        }
    
 
         private ObservableCollection<OrderCard> _orderCard;
