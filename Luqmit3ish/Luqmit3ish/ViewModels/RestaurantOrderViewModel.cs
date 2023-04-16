@@ -39,14 +39,21 @@ namespace Luqmit3ish.ViewModels
         {
            _navigation = navigation;
             ExpanderCommand = new Command<int>(OnExpanderClicked);
-            DoneCommand = new Command(OnDoneClick);
+            DoneCommand = new Command<int>(async (int OrderId) => await OnDoneClick(OrderId));
             _orderService = new OrderService();
             OnInit();
         }
 
-        private void OnDoneClick(object obj)
+        private async Task OnDoneClick(int id)
         {
-            throw new NotImplementedException();
+
+            var charity = OrderCard.FirstOrDefault(i => i.id == id);
+            var numberOfCharityOrders = charity.data.Count;
+            for (int i = numberOfCharityOrders - 1; i >= 0; i--)
+            {
+                await _orderService.UpdateOrderReceiveStatus(charity.data[i].id);
+                charity.data.RemoveAt(i);
+            }
         }
 
         private bool _isExpanded = false;
