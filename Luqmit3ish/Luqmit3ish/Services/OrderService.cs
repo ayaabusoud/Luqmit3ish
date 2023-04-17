@@ -55,7 +55,7 @@ namespace Luqmit3ish.Services
         
        public async Task<ObservableCollection<OrderCard>> GetRestaurantOrders(int id,bool receieve)
         {
-            if (_connection.CheckInternetConnection())
+            if (!_connection.CheckInternetConnection())
             {
                 throw new ConnectionException("There is no internet connection");
             }
@@ -140,7 +140,7 @@ namespace Luqmit3ish.Services
 
         public async Task<bool> ReserveOrder(Order orderRequest)
         {
-            if (_connection.CheckInternetConnection())
+            if (!_connection.CheckInternetConnection())
             {
                 throw new ConnectionException("There is no internet connection");
             }

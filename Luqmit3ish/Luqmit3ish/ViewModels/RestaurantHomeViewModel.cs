@@ -72,7 +72,7 @@ namespace Luqmit3ish.ViewModels
             {
                 Debug.WriteLine(e.Message);
             }
-            if (Dishes != null)
+            if ( Dishes.Count > 0)
             {
                 EmptyResult = false;
                 foreach (Dish dish in Dishes)

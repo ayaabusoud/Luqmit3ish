@@ -107,7 +107,7 @@ namespace Luqmit3ish.ViewModels
             {
                 Debug.WriteLine(e.Message);
             }
-            if (DishCard != null)
+            if (DishCard.Count > 0)
             {
                 EmptyResult = false;
                 foreach (DishCard dish in DishCard)
