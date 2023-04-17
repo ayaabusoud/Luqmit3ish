@@ -70,7 +70,7 @@ namespace Luqmit3ish.Services
             catch (Exception e)
             {
                 throw new Exception(e.Message);
-            }      
+            }
         }
 
         public async Task<ObservableCollection<DishCard>> GetSearchCards(string searchRequest, string type)
@@ -81,8 +81,8 @@ namespace Luqmit3ish.Services
             }
             try
             {
-            var response = await _httpClient.GetAsync($"{_apiUrl}/Search/{searchRequest}/{type}");
-           
+                var response = await _httpClient.GetAsync($"{_apiUrl}/Search/{searchRequest}/{type}");
+
                 var content = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
             }
