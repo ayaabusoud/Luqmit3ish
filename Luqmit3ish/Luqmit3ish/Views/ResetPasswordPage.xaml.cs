@@ -13,10 +13,10 @@ namespace Luqmit3ish.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ResetPasswordPage : ContentPage
     {
-        public ResetPasswordPage()
+         public ResetPasswordPage(string email)
         {
             InitializeComponent();
-            this.BindingContext = new ResetPasswordViewModel(Navigation);
+            this.BindingContext = new ResetPasswordViewModel(Navigation,email);
         }
 
     }
