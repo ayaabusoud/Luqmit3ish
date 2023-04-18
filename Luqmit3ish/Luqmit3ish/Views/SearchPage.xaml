@@ -16,7 +16,7 @@
                     <ColumnDefinition Width="0.1*"/>
                     <ColumnDefinition Width="0.9*"/>
                 </Grid.ColumnDefinitions>
-                <Label Margin="0,12,0,0" VerticalOptions="Center" HorizontalOptions="End" Grid.Column="0" HeightRequest="56" TextColor="white" Text="&#xf060;" FontFamily="FontAwesomeIcons" FontSize="20" >
+                <Label Margin="0,20,0,0" VerticalOptions="Center" HorizontalOptions="End" Grid.Column="0" HeightRequest="56" TextColor="white" Text="&#xf060;" FontFamily="FontAwesomeIcons" FontSize="20" >
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding BackCommand}"/>
                     </Label.GestureRecognizers>
@@ -31,14 +31,15 @@
                        HeightRequest="200" 
                        WidthRequest="200"
                        VerticalOptions="Center"/>
-                    <Label Text="No result Found " 
+                    <Label Text="No results found "
+                           
                    FontSize="Medium"
                    TextColor="DimGray"
                    HorizontalOptions="Fill" 
                    HorizontalTextAlignment="Center"
                    FontAttributes="Bold"
                    Margin="0,2,0,0"/>
-                    <Label Text="Try another word " 
+                    <Label Text="We can't find any item matching your search " 
                    FontSize="Small"
                    HorizontalOptions="Fill" 
                    HorizontalTextAlignment="Center"
