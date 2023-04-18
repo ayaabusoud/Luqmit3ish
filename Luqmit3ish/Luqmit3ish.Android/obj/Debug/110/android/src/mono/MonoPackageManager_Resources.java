@@ -6,6 +6,7 @@ public class MonoPackageManager_Resources {
 		"FormsViewGroup.dll",
 		"Luqmit3ish.dll",
 		"Newtonsoft.Json.dll",
+		"Plugin.Media.dll",
 		"Xamarin.AndroidX.Activity.dll",
 		"Xamarin.AndroidX.Annotation.dll",
 		"Xamarin.AndroidX.Annotation.Experimental.dll",
@@ -67,6 +68,7 @@ public class MonoPackageManager_Resources {
 		"Xamarin.Forms.Xaml.dll",
 		"Xamarin.Google.Android.Material.dll",
 		"Xamarin.Google.Guava.ListenableFuture.dll",
+		"XFPINView.dll",
 	};
 	public static String[] Dependencies = new String[]{
 	};
