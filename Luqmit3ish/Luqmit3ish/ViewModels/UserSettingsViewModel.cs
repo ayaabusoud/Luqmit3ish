@@ -4,6 +4,7 @@ using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -21,6 +22,7 @@ namespace Luqmit3ish.ViewModels
         private INavigation _navigation { get; set; }
         public ICommand MyProfileCommand { protected set; get; }
         public ICommand ResetPassCommand { protected set; get; }
+        public ICommand RestaurantCommand { protected set; get; }
         public ICommand LogOutCommand { protected set; get; }
         public Command<int> DeleteCommand { protected set; get; }
         public ICommand DarkModeCommand { protected set; get; }
@@ -38,11 +40,31 @@ namespace Luqmit3ish.ViewModels
                MyProfileCommand= new Command(async () => await OnProfileClicked());
                ResetPassCommand = new Command(async () => await OnResetClicked());
                LogOutCommand= new Command(async () => await OnLogOutClicked());
-              DeleteCommand = new Command<int>(async (int id) => await OnDeleteClicked(id));
-            DarkModeCommand = new Command(async () => await OnDarkModeClicked());
+               DeleteAccountCommand = new Command(async () => await OnDeleteAccountClicked());
+               DarkModeCommand = new Command(async () => await OnDarkModeClicked());
+               RestaurantCommand = new Command(async () => await OnRestaurantClicked());
+
             _userServices = new UserServices();
               OnInit();
         }
+
+        private async Task OnRestaurantClicked()
+        {
+            try
+            {
+                await _navigation.PushAsync(new RestaurantOfTheMonth());
+
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
 
         private int _id;
         public int Id
@@ -52,6 +74,7 @@ namespace Luqmit3ish.ViewModels
         } 
 
  
+
         private User _userInfo;
         public User UserInfo
         {
