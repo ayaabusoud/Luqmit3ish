@@ -62,8 +62,8 @@ namespace Luqmit3ish.ViewModels
                 }
             }
         }
-        private Dish _dish;
-        public Dish Dish
+        private ObservableCollection<DishCard> _dish;
+        public ObservableCollection<DishCard> Dish
         {
             get => _dish;
             set => SetProperty(ref _dish, value);
@@ -150,51 +150,7 @@ namespace Luqmit3ish.ViewModels
         }
         private async Task OnReserveClicked(int FoodId)
         {
-            try
-            {
-                var id = Preferences.Get("userId", "null");
-                int UserId = int.Parse(id);
-                Dish dish = await _foodServices.GetFoodById(FoodId);
-
-                Order newOrder = new Order();
-                newOrder.char_id = UserId;
-                newOrder.res_id = dish.user_id;
-                newOrder.dish_id = dish.id;
-                newOrder.date = DateTime.Now;
-                newOrder.number_of_dish = Counter;
-                newOrder.receive = false;
-
-                await _orderService.ReserveOrder(newOrder);
-
-                DishCard quantityDish = _dishCard.FirstOrDefault(d => d.id == dish.id);
-                if (quantityDish != null)
-                {
-                    quantityDish.quantity -= Counter;
-                }
-
-                if (Counter > 0) Counter = 0;
-
-                DishCard = await _foodServices.GetDishCards();
-
-                foreach (DishCard item in DishCard)
-                {
-                    if (item.quantity == 0)
-                    {
-                        DishCard.Remove(item);
-                    }
-                    if (item.id == FoodId)
-                    {
-                        item.IsExpanded = true;
-                    }
-                }
-                await App.Current.MainPage.DisplayAlert("successfuly", "Your order has been successfully booked", "ok");
-
-            }
-            catch (Exception e)
-            {
-                await App.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
-            }
-
+            
         }
         public FoodDetailViewModel (int id , INavigation navigation)
         {
@@ -214,7 +170,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-            Dish =await _foodServices.GetFoodById(id);
+                Dish = await _foodServices.GetDishCardById(id);
             }
             catch (ConnectionException e)
             {
@@ -229,13 +185,20 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
             if(Dish != null)
+               
             {
-                PickUp = Dish.pick_up_time;
-                Image = Dish.photo;
-                Description = Dish.description;
-                KeepValid = Dish.keep_listed;
-                Quantity = Dish.number; 
-
+                
+                PickUp = Dish[0].pickUpTime;
+                Image = Dish[0].photo;
+                Description = Dish[0].description;
+                KeepValid = Dish[0].keepValid;
+                Quantity = Dish[0].quantity;
+                RestaurantImg = Dish[0].RestaurantImage;
+                RestaurantName = Dish[0].restaurantName; 
+            }
+            if(RestaurantImg == null || RestaurantImg == "")
+            {
+                RestaurantImg = "Luqma.jpg"; 
             }
 
         }

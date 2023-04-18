@@ -204,6 +204,29 @@ namespace Luqmit3ish.Services
             }
 
         }
+        public async Task<ObservableCollection<DishCard>> GetDishCardById(int dishId)
+        {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_apiUrl}/DishCard/{dishId}");
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
+
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+        }
 
         public async Task DeleteFood(int food_id)
         {
