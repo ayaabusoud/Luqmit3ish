@@ -29,7 +29,7 @@
                     <Label Margin="0,0,5,0" Text="&#xf084;" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center"/>
                             <Label Text="Reset password"  HorizontalTextAlignment="Start" FontAttributes="Bold" TextColor="Black" FontSize="15" VerticalOptions="Center" Grid.Row="2" Grid.Column="1" ></Label>
                             <Button Text="&#xf105;" Background="white"  TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="0" Grid.Column="3" Command="{Binding MyProfileCommand}" ></Button>
-                            <Button Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="3" Grid.Column="3" HorizontalOptions="End"></Button>
+                    <Button Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="3" Grid.Column="3" CommandParameter="{Binding Id}" Command="{Binding DeleteCommand}" HorizontalOptions="End"></Button>
                             <Button Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="2" Grid.Column="3" Command="{Binding ResetPassCommand}" HorizontalOptions="End"></Button>
                             <Button  Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="4" Grid.Column="3" Command="{Binding LogOutCommand}" HorizontalOptions="End"></Button>
                     <Label Margin="0,0,5,20" Text="&#xf559;" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center"/>

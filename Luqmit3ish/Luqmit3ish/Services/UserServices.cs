@@ -79,6 +79,29 @@ namespace Luqmit3ish.Services
             }
         }
 
+        public async Task<bool> DeleteAccount(int userId)
+        {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _httpClient.DeleteAsync($"{_apiUrl}/{userId}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException e)
+            {
+                return false;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+
+        }
+
         public async Task<ObservableCollection<User>> GetUsers()
         {
             if (!_connection.CheckInternetConnection())

@@ -24,7 +24,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand ResetPassCommand { protected set; get; }
         public ICommand RestaurantCommand { protected set; get; }
         public ICommand LogOutCommand { protected set; get; }
-        public ICommand DeleteAccountCommand { protected set; get; }
+        public Command<int> DeleteCommand { protected set; get; }
         public ICommand DarkModeCommand { protected set; get; }
 
 
@@ -43,6 +43,7 @@ namespace Luqmit3ish.ViewModels
                DeleteAccountCommand = new Command(async () => await OnDeleteAccountClicked());
                DarkModeCommand = new Command(async () => await OnDarkModeClicked());
                RestaurantCommand = new Command(async () => await OnRestaurantClicked());
+
             _userServices = new UserServices();
               OnInit();
         }
@@ -63,6 +64,16 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
+
+
+        private int _id;
+        public int Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value);
+        } 
+
+ 
 
         private User _userInfo;
         public User UserInfo
@@ -115,6 +126,7 @@ namespace Luqmit3ish.ViewModels
                     }
 
                     Name = UserInfo.Name;
+                    Id = UserInfo.id; 
                 }
             }
             catch (ConnectionException )
@@ -137,9 +149,32 @@ namespace Luqmit3ish.ViewModels
             //implm
         }
 
-        private async Task OnDeleteAccountClicked()
+        private async Task OnDeleteClicked(int id)
         {
-            //implem
+            var deleteConfirm = await Application.Current.MainPage.DisplayAlert("Delete Account", "Are you sure that you want to delete Your account?", "Yes", "No");
+            if (deleteConfirm)
+            {
+                try
+                {
+                    bool result = await _userServices.DeleteAccount(id); 
+                    if (result)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Success", "The Account have been deleted successfully", "ok");
+                        Preferences.Clear();
+                        Application.Current.MainPage = new LoginPage();
+                     
+                    }
+                    else
+                    {
+                        await App.Current.MainPage.DisplayAlert("Faild", "The Account has not been deleted , please try again", "ok");
+                    }
+                }
+                catch (Exception e)
+                {
+                    await App.Current.MainPage.DisplayAlert("Error", "An error occur, please try again", "ok");
+
+                }
+            }
         }
 
         private async Task OnLogOutClicked()
