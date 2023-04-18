@@ -133,17 +133,17 @@ namespace Luqmit3ish.ViewModels
             {
                 try
                 {
-                    bool result = await _userServices.DeleteAccount(id); // call api for delete  
-                    if (result == true)
+                    bool result = await _userServices.DeleteAccount(id); 
+                    if (result)
                     {
-                        await App.Current.MainPage.DisplayAlert("Success", "The order have been deleted successfully", "ok");
+                        await App.Current.MainPage.DisplayAlert("Success", "The Account have been deleted successfully", "ok");
                         Preferences.Clear();
                         Application.Current.MainPage = new LoginPage();
-                       //  _navigation.PushAsync(new pagename()); 
+                     
                     }
                     else
                     {
-                        await App.Current.MainPage.DisplayAlert("Faild", "The Order has not been deleted , please try again", "ok");
+                        await App.Current.MainPage.DisplayAlert("Faild", "The Account has not been deleted , please try again", "ok");
                     }
                 }
                 catch (Exception e)
