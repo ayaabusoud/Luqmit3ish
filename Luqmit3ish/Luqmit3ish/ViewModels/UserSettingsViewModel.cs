@@ -4,6 +4,7 @@ using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -20,10 +21,10 @@ namespace Luqmit3ish.ViewModels
     {
         private INavigation _navigation { get; set; }
         public ICommand MyProfileCommand { protected set; get; }
- 
         public ICommand ResetPassCommand { protected set; get; }
+        public ICommand RestaurantCommand { protected set; get; }
         public ICommand LogOutCommand { protected set; get; }
-        public ICommand DeleteAccountCommand { protected set; get; }
+        public Command<int> DeleteCommand { protected set; get; }
         public ICommand DarkModeCommand { protected set; get; }
 
 
@@ -39,13 +40,41 @@ namespace Luqmit3ish.ViewModels
                MyProfileCommand= new Command(async () => await OnProfileClicked());
                ResetPassCommand = new Command(async () => await OnResetClicked());
                LogOutCommand= new Command(async () => await OnLogOutClicked());
-               DeleteAccountCommand = new Command(async () => await OnDeleteAccountClicked());
+               DeleteCommand = new Command<int>(async (int id) => await OnDeleteAccountClicked(id));
                DarkModeCommand = new Command(async () => await OnDarkModeClicked());
+               RestaurantCommand = new Command(async () => await OnRestaurantClicked());
+
             _userServices = new UserServices();
               OnInit();
         }
 
+        private async Task OnRestaurantClicked()
+        {
+            try
+            {
+                await _navigation.PushAsync(new RestaurantOfTheMonth());
+
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+
+        private int _id;
+        public int Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value);
+        } 
+
  
+
         private User _userInfo;
         public User UserInfo
         {
@@ -97,6 +126,7 @@ namespace Luqmit3ish.ViewModels
                     }
 
                     Name = UserInfo.Name;
+                    Id = UserInfo.id; 
                 }
             }
             catch (ConnectionException )
@@ -119,9 +149,32 @@ namespace Luqmit3ish.ViewModels
             //implm
         }
 
-        private async Task OnDeleteAccountClicked()
+        private async Task OnDeleteAccountClicked(int id)
         {
-            //implem
+            var deleteConfirm = await Application.Current.MainPage.DisplayAlert("Delete Account", "Are you sure that you want to delete Your account?", "Yes", "No");
+            if (deleteConfirm)
+            {
+                try
+                {
+                    bool result = await _userServices.DeleteAccount(id); 
+                    if (result)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Success", "The Account have been deleted successfully", "ok");
+                        Preferences.Clear();
+                        Application.Current.MainPage = new LoginPage();
+                     
+                    }
+                    else
+                    {
+                        await App.Current.MainPage.DisplayAlert("Faild", "The Account has not been deleted , please try again", "ok");
+                    }
+                }
+                catch (Exception e)
+                {
+                    await App.Current.MainPage.DisplayAlert("Error", "An error occur, please try again", "ok");
+
+                }
+            }
         }
 
         private async Task OnLogOutClicked()
