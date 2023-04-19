@@ -10,24 +10,23 @@ using Xamarin.Forms;
 
 namespace Luqmit3ish.ViewModels
 {
-    class OnBoardingViewModel :  ViewModelBase
+    class OnBoardingViewModel : ViewModelBase
     {
-    private INavigation _navigation { get; set; }
+        private INavigation _navigation { get; set; }
 
-    public event PropertyChangedEventHandler PropertyChanged;
-    public ICommand ButtonCommand { protected set; get; }
+        public ICommand SignupCommand { protected set; get; }
 
-    public OnBoardingViewModel(INavigation navigation)
-    {
-        this._navigation = navigation;
-        ButtonCommand = new Command(async () => await OnButtonClicked());
-    }
+        public OnBoardingViewModel(INavigation navigation)
+        {
+            this._navigation = navigation;
+            SignupCommand = new Command(async () => await OnButtonClicked());
+        }
 
-    private async Task OnButtonClicked()
-    {
+        private async Task OnButtonClicked()
+        {
             try
             {
-            await _navigation.PushModalAsync(new SignupPage());
+                await _navigation.PushModalAsync(new SignupPage());
 
             }
             catch (ArgumentException e)
@@ -38,7 +37,7 @@ namespace Luqmit3ish.ViewModels
             {
                 Debug.WriteLine(e.Message);
             }
-    }
+        }
 
-}
+    }
 }
