@@ -12,9 +12,9 @@ using Xamarin.Forms.Xaml;
 namespace Luqmit3ish.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class OrderDetailsPage : ContentPage
+    public partial class ResturantOrderDetailsPage : ContentPage
     {
-        public OrderDetailsPage(OrderCard order)
+        public ResturantOrderDetailsPage(OrderCard order)
         {
             InitializeComponent();
             this.BindingContext = new OrderDetailsViewModel(order);

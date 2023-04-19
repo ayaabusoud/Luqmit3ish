@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:Luqmit3ish.ViewModels" 
-             x:Class="Luqmit3ish.Views.OrderDetailsPage"
-                          x:Name="OrderDetails"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Luqmit3ish.Views.ResturantOrderDetailsPage"
+             x:Name="ResturantOrderDetails"
+       BackgroundColor="WhiteSmoke">
 
-             BackgroundColor="WhiteSmoke">
     <ContentPage.Content>
         <StackLayout>
 
@@ -38,19 +38,8 @@
                                                     </Label.FormattedText>
                                                 </Label>
                                                 <StackLayout Orientation="Horizontal" Margin="15,-5,0,0" WidthRequest="100" VerticalOptions="Center" Grid.Column="1"  >
-
-
-                                                    <Label Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="25" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
-                                                        <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer CommandParameter="{Binding id}"  Command="{Binding BindingContext.MinusCommand , Source={x:Reference OrderDetails}}"/>
-                                                        </Label.GestureRecognizers>
-                                                    </Label>
                                                     <Label Text="{Binding number_of_dish}" FontAttributes="Bold" Margin="5,12,5,0"/>
-                                                    <Label  Text="&#xf055;" FontFamily="FontAwesomeIcons" FontSize="25" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
-                                                        <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer CommandParameter="{Binding id}" Command="{Binding BindingContext.PlusCommand  , Source={x:Reference OrderDetails}}"/>
-                                                        </Label.GestureRecognizers>
-                                                    </Label>
+                                            
                                                 </StackLayout>
 
                                             </Grid>

@@ -1,22 +1,18 @@
+using Luqmit3ish.Exceptions;
+using Luqmit3ish.Models;
+using Luqmit3ish.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Luqmit3ish.Exceptions;
-using Luqmit3ish.Models;
-using Luqmit3ish.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.PancakeView;
 
 namespace Luqmit3ish.ViewModels
 {
-    class OrderDetailsViewModel : ViewModelBase
+   public  class ResturantOrderDetailsViewModle: ViewModelBase
     {
         private User _user;
         private OrderCard _order;
@@ -26,7 +22,7 @@ namespace Luqmit3ish.ViewModels
         public Command<int> PlusCommand { protected set; get; }
         public Command<int> MinusCommand { protected set; get; }
 
-        public OrderDetailsViewModel(OrderCard order)
+        public ResturantOrderDetailsViewModle(OrderCard order)
         {
             this._order = order;
             RestaurantName = _order.name;
@@ -55,12 +51,6 @@ namespace Luqmit3ish.ViewModels
             get => _id;
             set => SetProperty(ref _id, value);
         }
-        private string _userPhoto;
-        public string UserPhoto
-        {
-            get => _userPhoto;
-            set => SetProperty(ref _userPhoto, value);
-        }
 
 
         private async void Initial(int id)
@@ -74,6 +64,7 @@ namespace Luqmit3ish.ViewModels
             var userId = int.Parse(user);
             try
             {
+
                 ObservableCollection<OrderCard> cards = await _orderService.GetOrders(userId);
                 foreach (OrderCard order in cards)
                 {
@@ -82,7 +73,7 @@ namespace Luqmit3ish.ViewModels
                         Dishes = new ObservableCollection<OrderDish>(order.data);
                     }
                 }
-        
+
             }
             catch (ConnectionException e)
             {
@@ -107,6 +98,13 @@ namespace Luqmit3ish.ViewModels
             get => _restaurantName;
             set => SetProperty(ref _restaurantName, value);
         }
+        private string _userPhoto;
+        public string UserPhoto
+        {
+            get => _userPhoto;
+            set=>SetProperty(ref _userPhoto, value);
+        }
+
 
         public OrderCard Order
         {
@@ -156,5 +154,4 @@ namespace Luqmit3ish.ViewModels
             }
         }
     }
-
 }
