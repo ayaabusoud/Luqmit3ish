@@ -77,7 +77,6 @@
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
-    <AndroidResource Include="Resources\drawable\notFound.webp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Luqmit3ish\Luqmit3ish.csproj">

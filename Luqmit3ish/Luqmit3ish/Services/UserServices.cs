@@ -46,7 +46,7 @@ namespace Luqmit3ish.Services
                 throw new Exception(e.Message);
             }
         }
-
+        
         public async Task<User> GetUserByEmail(string email)
         {
             if (!_connection.CheckInternetConnection())

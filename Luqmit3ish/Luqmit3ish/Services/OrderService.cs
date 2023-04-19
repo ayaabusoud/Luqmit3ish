@@ -23,7 +23,6 @@ namespace Luqmit3ish.Services
         private readonly string _receive = "https://luqmit3ishv2.azurewebsites.net/api/";
         private readonly string _bestRestaurantUrl = "https://luqmit3ishv2.azurewebsites.net/BestRestaurant";
 
-
         private IConnection _connection;
 
             public OrderService()
