@@ -1,11 +1,10 @@
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -14,34 +13,29 @@ using Xamarin.Forms;
 
 namespace Luqmit3ish.ViewModels
 {
-    public class LoginViewModel : INotifyPropertyChanged
+    public class LoginViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         public ICommand ForgotPassCommand { get; }
         public ICommand SignupCommand { get; }
         public ICommand LoginCommand { get; }
 
-        public UserServices userServices;
+        private UserServices _userServices;
         public LoginViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
+            _navigation = navigation;
             ForgotPassCommand = new Command(() => OnForgotPassClicked());
             SignupCommand = new Command(() => OnSignupClicked());
             LoginCommand = new Command(() => OnLoginClicked());
-            userServices = new UserServices();
-        }
-        public void OnPropertyChanged(string PropertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+            _userServices = new UserServices();
         }
 
         private async void OnForgotPassClicked()
         {
             try
             {
-                await Navigation.PushAsync(new ForgotPasswordPage());
+                Application.Current.MainPage = new NavigationPage(new ForgotPasswordPage()) ;
 
             }
             catch (ArgumentException e)
@@ -57,7 +51,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await Navigation.PushModalAsync(new SignupPage());
+                await _navigation.PushModalAsync(new SignupPage());
             }
             catch (ArgumentException e)
             {
@@ -73,19 +67,19 @@ namespace Luqmit3ish.ViewModels
         {
             LoginRequest loginRequest = new LoginRequest()
             {
-                Email = email,
-                Password = password
+                Email = _email,
+                Password = _password
             };
-            await canLogin(loginRequest);
+            await CanLogin(loginRequest);
         }
-        public async Task<bool> canLogin(LoginRequest loginRequest)
+        public async Task<bool> CanLogin(LoginRequest loginRequest)
         {
             try
             {
-                bool hasAccount = await userServices.Login(loginRequest);
+                bool hasAccount = await _userServices.Login(loginRequest);
                 if (hasAccount)
                 {
-                    User user = await userServices.GetUserByEmail(Email);
+                    User user = await _userServices.GetUserByEmail(Email);
 
                     Preferences.Set("userEmail", Email);
                     Preferences.Set("userId", user.id.ToString());
@@ -105,50 +99,51 @@ namespace Luqmit3ish.ViewModels
             }
             catch (ArgumentException e)
             {
-                return false;
                 Debug.WriteLine(e.Message);
+                return false;
+            }
+            catch (HttpRequestException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Invalid credentials", "Please check your username and password and try again", "Ok");
+                return false;
+            }
+            catch (ConnectionException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Bad request", $"There is no internet connection, please check your connection", "Ok");
+                return false;
             }
             catch (Exception e)
             {
-                return false;
                 Debug.WriteLine(e.Message);
+                return false;
             }
         }
-        private bool loginButtonEnable = false;
+        private bool _loginButtonEnable = false;
         public bool LoginButtonEnable
         {
-            get => loginButtonEnable;
-            set
-            {
-                if (loginButtonEnable == value) return;
-                loginButtonEnable = value;
-                OnPropertyChanged(nameof(LoginButtonEnable));
-            }
+            get => _loginButtonEnable;
+            set => SetProperty(ref _loginButtonEnable, value);
         }
-        private string email;
+        private string _email;
         public string Email
         {
-            get => email;
+            get => _email;
             set
             {
-                if (email == value) return;
-                email = value;
-                OnPropertyChanged(nameof(Email));
-                if (email != null)
+                SetProperty(ref _email, value);
+                if (_email != null)
                     LoginButtonEnable = true;
             }
         }
 
-        private string password;
+        private string _password;
         public string Password
         {
-            get => password;
+            get => _password;
             set
             {
-                if (password == value) return;
-                password = value;
-                OnPropertyChanged(nameof(Password));
-                if (password != null)
+                SetProperty(ref _password, value);
+                if (_password != null)
                     LoginButtonEnable = true;
             }
         }

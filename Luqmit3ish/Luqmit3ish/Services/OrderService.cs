@@ -6,6 +6,8 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Luqmit3ish.Connection;
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.ViewModels;
 using Newtonsoft.Json;
@@ -14,94 +16,234 @@ namespace Luqmit3ish.Services
 {
     class OrderService
     {
-        private readonly HttpClient _http;
-        private static readonly string ApiUrl = "https://luqmit3ish.azurewebsites.net/api/Orders";
-        private static readonly string OrderApiUrl = "https://luqmit3ish.azurewebsites.net/api/CharityOrders";
+        private readonly HttpClient _httpClient;
+        private  readonly string _apiUrl = "https://luqmit3ishv2.azurewebsites.net/api/Orders";
+        private  readonly string _orderApiUrl = "https://luqmit3ishv2.azurewebsites.net/api/CharityOrders";
+        private  readonly string _restaurantApiUrl = "https://luqmit3ishv2.azurewebsites.net/api/RestaurantOrders";
+        private readonly string _receive = "https://luqmit3ishv2.azurewebsites.net/api/";
+        private readonly string _bestRestaurantUrl = "https://luqmit3ishv2.azurewebsites.net/BestRestaurant";
 
-        public OrderService()
+        private IConnection _connection;
+
+            public OrderService()
         {
-            _http = new HttpClient();
+            _httpClient = new HttpClient();
+            _connection = new Connection();
         }
+
         public async Task<ObservableCollection<OrderCard>> GetOrders(int id)
         {
-            var response = await _http.GetAsync($"{OrderApiUrl}/{id}");
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_orderApiUrl}/{id}");
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
+
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
         }
-        public async Task<ObservableCollection<OrderCard>> GetRestaurantOrders(int id,bool receieve)
+        
+       public async Task<ObservableCollection<OrderCard>> GetRestaurantOrders(int id,bool receieve)
         {
-            var response = await _http.GetAsync("https://luqmit3ish.azurewebsites.net/api/RestaurantOrders/"+id+"/"+ receieve);
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_restaurantApiUrl}/{id}/{receieve}");
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
+            }catch(HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            
+        }
+        public async Task<DishesOrder> GetBestRestaurant()
+        {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _httpClient.GetAsync(_bestRestaurantUrl);
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<DishesOrder>(content);
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
         }
         public async Task<Order> GetOrderById(int id)
-        {
-            var response = await _http.GetAsync($"{ApiUrl}/{id}");
 
-            if (response.IsSuccessStatusCode)
+        {
+            if (!_connection.CheckInternetConnection())
             {
-                var content = await response.Content.ReadAsStringAsync();
-                var order = JsonConvert.DeserializeObject<Order>(content);
-                return order;
+                throw new ConnectionException("There is no internet connection");
             }
-            else if (response.StatusCode == HttpStatusCode.NotFound)
+            try
             {
-                return null;
+                var response = await _httpClient.GetAsync($"{_apiUrl}/{id}");
+
+                
+                    var content = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<Order>(content);
+                
             }
-            else
+            catch (HttpRequestException e)
             {
-                throw new Exception($"Failed to retrieve user_id: {response.StatusCode} - {response.ReasonPhrase}");
+                throw new HttpRequestException(e.Message);
             }
+            catch (Exception e)
+            {
+
+                throw new Exception($"Failed to retrieve user"+e.Message);
+            }
+            
         }
 
         public async Task<bool> UpdateOrderDishCount(int id, string operation)
         {
-            var patchObject = new { id = id, operation = operation };
-            var patchData = JsonConvert.SerializeObject(patchObject);
-            var httpContent = new StringContent(patchData, Encoding.UTF8, "application/json");
-
-            var request = new HttpRequestMessage(new HttpMethod("PATCH"), "https://luqmit3ish.azurewebsites.net/api/CharityOrders/" + id + "/" + operation)
+            if (!_connection.CheckInternetConnection())
             {
-                Content = httpContent
-            };
-
+                throw new ConnectionException("There is no internet connection");
+            }
             try
             {
-                var response = await _http.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
+                var patchObject = new { id, operation };
+                var patchData = JsonConvert.SerializeObject(patchObject);
+                var httpContent = new StringContent(patchData, Encoding.UTF8, "application/json");
+
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), _orderApiUrl + "/" + id + "/" + operation)
                 {
-                    Debug.WriteLine(response.StatusCode);
-                    return true;
-                }
-                else
-                {
-                    Debug.WriteLine(response.StatusCode);
-                    return false;
-                }
+                    Content = httpContent
+                };
+
+                var response = await _httpClient.SendAsync(request);
+
+                return response.IsSuccessStatusCode;
+
             }
-            catch (Exception ex)
+            catch (HttpRequestException e)
             {
-                Console.WriteLine("Exception caught: " + ex.Message);
+                throw new HttpRequestException(e.Message);
+            }
+
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+
+
+            } 
+         
+        }
+
+        public async Task<bool> ReserveOrder(Order orderRequest)
+        {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var json = JsonConvert.SerializeObject(orderRequest);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync(_apiUrl, content);
+                return response.IsSuccessStatusCode;
+            }
+            catch(HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+        }
+        public async Task<bool> DeleteOrder(int charityId, int restaurantId)
+        {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+            var response = await _httpClient.DeleteAsync($"{_apiUrl}/delete/{charityId}/{restaurantId}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException e)
+            {
                 return false;
             }
-        }
-
-         public async Task<bool> ReserveOrder(Order orderRequest)
-        {
-            var json = JsonConvert.SerializeObject(orderRequest);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _http.PostAsync(ApiUrl, content);
-            return response.IsSuccessStatusCode;
-        }
-        public async Task DeleteOrder(int charityId, int restaurantId)
-        {
-            var response = await _http.DeleteAsync($"{ApiUrl}/delete/{charityId}/{restaurantId}");
-
-            if (!response.IsSuccessStatusCode)
+            catch (Exception e)
             {
-                throw new Exception("delete failed");
+                return false;
             }
+
+
+        }
+         public async Task<bool> UpdateOrderReceiveStatus(int id)
+        {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+
+                var patchObject = new { id };
+                var patchData = JsonConvert.SerializeObject(patchObject);
+                var httpContent = new StringContent(patchData, Encoding.UTF8, "application/json");
+
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), _receive + id + "/" + "receive")
+                {
+                    Content = httpContent
+                };
+
+                var response = await _httpClient.SendAsync(request);
+
+                return response.IsSuccessStatusCode;
+
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+
+
+            }
+
         }
     }
 }
+
+

@@ -1,3 +1,4 @@
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -7,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -19,16 +21,14 @@ namespace Luqmit3ish.ViewModels
 {
     class RestaurantOrderViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
+          private INavigation _navigation { get; set; }
 
         public ICommand ProfileCommand { protected set; get; }
-        public OrderService orderService;
-        public FoodServices foodService;
         public ICommand DoneCommand { protected set; get; }
-
-
+        public ICommand NotRecievedCommand { protected set; get; }
+        public ICommand RecievedCommand { protected set; get; }
+        private OrderService _orderService;
+        public Command<OrderCard> OrderCommand { protected set; get; }
 
 
         private ObservableCollection<Dish> _dishes;
@@ -40,47 +40,107 @@ namespace Luqmit3ish.ViewModels
         }
         public RestaurantOrderViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
-            ExpanderCommand = new Command<int>(OnExpanderClicked);
-            orderService = new OrderService();
-            foodService = new FoodServices();
-            DoneCommand = new Command(OnDoneClick);
-            OnInit();
+           _navigation = navigation;
+            DoneCommand = new Command<OrderCard>(async (OrderCard order) => await OnDoneClick(order));
+            NotRecievedCommand = new Command(OnNotRecievedClicked);
+            OrderCommand = new Command<OrderCard>(async (OrderCard order) => await OnFrameClicked(order));
+            RecievedCommand = new Command(OnRecievedClicked);
+            _orderService = new OrderService();
+            Selected(false);
+        }
+        private bool _emptyResult;
+
+        public bool EmptyResult
+        {
+            get => _emptyResult;
+            set => SetProperty(ref _emptyResult, value);
+        }
+        
+        private bool _isVisible = true;
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set => SetProperty(ref _isVisible, value);
+        }
+        private bool _receievedCheck = true;
+        public bool ReceievedCheck
+        {
+            get => _receievedCheck;
+            set => SetProperty(ref _receievedCheck, value);
+        }
+        private string _recievedColor = "#D9D9D9";
+        public string RecievedColor
+        {
+            get => _recievedColor;
+            set => SetProperty(ref _recievedColor, value);
+        }
+        private string _notRecievedColor = "Black";
+        public string NotRecievedColor
+        {
+            get => _notRecievedColor;
+            set => SetProperty(ref _notRecievedColor, value);
+        }
+        private void OnRecievedClicked()
+        {
+            IsVisible = false;
+            RecievedColor = "Black";
+            NotRecievedColor = "#D9D9D9";
+            Selected(true);
+            ReceievedCheck = false;
         }
 
-        private void OnDoneClick(object obj)
+        private void OnNotRecievedClicked()
         {
-            throw new NotImplementedException();
+            IsVisible = true;
+            NotRecievedColor = "Black";
+            RecievedColor = "#D9D9D9";
+            Selected(false);
+            ReceievedCheck = true;
         }
 
-        private bool _isExpanded = false;
-
-        public bool IsExpanded
+        private async Task OnFrameClicked(OrderCard order)
         {
-            get => _isExpanded;
-            set => SetProperty(ref _isExpanded, value);
-        }
-        public Command<int> ExpanderCommand { protected set; get; }
-        private void OnExpanderClicked(int id)
-        {
-            var item = OrderCard.FirstOrDefault(i => i.id == id);
-            if (item != null)
+            try
             {
-                if (item.IsExpanded)
-                {
-                    item.IsExpanded = false;
-                }
-                else
-                {
-                    item.IsExpanded = true;
-                }
+                await _navigation.PushAsync(new OrderDetailsPage(order));
+
             }
-
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
-    
 
-       
+        private async Task OnDoneClick(OrderCard orders)
+        {
+            try
+            {
+                foreach (OrderDish order in orders.data)
+                {
+                    await _orderService.UpdateOrderReceiveStatus(order.id);
+                }
+                Selected(false);
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (ConnectionException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+            }
+            catch (HttpRequestException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Sorry", "Something went bad here, you can try again", "Ok");
+            }
+            catch (Exception e)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
+            }
+        }
 
+
+   
 
         private ObservableCollection<OrderCard> _orderCard;
 
@@ -90,29 +150,25 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _orderCard, value);
         }
 
-        private async void OnInit()
+        private async void Selected(bool status)
         {
             var id = Preferences.Get("userId", null);
+            if (id == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Your login session has been expired", "Ok");
+                   await _navigation.PushAsync(new LoginPage());
+                    return;
+                }
             var userId = int.Parse(id);
-            OrderCard = await orderService.GetRestaurantOrders(userId,false);
-            if (OrderCard is null)
-            {
-                //no orders yet
-            }
-
-
-        }
-
-       
-        private async Task OnProfileClicked()
-        {
-
             try
             {
-                await Navigation.PushAsync(new OtherProfilePage(1));
-
+                OrderCard = await _orderService.GetRestaurantOrders(userId, status);
             }
-            catch (ArgumentException e)
+             catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
             }
@@ -120,6 +176,17 @@ namespace Luqmit3ish.ViewModels
             {
                 Debug.WriteLine(e.Message);
             }
+            if (OrderCard.Count > 0)
+            {
+                EmptyResult = false;
+            }
+            else
+            {
+                EmptyResult = true;
+            }
+
         }
+
+     
     }
 }

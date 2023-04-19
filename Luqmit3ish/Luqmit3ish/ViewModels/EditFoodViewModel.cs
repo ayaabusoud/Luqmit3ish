@@ -4,10 +4,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -18,15 +21,14 @@ using Xamarin.Forms;
 
 namespace Luqmit3ish.ViewModels
 {
-    class EditFoodViewModel : INotifyPropertyChanged
+    class EditFoodViewModel : ViewModelBase
     {
-        private int food_id;
+        private int _foodId;
+        private Dish _dish;
+        private INavigation _navigation;
+        private FoodServices _foodServices;
 
-        public INavigation Navigation { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
         public ICommand SubmitCommand { protected set; get; }
-        public FoodServices foodServices;
 
         public ICommand Photo_clicked { protected set; get; }
         public ICommand Blus { get; private set; }
@@ -39,64 +41,56 @@ namespace Luqmit3ish.ViewModels
         public ICommand PlusCommand1 { protected set; get; }
         public ICommand MinusCommand1 { protected set; get; }
 
-        public EditFoodViewModel(INavigation navigation, int food_id)
+        public EditFoodViewModel(INavigation navigation, Dish dish)
         {
-            this.food_id = food_id;
-            this.Navigation = navigation;
+            this._foodId = dish.id;
+            this._navigation = navigation;
+            _dish = dish;
+            _foodServices = new FoodServices();
 
             SubmitCommand = new Command(async () => await OnSubmitClicked());
-            foodServices = new FoodServices();
             Photo_clicked = new Command(async () => await PhotoClicked());
             TakePhotoCommand = new Command(async () => await PhotoClicked());
+
             PlusCommand = new Command(OnPlusClicked);
             MinusCommand = new Command(OnMinusClicked);
             PlusCommand1 = new Command(OnPlusClicked1);
             MinusCommand1 = new Command(OnMinusClicked1);
-            _typeValues = new ObservableCollection<TypeField>
-            {
-                 new TypeField { Value = TypeFieldValue.Food, Name = "Food", IconText = "\ue4c6;" },
-                new TypeField { Value = TypeFieldValue.Drink, Name = "Drink", IconText = "\uf4e3;" },
-                new TypeField { Value = TypeFieldValue.Cake, Name = "Cake", IconText = "\uf1fd;" },
-                new TypeField { Value = TypeFieldValue.Snack, Name = "Snack", IconText = "\uf564;" },
-                new TypeField { Value = TypeFieldValue.Candies, Name = "Candies", IconText = "\uf786;" },
-                new TypeField { Value = TypeFieldValue.Fish, Name = "Fish", IconText = "\uf578;" },
-            };
+
+            InitializeTypeValues();
             SelectedType = TypeValues.FirstOrDefault();
-
             InitializeAsync();
-
-
         }
 
-        private ObservableCollection<Dish> _dishes;
-
-        public ObservableCollection<Dish> Dishes
+        private void InitializeTypeValues()
         {
-            get => _dishes;
-            set => SetProperty(ref _dishes, value);
+            _typeValues = new ObservableCollection<TypeField>
+            {
+               new TypeField { Name = "Food", IconText = "\ue4c6;" },
+                new TypeField { Name = "Drink", IconText = "\uf4e3;" },
+                new TypeField { Name = "Cake", IconText = "\uf7ef;" },
+                new TypeField { Name = "Snack", IconText = "\uf787;" },
+                new TypeField { Name = "Candies", IconText = "\uf786;" },
+                new TypeField { Name = "Fish", IconText = "\uf578;" }
+            };
         }
 
         private async void InitializeAsync()
         {
             try
             {
-                var dishes = await foodServices.GetFoodById(food_id);
-                Dishes = new ObservableCollection<Dish>(new List<Dish> { dishes });
-
-                Dish firstDish = Dishes.FirstOrDefault();
-
-                if (firstDish != null)
+                if (_dish != null)
                 {
-                    var selectedTypeName = firstDish.type;
+                    Type = _dish.type;
+                    Title = _dish.name;
+                    Description = _dish.description;
+                    KeepValid = _dish.keep_listed;
+                    Pack_time = _dish.pick_up_time;
+                    Quantity = _dish.number;
 
+                    var selectedTypeName = _dish.type;
                     var selectedType = TypeValues.FirstOrDefault(tf => tf.Name == selectedTypeName);
                     SelectedType = selectedType;
-                    _type = firstDish.type;
-                    Title = firstDish.name;
-                    Description = firstDish.description;
-                    Counter = firstDish.keep_listed;
-                    Pack_time = firstDish.pick_up_time;
-                    Counter1 = firstDish.number;
                 }
             }
             catch (Exception e)
@@ -105,75 +99,45 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        public ObservableCollection<TypeField> TypeValues1 { get; } = new ObservableCollection<TypeField>();
-
-        private int _counter = 0;
-        public int Counter
+        private int _keepValid = 0;
+        public int KeepValid
         {
-            get => _counter;
-            set => SetProperty(ref _counter, value);
+            get => _keepValid;
+            set => SetProperty(ref _keepValid, value);
         }
 
-        private int _counter1 = 0;
-        public int Counter1
+        private int _quantity = 0;
+        public int Quantity
         {
-            get => _counter1;
-            set => SetProperty(ref _counter1, value);
+            get => _quantity;
+            set => SetProperty(ref _quantity, value);
         }
 
         private void OnMinusClicked()
         {
-            if (Counter == 0)
+            if (KeepValid > 0)
             {
-                return;
+                KeepValid--;
             }
-            else
-            {
-                Counter--;
-            }
-
         }
 
         private void OnPlusClicked1()
         {
-            Counter1++;
+            Quantity++;
         }
 
         private void OnMinusClicked1()
         {
-            if (Counter1 == 0)
+            if (Quantity > 0)
             {
-                return;
+                Quantity--;
             }
-            else
-            {
-                Counter1--;
-            }
-
         }
 
         private void OnPlusClicked()
         {
-            Counter++;
+            KeepValid++;
         }
-
-        protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName] string propertyName = "", Action onChanged = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value))
-                return false;
-
-            backingStore = value;
-            onChanged?.Invoke();
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #region type
 
         public string SelectedTypeName
         {
@@ -184,129 +148,143 @@ namespace Luqmit3ish.ViewModels
         {
             _type = SelectedTypeName;
         });
-        #endregion
-
-        #region color
-
-        private bool isSelected;
-        public bool IsSelected
-        {
-            get { return isSelected; }
-            set
-            {
-                if (isSelected != value)
-                {
-                    isSelected = value;
-                    OnPropertyChanged(nameof(IsSelected));
-                    OnPropertyChanged(nameof(StackLayoutBackgroundColor));
-                }
-            }
-        }
-
-
-        public Color StackLayoutBackgroundColor => IsSelected ? Color.Blue : Color.White;
-
-        private TypeField selectedType = new TypeField();
-        public TypeField SelectedType
-        {
-            get { return selectedType; }
-            set
-            {
-                if (selectedType != value)
-                {
-                    selectedType = value;
-                    OnPropertyChanged(nameof(SelectedType));
-
-                    if (selectedType != null)
-                    {
-                        foreach (var type in TypeValues)
-                        {
-                            type.IsSelected = type == selectedType;
-                        }
-                    }
-                }
-            }
-        }
-
-
-        #endregion
-        private ObservableCollection<TypeField> _typeValues;
-        public ObservableCollection<TypeField> TypeValues
-        {
-            get => _typeValues;
-            set
-            {
-                if (_typeValues == value) return;
-                _typeValues = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string proximateNumberValue = "1";
-        public string ProximateNumberValue
-        {
-            get => proximateNumberValue;
-            set { SetProperty(ref proximateNumberValue, value); }
-        }
-
-        private string keepListedValue = "1";
-        public string KeepListedValue
-        {
-            get => keepListedValue;
-            set { SetProperty(ref keepListedValue, value); }
-        }
-
-        private ImageSource img;
-        public ImageSource Img
-        {
-            get => img;
-            set { SetProperty(ref img, value); }
-        }
 
         private async Task PhotoClicked()
         {
+            try
+            {
+                bool userSelect = await App.Current.MainPage.DisplayAlert("Upload Image", "", "Take photo", "select from Gallary");
 
+                if (userSelect)
+                {
+                    TakePhoto();
+                }
+                else
+                {
+                    SelectFromGallary();
+                }
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+                await App.Current.MainPage.DisplayAlert("Error", "There was a problem with your internet connection.", "OK");
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await App.Current.MainPage.DisplayAlert("Error", "Unable to connect to the server. Please check your internet connection and try again.", "OK");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        private async void TakePhoto()
+        {
+            try
+            {
+                var result = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
+                {
+                    Title = "Take Photo"
+                });
+
+                if (result != null)
+                {
+                    _photoPath = result.FullPath;
+                }
+                else
+                {
+                    _photoPath = string.Empty;
+                }
+            }
+            catch (ConnectionException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+            }
+            catch (HttpRequestException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Something went bad on this reservation, you can try again", "Ok");
+            }
+            catch (Exception e)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
+            }
+        }
+
+        private async void SelectFromGallary()
+        {
+            try
+            {
+                await Permissions.RequestAsync<Permissions.Photos>();
+
+                var result = await MediaPicker.PickPhotoAsync();
+
+                if (result != null)
+                {
+                    _photoPath = result.FullPath;
+                }
+                else
+                {
+                    Console.WriteLine("User cancelled photo picker.");
+                }
+            }
+            catch (ConnectionException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+            }
+            catch (HttpRequestException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Something went bad on this reservation, you can try again", "Ok");
+            }
+            catch (Exception e)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
+            }
         }
 
         private async Task OnSubmitClicked()
         {
-
             try
             {
-                if (_type == null || _title == null || _description == null || Counter == 0 || _packTime == null || Counter1 == 0)
+                string id = Preferences.Get("userId", "0");
+
+                if (id is null)
+                {
+                    return;
+                }
+                int userId = int.Parse(id);
+
+                if (_type == null || _title == null || _description == null || KeepValid == 0 || _packTime == null || Quantity == 0)
                 {
                     await App.Current.MainPage.DisplayAlert("Error", "Please fill in all fields", "ok");
                     return;
                 }
-                Console.WriteLine("_type " + _type);
-                Console.WriteLine("_title " + _title);
-                Console.WriteLine("_description " + _description);
-                Console.WriteLine("Counter " + Counter);
-                Console.WriteLine("_packTime " + _packTime);
-                Console.WriteLine("Counter1 " + Counter1);
 
-                string id = Preferences.Get("userId", "0");
-                int userId = int.Parse(id);
-                Console.WriteLine("food_id " + food_id);
-                Console.WriteLine("userId " + userId);
                 DishRequest foodRequest = new DishRequest()
                 {
-                    id = food_id,
+                    id = _foodId,
                     user_id = userId,
                     photo = "",
                     type = _type,
                     name = _title,
                     description = _description,
-                    keep_listed = Counter,
+                    keep_listed = KeepValid,
                     pick_up_time = _packTime,
-                    number = Counter1
+                    number = Quantity
                 };
 
-                await UpdateDish(foodRequest);
+                UpdateDish(foodRequest);
             }
-            catch (ArgumentException e)
+            catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
+                await App.Current.MainPage.DisplayAlert("Error", "There was a problem with your internet connection.", "OK");
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await App.Current.MainPage.DisplayAlert("Error", "Unable to connect to the server. Please check your internet connection and try again.", "OK");
             }
             catch (Exception e)
             {
@@ -318,7 +296,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                ObservableCollection<Dish> request = await foodServices.GetFoodByResId(id);
+                ObservableCollection<Dish> request = await _foodServices.GetFoodByResId(id);
                 if (request != null)
                 {
                     return request;
@@ -334,67 +312,124 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        public async Task<bool> UpdateDish(DishRequest foodRequest)
+        public async void UpdateDish(DishRequest foodRequest)
         {
             try
             {
-                var request = await foodServices.UpdateDish(foodRequest, food_id);
+                var request = await _foodServices.UpdateDish(foodRequest, _foodId);
                 if (request)
                 {
-                    await Navigation.PopAsync();
-                    await App.Current.MainPage.DisplayAlert("Updated successfuly", "the dish update successfuly", "ok");
-                    return true;
+                    await AddNewPhoto(_photoPath, _foodId);
+                    return;
                 }
                 await App.Current.MainPage.DisplayAlert("Error", "the dish not added", "ok");
-                return false;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                return false;
             }
+        }
+
+        private async Task AddNewPhoto(string photoPath, int foodId)
+        {
+            var response = await _foodServices.UploadPhoto(photoPath, foodId);
+
+            if (response)
+            {
+                await _navigation.PopAsync();
+                await App.Current.MainPage.DisplayAlert("Updated successfuly", "the dish update successfuly", "ok");
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "The dish was not added", "OK");
+            }
+        }
+
+        private TypeField _selectedType = new TypeField();
+        public TypeField SelectedType
+        {
+            get => _selectedType;
+            set
+            {
+                SetProperty(ref _selectedType, value);
+                if (_selectedType != null)
+                {
+                    foreach (var type in TypeValues)
+                    {
+                        type.IsSelected = type == _selectedType;
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<TypeField> _typeValues;
+        public ObservableCollection<TypeField> TypeValues
+        {
+            get => _typeValues;
+            set => SetProperty(ref _typeValues, value);
+        }
+
+        private string _proximateNumberValue = "1";
+        public string ProximateNumberValue
+        {
+            get => _proximateNumberValue;
+            set => SetProperty(ref _proximateNumberValue, value);
+        }
+
+        private string _keepListedValue = "1";
+        public string KeepListedValue
+        {
+            get => _keepListedValue;
+            set => SetProperty(ref _keepListedValue, value);
+        }
+
+        private string _photoPath;
+        public string PhotoPath
+        {
+            get => _photoPath;
+            set => SetProperty(ref _photoPath, value);
         }
 
         private string _type;
         public string Type
         {
             get => _type;
-            set { SetProperty(ref _type, value); }
+            set => SetProperty(ref _type, value);
         }
 
         private string _title;
         public string Title
         {
             get => _title;
-            set { SetProperty(ref _title, value); }
+            set => SetProperty(ref _title, value);
         }
 
         private string _description;
         public string Description
         {
             get => _description;
-            set { SetProperty(ref _description, value); }
+            set => SetProperty(ref _description, value);
         }
 
         private int _keepListed;
         public int Keep_listed
         {
             get => _keepListed;
-            set { SetProperty(ref _keepListed, value); }
+            set => SetProperty(ref _keepListed, value);
         }
 
         private string _packTime;
         public string Pack_time
         {
             get => _packTime;
-            set { SetProperty(ref _packTime, value); }
+            set => SetProperty(ref _packTime, value);
         }
 
         private int _proximateNumber;
         public int Number
         {
             get => _proximateNumber;
-            set { SetProperty(ref _proximateNumber, value); }
+            set => SetProperty(ref _proximateNumber, value);
         }
     }
 }

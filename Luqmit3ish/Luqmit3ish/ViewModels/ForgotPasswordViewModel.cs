@@ -11,25 +11,41 @@ using Xamarin.Forms;
 namespace Luqmit3ish.ViewModels
 {
    
-    class ForgotPasswordViewModel : INotifyPropertyChanged
+    class ForgotPasswordViewModel : View
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public ICommand ButtonCommand { protected set; get; }
+        public ICommand SendEmailCommand { protected set; get; }
+        public ICommand LoginCommand { protected set; get; }
 
         public ForgotPasswordViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
-            ButtonCommand = new Command(async () => await OnButtonClicked());
+            this._navigation = navigation;
+            SendEmailCommand = new Command(OnSendEmailClicked);
+            LoginCommand = new Command(async () => await OnLoginClicked());
         }
 
-        private async Task OnButtonClicked()
+        private void OnSendEmailClicked()
         {
             try
             {
-            await Navigation.PushModalAsync(new CheckEmailPage());
+                _navigation.PushAsync(new CheckEmailPage());
 
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+        private async Task OnLoginClicked()
+        {
+            try
+            {
+                Application.Current.MainPage = new LoginPage();
             }
             catch (ArgumentException e)
             {

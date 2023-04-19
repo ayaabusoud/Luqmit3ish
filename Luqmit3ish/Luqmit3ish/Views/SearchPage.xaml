@@ -16,7 +16,7 @@
                     <ColumnDefinition Width="0.1*"/>
                     <ColumnDefinition Width="0.9*"/>
                 </Grid.ColumnDefinitions>
-                <Label Margin="0,12,0,0" VerticalOptions="Center" HorizontalOptions="End" Grid.Column="0" HeightRequest="56" TextColor="white" Text="&#xf060;" FontFamily="FontAwesomeIcons" FontSize="20" >
+                <Label Margin="0,20,0,0" VerticalOptions="Center" HorizontalOptions="End" Grid.Column="0" HeightRequest="56" TextColor="white" Text="&#xf060;" FontFamily="FontAwesomeIcons" FontSize="20" >
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding BackCommand}"/>
                     </Label.GestureRecognizers>
@@ -25,137 +25,63 @@
            SearchCommand="{Binding SearchCommand}" HeightRequest="56"/>
             </Grid>
 
-            <StackLayout Orientation="Horizontal"  >
+            <Grid Margin="16,30,16,25" HorizontalOptions="Fill"  VerticalOptions="Fill">
+                <StackLayout  IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center"   VerticalOptions="Center">
+                    <Image Source="Notfound.png"
+                       HeightRequest="200" 
+                       WidthRequest="200"
+                       VerticalOptions="Center"/>
+                    <Label Text="No results found "
+                           
+                   FontSize="Medium"
+                   TextColor="DimGray"
+                   HorizontalOptions="Fill" 
+                   HorizontalTextAlignment="Center"
+                   FontAttributes="Bold"
+                   Margin="0,2,0,0"/>
+                    <Label Text="We can't find any item matching your search " 
+                   FontSize="Small"
+                   HorizontalOptions="Fill" 
+                   HorizontalTextAlignment="Center"
+                   Margin="0,0,0,10"/>
+                </StackLayout>
+                <CollectionView ItemsSource="{Binding DishCard}">
 
-                <Button   Text="All" Command="{Binding AllFilter}" FontSize="Small" BackgroundColor="Transparent" TextColor="{Binding AllColor}"/>
-                <Button  Text="Restaurants" Command="{Binding RestaurantFilter}" FontSize="Small" BackgroundColor="Transparent"  TextColor="{Binding RestaurantColor}"/>
-                <Button  Text="Dishes" Command="{Binding CharitiesFilter}" FontSize="Small" BackgroundColor="Transparent"  TextColor="{Binding CharityColor}"/>
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="6"/>
+                    </CollectionView.ItemsLayout>
 
-            </StackLayout>
-            <CollectionView 
-                                    Margin="25" 
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="FillAndExpand"
-                                    SelectionMode="None"
-                                    ItemsSource="{Binding DishCard}">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" 
-                                               ItemSpacing="20"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <Frame Style="{StaticResource FoodCard}" Margin="3">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}"  Command="{Binding BindingContext.FoodDetailCommand , Source={x:Reference SearchFoodPage}}"></TapGestureRecognizer>
+                                    </Frame.GestureRecognizers>
+                                    <StackLayout>
+                                        <Image Source="{Binding photo}" />
+                                        <Label MaxLines="1" FontAttributes="Bold" TextColor="Black" Text="{Binding dishName}" Margin="15,0" FontSize="Medium"/>
+                                        <Label WidthRequest="150" MaxLines="1" Text="{Binding restaurantName}" Margin="15,0" FontSize="Small"/>
+                                        <Label MaxLines="1" Margin="15,0,0,0"  >
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <FormattedString.Spans>
+                                                        <Span FontSize="18"  Text="{Binding quantity}" TextColor="{StaticResource PrimaryLight}"/>
+                                                        <Span FontSize="12" Text=" Dishes"  />
+                                                    </FormattedString.Spans>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-                        <pv:PancakeView  BackgroundColor="White" VerticalOptions="StartAndExpand"
-                                            HorizontalOptions="FillAndExpand">
-                            <Grid VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <BoxView BackgroundColor="#F98836"
-                                             WidthRequest="3"
-                                             HorizontalOptions="Start"
-                                             VerticalOptions="FillAndExpand"/>
-                                <xct:Expander Grid.Column="1">
-                                    <xct:Expander.Header>
-                                        <Grid HorizontalOptions="FillAndExpand">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="3.5*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                                                <Image HeightRequest="100"
-                                               Source="https://s1.1zoom.me/big0/106/The_second_dishes_Potato_Meat_products_Vegetables_566163_1280x853.jpg" />
-                                            </StackLayout>
-                                            <BoxView Grid.Column="1" BackgroundColor="#F2F4F8" WidthRequest="1" HorizontalOptions="Start" 
-                                                 VerticalOptions="FillAndExpand"/>
-                                            <StackLayout Grid.Column="2" HorizontalOptions="Start" VerticalOptions="Center" Margin="15">
-                                                <Label Text="{Binding dishName}" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
-                                                <Label Text="{Binding restaurantName}" TextColor="DimGray" FontSize="Small" Margin="0,-10,0,0">
-                                                    <Label.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding BindingContext.ProfileCommand , Source={x:Reference SearchFoodPage}}"
-                                                                                      CommandParameter="{Binding restaurantId}"/>
-                                                    </Label.GestureRecognizers>
-                                                </Label>
-                                            </StackLayout>
-                                        </Grid>
-                                    </xct:Expander.Header>
-                                    <Grid HorizontalOptions="FillAndExpand">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="3.5*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <BoxView Grid.Column="1" BackgroundColor="#F2F4F8" WidthRequest="1" HorizontalOptions="Start" 
-                                             VerticalOptions="FillAndExpand"/>
-                                        <StackLayout Grid.Column="2" Spacing="10">
-                                            <Label TextColor="#2F3246" FontSize="Small"  Margin="15,0">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <FormattedString.Spans>
-                                                            <Span Text="ingrediants: " FontAttributes="Bold"/>
-                                                            <Span Text="{Binding description}"  />
-                                                        </FormattedString.Spans>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-                                            <Label TextColor="#2F3246" FontSize="Small" Margin="15,0">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <FormattedString.Spans>
-                                                            <Span Text="Quantity: " FontAttributes="Bold"/>
-                                                            <Span Text="{Binding quantity}"/>
-                                                            <Span Text=" Dishes" />
-                                                        </FormattedString.Spans>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-                                            <Label TextColor="#2F3246" FontSize="Small" Margin="15,0">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <FormattedString.Spans>
-                                                            <Span Text="Remains valid for: " FontAttributes="Bold"/>
-                                                            <Span Text="{Binding keepValid}"/>
-                                                            <Span Text=" days"/>
-                                                        </FormattedString.Spans>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-                                            <Label TextColor="#2F3246" FontSize="Small" Margin="15,0" >
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <FormattedString.Spans>
-                                                            <Span Text="Pick-up Time: " FontAttributes="Bold"/>
-                                                            <Span Text="{Binding pickUpTime}" />
-                                                        </FormattedString.Spans>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-                                            <StackLayout Orientation="Horizontal" Margin="0,0,0,10" HorizontalOptions="Center">
-                                                <Label Text="&#xf055;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,10,0,0">
-                                                    <Label.GestureRecognizers>
-                                                        <TapGestureRecognizer CommandParameter="{Binding quantity}" Command="{Binding BindingContext.PlusCommand , Source={x:Reference SearchFoodPage}}"/>
-                                                    </Label.GestureRecognizers>
-                                                </Label>
-                                                <Label Text="{Binding BindingContext.Counter , Source={x:Reference SearchFoodPage}}" FontAttributes="Bold" Margin="3,7,3,0" FontSize="Medium"/>
-                                                <Label Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,10,0,0">
-                                                    <Label.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding BindingContext.MinusCommand , Source={x:Reference SearchFoodPage}}"/>
-                                                    </Label.GestureRecognizers>
-                                                </Label>
-                                                <Button CommandParameter="{Binding id}"  Command="{Binding BindingContext.ReserveCommand , Source={x:Reference SearchFoodPage}}" TextColor="{StaticResource PrimaryLight}" Text="Reserve" Margin="10,0,0,0" HeightRequest="40" BackgroundColor="Transparent" FontAttributes="Bold"/>
-                                            </StackLayout>
-                                        </StackLayout>
-                                    </Grid>
-                                </xct:Expander>
+            </Grid>
 
-                            </Grid>
 
-                        </pv:PancakeView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

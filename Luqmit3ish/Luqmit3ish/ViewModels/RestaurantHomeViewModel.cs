@@ -11,17 +11,18 @@ using System.Diagnostics;
 using Luqmit3ish.Services;
 using System.Collections.ObjectModel;
 using Luqmit3ish.Models;
+using Luqmit3ish.Exceptions;
+using System.Net.Http;
 
 namespace Luqmit3ish.ViewModels
 {
     class RestaurantHomeViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
         public ICommand AddCommand { protected set; get; }
-        public Command<int> EditCommand { protected set; get; }
         public Command<int> DeleteCommand { protected set; get; }
-        public ICommand NameTapCommand { protected set; get; }
-        public FoodServices foodServices;
+        public Command<Dish> FoodDetailCommand { protected set; get; }
+        private FoodServices _foodServices;
 
         private ObservableCollection<Dish> _dishes;
 
@@ -30,25 +31,50 @@ namespace Luqmit3ish.ViewModels
             get => _dishes;
             set => SetProperty(ref _dishes, value);
         }
+        private bool _emptyResult;
+
+        public bool EmptyResult
+        {
+            get => _emptyResult;
+            set => SetProperty(ref _emptyResult, value);
+        }
         public RestaurantHomeViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
+            this._navigation = navigation;
             AddCommand = new Command(async () => await OnAddClicked());
-            EditCommand = new Command<int>(async (int id) => await OnEditClicked(id));
             DeleteCommand = new Command<int>(async (int id) => await OnDeleteClicked(id));
-            NameTapCommand = new Command(async () => await OnTapClicked());
-            foodServices = new FoodServices();
+            FoodDetailCommand = new Command<Dish>(async (Dish dish) => await OnFrameClicked(dish));
+            _foodServices = new FoodServices();
             OnInit();
         }
 
         private async void OnInit()
         {
-            string id = Preferences.Get("userId", "0");
-            int userId = int.Parse(id);
-            Dishes = await foodServices.GetFoodByResId(userId);
-
-            if (Dishes != null)
+            var id = Preferences.Get("userId", null);
+            if (id is null)
             {
+                return;
+            }
+            var userId = int.Parse(id);
+            try
+            {
+                Dishes = await _foodServices.GetFoodByResId(userId);
+            }
+            catch (ConnectionException e)
+            {
+                await Application.Current.MainPage.DisplayAlert("", "There is no internet connection, please check your connection", "Ok");
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            if ( Dishes.Count > 0)
+            {
+                EmptyResult = false;
                 foreach (Dish dish in Dishes)
                 {
                     if (dish.number == 0)
@@ -57,13 +83,32 @@ namespace Luqmit3ish.ViewModels
                     }
                 }
             }
+            else
+            {
+                EmptyResult = true;
+            }
+        }
+        private async Task OnFrameClicked(Dish dish)
+        {
+            try
+            {
+                await _navigation.PushAsync(new EditFoodPage(dish));
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         private async Task OnAddClicked()
         {
             try
             {
-            await Navigation.PushAsync(new AddFoodPage());
+            await _navigation.PushAsync(new AddFoodPage());
 
             }
             catch (ArgumentException e)
@@ -75,46 +120,16 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
-        private async Task OnEditClicked(int id)
-        {
-            try
-            {
-            await Navigation.PushAsync(new EditFoodPage(id));
 
-            }
-            catch (ArgumentException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }
         private async Task OnDeleteClicked(int id)
         {
             var deleteConfirm = await Application.Current.MainPage.DisplayAlert("", "Are you sure that you want to delete this dish?", "Yes", "No");
             if (deleteConfirm)
             {
-                await foodServices.DeleteFood(id);
+                await _foodServices.DeleteFood(id);
                 OnInit();
             }
         }
-        private async Task OnTapClicked()
-        {
-            try
-            {
-            await Navigation.PushAsync(new FoodDetailPage());
-            }
-            catch (ArgumentException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-
-        }
+    
     }
 }

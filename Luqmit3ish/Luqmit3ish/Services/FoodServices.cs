@@ -1,3 +1,5 @@
+using Luqmit3ish.Connection;
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Views;
 using Newtonsoft.Json;
@@ -16,97 +18,219 @@ namespace Luqmit3ish.Services
 {
     class FoodServices
     {
-        private readonly HttpClient _http;
-        private static readonly string ApiUrl = "https://luqmit3ish.azurewebsites.net/api/Food";
-        private static readonly string AddDishUrl = "https://luqmit3ish.azurewebsites.net/api/Food/AddDish";
-        private static readonly string uploadPhotoUrl = "https://luqmit3ish.azurewebsites.net/api/Food/UploadPhoto";
+        private readonly HttpClient _httpClient;
+        private readonly string _apiUrl = "https://luqmit3ishv2.azurewebsites.net/api/Food";
+        private readonly IConnection _connection;
+
         public FoodServices()
         {
-            _http = new HttpClient();
+            _httpClient = new HttpClient();
+            _connection = new Connection();
         }
+
         public async Task<ObservableCollection<Dish>> GetFood()
         {
-            var response = await _http.GetAsync(ApiUrl);
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ObservableCollection<Dish>>(content);
-        }
-        public async Task<ObservableCollection<Dish>> GetFoodByResId(int userId)
-        {
-            var response = await _http.GetAsync($"{ApiUrl}/Restaurant/{userId}");
-
-            if (response.IsSuccessStatusCode)
+            if (!_connection.CheckInternetConnection())
             {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _httpClient.GetAsync(_apiUrl);
                 var content = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ObservableCollection<Dish>>(content);
             }
-            else if (response.StatusCode == HttpStatusCode.NotFound)
+            catch (HttpRequestException e)
             {
-                return null;
+                throw new HttpRequestException(e.Message);
             }
-            else
+            catch (Exception e)
             {
-                throw new Exception($"Failed to retrieve food: {response.StatusCode} - {response.ReasonPhrase}");
+                throw new Exception(e.Message);
+            }
+        }
+
+        public async Task<ObservableCollection<Dish>> GetFoodByResId(int userId)
+        {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_apiUrl}/Restaurant/{userId}");
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ObservableCollection<Dish>>(content);
+
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
 
         public async Task<ObservableCollection<DishCard>> GetSearchCards(string searchRequest, string type)
         {
-            var response = await _http.GetAsync($"{ApiUrl}/Search/{searchRequest}/{type}");
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_apiUrl}/Search/{searchRequest}/{type}");
+
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
         }
+
         public async Task<Dish> GetFoodById(int food_id)
         {
-            var response = await _http.GetAsync($"{ApiUrl}/{food_id}");
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_apiUrl}/{food_id}");
 
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<Dish>(content);
-            }
-            else if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                return null;
-            }
-            else
-            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<Dish>(content);
+                }
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
                 throw new Exception($"Failed to retrieve food: {response.StatusCode} - {response.ReasonPhrase}");
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
 
         public async Task<bool> UpdateDish(DishRequest dishRequest, int food_id)
         {
-            var json = JsonConvert.SerializeObject(dishRequest);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _http.PutAsync(ApiUrl + "/" + food_id, content);
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var json = JsonConvert.SerializeObject(dishRequest);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PutAsync(_apiUrl + "/" + food_id, content);
 
-            return response.IsSuccessStatusCode;
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public async Task<int> AddNewDish(DishRequest dishRequest)
         {
-            var json = JsonConvert.SerializeObject(dishRequest);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _http.PostAsync(AddDishUrl, content);
-            var responseContent = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
+            if (!_connection.CheckInternetConnection())
             {
-                dynamic responseObject = JsonConvert.DeserializeObject(responseContent);
-                return (int)responseObject.id;
+                throw new ConnectionException("There is no internet connection");
             }
-            return 0;
+            try
+            {
+                var json = JsonConvert.SerializeObject(dishRequest);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync($"{_apiUrl}/AddDish", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    dynamic responseObject = JsonConvert.DeserializeObject(responseContent);
+                    return (int)responseObject.id;
+                }
+                return 0;
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public async Task<ObservableCollection<DishCard>> GetDishCards()
         {
-            var response = await _http.GetAsync(ApiUrl + "/DishCard");
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _httpClient.GetAsync(_apiUrl + "/DishCard");
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
+
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+        }
+        public async Task<ObservableCollection<DishCard>> GetDishCardById(int dishId)
+        {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_apiUrl}/DishCard/{dishId}");
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
+
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
         }
 
         public async Task DeleteFood(int food_id)
         {
-            var response = await _http.DeleteAsync($"{ApiUrl}/{food_id}");
+            var response = await _httpClient.DeleteAsync($"{_apiUrl}/{food_id}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -116,13 +240,28 @@ namespace Luqmit3ish.Services
 
         internal async Task<bool> UploadPhoto(string photoPath, int foodId)
         {
-            var fileContent = new ByteArrayContent(File.ReadAllBytes(photoPath));
-            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/jpeg");
-            using (var formData = new MultipartFormDataContent())
+            if (!_connection.CheckInternetConnection())
             {
-                formData.Add(fileContent, "photo", Path.GetFileName(photoPath));
-                var response = await _http.PostAsync($"{uploadPhotoUrl}/{foodId}", formData);
-                return response.IsSuccessStatusCode;
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var fileContent = new ByteArrayContent(File.ReadAllBytes(photoPath));
+                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/jpeg");
+                using (var formData = new MultipartFormDataContent())
+                {
+                    formData.Add(fileContent, "photo", Path.GetFileName(photoPath));
+                    var response = await _httpClient.PostAsync($"{_apiUrl}/UploadPhoto/{foodId}", formData);
+                    return response.IsSuccessStatusCode;
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
     }

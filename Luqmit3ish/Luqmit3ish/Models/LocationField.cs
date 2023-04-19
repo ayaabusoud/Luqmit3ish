@@ -5,10 +5,9 @@ using System.Runtime.CompilerServices;
 
 namespace Luqmit3ish.Models
 {
-	public class LocationField : INotifyPropertyChanged
+    public class LocationField : INotifyPropertyChanged
     {
         public string Name { get; set; }
-        public LocationValue Value { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -22,16 +21,14 @@ namespace Luqmit3ish.Models
                 {
                     isSelected = value;
                     OnPropertyChanged(nameof(IsSelected));
-                    OnPropertyChanged(nameof(StackLayoutBackgroundColor));
                     OnPropertyChanged(nameof(FrameBackgroundColor));
                     OnPropertyChanged(nameof(TextBackgroundColor));
                 }
             }
         }
 
-        public Color StackLayoutBackgroundColor => IsSelected ? Color.FromArgb(237, 242, 245) : Color.FromArgb(237, 242, 245);
-        public Color FrameBackgroundColor => IsSelected ? Color.FromArgb(0x4D, 0x6B, 0xA3) : Color.FromArgb(0x4D, 0x6B, 0xA3, 0xFF);
-        public Color TextBackgroundColor => IsSelected ? Color.White : Color.FromArgb(0x4D, 0x6B, 0xA3);
+        public System.Drawing.Color FrameBackgroundColor => IsSelected ? System.Drawing.Color.FromArgb(249, 117, 21) : System.Drawing.Color.FromArgb(0x4D, 249, 117, 21);
+        public System.Drawing.Color TextBackgroundColor => IsSelected ? System.Drawing.Color.White : System.Drawing.Color.FromArgb(249, 117, 21);
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

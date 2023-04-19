@@ -11,54 +11,19 @@ using System.Diagnostics;
 using Luqmit3ish.Services;
 using System.Collections.ObjectModel;
 using Luqmit3ish.Models;
+using System.Net.Http;
+using Luqmit3ish.Exceptions;
 
 namespace Luqmit3ish.ViewModels
 {
     class SearchViewModel : ViewModelBase
     {
-        public INavigation Navigation { get; set; }
+        private INavigation _navigation { get; set; }
         public FoodServices foodServices;
         public UserServices userServices;
-        public Command<int> PlusCommand { protected set; get; }
-        public ICommand MinusCommand { protected set; get; }
-        public ICommand AllFilter { protected set; get; }
-        public ICommand RestaurantFilter { protected set; get; }
+
+        public Command<DishCard> FoodDetailCommand { protected set; get; }
         public ICommand BackCommand { protected set; get; }
-
-
-        public ICommand CharitiesFilter { protected set; get; }
-        public Command<int> ProfileCommand { protected set; get; }
-        private string _allColor = "#F98836";
-        public string AllColor
-        {
-            get => _allColor;
-            set => SetProperty(ref _allColor, value);
-        }
-        private string _restaurantColor = "Black";
-        public string RestaurantColor
-        {
-            get => _restaurantColor;
-            set => SetProperty(ref _restaurantColor, value);
-        }
-        private string _charityColor = "Black";
-        public string CharityColor
-        {
-            get => _charityColor;
-            set => SetProperty(ref _charityColor, value);
-        }
-
-        private int _counter = 0;
-        public int Counter
-        {
-            get => _counter;
-            set => SetProperty(ref _counter, value);
-        }
-        private string _filter = "All";
-        public string Filter
-        {
-            get => _filter;
-            set => SetProperty(ref _filter, value);
-        }
 
         private ObservableCollection<Dish> _dishes;
 
@@ -74,29 +39,28 @@ namespace Luqmit3ish.ViewModels
             get => _dishCard;
             set => SetProperty(ref _dishCard, value);
         }
+        private bool _emptyResult;
 
-        public Command<int> ReserveCommand { protected set; get; }
+        public bool EmptyResult
+        {
+            get => _emptyResult;
+            set => SetProperty(ref _emptyResult, value);
+        }
 
         public SearchViewModel(INavigation navigation)
         {
-            this.Navigation = navigation;
-
-            ProfileCommand = new Command<int>(async (int restaurantId) => await OnProfileClicked(restaurantId));
-            PlusCommand = new Command<int>(OnPlusClicked);
-            MinusCommand = new Command(OnMinusClicked);
-            ReserveCommand = new Command<int>(async (int FoodId) => await OnReserveClicked(FoodId));
-            AllFilter = new Command(OnAllClicked);
-            RestaurantFilter = new Command(OnRestaurantClicked);
-            BackCommand = new Command(OnBackClicked);
-            CharitiesFilter = new Command(OnCharitiesClicked);
+            this._navigation = navigation;       
+          
+            BackCommand = new Command(OnBackClicked);       
             foodServices = new FoodServices();
+            FoodDetailCommand = new Command<DishCard>(async (DishCard dish) => await OnFrameClicked(dish));
             userServices = new UserServices();
             OnInit();
         }
 
         private void OnBackClicked()
         {
-            Navigation.PopAsync();
+            _navigation.PopAsync();
         }
 
         private string _searchText = string.Empty;
@@ -141,78 +105,49 @@ namespace Luqmit3ish.ViewModels
         }
         #endregion
 
-        private async Task OnReserveClicked(int FoodId)
-        {
-            //imp
-        }
-        private void OnAllClicked()
-        {
-            Filter = "All";
-            AllColor = "#F98836";
-            RestaurantColor = "Black";
-            CharityColor = "Black";
-            OnInit();
-        }
-        private void OnRestaurantClicked()
-        {
-            Filter = "Restaurants";
-            AllColor = "Black";
-            RestaurantColor = "#F98836";
-            CharityColor = "Black";
-            OnInit();
-        }
-        private void OnCharitiesClicked()
-        {
-            Filter = "Dishes";
-            AllColor = "Black";
-            RestaurantColor = "Black";
-            CharityColor = "#F98836";
-            OnInit();
-        }
-
-        private void OnMinusClicked()
-        {
-            if (Counter == 0)
-            {
-                return;
-            }
-            else
-            {
-                Counter--;
-            }
-
-        }
-
-        private void OnPlusClicked(int quantity)
-        {
-            if (Counter == quantity)
-            {
-                return;
-            }
-            else
-            {
-                Counter++;
-            }
-
-        }
 
         private async Task OnInit()
         {
             try
             {
-                DishCard = await foodServices.GetSearchCards(_searchText, Filter);
+                DishCard = await foodServices.GetSearchCards(_searchText, "All");
+                Debug.WriteLine(DishCard.Count);          
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
+            if (DishCard.Count > 0)
+            {
+                EmptyResult = false;
+                foreach (DishCard dish in DishCard)
+                {
+                    if (dish.quantity == 0)
+                    {
+                        DishCard.Remove(dish);
+                    }
+                }
+            }
+            else
+            {
+                EmptyResult = true;
+          
+            }
+
         }
-        private async Task OnProfileClicked(int restaurantId)
+        private async Task OnFrameClicked(DishCard dish)
         {
             try
             {
-                await Navigation.PushAsync(new OtherProfilePage(restaurantId));
-
+                await _navigation.PushAsync(new FoodDetailPage(dish.id));
             }
             catch (ArgumentException e)
             {
@@ -223,7 +158,6 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
-
 
 
 
