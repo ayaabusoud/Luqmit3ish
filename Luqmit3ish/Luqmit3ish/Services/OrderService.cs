@@ -20,6 +20,7 @@ namespace Luqmit3ish.Services
         private  readonly string _apiUrl = "https://luqmit3ish.azurewebsites.net/api/Orders";
         private  readonly string _orderApiUrl = "https://luqmit3ish.azurewebsites.net/api/CharityOrders";
         private  readonly string _restaurantApiUrl = "https://luqmit3ish.azurewebsites.net/api/RestaurantOrders";
+        private readonly string _receive = "https://luqmit3ishv2.azurewebsites.net/api/";
 
         private IConnection _connection;
 
@@ -196,7 +197,7 @@ namespace Luqmit3ish.Services
                 var patchData = JsonConvert.SerializeObject(patchObject);
                 var httpContent = new StringContent(patchData, Encoding.UTF8, "application/json");
 
-                var request = new HttpRequestMessage(new HttpMethod("PATCH"), _orderApiUrl + "/" + id + "/" + "receive")
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), _receive + id + "/" + "receive")
                 {
                     Content = httpContent
                 };
