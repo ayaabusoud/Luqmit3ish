@@ -25,7 +25,10 @@ namespace Luqmit3ish.ViewModels
 
         public ICommand ProfileCommand { protected set; get; }
         public ICommand DoneCommand { protected set; get; }
+        public ICommand NotRecievedCommand { protected set; get; }
+        public ICommand RecievedCommand { protected set; get; }
         private OrderService _orderService;
+        public Command<OrderCard> OrderCommand { protected set; get; }
 
 
         private ObservableCollection<Dish> _dishes;
@@ -38,14 +41,102 @@ namespace Luqmit3ish.ViewModels
         public RestaurantOrderViewModel(INavigation navigation)
         {
            _navigation = navigation;
-            DoneCommand = new Command(OnDoneClick);
+            DoneCommand = new Command<OrderCard>(async (OrderCard order) => await OnDoneClick(order));
+            NotRecievedCommand = new Command(OnNotRecievedClicked);
+            OrderCommand = new Command<OrderCard>(async (OrderCard order) => await OnFrameClicked(order));
+            RecievedCommand = new Command(OnRecievedClicked);
             _orderService = new OrderService();
-            OnInit();
+            Selected(false);
+        }
+        private bool _emptyResult;
+
+        public bool EmptyResult
+        {
+            get => _emptyResult;
+            set => SetProperty(ref _emptyResult, value);
+        }
+        
+        private bool _isVisible = true;
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set => SetProperty(ref _isVisible, value);
+        }
+        private bool _receievedCheck = true;
+        public bool ReceievedCheck
+        {
+            get => _receievedCheck;
+            set => SetProperty(ref _receievedCheck, value);
+        }
+        private string _recievedColor = "#D9D9D9";
+        public string RecievedColor
+        {
+            get => _recievedColor;
+            set => SetProperty(ref _recievedColor, value);
+        }
+        private string _notRecievedColor = "Black";
+        public string NotRecievedColor
+        {
+            get => _notRecievedColor;
+            set => SetProperty(ref _notRecievedColor, value);
+        }
+        private void OnRecievedClicked()
+        {
+            IsVisible = false;
+            RecievedColor = "Black";
+            NotRecievedColor = "#D9D9D9";
+            Selected(true);
+            ReceievedCheck = false;
         }
 
-        private void OnDoneClick(object obj)
+        private void OnNotRecievedClicked()
         {
-            throw new NotImplementedException();
+            IsVisible = true;
+            NotRecievedColor = "Black";
+            RecievedColor = "#D9D9D9";
+            Selected(false);
+            ReceievedCheck = true;
+        }
+
+        private async Task OnFrameClicked(OrderCard order)
+        {
+            try
+            {
+                await _navigation.PushAsync(new OrderDetailsPage());
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        private async Task OnDoneClick(OrderCard orders)
+        {
+            try
+            {
+                foreach (OrderDish order in orders.data)
+                {
+                    await _orderService.UpdateOrderReceiveStatus(order.id);
+                }
+                
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (ConnectionException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+            }
+            catch (HttpRequestException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Sorry", "Something went bad here, you can try again", "Ok");
+            }
+            catch (Exception e)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
+            }
         }
 
 
@@ -59,7 +150,7 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _orderCard, value);
         }
 
-        private async void OnInit()
+        private async void Selected(bool status)
         {
             var id = Preferences.Get("userId", null);
             if (id == null)
@@ -71,7 +162,7 @@ namespace Luqmit3ish.ViewModels
             var userId = int.Parse(id);
             try
             {
-                OrderCard = await _orderService.GetRestaurantOrders(userId, false);
+                OrderCard = await _orderService.GetRestaurantOrders(userId, status);
             }
              catch (HttpRequestException e)
             {
@@ -85,27 +176,17 @@ namespace Luqmit3ish.ViewModels
             {
                 Debug.WriteLine(e.Message);
             }
-
+            if (OrderCard.Count > 0)
+            {
+                EmptyResult = false;
+            }
+            else
+            {
+                EmptyResult = true;
+            }
 
         }
 
-       
-        private async Task OnProfileClicked()
-        {
-
-            try
-            {
-                await _navigation.PushAsync(new OtherProfilePage(1));
-
-            }
-            catch (ArgumentException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }
+     
     }
 }

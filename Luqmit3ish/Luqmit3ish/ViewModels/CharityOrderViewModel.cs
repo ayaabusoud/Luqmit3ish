@@ -55,7 +55,14 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnFrameClicked(OrderCard order)
         {
-            await _navigation.PushAsync(new OrderDetailsPage());
+            try
+            {
+                await _navigation.PushAsync(new OrderDetailsPage());
+
+            }catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         } 
 
         private async Task OnDeleteClicked(int restaurantId)
