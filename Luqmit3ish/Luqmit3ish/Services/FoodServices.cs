@@ -19,7 +19,7 @@ namespace Luqmit3ish.Services
     class FoodServices
     {
         private readonly HttpClient _httpClient;
-        private readonly string _apiUrl = "https://luqmit3ish.azurewebsites.net/api/Food";
+        private readonly string _apiUrl = "https://luqmit3ishv2.azurewebsites.net/api/Food";
         private readonly IConnection _connection;
 
         public FoodServices()
