@@ -1,4 +1,5 @@
-﻿using Luqmit3ish.ViewModels;
+﻿using Luqmit3ish.Models;
+using Luqmit3ish.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,10 @@ namespace Luqmit3ish.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditFoodPage : ContentPage
     {
-        public EditFoodPage(int id)
+        public EditFoodPage(Dish dish)
         {
             InitializeComponent();
-            this.BindingContext = new EditFoodViewModel(Navigation,id);
+            this.BindingContext = new EditFoodViewModel(Navigation,dish);
         }
-
     }
 }
