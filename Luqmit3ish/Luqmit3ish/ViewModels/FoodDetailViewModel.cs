@@ -24,6 +24,7 @@ namespace Luqmit3ish.ViewModels
         public Command<int> ReserveCommand { protected set; get; }
         public Command<int> ProfileCommand { protected set; get; }
         private FoodServices _foodServices;
+        private OrderService _orderService;
 
         private bool _isEnabled = false;
 
@@ -107,10 +108,53 @@ namespace Luqmit3ish.ViewModels
             get => _dishCard;
             set => SetProperty(ref _dishCard, value);
         }
+      
+
         private async Task OnReserveClicked(int FoodId)
         {
+            try
+            {
+                var id = Preferences.Get("userId", "null");
+                int UserId = int.Parse(id);
+                Dish dish = await _foodServices.GetFoodById(FoodId);
+
+                Order newOrder = new Order();
+                newOrder.char_id = UserId;
+                newOrder.res_id = dish.user_id;
+                newOrder.dish_id = dish.id;
+                newOrder.date = DateTime.Now;
+                newOrder.number_of_dish = Counter;
+                newOrder.receive = false;
+
+                await _orderService.ReserveOrder(newOrder);
+
+                DishCard quantityDish = _dishCard.FirstOrDefault(d => d.id == dish.id);
+                if (quantityDish != null)
+                {
+                    quantityDish.quantity -= Counter;
+                }
+
+                if (Counter > 0) Counter = 0;
+
+                DishCard = await _foodServices.GetDishCards();
+
+                foreach (DishCard item in DishCard)
+                {
+                    if (item.quantity == 0)
+                    {
+                        DishCard.Remove(item);
+                    }
+                }
+                await App.Current.MainPage.DisplayAlert("successfuly", "Your order has been successfully booked", "ok");
+
+            }
+            catch (Exception e)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
+            }
 
         }
+
         public FoodDetailViewModel(int id, INavigation navigation)
         {
             this._navigation = navigation;
@@ -119,6 +163,7 @@ namespace Luqmit3ish.ViewModels
             MinusCommand = new Command(OnMinusClicked);
             ReserveCommand = new Command<int>(async (int FoodId) => await OnReserveClicked(FoodId));
             _foodServices = new FoodServices();
+            _orderService = new OrderService();
             OnInit(id);
         }
 
