@@ -68,21 +68,99 @@ namespace Luqmit3ish.ViewModels
 
         private async Task PhotoClicked()
         {
-            var result = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
+            try
             {
-                Title = "Take Photo"
-            });
+                bool userSelect = await App.Current.MainPage.DisplayAlert("Upload Image", "", "Take photo", "select from Gallary");
 
-            if (result != null)
-            {
-                _photoPath = result.FullPath;
+                if (userSelect)
+                {
+                    TakePhoto();
+                }
+                else
+                {
+                    SelectFromGallary();
+                }
             }
-            else
+            catch (ConnectionException e)
             {
-                _photoPath = string.Empty;
+                Debug.WriteLine(e.Message);
+                await App.Current.MainPage.DisplayAlert("Error", "There was a problem with your internet connection.", "OK");
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await App.Current.MainPage.DisplayAlert("Error", "Unable to connect to the server. Please check your internet connection and try again.", "OK");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
             }
         }
 
+        private async void TakePhoto()
+        {
+            try
+            {
+                var result = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
+                {
+                    Title = "Take Photo"
+                });
+
+                if (result != null)
+                {
+                    _photoPath = result.FullPath;
+                }
+                else
+                {
+                    _photoPath = string.Empty;
+                }
+            }
+            catch (ConnectionException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+            }
+            catch (HttpRequestException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Something went bad on this reservation, you can try again", "Ok");
+            }
+            catch (Exception e)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
+            }
+        }
+
+        private async void SelectFromGallary()
+        {
+            try
+            {
+                await Permissions.RequestAsync<Permissions.Photos>();
+
+                var result = await MediaPicker.PickPhotoAsync();
+
+                if (result != null)
+                {
+                    _photoPath = result.FullPath;
+                }
+                else
+                {
+                    Console.WriteLine("User cancelled photo picker.");
+                }
+            }
+            catch (ConnectionException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+            }
+            catch (HttpRequestException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Something went bad on this reservation, you can try again", "Ok");
+            }
+            catch (Exception e)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
+            }
+        }
+
+        
         private async Task OnSubmitClicked()
         {
             try
@@ -98,6 +176,11 @@ namespace Luqmit3ish.ViewModels
                 if (_type == null || _title == null || _description == null || KeepValid == 0 || _packTime == null || Quantity == 0)
                 {
                     await App.Current.MainPage.DisplayAlert("Error", "Please fill in all fields", "ok");
+                    return;
+                }
+                if (_photoPath == null)
+                {
+                    await App.Current.MainPage.DisplayAlert("Error", "Please select or take a photo first.", "OK");
                     return;
                 }
 
@@ -117,7 +200,6 @@ namespace Luqmit3ish.ViewModels
                 if (food_id != null)
                 {
                     food_id = (int)food_id;
-                    Console.WriteLine("food_id = " + food_id);
                     await AddNewPhoto(_photoPath,(int) food_id);
                 }
             }

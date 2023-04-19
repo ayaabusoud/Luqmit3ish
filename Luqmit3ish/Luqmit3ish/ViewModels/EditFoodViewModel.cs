@@ -24,6 +24,7 @@ namespace Luqmit3ish.ViewModels
     class EditFoodViewModel : ViewModelBase
     {
         private int _foodId;
+        private Dish _dish;
         private INavigation _navigation;
         private FoodServices _foodServices;
 
@@ -40,10 +41,11 @@ namespace Luqmit3ish.ViewModels
         public ICommand PlusCommand1 { protected set; get; }
         public ICommand MinusCommand1 { protected set; get; }
 
-        public EditFoodViewModel(INavigation navigation, int food_id)
+        public EditFoodViewModel(INavigation navigation, Dish dish)
         {
-            this._foodId = food_id;
+            this._foodId = dish.id;
             this._navigation = navigation;
+            _dish = dish;
             _foodServices = new FoodServices();
 
             SubmitCommand = new Command(async () => await OnSubmitClicked());
@@ -77,21 +79,16 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                var dishes = await _foodServices.GetFoodById(_foodId);
-                Dishes = new ObservableCollection<Dish>(new List<Dish> { dishes });
-
-                Dish firstDish = Dishes.FirstOrDefault();
-
-                if (firstDish != null)
+                if (_dish != null)
                 {
-                    Type = firstDish.type;
-                    Title = firstDish.name;
-                    Description = firstDish.description;
-                    KeepValid = firstDish.keep_listed;
-                    Pack_time = firstDish.pick_up_time;
-                    Quantity = firstDish.number;
+                    Type = _dish.type;
+                    Title = _dish.name;
+                    Description = _dish.description;
+                    KeepValid = _dish.keep_listed;
+                    Pack_time = _dish.pick_up_time;
+                    Quantity = _dish.number;
 
-                    var selectedTypeName = firstDish.type;
+                    var selectedTypeName = _dish.type;
                     var selectedType = TypeValues.FirstOrDefault(tf => tf.Name == selectedTypeName);
                     SelectedType = selectedType;
                 }
@@ -154,7 +151,96 @@ namespace Luqmit3ish.ViewModels
 
         private async Task PhotoClicked()
         {
+            try
+            {
+                bool userSelect = await App.Current.MainPage.DisplayAlert("Upload Image", "", "Take photo", "select from Gallary");
 
+                if (userSelect)
+                {
+                    TakePhoto();
+                }
+                else
+                {
+                    SelectFromGallary();
+                }
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+                await App.Current.MainPage.DisplayAlert("Error", "There was a problem with your internet connection.", "OK");
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await App.Current.MainPage.DisplayAlert("Error", "Unable to connect to the server. Please check your internet connection and try again.", "OK");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        private async void TakePhoto()
+        {
+            try
+            {
+                var result = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
+                {
+                    Title = "Take Photo"
+                });
+
+                if (result != null)
+                {
+                    _photoPath = result.FullPath;
+                }
+                else
+                {
+                    _photoPath = string.Empty;
+                }
+            }
+            catch (ConnectionException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+            }
+            catch (HttpRequestException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Something went bad on this reservation, you can try again", "Ok");
+            }
+            catch (Exception e)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
+            }
+        }
+
+        private async void SelectFromGallary()
+        {
+            try
+            {
+                await Permissions.RequestAsync<Permissions.Photos>();
+
+                var result = await MediaPicker.PickPhotoAsync();
+
+                if (result != null)
+                {
+                    _photoPath = result.FullPath;
+                }
+                else
+                {
+                    Console.WriteLine("User cancelled photo picker.");
+                }
+            }
+            catch (ConnectionException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+            }
+            catch (HttpRequestException)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Something went bad on this reservation, you can try again", "Ok");
+            }
+            catch (Exception e)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
+            }
         }
 
         private async Task OnSubmitClicked()
@@ -188,7 +274,7 @@ namespace Luqmit3ish.ViewModels
                     number = Quantity
                 };
 
-                await UpdateDish(foodRequest);
+                UpdateDish(foodRequest);
             }
             catch (ConnectionException e)
             {
@@ -226,24 +312,36 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        public async Task<bool> UpdateDish(DishRequest foodRequest)
+        public async void UpdateDish(DishRequest foodRequest)
         {
             try
             {
                 var request = await _foodServices.UpdateDish(foodRequest, _foodId);
                 if (request)
                 {
-                    await _navigation.PopAsync();
-                    await App.Current.MainPage.DisplayAlert("Updated successfuly", "the dish update successfuly", "ok");
-                    return true;
+                    await AddNewPhoto(_photoPath, _foodId);
+                    return;
                 }
                 await App.Current.MainPage.DisplayAlert("Error", "the dish not added", "ok");
-                return false;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                return false;
+            }
+        }
+
+        private async Task AddNewPhoto(string photoPath, int foodId)
+        {
+            var response = await _foodServices.UploadPhoto(photoPath, foodId);
+
+            if (response)
+            {
+                await _navigation.PopAsync();
+                await App.Current.MainPage.DisplayAlert("Updated successfuly", "the dish update successfuly", "ok");
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "The dish was not added", "OK");
             }
         }
 
@@ -285,18 +383,11 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _keepListedValue, value);
         }
 
-        private ImageSource _img;
-        public ImageSource Img
+        private string _photoPath;
+        public string PhotoPath
         {
-            get => _img;
-            set => SetProperty(ref _img, value);
-        }
-
-        private ObservableCollection<Dish> _dishes;
-        public ObservableCollection<Dish> Dishes
-        {
-            get => _dishes;
-            set => SetProperty(ref _dishes, value);
+            get => _photoPath;
+            set => SetProperty(ref _photoPath, value);
         }
 
         private string _type;
