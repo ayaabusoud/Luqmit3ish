@@ -16,7 +16,7 @@ namespace Luqmit3ish.Views
         public FilterFoodPage()
         {
             InitializeComponent();
-            this.BindingContext = new FilterFoodViewModel();
+            this.BindingContext = new FilterFoodViewModel(Navigation);
         }
     }
 }
