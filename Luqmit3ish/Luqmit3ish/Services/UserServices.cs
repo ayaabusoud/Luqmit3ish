@@ -201,5 +201,43 @@ namespace Luqmit3ish.Services
             }
 
         }
+        
+        public async Task<bool> ResetPassword(int id, string password)
+        {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+
+                var patchObject = new { id, password};
+                var patchData = JsonConvert.SerializeObject(patchObject);
+                var httpContent = new StringContent(patchData, Encoding.UTF8, "application/json");
+
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), $"{_apiUrl}/resetPassword" + "/" + id + "/" + password)
+                {
+                    Content = httpContent
+                };
+
+                var response = await _httpClient.SendAsync(request);
+                Debug.WriteLine(response.StatusCode);
+
+                return response.IsSuccessStatusCode;
+
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+
+
+            }
+
+        }
     }
 }
