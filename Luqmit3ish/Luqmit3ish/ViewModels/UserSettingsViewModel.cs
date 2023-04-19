@@ -40,7 +40,7 @@ namespace Luqmit3ish.ViewModels
                MyProfileCommand= new Command(async () => await OnProfileClicked());
                ResetPassCommand = new Command(async () => await OnResetClicked());
                LogOutCommand= new Command(async () => await OnLogOutClicked());
-               DeleteAccountCommand = new Command(async () => await OnDeleteAccountClicked());
+               DeleteCommand = new Command<int>(async (int id) => await OnDeleteAccountClicked(id));
                DarkModeCommand = new Command(async () => await OnDarkModeClicked());
                RestaurantCommand = new Command(async () => await OnRestaurantClicked());
 
@@ -149,7 +149,7 @@ namespace Luqmit3ish.ViewModels
             //implm
         }
 
-        private async Task OnDeleteClicked(int id)
+        private async Task OnDeleteAccountClicked(int id)
         {
             var deleteConfirm = await Application.Current.MainPage.DisplayAlert("Delete Account", "Are you sure that you want to delete Your account?", "Yes", "No");
             if (deleteConfirm)
