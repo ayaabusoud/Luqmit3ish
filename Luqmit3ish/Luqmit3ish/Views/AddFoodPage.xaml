@@ -10,7 +10,7 @@
 
     <ContentPage.Content>
 
-        <ScrollView>
+        <ScrollView HeightRequest="500">
             <StackLayout Margin="20">
                 <Frame CornerRadius="10" Padding="0">
                     <StackLayout Margin="5">

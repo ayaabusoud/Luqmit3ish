@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.FoodDetailPage"
              x:Name='FoodDetails'
-             Title="Food Detail">
+             Title="Food Detail"
+             Shell.TabBarIsVisible="False">
     <ContentPage.Content>
         <Grid RowDefinitions="0.4*,0.6*" Margin="0">
             <Image Grid.Row="0" Source="{Binding Dish[0].photo}"  Aspect="AspectFill"/>

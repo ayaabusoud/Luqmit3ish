@@ -65,7 +65,7 @@ namespace Luqmit3ish.ViewModels
             try
             {
 
-                ObservableCollection<OrderCard> cards = await _orderService.GetOrders(userId);
+                ObservableCollection<OrderCard> cards = await _orderService.GetRestaurantOrders(Id,false);
                 foreach (OrderCard order in cards)
                 {
                     if (order.id == id)

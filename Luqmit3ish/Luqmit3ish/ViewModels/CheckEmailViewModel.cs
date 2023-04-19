@@ -27,7 +27,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                 Application.Current.MainPage = new ResetPasswordPage();
+                 //Application.Current.MainPage = new ResetPasswordPage();
 
             }
             catch (ArgumentException e)

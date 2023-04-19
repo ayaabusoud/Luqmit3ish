@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Luqmit3ish.Models
 {
-    class OrderCard
+    public class OrderCard
     {
         public int id { get; set; }
         public string name { get; set; }

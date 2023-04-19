@@ -187,7 +187,7 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnResetClicked()
         {
-            await _navigation.PushModalAsync(new ResetPassSettingsPage());
+            //await _navigation.PushModalAsync(new ResetPassSettingsPage());
 
         }
         private async Task OnProfileClicked()

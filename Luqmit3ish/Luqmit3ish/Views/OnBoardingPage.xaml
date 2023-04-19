@@ -4,7 +4,7 @@
               x:Class="Luqmit3ish.Views.OnBoardingPage">
     <ContentPage>
         <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-            <Image Source="FoodWaste.png"  WidthRequest="300" />
+            <Image Source="FoodWaste1.png"  WidthRequest="300" />
             <Label Text="1/3 of food is wasted!" HorizontalTextAlignment="Center" FontAttributes="Bold"  TextColor="Black" FontSize="Title"/>
             <Label Text="And we want to change that." HorizontalTextAlignment="Center" TextColor="Black" FontSize="Small"/>
         </StackLayout>
@@ -12,7 +12,7 @@
 
     <ContentPage>
         <StackLayout Margin="20,0" HorizontalOptions="Center" VerticalOptions="Center">
-            <Image Source="Donation.png" HorizontalOptions="Fill" />
+            <Image Source="Donation1.png" HorizontalOptions="Fill" />
             <Label Text="Fight Hunger And Save &#10; Food With Us" HorizontalTextAlignment="Center" FontSize="25" FontAttributes="Bold"  TextColor="Black" />
             <Label Margin="35,0" Text="By bridging the gap between charities and restaurants. We hope to have a positive impact on the world by reducing food waste and fighting hunger." HorizontalTextAlignment="Center" TextColor="Black" FontSize="16" />
             <Button VerticalOptions="Center" Text="Join us" Command="{Binding SignupCommand}" Style="{StaticResource BorderButton}" Margin="0,20"/>

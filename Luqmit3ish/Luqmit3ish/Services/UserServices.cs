@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -162,7 +163,7 @@ namespace Luqmit3ish.Services
                 {
                     return null;
                 }
-                throw new Exception($"Failed to retrieve user_id: {response.StatusCode} - {response.ReasonPhrase}");
+                
                 return JsonConvert.DeserializeObject<User>(content);
 
             }

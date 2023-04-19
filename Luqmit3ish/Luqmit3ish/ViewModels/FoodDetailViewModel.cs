@@ -101,7 +101,7 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
-        private ObservableCollection<DishCard> _dishCard;
+        private ObservableCollection<DishCard> _dishCard ;
 
         public ObservableCollection<DishCard> DishCard
         {
@@ -128,23 +128,24 @@ namespace Luqmit3ish.ViewModels
 
                 await _orderService.ReserveOrder(newOrder);
 
-                DishCard quantityDish = _dishCard.FirstOrDefault(d => d.id == dish.id);
-                if (quantityDish != null)
-                {
-                    quantityDish.quantity -= Counter;
-                }
+                //DishCard quantityDish = _dishCard.FirstOrDefault(d => d.id == dish.id);
+                //if (quantityDish != null)
+                //{
+                //    quantityDish.quantity -= Counter;
+                //}
 
-                if (Counter > 0) Counter = 0;
+                //if (Counter > 0) Counter = 0;
 
-                DishCard = await _foodServices.GetDishCards();
+                //DishCard = await _foodServices.GetDishCards();
 
-                foreach (DishCard item in DishCard)
-                {
-                    if (item.quantity == 0)
-                    {
-                        DishCard.Remove(item);
-                    }
-                }
+                //foreach (DishCard item in DishCard)
+                //{
+                //    if (item.quantity == 0)
+                //    {
+                //        DishCard.Remove(item);
+                //    }
+                //}
+                await OnInit(FoodId);
                 await App.Current.MainPage.DisplayAlert("successfuly", "Your order has been successfully booked", "ok");
 
             }
@@ -186,8 +187,6 @@ namespace Luqmit3ish.ViewModels
             {
                 Debug.WriteLine(e.Message);
             }
-
-
         }
     }
 }
