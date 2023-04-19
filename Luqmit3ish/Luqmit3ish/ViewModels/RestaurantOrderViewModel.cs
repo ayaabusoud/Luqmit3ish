@@ -25,6 +25,8 @@ namespace Luqmit3ish.ViewModels
 
         public ICommand ProfileCommand { protected set; get; }
         public ICommand DoneCommand { protected set; get; }
+        public ICommand NotRecievedCommand { protected set; get; }
+        public ICommand RecievedCommand { protected set; get; }
         private OrderService _orderService;
 
 
@@ -40,28 +42,55 @@ namespace Luqmit3ish.ViewModels
            _navigation = navigation;
             ExpanderCommand = new Command<int>(OnExpanderClicked);
             DoneCommand = new Command<int>(async (int OrderId) => await OnDoneClick(OrderId));
+            NotRecievedCommand = new Command(OnNotRecievedClicked);
+            RecievedCommand = new Command(OnRecievedClicked);
             _orderService = new OrderService();
-            OnInit();
+            Selected(false);
+        }
+        
+        private bool _isVisible = true;
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set => SetProperty(ref _isVisible, value);
+        }
+        private string _recievedColor = "#D9D9D9";
+        public string RecievedColor
+        {
+            get => _recievedColor;
+            set => SetProperty(ref _recievedColor, value);
+        }
+        private string _notRecievedColor = "Black";
+        public string NotRecievedColor
+        {
+            get => _notRecievedColor;
+            set => SetProperty(ref _notRecievedColor, value);
+        }
+        private void OnRecievedClicked()
+        {
+            IsVisible = false;
+            RecievedColor = "Black";
+            NotRecievedColor = "#D9D9D9";
+            Selected(true);
         }
 
-        private async Task OnDoneClick(int id)
+        private void OnNotRecievedClicked()
+        {
+            IsVisible = true;
+            NotRecievedColor = "Black";
+            RecievedColor = "#D9D9D9";
+            Selected(false);
+        }
+
+       private async Task OnDoneClick(OrderCard orders)
         {
             try
             {
-                var userId = Preferences.Get("userId", null);
-                if (userId == null)
+                foreach (OrderDish order in orders.data)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Error", "Your login session has been expired", "Ok");
-                    await _navigation.PushAsync(new LoginPage());
-                    return;
+                    await _orderService.UpdateOrderReceiveStatus(order.id);
                 }
-                var charity = OrderCard.FirstOrDefault(i => i.id == id);
-                var numberOfCharityOrders = charity.data.Count;
-                for (int i = numberOfCharityOrders - 1; i >= 0; i--)
-                {
-                    await _orderService.UpdateOrderReceiveStatus(charity.data[i].id);
-                    charity.data.RemoveAt(i);
-                }
+                
             }
             catch (ArgumentException e)
             {
@@ -115,7 +144,7 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _orderCard, value);
         }
 
-        private async void OnInit()
+        private async void Selected(bool status)
         {
             var id = Preferences.Get("userId", null);
             if (id == null)
@@ -127,7 +156,7 @@ namespace Luqmit3ish.ViewModels
             var userId = int.Parse(id);
             try
             {
-                OrderCard = await _orderService.GetRestaurantOrders(userId, false);
+                OrderCard = await _orderService.GetRestaurantOrders(userId, status);
             }
              catch (HttpRequestException e)
             {
