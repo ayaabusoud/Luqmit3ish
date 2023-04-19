@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Luqmit3ish.Views.ResturantOrderDetailsPage"
+             x:Name="ResturantOrderDetails"
+       BackgroundColor="WhiteSmoke">
+
+    <ContentPage.Content>
+        <StackLayout>
+
+            <Frame  CornerRadius="60" WidthRequest="80" HeightRequest="80" VerticalOptions="Center" HorizontalOptions="Center" Margin="0,20,0,0">
+                <Image Source="{Binding UserPhoto}" Aspect="AspectFill"/>
+            </Frame>
+
+            <Label Margin="0"  Text="{Binding RestaurantName}" HorizontalOptions="Center" FontSize="Large" FontAttributes="Bold" TextColor="Black" />
+
+            <Frame  Margin="20,10,20,5" CornerRadius="35"  HeightRequest="350" HorizontalOptions="Center">
+                <StackLayout HorizontalOptions="Center">
+                    <ScrollView >
+                        <CollectionView ItemsSource="{Binding Dishes}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Padding="5" HorizontalOptions="Center">
+                                        <Frame Padding="0" HorizontalOptions="FillAndExpand" HasShadow="True" CornerRadius="10">
+                                            <Grid Padding="5" BackgroundColor="AntiqueWhite">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="0.6*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label MaxLines="1" VerticalOptions="Center">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <FormattedString.Spans>
+                                                                <Span FontAttributes="Bold"  Text="{Binding dishName}" TextColor="Black" />
+                                                                <Span FontAttributes="Bold"  Text=" : " TextColor="Black"/>
+                                                            </FormattedString.Spans>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                                <StackLayout Orientation="Horizontal" Margin="15,-5,0,0" WidthRequest="100" VerticalOptions="Center" Grid.Column="1"  >
+                                                    <Label Text="{Binding number_of_dish}" FontAttributes="Bold" Margin="5,12,5,0"/>
+                                            
+                                                </StackLayout>
+
+                                            </Grid>
+                                        </Frame>
+                                    </StackLayout>
+
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </ScrollView>
+                </StackLayout>
+
+            </Frame>
+
+        </StackLayout>
+
+    </ContentPage.Content>
+</ContentPage>
