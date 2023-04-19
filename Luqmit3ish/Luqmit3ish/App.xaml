@@ -138,12 +138,11 @@
 
             <Style x:Key="RangeSlider" TargetType="xct:RangeSlider">
                 <Setter Property="LowerThumbBorderColor" Value="{StaticResource PrimaryLight}" />
-                <Setter Property="LowerThumbColor" Value="{StaticResource PrimaryLight}" />
-                <Setter Property="ThumbBorderColor" Value="{StaticResource PrimaryLight}" />
-                <Setter Property="TrackBorderColor" Value="{StaticResource PrimaryLight}" />
-                <Setter Property="TrackColor" Value="Gray" />
-                <Setter Property="UpperThumbColor" Value="{StaticResource PrimaryLight}" />
                 <Setter Property="UpperThumbBorderColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="LowerThumbColor" Value="White" />
+                <Setter Property="UpperThumbColor" Value="White" />
+                <Setter Property="TrackBorderColor" Value="Gray" />
+                <Setter Property="TrackColor" Value="Gray" />
                 <Setter Property="TrackHighlightColor" Value="{StaticResource PrimaryLight}" />
                 
             </Style>

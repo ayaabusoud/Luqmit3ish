@@ -75,7 +75,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushAsync(new FoodDetailPage());
+                await _navigation.PushAsync(new FoodDetailPage(dish.id));
             }
             catch (ArgumentException e)
             {
@@ -92,7 +92,17 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
+                MessagingCenter.Subscribe<FilterFoodViewModel, ObservableCollection<DishCard>>(this, "EditDishes", (sender, editedDishes) =>
+                {
+                    if(DishCard != null)
+                    {
+                        DishCard.Clear();
+                    }
+                    DishCard = editedDishes;
+                });
+
                 DishCard = await _foodServices.GetDishCards();
+                
             }
             catch (ConnectionException e)
             {
@@ -107,7 +117,7 @@ namespace Luqmit3ish.ViewModels
             {
                 Debug.WriteLine(e.Message);
             }
-            if (DishCard != null)
+            if (DishCard.Count > 0)
             {
                 EmptyResult = false;
                 foreach (DishCard dish in DishCard)

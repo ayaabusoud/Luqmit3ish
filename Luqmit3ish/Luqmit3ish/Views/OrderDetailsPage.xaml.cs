@@ -11,13 +11,12 @@ using Xamarin.Forms.Xaml;
 namespace Luqmit3ish.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ResetPasswordPage : ContentPage
+    public partial class OrderDetailsPage : ContentPage
     {
-         public ResetPasswordPage(string email)
+        public OrderDetailsPage()
         {
             InitializeComponent();
-            this.BindingContext = new ResetPasswordViewModel(Navigation,email);
+            this.BindingContext = new OrderDetailsViewModel();
         }
-
     }
 }

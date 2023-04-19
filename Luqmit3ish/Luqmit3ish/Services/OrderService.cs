@@ -20,6 +20,8 @@ namespace Luqmit3ish.Services
         private  readonly string _apiUrl = "https://luqmit3ishv2.azurewebsites.net/api/Orders";
         private  readonly string _orderApiUrl = "https://luqmit3ishv2.azurewebsites.net/api/CharityOrders";
         private  readonly string _restaurantApiUrl = "https://luqmit3ishv2.azurewebsites.net/api/RestaurantOrders";
+        private readonly string _receive = "https://luqmit3ishv2.azurewebsites.net/api/";
+        private readonly string _bestRestaurantUrl = "https://luqmit3ishv2.azurewebsites.net/BestRestaurant";
 
         private IConnection _connection;
 
@@ -73,7 +75,29 @@ namespace Luqmit3ish.Services
             }
             
         }
-              public async Task<Order> GetOrderById(int id)
+        public async Task<DishesOrder> GetBestRestaurant()
+        {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _httpClient.GetAsync(_bestRestaurantUrl);
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<DishesOrder>(content);
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+        }
+        public async Task<Order> GetOrderById(int id)
 
         {
             if (!_connection.CheckInternetConnection())
@@ -181,6 +205,42 @@ namespace Luqmit3ish.Services
                 return false;
             }
 
+
+        }
+         public async Task<bool> UpdateOrderReceiveStatus(int id)
+        {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+
+                var patchObject = new { id };
+                var patchData = JsonConvert.SerializeObject(patchObject);
+                var httpContent = new StringContent(patchData, Encoding.UTF8, "application/json");
+
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), _receive + id + "/" + "receive")
+                {
+                    Content = httpContent
+                };
+
+                var response = await _httpClient.SendAsync(request);
+
+                return response.IsSuccessStatusCode;
+
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+
+
+            }
 
         }
     }

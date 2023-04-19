@@ -1,21 +1,21 @@
 ﻿<CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              NavigationPage.HasNavigationBar="False"
               x:Class="Luqmit3ish.Views.OnBoardingPage">
     <ContentPage>
-        <StackLayout Padding="20,-70,20,0" VerticalOptions="Center">
-            <Image Source="hand.png" WidthRequest="350" VerticalOptions="StartAndExpand" HorizontalOptions="Center"/>
-            <Label Text="Fight Hunger And &#10; Save Food With Us" HorizontalOptions="Center" FontSize="25" FontAttributes="Bold"  TextColor="Black" Padding="10,10"/>
-            <Label Text="By bridging the gap between charities and restaurants. We hope to have a positive impact on the world by reducing food waste and fighting hunger." HorizontalTextAlignment="Center" TextColor="Black" FontSize="Medium" Padding="10,10"/>
-            <Button VerticalOptions="Center" Text="Join us" Command="{Binding ButtonCommand}" Style="{StaticResource BorderButton}" Margin="20,20,20,20"/>
+        <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+            <Image Source="FoodWaste.png"  WidthRequest="300" />
+            <Label Text="1/3 of food is wasted!" HorizontalTextAlignment="Center" FontAttributes="Bold"  TextColor="Black" FontSize="Title"/>
+            <Label Text="And we want to change that." HorizontalTextAlignment="Center" TextColor="Black" FontSize="Small"/>
         </StackLayout>
     </ContentPage>
 
     <ContentPage>
-        <StackLayout Margin="16,64,16,35" VerticalOptions="Center">
-            <Image Source="food.png" WidthRequest="350" VerticalOptions="StartAndExpand" HorizontalOptions="Center"/>
-            <Label Text="1/3 of food is wasted!" HorizontalTextAlignment="Center" FontAttributes="Bold"  TextColor="Black" FontSize="Medium"/>
-            <Label Text="And we want to change that !" HorizontalTextAlignment="Center" TextColor="Black" FontSize="17"/>
+        <StackLayout Margin="20,0" HorizontalOptions="Center" VerticalOptions="Center">
+            <Image Source="Donation.png" HorizontalOptions="Fill" />
+            <Label Text="Fight Hunger And Save &#10; Food With Us" HorizontalTextAlignment="Center" FontSize="25" FontAttributes="Bold"  TextColor="Black" />
+            <Label Margin="35,0" Text="By bridging the gap between charities and restaurants. We hope to have a positive impact on the world by reducing food waste and fighting hunger." HorizontalTextAlignment="Center" TextColor="Black" FontSize="16" />
+            <Button VerticalOptions="Center" Text="Join us" Command="{Binding SignupCommand}" Style="{StaticResource BorderButton}" Margin="0,20"/>
         </StackLayout>
     </ContentPage>
 </CarouselPage>
-    
