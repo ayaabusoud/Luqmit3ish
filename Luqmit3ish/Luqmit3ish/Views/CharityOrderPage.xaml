@@ -9,7 +9,7 @@
     <ContentPage.Content>
             <Grid Margin="20,35,20,20" HorizontalOptions="Fill" VerticalOptions="Fill">
                 <StackLayout IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
-                    <Image Source="EmptyCart1.png"
+                <Image Source="https://luqmit3ish5.blob.core.windows.net/photos/1_EmptyCart.png"
                            HeightRequest="200" 
                            WidthRequest="200"
                            VerticalOptions="Center"/>
