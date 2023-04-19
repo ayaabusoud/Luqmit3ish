@@ -11,18 +11,12 @@ using Xamarin.Forms.Xaml;
 namespace Luqmit3ish.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ProfilePage : ContentPage
+    public partial class OrderDetailsPage : ContentPage
     {
-        public ProfilePage()
+        public OrderDetailsPage()
         {
             InitializeComponent();
-            this.BindingContext = new ProfileViewModel(Navigation);
+            this.BindingContext = new OrderDetailsViewModel();
         }
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            this.BindingContext = new ProfileViewModel(Navigation);
-        }
-
     }
 }
