@@ -74,7 +74,7 @@
                                                     <Label Grid.Column="2" Text="&#xf00c;" FontFamily="FontAwesomeIcons"  FontSize="20" HorizontalOptions="End" Margin="0,2,20,0">
                                                         <Label.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding BindingContext.DoneCommand , Source={x:Reference RestaurantOrder}}"
-                                                                                  CommandParameter="{Binding id}"/>
+                                                                                  CommandParameter="{Binding .}"/>
                                                         </Label.GestureRecognizers>
                                                     </Label>
                                                 </Grid>
