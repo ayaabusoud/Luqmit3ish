@@ -196,14 +196,17 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                MessagingCenter.Subscribe<FilterFoodViewModel, object>(this, "FilterDishes", (sender, filterDishes) =>
+                MessagingCenter.Subscribe<FilterFoodViewModel, ObservableCollection<DishCard>>(this, "EditDishes", (sender, editedDishes) =>
                 {
-                    // Handle the filterDishes object here
-                    Console.WriteLine("yeees");
-                    Console.WriteLine(sender);
+                    if(DishCard != null)
+                    {
+                        DishCard.Clear();
+                    }
+                    DishCard = editedDishes;
                 });
 
                 DishCard = await _foodServices.GetDishCards();
+                
             }
             catch (ConnectionException e)
             {

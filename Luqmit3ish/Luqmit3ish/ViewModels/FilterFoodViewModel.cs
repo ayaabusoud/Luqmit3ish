@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -28,6 +29,7 @@ namespace Luqmit3ish.ViewModels
 
         public FilterFoodViewModel(INavigation navigation)
         {
+            SelectedTypeValues = new ObservableCollection<object>();
             this._navigation = navigation;
 
             InitializTypeValues();
@@ -149,6 +151,16 @@ namespace Luqmit3ish.ViewModels
             }
             TypeSelectedValues.Clear();
             TypeMultiSelectionCommand.Execute(new List<object>());
+
+            if (ClearAll == null)
+            {
+                ClearAll = new Command<IList>(items =>
+                {
+                    // Other code...
+                    SelectedTypeValues.Clear(); // Deselect all items
+                });
+            }
+
         }
 
         private void ClearLocationValues()
@@ -183,7 +195,7 @@ namespace Luqmit3ish.ViewModels
                     (allUsers.Where(user => filterInfo.LocationValues.Contains(user.Location)));
 
 
-                var filterDishes = new ObservableCollection<DishCard>
+                ObservableCollection<DishCard> filterDishes = new ObservableCollection<DishCard>
                     (allDishes.Where(dish =>
                         (dish.keepValid >= filterInfo.LowerKeepValid && dish.keepValid <= filterInfo.UpperKeepValid) &&
                         (dish.quantity >= filterInfo.LowerQuantity && dish.quantity <= filterInfo.UpperQuantity) &&
@@ -191,8 +203,8 @@ namespace Luqmit3ish.ViewModels
                         ((filterUsers.Count == 0) || (filterUsers.Any(user => user.id == dish.restaurantId)))
                         )
                     ) ;
-                //await _navigation.PopAsync(filterUsers);
-                MessagingCenter.Send<FilterFoodViewModel, object>(this, "FilterDishes", filterDishes);
+
+                MessagingCenter.Send<FilterFoodViewModel, ObservableCollection<DishCard>>(this, "EditDishes", filterDishes);
                 await _navigation.PopAsync();
 
             }
@@ -238,6 +250,14 @@ namespace Luqmit3ish.ViewModels
             filterInfo.UpperKeepValid = _upperKeepValid;
             filterInfo.UpperQuantity = _upperQuantity;
         }
+
+        private ObservableCollection<object> _selectedTypeValues;
+        public ObservableCollection<object> SelectedTypeValues
+        {
+            get => _selectedTypeValues;
+            set => SetProperty(ref _selectedTypeValues, value);
+        }
+
 
         private ObservableCollection<TypeField> _typeSelectedValues = new ObservableCollection<TypeField>();
         public ObservableCollection<TypeField> TypeSelectedValues

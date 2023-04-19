@@ -13,7 +13,7 @@
                 <Frame CornerRadius="10" Padding="0" BackgroundColor="Transparent">
                     <StackLayout Margin="5">
                         <Label Text="Type" TextColor="Black" FontAttributes="Bold"/>
-                        <CollectionView x:Name="TypeCollectionView" ItemsSource="{Binding TypeValues}" HeightRequest="100" SelectionMode="Multiple" SelectionChangedCommand="{Binding TypeMultiSelectionCommand}" SelectionChangedCommandParameter="{Binding SelectedItems, Source={x:Reference TypeCollectionView}}" >
+                        <CollectionView x:Name="TypeCollectionView" ItemsSource="{Binding TypeValues}" HeightRequest="100" SelectionMode="Multiple" SelectionChangedCommand="{Binding TypeMultiSelectionCommand}" SelectionChangedCommandParameter="{Binding SelectedItems, Source={x:Reference TypeCollectionView}}" SelectedItems="{Binding SelectedTypeValues}" >
                             <CollectionView.ItemsLayout>
                                 <GridItemsLayout HorizontalItemSpacing="15" Orientation="Horizontal"/>
                             </CollectionView.ItemsLayout>
