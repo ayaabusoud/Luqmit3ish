@@ -17,9 +17,9 @@ namespace Luqmit3ish.Services
     class OrderService
     {
         private readonly HttpClient _httpClient;
-        private  readonly string _apiUrl = "https://luqmit3ish.azurewebsites.net/api/Orders";
-        private  readonly string _orderApiUrl = "https://luqmit3ish.azurewebsites.net/api/CharityOrders";
-        private  readonly string _restaurantApiUrl = "https://luqmit3ish.azurewebsites.net/api/RestaurantOrders";
+        private  readonly string _apiUrl = "https://luqmit3ishv2.azurewebsites.net/api/Orders";
+        private  readonly string _orderApiUrl = "https://luqmit3ishv2.azurewebsites.net/api/CharityOrders";
+        private  readonly string _restaurantApiUrl = "https://luqmit3ishv2.azurewebsites.net/api/RestaurantOrders";
 
         private IConnection _connection;
 
@@ -140,7 +140,7 @@ namespace Luqmit3ish.Services
 
         public async Task<bool> ReserveOrder(Order orderRequest)
         {
-            if (_connection.CheckInternetConnection())
+            if (!_connection.CheckInternetConnection())
             {
                 throw new ConnectionException("There is no internet connection");
             }

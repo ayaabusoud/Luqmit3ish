@@ -196,7 +196,17 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
+                MessagingCenter.Subscribe<FilterFoodViewModel, ObservableCollection<DishCard>>(this, "EditDishes", (sender, editedDishes) =>
+                {
+                    if(DishCard != null)
+                    {
+                        DishCard.Clear();
+                    }
+                    DishCard = editedDishes;
+                });
+
                 DishCard = await _foodServices.GetDishCards();
+                
             }
             catch (ConnectionException e)
             {
