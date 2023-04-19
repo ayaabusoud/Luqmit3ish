@@ -19,7 +19,7 @@ namespace Luqmit3ish.Services
     class FoodServices
     {
         private readonly HttpClient _httpClient;
-        private readonly string _apiUrl = "https://luqmit3ish.azurewebsites.net/api/Food";
+        private readonly string _apiUrl = "https://luqmit3ishv2.azurewebsites.net/api/Food";
         private readonly IConnection _connection;
 
         public FoodServices()
@@ -190,6 +190,29 @@ namespace Luqmit3ish.Services
             try
             {
                 var response = await _httpClient.GetAsync(_apiUrl + "/DishCard");
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
+
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+        }
+        public async Task<ObservableCollection<DishCard>> GetDishCardById(int dishId)
+        {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_apiUrl}/DishCard/{dishId}");
                 var content = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
 

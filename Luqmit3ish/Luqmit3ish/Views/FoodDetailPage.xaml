@@ -8,18 +8,18 @@
         <StackLayout>
 
             <StackLayout Margin="0">
-                <Image Source="https://previews.123rf.com/images/danilsneg/danilsneg1706/danilsneg170600158/81077084-pepperoni-pizza-italian-pizza-on-white-background.jpg" WidthRequest="300" Margin="0,0,0,0" Aspect="AspectFill"/>
+                <Image Source="{Binding Image}" WidthRequest="300" Margin="0,0,0,0" HeightRequest="200" Aspect="AspectFill"/>
 
-                <Frame HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" CornerRadius="30" HasShadow="True">
+                <Frame HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" CornerRadius="30" HasShadow="True" Margin="0,-20,0,0" HeightRequest="800">
 
-                    <StackLayout Margin="10" HorizontalOptions="Fill" Spacing="15" Padding="20">
+                    <StackLayout Margin="0" HorizontalOptions="Fill" Spacing="15" Padding="10">
 
                         <Grid  ColumnDefinitions="0.3*,0.5*,0.5*" ColumnSpacing="30">
-                            <Image Grid.Row="0" Grid.Column="0" Source="resturentIcon.png" WidthRequest="45"  HorizontalOptions="StartAndExpand"/>
-                            <Label Grid.Row="0" Grid.Column="1" Text="Ward Resturent" FontAttributes="Bold" FontSize="16" TextColor="Black"  Margin="-35,10,10,0">
+                            <Image Grid.Row="0" Grid.Column="0" Source="{Binding RestaurantImg}" WidthRequest="45"  HorizontalOptions="StartAndExpand"/>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding RestaurantName}" FontAttributes="Bold" FontSize="16" TextColor="Black"  Margin="-35,10,10,0">
                                 <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding BindingContext.ProfileCommand , Source={x:Reference FoodDetails}}"
-                                                                                    CommandParameter="{Binding restaurantId}"  />
+                                    <TapGestureRecognizer Command="{Binding BindingContext.ProfileCommand , Source={x:Reference FoodDetails}}" CommandParameter="{Binding restaurantId}"  />
+                                                                                    
                                 </Label.GestureRecognizers>
                             </Label>
                         </Grid>
@@ -27,24 +27,24 @@
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="Pick-up time: " />
-                                    <Span Text="every time" />
+                                    <Span Text="{Binding PickUp}" />
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
                         <Label FontSize="16" TextColor="Black" Margin="10,10,20,0">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="Keep Listed for:" />
-                                    <Span Text=" 3" />
+                                    <Span Text="Keep Listed for: " />
+                                    <Span Text="{Binding KeepValid}" />
                                     <Span Text=" Days" />
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Label VerticalOptions="Center" HorizontalOptions="Center" Margin="-140,0,0,0">
+                        <Label VerticalOptions="Center" HorizontalOptions="Center" Margin="-180,0,0,0">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="Available quantity " TextColor="Black" FontSize="17"/>
-                                    <Span Text="5" TextColor="{StaticResource PrimaryLight}" TextDecorations="Underline" FontAttributes="Bold" FontSize="20"/>
+                                    <Span Text="{Binding Quantity}" TextColor="{StaticResource PrimaryLight}" TextDecorations="Underline" FontAttributes="Bold" FontSize="20"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
@@ -53,7 +53,7 @@
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Text="Description:" />
-                                        <Span Text=""/>
+                                        <Span Text="{Binding Description}"/>
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
