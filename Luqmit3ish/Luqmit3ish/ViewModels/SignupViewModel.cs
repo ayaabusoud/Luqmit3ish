@@ -52,7 +52,7 @@ namespace Luqmit3ish.ViewModels
                         Location = _selectedLocation.ToString(),
                         Type = _selectedType.ToString()
                     };
-                    await InsertNewUser(signUpRequest);
+                     Application.Current.MainPage = new VerificationPage(signUpRequest);
                 }
                 else
                 {
@@ -75,20 +75,6 @@ namespace Luqmit3ish.ViewModels
                 await App.Current.MainPage.DisplayAlert("Error", "An unexpected error has occurred. Please try again later.", "OK");
 
             }
-        }
-
-        public async Task<bool> InsertNewUser(SignUpRequest newUser)
-        {
-            bool isInserted = await userServices.InsertUser(newUser);
-
-            if (isInserted)
-            {
-                await _navigation.PushModalAsync(new VerificationPage());
-                return true;
-            }
-            await Application.Current.MainPage.DisplayAlert("", "This email already exist", "Ok");
-
-            return false;
         }
 
         private async Task OnLoginClicked()
