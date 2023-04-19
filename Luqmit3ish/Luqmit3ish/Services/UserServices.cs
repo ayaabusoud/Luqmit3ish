@@ -16,7 +16,7 @@ namespace Luqmit3ish.Services
     public class UserServices
     {
         private readonly HttpClient _httpClient;
-        private readonly string _apiUrl = "https://luqmit3ish.azurewebsites.net/api/Users";
+        private readonly string _apiUrl = "https://luqmit3ishv2.azurewebsites.net/api/Users";
         private readonly IConnection _connection;
 
         public UserServices()

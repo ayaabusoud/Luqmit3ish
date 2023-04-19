@@ -17,10 +17,10 @@ namespace Luqmit3ish.Services
     class OrderService
     {
         private readonly HttpClient _httpClient;
-        private  readonly string _apiUrl = "https://luqmit3ish.azurewebsites.net/api/Orders";
-        private  readonly string _orderApiUrl = "https://luqmit3ish.azurewebsites.net/api/CharityOrders";
-        private  readonly string _restaurantApiUrl = "https://luqmit3ish.azurewebsites.net/api/RestaurantOrders";
-        private readonly string _bestRestaurantUrl = "https://luqmit3ish.azurewebsites.net/BestRestaurant";
+        private  readonly string _apiUrl = "https://luqmit3ishv2.azurewebsites.net/api/Orders";
+        private  readonly string _orderApiUrl = "https://luqmit3ishv2.azurewebsites.net/api/CharityOrders";
+        private  readonly string _restaurantApiUrl = "https://luqmit3ishv2.azurewebsites.net/api/RestaurantOrders";
+        private readonly string _bestRestaurantUrl = "https://luqmit3ishv2.azurewebsites.net/BestRestaurant";
         private IConnection _connection;
 
             public OrderService()
