@@ -35,7 +35,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushAsync(new ForgotPasswordPage());
+                Application.Current.MainPage = new NavigationPage(new ForgotPasswordPage()) ;
 
             }
             catch (ArgumentException e)
