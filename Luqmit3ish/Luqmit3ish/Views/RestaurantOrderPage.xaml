@@ -8,6 +8,22 @@
     <ContentPage.Content>
         <ScrollView BackgroundColor="#EDF2F5" >
             <StackLayout  Margin="20,35,20,20">
+               <StackLayout Orientation="Horizontal">
+                    <Label Text="Not Recieved" TextColor="Black" FontSize="16" Margin="80,0">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BindingContext.NotRecievedCommand, Source={x:Reference RestaurantOrder}}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="Recieved" TextColor="Black" FontSize="16" Margin="-62,0">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BindingContext.RecievedCommand, Source={x:Reference RestaurantOrder}}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Spacing="15">
+                    <BoxView BackgroundColor="{Binding BindingContext.NotRecievedColor, Source={x:Reference RestaurantOrder}}" WidthRequest="180" HeightRequest="2"></BoxView>
+                    <BoxView BackgroundColor="{Binding BindingContext.RecievedColor, Source={x:Reference RestaurantOrder}}" WidthRequest="180" HeightRequest="2"></BoxView>
+                </StackLayout>
                 <CollectionView 
                                     Margin="10,25" 
                                     HorizontalOptions="FillAndExpand"
