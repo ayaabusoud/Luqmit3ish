@@ -41,7 +41,7 @@ namespace Luqmit3ish.ViewModels
                ResetPassCommand = new Command(async () => await OnResetClicked());
                LogOutCommand= new Command(async () => await OnLogOutClicked());
                DeleteCommand = new Command<int>(async (int id) => await OnDeleteAccountClicked(id));
-               DarkModeCommand = new Command(async () => await OnDarkModeClicked());
+               
                RestaurantCommand = new Command(async () => await OnRestaurantClicked());
 
             _userServices = new UserServices();
@@ -64,7 +64,23 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
-
+        private bool _darkTheme = false;
+        public bool DarkTheme
+        {
+            get => _darkTheme;
+            set
+            {
+                if (value)
+                {
+                    App.Current.UserAppTheme = OSAppTheme.Dark;
+                }
+                else
+                {
+                    App.Current.UserAppTheme = OSAppTheme.Light;
+                }
+                SetProperty(ref _darkTheme, value);
+            }
+        }
 
         private int _id;
         public int Id
@@ -143,10 +159,6 @@ namespace Luqmit3ish.ViewModels
                 await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
             }
 
-        }
-        private async Task OnDarkModeClicked()
-        {
-            //implm
         }
 
         private async Task OnDeleteAccountClicked(int id)

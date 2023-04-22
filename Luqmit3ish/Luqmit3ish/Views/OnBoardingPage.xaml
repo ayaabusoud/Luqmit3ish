@@ -1,7 +1,8 @@
 ﻿<CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               NavigationPage.HasNavigationBar="False"
-              x:Class="Luqmit3ish.Views.OnBoardingPage">
+              x:Class="Luqmit3ish.Views.OnBoardingPage"
+              BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
     <ContentPage>
         <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
             <Image Source="https://luqmit3ish5.blob.core.windows.net/photos/1_FoodWaste.png"  WidthRequest="300" />

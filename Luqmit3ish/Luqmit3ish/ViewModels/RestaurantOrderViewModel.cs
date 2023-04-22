@@ -74,7 +74,7 @@ namespace Luqmit3ish.ViewModels
             get => _recievedColor;
             set => SetProperty(ref _recievedColor, value);
         }
-        private string _notRecievedColor = "Black";
+        private string _notRecievedColor = "DarkOrange";
         public string NotRecievedColor
         {
             get => _notRecievedColor;
@@ -83,7 +83,7 @@ namespace Luqmit3ish.ViewModels
         private void OnRecievedClicked()
         {
             IsVisible = false;
-            RecievedColor = "Black";
+            RecievedColor = "DarkOrange";
             NotRecievedColor = "#D9D9D9";
             Selected(true);
             ReceievedCheck = false;
@@ -92,7 +92,7 @@ namespace Luqmit3ish.ViewModels
         private void OnNotRecievedClicked()
         {
             IsVisible = true;
-            NotRecievedColor = "Black";
+            NotRecievedColor = "DarkOrange";
             RecievedColor = "#D9D9D9";
             Selected(false);
             ReceievedCheck = true;

@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.CharityOrderPage"
              x:Name="CharityOrder"
-             Title="Orders">
+             Title="Orders"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
 
 
     <ContentPage.Content>
@@ -34,14 +35,14 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout>
-                               <Frame BorderColor="LightGray" CornerRadius="10" HeightRequest="80" HasShadow="True"  >
+                               <Frame BorderColor="LightGray" CornerRadius="10" HeightRequest="80" HasShadow="True" BackgroundColor="{AppThemeBinding Light={StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}" >
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer CommandParameter="{Binding .}" Command="{Binding BindingContext.OrderCommand , Source={x:Reference CharityOrder}}"/>
                                     </Frame.GestureRecognizers>
                                     <StackLayout Orientation="Horizontal" Padding="0" Margin="0" HorizontalOptions="Start">
-                                    <Image HeightRequest="60" WidthRequest="60" VerticalOptions="Center" HorizontalOptions="Center" Source="{Binding image}" />
+                                        <Image HeightRequest="60" WidthRequest="60" VerticalOptions="Center" HorizontalOptions="Center" Source="{Binding image}" BackgroundColor="WhiteSmoke" />
                                         <StackLayout Margin="20,0,0,0">
-                                            <Label MaxLines="1" HorizontalTextAlignment="Start" Text="{Binding name}" TextColor="Black" FontSize="Medium" FontAttributes="Bold"/>
+                                            <Label MaxLines="1" HorizontalTextAlignment="Start" Text="{Binding name}" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontSize="Medium" FontAttributes="Bold"/>
                                             <CollectionView  HorizontalOptions="Start" ItemsSource="{Binding data}">
                                             <CollectionView.ItemsLayout>
                                                 <LinearItemsLayout Orientation="Vertical" 
@@ -50,7 +51,7 @@
                                             <CollectionView.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackLayout>
-                                                        <Label MaxLines="1" HorizontalTextAlignment="Start" TextColor="#2F3246" FontSize="Small">
+                                                        <Label MaxLines="1" HorizontalTextAlignment="Start" TextColor="{AppThemeBinding Light=#2F3246, Dark={StaticResource TextColorDark}}" FontSize="Small">
                                                             <Label.FormattedText>
                                                                 <FormattedString>
                                                                     <FormattedString.Spans>
@@ -66,7 +67,7 @@
                                             </CollectionView.ItemTemplate>
                                         </CollectionView>
                                         </StackLayout>
-                                        <Label WidthRequest="30"  HorizontalOptions="Start" VerticalOptions="End" TextColor="{StaticResource SecondaryLight}" Text="&#xf2ed;" FontFamily="FontAwesomeIcons"  FontSize="20" >
+                                        <Label WidthRequest="30"  HorizontalOptions="Start" VerticalOptions="End" TextColor="{AppThemeBinding Light= {StaticResource SecondaryLight}, Dark={StaticResource PrimaryLight}}" Text="&#xf2ed;" FontFamily="FontAwesomeIcons"  FontSize="20" >
                                             <Label.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}"
                                                                                   CommandParameter="{Binding id}"/>

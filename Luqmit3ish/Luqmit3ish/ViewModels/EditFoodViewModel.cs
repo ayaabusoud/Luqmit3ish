@@ -1,20 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
-using Luqmit3ish.Views;
-
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -29,17 +22,14 @@ namespace Luqmit3ish.ViewModels
         private FoodServices _foodServices;
 
         public ICommand SubmitCommand { protected set; get; }
-
         public ICommand Photo_clicked { protected set; get; }
-        public ICommand Blus { get; private set; }
-        public ICommand Minus { protected get; set; }
         public ICommand KeepListedBlus { protected get; set; }
         public ICommand KeepListedMinus { protected get; set; }
         public ICommand TakePhotoCommand { protected set; get; }
-        public ICommand PlusCommand { protected set; get; }
-        public ICommand MinusCommand { protected set; get; }
-        public ICommand PlusCommand1 { protected set; get; }
-        public ICommand MinusCommand1 { protected set; get; }
+        public ICommand KeepValidPlusCommand { protected set; get; }
+        public ICommand KeepValidMinusCommand { protected set; get; }
+        public ICommand QuantityPlusCommand { protected set; get; }
+        public ICommand QuantityMinusCommand { protected set; get; }
 
         public EditFoodViewModel(INavigation navigation, Dish dish)
         {
@@ -51,22 +41,20 @@ namespace Luqmit3ish.ViewModels
             SubmitCommand = new Command(async () => await OnSubmitClicked());
             Photo_clicked = new Command(async () => await PhotoClicked());
             TakePhotoCommand = new Command(async () => await PhotoClicked());
-
-            PlusCommand = new Command(OnPlusClicked);
-            MinusCommand = new Command(OnMinusClicked);
-            PlusCommand1 = new Command(OnPlusClicked1);
-            MinusCommand1 = new Command(OnMinusClicked1);
+            KeepValidPlusCommand = new Command(OnKeepValidPlusClicked);
+            KeepValidMinusCommand = new Command(OnKeepValidMinusClicked);
+            QuantityPlusCommand = new Command(OnQuantityPlus);
+            QuantityMinusCommand = new Command(OnQuantityMinus);
 
             InitializeTypeValues();
-            SelectedType = TypeValues.FirstOrDefault();
-            InitializeAsync();
+            InitializDish();
         }
 
         private void InitializeTypeValues()
         {
             _typeValues = new ObservableCollection<TypeField>
             {
-               new TypeField { Name = "Food", IconText = "\ue4c6;" },
+                new TypeField { Name = "Food", IconText = "\ue4c6;" },
                 new TypeField { Name = "Drink", IconText = "\uf4e3;" },
                 new TypeField { Name = "Cake", IconText = "\uf7ef;" },
                 new TypeField { Name = "Snack", IconText = "\uf787;" },
@@ -75,27 +63,20 @@ namespace Luqmit3ish.ViewModels
             };
         }
 
-        private async void InitializeAsync()
+        private void InitializDish()
         {
-            try
+            if (_dish != null)
             {
-                if (_dish != null)
-                {
-                    Type = _dish.type;
-                    Title = _dish.name;
-                    Description = _dish.description;
-                    KeepValid = _dish.keep_listed;
-                    Pack_time = _dish.pick_up_time;
-                    Quantity = _dish.number;
+                Type = _dish.type;
+                Title = _dish.name;
+                Description = _dish.description;
+                KeepValid = _dish.keep_listed;
+                Pack_time = _dish.pick_up_time;
+                Quantity = _dish.number;
 
-                    var selectedTypeName = _dish.type;
-                    var selectedType = TypeValues.FirstOrDefault(tf => tf.Name == selectedTypeName);
-                    SelectedType = selectedType;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
+                var selectedTypeName = _dish.type;
+                var selectedType = TypeValues.FirstOrDefault(tf => tf.Name == selectedTypeName);
+                SelectedType = selectedType;
             }
         }
 
@@ -113,7 +94,7 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _quantity, value);
         }
 
-        private void OnMinusClicked()
+        private void OnKeepValidMinusClicked()
         {
             if (KeepValid > 0)
             {
@@ -121,12 +102,12 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private void OnPlusClicked1()
+        private void OnQuantityPlus()
         {
             Quantity++;
         }
 
-        private void OnMinusClicked1()
+        private void OnQuantityMinus()
         {
             if (Quantity > 0)
             {
@@ -134,7 +115,7 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private void OnPlusClicked()
+        private void OnKeepValidPlusClicked()
         {
             KeepValid++;
         }
