@@ -4,7 +4,7 @@
              x:Class="Luqmit3ish.Views.ProfilePage"
              xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
              xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView" x:DataType="vm:ProfileViewModel"
-                    BackgroundColor="white"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
              Shell.NavBarIsVisible="True"
              Title="Profile">
 

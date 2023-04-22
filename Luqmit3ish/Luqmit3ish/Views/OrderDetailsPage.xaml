@@ -4,7 +4,7 @@
              x:Class="Luqmit3ish.Views.OrderDetailsPage"
              x:Name="OrderDetails"
              Shell.TabBarIsVisible="False"
-            BackgroundColor="WhiteSmoke">
+            BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
 
     <ContentPage.Content>
         <StackLayout>

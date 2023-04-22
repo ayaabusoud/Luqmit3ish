@@ -1,18 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
-using Luqmit3ish.Views;
-
 using Xamarin.Essentials;
 using Xamarin.Forms;
 namespace Luqmit3ish.ViewModels

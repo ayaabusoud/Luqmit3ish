@@ -1,38 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Luqmit3ish.ViewModels"  
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="Luqmit3ish.Views.EditFoodPage"
              Title="Edit Food"
              Shell.TabBarIsVisible="False"
-             BackgroundColor="#EDF2F5">
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
     <ContentPage.Content>
         <ScrollView HeightRequest="500">
             <StackLayout Margin="20">
-                <Frame CornerRadius="10" Padding="0">
+                <Frame CornerRadius="10" Padding="0" BackgroundColor="{AppThemeBinding Light= {StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}">
                     <StackLayout Margin="5">
-                        <Label Text="Photo" TextColor="Black"/>
+                        <Label Text="Photo" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
                         <Image Source="{Binding ImageSource}"/>
                         <Button Text="&#xf083;" FontFamily="FontAwesomeIcons" FontSize="60" TextColor="{StaticResource PrimaryLight}" HorizontalOptions="Center" BackgroundColor="Transparent" Margin="0,-20,0,0" Command="{Binding TakePhotoCommand}"/>
                     </StackLayout>
 
                 </Frame>
-                <Frame CornerRadius="10" Padding="0">
+                <Frame CornerRadius="10" Padding="0" BackgroundColor="{AppThemeBinding Light= {StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}">
                     <StackLayout Margin="5">
-                        <Label Text="Type" TextColor="Black"/>
+                        <Label Text="Type" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
                         <CollectionView ItemsSource="{Binding TypeValues}" HeightRequest="100" SelectionMode="Single" SelectedItem="{Binding SelectedType}" SelectionChangedCommand="{Binding MyCollectionSelectedCommand}">
                             <CollectionView.ItemsLayout>
                                 <GridItemsLayout HorizontalItemSpacing="15" Orientation="Horizontal"/>
                             </CollectionView.ItemsLayout>
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Padding="5" BackgroundColor="{Binding StackLayoutBackgroundColor}">
-                                        <Frame Padding="0" CornerRadius="10" WidthRequest="70" HeightRequest="70"  BackgroundColor="{Binding StackLayoutBackgroundColor1}" BorderColor="{StaticResource PrimaryLight}" >
+                                    <StackLayout Padding="5" BackgroundColor="{AppThemeBinding Light= {StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}">
+                                        <Frame Padding="0" CornerRadius="10" WidthRequest="70" HeightRequest="70"  BackgroundColor="{Binding FrameBackgroundColor}" BorderColor="{StaticResource PrimaryLight}" >
                                             <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-                                                <Label Text="{Binding IconText}" FontFamily="FontAwesomeIcons" FontSize="Title" TextColor="{StaticResource PrimaryLight}" />
+                                                <Label Text="{Binding IconText}" FontFamily="FontAwesomeIcons" FontSize="Title" TextColor="{Binding TextBackgroundColor}" />
                                             </StackLayout>
                                         </Frame>
-                                        <Label Text="{Binding Name}"  FontSize="Small" HorizontalOptions="Center" FontAttributes="Bold" TextColor="Black"/>
+                                        <Label Text="{Binding Name}"  FontSize="Small" HorizontalOptions="Center" FontAttributes="Bold" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
                                     </StackLayout>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
@@ -40,26 +39,26 @@
                     </StackLayout>
                 </Frame>
 
-                <Frame CornerRadius="10" Padding="0">
+                <Frame CornerRadius="10" Padding="0" BackgroundColor="{AppThemeBinding Light= {StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}">
                     <StackLayout Spacing="0" Margin="5">
-                        <Frame Padding="0" HasShadow="False">
+                        <Frame Padding="0" HasShadow="False" BackgroundColor="{AppThemeBinding Light= {StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}">
                             <StackLayout  Spacing="-10" >
-                                <Label Text="Title" TextColor="Black"/>
-                                <Entry Placeholder="ex: Pizza" FontSize="Small" TextColor="Black" Text="{Binding Title}"/>
+                                <Label Text="Title" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
+                                <Entry Placeholder="ex: Pizza" FontSize="Small" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" Text="{Binding Title}"/>
                             </StackLayout>
                         </Frame>
                         
-                        <Frame Padding="0" HasShadow="False">
+                        <Frame Padding="0" HasShadow="False" BackgroundColor="{AppThemeBinding Light= {StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}">
                             <StackLayout Spacing="-10" >
-                                <Label Text="Description" TextColor="Black"/>
-                                <Entry Placeholder="ex: mini pizza with chees" FontSize="Small" TextColor="Black" Text="{Binding Description}"/>
+                                <Label Text="Description" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
+                                <Entry Placeholder="ex: mini pizza with chees" FontSize="Small" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" Text="{Binding Description}"/>
                             </StackLayout>
                         </Frame>
                         
                     </StackLayout>
                 </Frame>
 
-                <Frame CornerRadius="10" Padding="0">
+                <Frame CornerRadius="10" Padding="0" BackgroundColor="{AppThemeBinding Light= {StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}">
                     <StackLayout Spacing="0" Margin="10">
 
                         <Grid >
@@ -67,18 +66,18 @@
                                 <ColumnDefinition Width="7*"/>
                                 <ColumnDefinition Width="3*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Text="Keep listed for (day/s)" TextColor="Black"/>
+                            <Label Text="Keep listed for (day/s)" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
                                 
                             <StackLayout Orientation="Horizontal" Margin="0,-5,20,0" WidthRequest="100" VerticalOptions="Center" Grid.Column="1">
                                 <Label Text="&#xf055;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
                                     <Label.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding PlusCommand}"/>
+                                        <TapGestureRecognizer Command="{Binding KeepValidPlusCommand}"/>
                                     </Label.GestureRecognizers>
                                 </Label>
-                                <Label Text="{Binding KeepValid}" FontAttributes="Bold" Margin="3,7,3,0" FontSize="Medium" TextColor="Black"/>
+                                <Label Text="{Binding KeepValid}" FontAttributes="Bold" Margin="3,7,3,0" FontSize="Medium" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
                                 <Label Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
                                     <Label.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding MinusCommand}"/>
+                                        <TapGestureRecognizer Command="{Binding KeepValidMinusCommand}"/>
                                     </Label.GestureRecognizers>
                                 </Label>
                             </StackLayout>
@@ -86,37 +85,37 @@
                     </StackLayout>
                 </Frame>
 
-                <Frame CornerRadius="10" Padding="0">
+                <Frame CornerRadius="10" Padding="0" BackgroundColor="{AppThemeBinding Light= {StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}">
                     <StackLayout Spacing="0" Margin="5">
-                        <Frame Padding="0" HasShadow="False">
+                        <Frame Padding="0" HasShadow="False" BackgroundColor="{AppThemeBinding Light= {StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}">
                             <StackLayout  Spacing="-10" >
-                                <Label Text="Pack-up Time" TextColor="Black"/>
-                                <Entry Placeholder="e.g weekday every evening only" FontSize="Small" TextColor="Black" Text="{Binding Pack_time}"/>
+                                <Label Text="Pack-up Time" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
+                                <Entry Placeholder="e.g weekday every evening only" FontSize="Small" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" Text="{Binding Pack_time}"/>
                             </StackLayout>
                         </Frame>
                     </StackLayout>
                 </Frame>
 
-                <Frame CornerRadius="10" Padding="0">
+                <Frame CornerRadius="10" Padding="0" BackgroundColor="{AppThemeBinding Light= {StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}">
                     <StackLayout Spacing="0" Margin="5">
-                        <Frame Padding="0" HasShadow="False" Margin="5">
+                        <Frame Padding="0" HasShadow="False" Margin="5" BackgroundColor="{AppThemeBinding Light= {StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}">
                             <Grid >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="7*"/>
                                     <ColumnDefinition Width="3*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Text="Proximate_number" TextColor="Black"/>
+                                <Label Text="Quantity" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
                                 
                                 <StackLayout Orientation="Horizontal" Margin="0,-5,20,0" WidthRequest="100" VerticalOptions="Center" Grid.Column="1">
                                     <Label Text="&#xf055;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
                                         <Label.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding PlusCommand1}"/>
+                                            <TapGestureRecognizer Command="{Binding QuantityPlusCommand}"/>
                                         </Label.GestureRecognizers>
                                     </Label>
-                                    <Label Text="{Binding Quantity}" FontAttributes="Bold" Margin="3,7,3,0" FontSize="Medium" TextColor="Black"/>
+                                    <Label Text="{Binding Quantity}" FontAttributes="Bold" Margin="3,7,3,0" FontSize="Medium" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
                                     <Label Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
                                         <Label.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding MinusCommand1}"/>
+                                            <TapGestureRecognizer Command="{Binding QuantityMinusCommand}"/>
                                         </Label.GestureRecognizers>
                                     </Label>
                                 </StackLayout>

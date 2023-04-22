@@ -8,7 +8,15 @@
     <Application.Resources>
         <ResourceDictionary>
             <Color x:Key="PrimaryLight">#F97515</Color>
+            <Color x:Key="PrimaryDark">#212121</Color>
+            <Color x:Key="BackgroundLight">#EDF2F5</Color>
+            <Color x:Key="BackgroundDark">#121212</Color>
             <Color x:Key="SecondaryLight">#35C9B7</Color>
+            <Color x:Key="FrameBackGroundLight">white</Color>
+            <Color x:Key="FrameBackGroundDark">#212121</Color>
+            <Color x:Key="TextColorLight">Black</Color>
+            <Color x:Key="TextColorDark">White</Color>
+
 
             <Style x:Key="FloatingButton" TargetType="Button">
                 <Setter Property="BorderColor" Value="{StaticResource SecondaryLight}" />
@@ -93,7 +101,7 @@
             <Style x:Key="FoodCard" TargetType="Frame">
                 <Setter Property="CornerRadius" Value="15" />
                 <Setter Property="HasShadow" Value="True" />
-                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light= {StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}" />
                 <Setter Property="Margin" Value="0" />
                 <Setter Property="Padding" Value="0" />
                 <Setter Property="HeightRequest" Value="200" />
@@ -125,14 +133,14 @@
                 <Setter Property="Padding" Value="9" />
                 <Setter Property="HasShadow" Value="False" />
                 <Setter Property="Margin" Value="0,-10,0,0"/>
-                <Setter Property="BackgroundColor" Value="LightGray"/>
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light= LightGray, Dark={StaticResource FrameBackGroundDark}}"/>
             </Style>
 
             <Style x:Key="textFeild" TargetType="Entry">
                 <Setter Property="FontSize" Value="Medium" />
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="Margin" Value="0,-30,0,-30"/>
-                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" />
                 <Setter Property="PlaceholderColor" Value="Gray"/>
             </Style>
 

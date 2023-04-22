@@ -1,42 +1,50 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:Luqmit3ish.ViewModels" x:DataType="viewmodels:UserSettingsViewModel"
              x:Class="Luqmit3ish.Views.settingsPage" 
              Shell.NavBarIsVisible="False"
-             Background="#EDF2F5">
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
+
     <ContentPage.Content >
         <StackLayout Margin="0"  >
-                <Frame      Padding="0"
-                            HorizontalOptions="CenterAndExpand"
-                            Margin="0,20,0,0"
-                            CornerRadius="100" IsClippedToBounds="True" HeightRequest="120" WidthRequest="120">
+                <Frame Padding="0"
+                       HorizontalOptions="CenterAndExpand"
+                       Margin="0,20,0,0"
+                       CornerRadius="100" IsClippedToBounds="True" HeightRequest="120" WidthRequest="120">
                     <Image Source="{Binding Photo}" 
-                              VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="AspectFill"/>
+                           VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="AspectFill"/>
                 </Frame>
-             <Label TextColor="Black" FontSize="Medium" Text="{Binding Name}" HorizontalTextAlignment="Center"/>
+             <Label TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontSize="Medium" Text="{Binding Name}" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
             
-            <Frame  HorizontalOptions="Fill" VerticalOptions="EndAndExpand" Padding="40,20,0,20" Margin="0,0,0,-40"  CornerRadius="30" HasShadow="True" >
+            <Frame  HorizontalOptions="Fill" VerticalOptions="EndAndExpand" Padding="40,20,0,20" Margin="0,0,0,-40"  CornerRadius="30" HasShadow="True" BackgroundColor="{AppThemeBinding Light={StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}">
                 <Grid  ColumnDefinitions="Auto,Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" HorizontalOptions="Center" Padding="20" RowSpacing="20" ColumnSpacing="10">
-                    <Label Margin="0,0,5,0" Text="&#xf235;" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="3" Grid.Column="0"  VerticalTextAlignment="Center"/>
-                            <Label Text="Delete Account" FontAttributes="Bold" TextColor="Black" FontSize="15"   VerticalOptions="Center"  Grid.Row="3" Grid.Column="1"  ></Label>
-                    <Label Margin="0,0,5,0" Text="&#xf007;" TextColor="Black"   FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" />
-                            <Label Text="My profile" FontAttributes="Bold" TextColor="Black" FontSize="15" VerticalOptions="Center"  Grid.Row="0" Grid.Column="1" ></Label>
-                   
-                            <Label Margin="0,0,5,20" Text="&#xf2f5;"  BackgroundColor="White" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" FontFamily="FontAwesomeIcons" Grid.Column="0" Grid.Row="4" FontSize="25" ></Label>
-                    <Label  Margin="0,0,0,20" Text="Log Out"  BackgroundColor="White" FontAttributes="Bold" TextColor="Black"  FontSize="15" VerticalOptions="Center"   Grid.Column="1" Grid.Row="4" ></Label>
-                    <Label Margin="0,0,5,0" Text="&#xf084;" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center"/>
-                            <Label Text="Reset password"  HorizontalTextAlignment="Start" FontAttributes="Bold" TextColor="Black" FontSize="15" VerticalOptions="Center" Grid.Row="2" Grid.Column="1" ></Label>
-                            <Button Text="&#xf105;" Background="white"  TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="0" Grid.Column="3" Command="{Binding MyProfileCommand}" ></Button>
-                    <Button Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="3" Grid.Column="3" CommandParameter="{Binding Id}" Command="{Binding DeleteCommand}" HorizontalOptions="End"></Button>
-                            <Button Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="2" Grid.Column="3" Command="{Binding ResetPassCommand}" HorizontalOptions="End"></Button>
-                    <Button  Margin="5,0,0,20" Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="4" Grid.Column="3" Command="{Binding LogOutCommand}" HorizontalOptions="End"></Button>
-                    <Label Text="&#xf559;" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center"/>
-                    <Label  Text="Restaurant of the month"  HorizontalTextAlignment="Start" FontAttributes="Bold" TextColor="Black" FontSize="15" VerticalOptions="Center" Grid.Row="1" Grid.Column="1" ></Label>
-                    <Button  Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="1" Grid.Column="3" Command="{Binding RestaurantCommand}" HorizontalOptions="End"></Button>
+                    <Label Margin="0,0,5,0" Text="&#xf007;" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" />
+                    <Label Text="My profile" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontSize="15" VerticalOptions="Center"  Grid.Row="0" Grid.Column="1" ></Label>
+                    <Button Text="&#xf105;" Background="Transparent"  TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="0" Grid.Column="3" Command="{Binding MyProfileCommand}" ></Button>
+
+                    <Label Text="&#xf559;" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center"/>
+                    <Label  Text="Restaurant of the month"  HorizontalTextAlignment="Start" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontSize="15" VerticalOptions="Center" Grid.Row="1" Grid.Column="1" ></Label>
+                    <Button  Text="&#xf105;" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="1" Grid.Column="3" Command="{Binding RestaurantCommand}" HorizontalOptions="End"></Button>
+
+                    <Label Text="&#xf186;" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center"/>
+                    <Label Text="Dark Mode" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontSize="15" VerticalOptions="Center"  Grid.Row="2" Grid.Column="1" ></Label>
+                    <Switch  ThumbColor="DarkOrange" Grid.Row="2" Grid.Column="3" OnColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" Margin="0,0,25,0" IsToggled="{Binding DarkTheme}"/>
+
+                    <Label Margin="0,0,5,0" Text="&#xf084;" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center"/>
+                    <Label Text="Reset password"  HorizontalTextAlignment="Start" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontSize="15" VerticalOptions="Center" Grid.Row="3" Grid.Column="1" ></Label>
+                    <Button Text="&#xf105;" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="3" Grid.Column="3" Command="{Binding ResetPassCommand}" HorizontalOptions="End"></Button>
+
+                    <Label Margin="0,0,5,0" Text="&#xf235;" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="4" Grid.Column="0"  VerticalTextAlignment="Center"/>
+                    <Label Text="Delete Account" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontSize="15"   VerticalOptions="Center"  Grid.Row="4" Grid.Column="1"  ></Label>
+                    <Button Text="&#xf105;" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="4" Grid.Column="3" CommandParameter="{Binding Id}" Command="{Binding DeleteCommand}" HorizontalOptions="End"></Button>
+
+
+                    <Label Margin="0,0,5,20" Text="&#xf2f5;"  BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" VerticalOptions="Center" HorizontalOptions="Center" FontFamily="FontAwesomeIcons" Grid.Column="0" Grid.Row="5" FontSize="25" ></Label>
+                    <Label  Margin="0,0,0,20" Text="Log Out"  BackgroundColor="Transparent" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"  FontSize="15" VerticalOptions="Center"   Grid.Column="1" Grid.Row="5" ></Label>
+                    <Button  Margin="5,0,0,20" Text="&#xf105;" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="5" Grid.Column="3" Command="{Binding LogOutCommand}" HorizontalOptions="End"></Button>
 
                 </Grid>
-                    </Frame>
-            
+            </Frame>
         </StackLayout>
         
     </ContentPage.Content>
