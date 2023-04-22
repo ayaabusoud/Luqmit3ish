@@ -64,10 +64,10 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
-        private bool _darkTheme = false;
+
         public bool DarkTheme
         {
-            get => _darkTheme;
+            get => Preferences.Get("DarkTheme",false);
             set
             {
                 if (value)
@@ -78,7 +78,8 @@ namespace Luqmit3ish.ViewModels
                 {
                     App.Current.UserAppTheme = OSAppTheme.Light;
                 }
-                SetProperty(ref _darkTheme, value);
+                Preferences.Set("DarkTheme", value);
+                OnPropertyChanged(nameof(DarkTheme));
             }
         }
 
