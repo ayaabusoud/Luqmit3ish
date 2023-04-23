@@ -2,46 +2,39 @@ using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
+using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Text;
-using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Xml.Linq;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using static Xamarin.Essentials.Permissions;
 
 namespace Luqmit3ish.ViewModels
 {
     public class UserSettingsViewModel : ViewModelBase
     {
         private INavigation _navigation { get; set; }
+
         public ICommand MyProfileCommand { protected set; get; }
         public ICommand ResetPassCommand { protected set; get; }
         public ICommand RestaurantCommand { protected set; get; }
         public ICommand LogOutCommand { protected set; get; }
-        public Command<int> DeleteCommand { protected set; get; }
+        public ICommand DeleteCommand { protected set; get; }
         public ICommand DarkModeCommand { protected set; get; }
-
-
-
-
-        public const string DefaultImage = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
 
         private readonly UserServices _userServices;
 
 
         public UserSettingsViewModel(INavigation navigation) {
                this._navigation = navigation;
-               MyProfileCommand= new Command(async () => await OnProfileClicked());
+               MyProfileCommand= new Command(async () => await OnProfileClicked(UserInfo));
                ResetPassCommand = new Command(async () => await OnResetClicked());
                LogOutCommand= new Command(async () => await OnLogOutClicked());
                DeleteCommand = new Command<int>(async (int id) => await OnDeleteAccountClicked(id));
-               DarkModeCommand = new Command(async () => await OnDarkModeClicked());
+               DarkModeCommand = new Command (OnDarkModeClicked);
                RestaurantCommand = new Command(async () => await OnRestaurantClicked());
 
             _userServices = new UserServices();
@@ -65,86 +58,50 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-
-        private int _id;
-        public int Id
-        {
-            get => _id;
-            set => SetProperty(ref _id, value);
-        } 
-
- 
-
         private User _userInfo;
         public User UserInfo
         {
             get => _userInfo;
             set => SetProperty(ref _userInfo, value);
         }
-        private string _name;
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                SetProperty(ref _name, value);
-             
-            }
-        }
-        private string _photo;
-        public string Photo
-        {
-            get => _photo;
-            set
-            {
-                SetProperty(ref _photo, value);
-            }
-        }
+
 
         private async void OnInit()
         {
 
             try
             {
-              string email = Preferences.Get("userEmail", "none");
+                string email = Preferences.Get("userEmail", "none");
                 if (string.IsNullOrEmpty(email)) { 
                     return; 
                 }
                 UserInfo = await _userServices.GetUserByEmail(email);
 
-                if (UserInfo != null)
-                {
-                    if (String.IsNullOrEmpty(UserInfo.Photo))
-                    {
-                        Photo = DefaultImage;
-
-                    }
-                    else
-                    {
-                        Photo = UserInfo.Photo;
-                       
-                    }
-
-                    Name = UserInfo.Name;
-                    Id = UserInfo.id; 
-                }
             }
-            catch (ConnectionException )
+            catch (ConnectionException e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
-            catch (HttpRequestException )
+            catch (HttpRequestException e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
-
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
-            catch (Exception )
+            catch (Exception e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
 
         }
-        private async Task OnDarkModeClicked()
+        private void OnDarkModeClicked()
         {
             //implm
         }
@@ -159,29 +116,61 @@ namespace Luqmit3ish.ViewModels
                     bool result = await _userServices.DeleteAccount(id); 
                     if (result)
                     {
-                        await App.Current.MainPage.DisplayAlert("Success", "The Account have been deleted successfully", "ok");
                         Preferences.Clear();
                         Application.Current.MainPage = new LoginPage();
-                     
+                        await PopupNavigation.Instance.PushAsync(new PopUp("The Account have been deleted successfully."));
+                        Thread.Sleep(3000);
+                        await PopupNavigation.Instance.PopAsync();
+
                     }
                     else
                     {
-                        await App.Current.MainPage.DisplayAlert("Faild", "The Account has not been deleted , please try again", "ok");
+                        await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                        Thread.Sleep(3000);
+                        await PopupNavigation.Instance.PopAsync();
                     }
+                }
+                catch (ConnectionException e)
+                {
+                    Debug.WriteLine(e.Message);
+                    await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
+                }
+                catch (HttpRequestException e)
+                {
+                    Debug.WriteLine(e.Message);
+                    await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
                 }
                 catch (Exception e)
                 {
-                    await App.Current.MainPage.DisplayAlert("Error", "An error occur, please try again", "ok");
-
+                    Debug.WriteLine(e.Message);
+                    await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
                 }
             }
         }
 
         private async Task OnLogOutClicked()
         {
-            Preferences.Clear();
-            Application.Current.MainPage = new NavigationPage(new LoginPage());
-            await _navigation.PopToRootAsync();
+            try
+            {
+                Preferences.Clear();
+                Application.Current.MainPage = new NavigationPage(new LoginPage());
+                await _navigation.PopToRootAsync();
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+
         }
 
 
@@ -190,9 +179,20 @@ namespace Luqmit3ish.ViewModels
             //await _navigation.PushModalAsync(new ResetPassSettingsPage());
 
         }
-        private async Task OnProfileClicked()
+        private async Task OnProfileClicked(User UserInfo)
         {
-            await _navigation.PushModalAsync(new ProfilePage());   
+            try
+            {
+                await _navigation.PushModalAsync(new ProfilePage(UserInfo));
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
     }
 }
