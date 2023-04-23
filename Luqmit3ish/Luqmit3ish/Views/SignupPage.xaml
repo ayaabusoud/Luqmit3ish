@@ -8,22 +8,23 @@
         <StackLayout Margin="0">
             <Frame HorizontalOptions="Fill" VerticalOptions="EndAndExpand" 
                    Margin="0,0,0,-30" HeightRequest="550"
-                   CornerRadius="30" HasShadow="True">
+                   CornerRadius="30" HasShadow="True"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
                 <ScrollView HeightRequest="500">
                     <StackLayout Margin="10" HorizontalOptions="Fill"
                                  Padding="20" >
                         <Label VerticalOptions="Start" Text="Sign Up!" 
                                HorizontalOptions="Center" FontSize="30" 
-                               FontAttributes="Bold" TextColor="Black"
+                               FontAttributes="Bold" Style="{StaticResource LabelColor}"
                                Margin="-20"/>
 
-                        <Label Text="Name" TextColor="Black" 
+                        <Label Text="Name" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
                         <Frame Style="{StaticResource textFeildFrame}" BorderColor="{Binding NameFrameColor}" >
                             <StackLayout Orientation="Horizontal
                                          " Margin="10,0" Padding="0">
                                 <Label Text="&#xf007;" FontFamily="FontAwesomeIcons"
-                                       FontSize="20" TextColor="Black" />
+                                       FontSize="20" Style="{StaticResource LabelColor}" />
                                 <Entry Placeholder="Enter your name" Keyboard="Text" 
                                        Style="{StaticResource textFeild}" Text="{Binding Name}"
                                        ClearButtonVisibility="WhileEditing">
@@ -40,17 +41,17 @@
                                        IsVisible="{Binding NameInvalid}" />
                             </StackLayout>
                         </Frame>
-                        <Label Text="{Binding NameErrorMessage}" TextColor="Red"
+                        <Label Text="{Binding NameErrorMessage}" TextColor="DarkRed"
                                FontSize="Small" Margin="15,0" IsVisible="{Binding NameErrorVisible}"/>    
 
-                        <Label Text="Email" TextColor="Black" 
+                        <Label Text="Email" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
                         <Frame Style="{StaticResource textFeildFrame}"
                                BorderColor="{Binding EmailFrameColor}">
                             <StackLayout Orientation="Horizontal" 
                                          Margin="10,0" Padding="0">
                                 <Label Text="&#xf0e0;" FontFamily="FontAwesomeIcons" 
-                                       FontSize="20" TextColor="Black"/>
+                                       FontSize="20" Style="{StaticResource LabelColor}"/>
                                 <Entry Placeholder="Enter your email" 
                                        Keyboard="Email" Style="{StaticResource textFeild}" 
                                        Text="{Binding Email}"
@@ -61,17 +62,17 @@
                                        IsVisible="{Binding EmailInValid}" />
                             </StackLayout>
                         </Frame>
-                        <Label Text="{Binding EmailErrorMessage}" TextColor="Red
+                        <Label Text="{Binding EmailErrorMessage}" TextColor="DarkRed
                                " FontSize="Small" Margin="15,0"
                                IsVisible="{Binding EmailErrorVisible}"/>
-                        <Label Text="Password" TextColor="Black" 
+                        <Label Text="Password" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
                         <Frame Style="{StaticResource textFeildFrame}"
                                BorderColor="{Binding PasswordFrameColor}">
                             <StackLayout Orientation="Horizontal"
                                          Margin="10,0" Padding="0">
                                 <Label Text="&#xf023;" FontFamily="FontAwesomeIcons" 
-                                       FontSize="20" TextColor="Black" />
+                                       FontSize="20" Style="{StaticResource LabelColor}" />
                                 <Entry Placeholder="Enter your password"
                                        IsPassword="True" Style="{StaticResource textFeild}"
                                        Text="{Binding Password}"
@@ -83,17 +84,17 @@
                             </StackLayout>
                         </Frame>
                         <Label Text="{Binding PasswordErrorMessage}"
-                               TextColor="Red" FontSize="Small"
+                               TextColor="DarkRed" FontSize="Small"
                                Margin="15,0" 
                                IsVisible="{Binding PasswordErrorVisible}"/>
-                        <Label Text="Confirm Password" TextColor="Black" 
+                        <Label Text="Confirm Password" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
                             <Frame Style="{StaticResource textFeildFrame}" 
                                    BorderColor="{Binding ConfirmFrameColor}">
                                 <StackLayout Orientation="Horizontal" 
                                              Margin="10,0" Padding="0">
                                     <Label Text="&#xf023;" FontFamily="FontAwesomeIcons"
-                                           FontSize="20" TextColor="Black"/>
+                                           FontSize="20" Style="{StaticResource LabelColor}"/>
                                     <Entry Placeholder="Enter Confirm password"
                                            IsPassword="True" Style="{StaticResource textFeild}"
                                            Text="{Binding Confirm}" 
@@ -105,11 +106,11 @@
                                 </StackLayout>
                             </Frame>
                         <Label Text="{Binding ConfirmErrorMessage}" 
-                               TextColor="Red" FontSize="Small" 
+                               TextColor="DarkRed" FontSize="Small" 
                                Margin="15,0" 
                                IsVisible="{Binding ConfirmErrorVisible}"/>
 
-                        <Label Text="Phone Number" TextColor="Black"
+                        <Label Text="Phone Number" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
 
                         <Frame Style="{StaticResource textFeildFrame}"
@@ -117,7 +118,7 @@
                             <StackLayout Orientation="Horizontal" 
                                          Margin="10,0" Padding="0">
                                 <Label Text="&#xf095;" FontFamily="FontAwesomeIcons"
-                                       FontSize="20" TextColor="Black"/>
+                                       FontSize="20" Style="{StaticResource LabelColor}"/>
                                 <Entry Placeholder="Phone Number" Keyboard="Telephone" 
                                        MaxLength="13" Style="{StaticResource textFeild}"
                                        Text="{Binding Phone}" ClearButtonVisibility="WhileEditing"/>
@@ -127,21 +128,23 @@
                                        IsVisible="{Binding PhoneInvalid}" />
                             </StackLayout>
                         </Frame>
-                        <Label Text="{Binding PhoneErrorMessage}" TextColor="Red"
+                        <Label Text="{Binding PhoneErrorMessage}" TextColor="DarkRed"
                                FontSize="Small" Margin="15,0" IsVisible="{Binding PhoneErrorVisible}"/>
 
-                        <Label Text="Location" TextColor="Black"
+                        <Label Text="Location" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
                         <Frame Style="{StaticResource textFeildFrame}" 
                                BorderColor="{Binding LocationFrameColor}">
                             <StackLayout Orientation="Horizontal" 
                                          Margin="10,0" Padding="0">
                                 <Label Text="&#xf3c5;" FontFamily="FontAwesomeIcons"
-                                       FontSize="20" TextColor="Black"/>
+                                       FontSize="20" Style="{StaticResource LabelColor}"/>
                                 <Picker Title="Select your location" FontSize="Medium"
                                         HorizontalOptions="FillAndExpand" 
                                         Margin="0,-30,0,-30" SelectedIndex="{Binding Location}"
-                                        SelectedItem="{Binding SelectedLocation}" >
+                                        SelectedItem="{Binding SelectedLocation}"
+                                        TitleColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}">
                                     <Picker.Items>
                                         <x:String>Nablus</x:String>
                                         <x:String>Ramallah</x:String>
@@ -157,22 +160,24 @@
                                        IsVisible="{Binding LocationInvalid}" />
                             </StackLayout>
                         </Frame>
-                        <Label Text="{Binding LocationErrorMessage}" TextColor="Red" 
+                        <Label Text="{Binding LocationErrorMessage}" TextColor="DarkRed" 
                                FontSize="Small" Margin="15,0" IsVisible="{Binding LocationErrorVisible}" />
    
             
-                        <Label Text="Type" TextColor="Black"
+                        <Label Text="Type" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
                         <Frame Style="{StaticResource textFeildFrame}" 
                                BorderColor="{Binding TtypeFrameColor}" >
                             <StackLayout Orientation="Horizontal" 
                                          Margin="10,0" Padding="0">
                                 <Label Text="&#xf4be;" FontFamily="FontAwesomeIcons"
-                                       FontSize="20" TextColor="Black"/>
+                                       FontSize="20" Style="{StaticResource LabelColor}"/>
                                 <Picker Title="Select type" FontSize="Medium" 
                                         HorizontalOptions="FillAndExpand" Margin="0,-30,0,-30"
                                         SelectedIndex= "{Binding Ttype}" 
-                                        SelectedItem="{Binding SelectedType}" >
+                                        SelectedItem="{Binding SelectedType}"
+                                        TitleColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"
+                                        TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}">
                                     <Picker.Items>
                                         <x:String>Restaurant</x:String>
                                         <x:String>Charity</x:String>
@@ -184,7 +189,7 @@
                                        IsVisible="{Binding TtypeInvalid}" />
                             </StackLayout>
                         </Frame>
-                        <Label Text="" TextColor="Red" FontSize="Small" 
+                        <Label Text="" TextColor="DarkRed" FontSize="Small" 
                                Margin="15,0" IsVisible="False" x:Name="typeErrorMessage"/>
 
                         <Button Margin="0,30,0,0" Text="Signup"
@@ -195,7 +200,7 @@
                             <Label VerticalOptions="Start" HorizontalOptions="Center" Margin="0">
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="Already have an account?" TextColor="Black"
+                                        <Span Text="Already have an account?" Style="{StaticResource LabelColor}"
                                               FontSize="16"/>
                                         <Span Text="  Log in" TextColor="{StaticResource PrimaryLight}" 
                                               TextDecorations="Underline" FontAttributes="Bold" 
