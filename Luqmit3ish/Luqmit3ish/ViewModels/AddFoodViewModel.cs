@@ -54,106 +54,25 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                bool userSelect = await App.Current.MainPage.DisplayAlert("Upload Image", "", "Take photo", "select from Gallary");
-
-                if (userSelect)
+                await PopupNavigation.Instance.PushAsync(new UploadImagePopUp());
+                MessagingCenter.Subscribe<UploadImagePopUpViewModel, string>(this, "PhotoPath", (sender, photoPath) =>
                 {
-                    TakePhoto();
-                }
-                else
-                {
-                    SelectFromGallary();
-                }
-            }
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-        }
-
-        private async void TakePhoto()
-        {
-            try
-            {
-                var result = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
-                {
-                    Title = "Take Photo"
+                    _photoPath = photoPath;
                 });
-
-                if (result != null)
-                {
-                    _photoPath = result.FullPath;
-                }
-                else
-                {
-                    _photoPath = string.Empty;
-                }
-            }
-            catch (ConnectionException)
-            {
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (HttpRequestException)
-            {
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (Exception e)
-            {
-
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-        }
-
-        private async void SelectFromGallary()
-        {
-            try
-            {
-                await Permissions.RequestAsync<Permissions.Photos>();
-
-                var result = await MediaPicker.PickPhotoAsync();
-
-                if (result != null)
-                {
-                    _photoPath = result.FullPath;
-                }
-                else
-                {
-                    Console.WriteLine("User cancelled photo picker.");
-                }
             }
             catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
-                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
             catch (HttpRequestException e)
             {
                 Debug.WriteLine(e.Message);
-                await Application.Current.MainPage.DisplayAlert("Error", "Something went bad on this reservation, you can try again", "Ok");
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
             catch (Exception e)
             {
@@ -241,7 +160,7 @@ namespace Luqmit3ish.ViewModels
             if (response)
             {
                 await _navigation.PopAsync();
-                await PopupNavigation.Instance.PushAsync(new PopUp("The dish added successfully."));
+                await PopupNavigation.Instance.PushAsync(new PopUp("The dish has been added successfully"));
                 Thread.Sleep(3000);
                 await PopupNavigation.Instance.PopAsync();
             }
@@ -331,7 +250,7 @@ namespace Luqmit3ish.ViewModels
         private TypeField _selectedType;
         public TypeField SelectedType
         {
-            get => _selectedType; 
+            get => _selectedType;
             set
             {
                 SetProperty(ref _selectedType, value);
@@ -347,7 +266,7 @@ namespace Luqmit3ish.ViewModels
 
         public string SelectedTypeName
         {
-            get => SelectedType?.Name; 
+            get => SelectedType?.Name;
         }
 
         private void OnKeepValidPlusClicked()

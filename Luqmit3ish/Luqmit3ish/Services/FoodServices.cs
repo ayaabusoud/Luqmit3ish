@@ -95,7 +95,6 @@ namespace Luqmit3ish.Services
             {
                 throw new Exception(e.Message);
             }
-
         }
 
         public async Task<Dish> GetFoodById(int food_id)
@@ -226,21 +225,18 @@ namespace Luqmit3ish.Services
             {
                 throw new Exception(e.Message);
             }
-
         }
 
         public async Task DeleteFood(int food_id)
         {
             try
             {
+                var response = await _httpClient.DeleteAsync($"{_apiUrl}/{food_id}");
 
-            
-            var response = await _httpClient.DeleteAsync($"{_apiUrl}/{food_id}");
-
-            if (!response.IsSuccessStatusCode)
-            {
-                Debug.WriteLine("failed to delete item");
-            }
+                if (!response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("failed to delete item");
+                }
             }
             catch (HttpRequestException e)
             {
@@ -260,7 +256,20 @@ namespace Luqmit3ish.Services
             }
             try
             {
-                var fileContent = new ByteArrayContent(File.ReadAllBytes(photoPath));
+                ByteArrayContent fileContent;
+                if (Uri.TryCreate(photoPath, UriKind.Absolute, out Uri uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+                {
+                    using (var client = new HttpClient())
+                    {
+                        var bytes = await client.GetByteArrayAsync(uri);
+                        fileContent = new ByteArrayContent(bytes);
+                    }
+                }
+                else
+                {
+                    fileContent = new ByteArrayContent(File.ReadAllBytes(photoPath));
+                }
+
                 fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/jpeg");
                 using (var formData = new MultipartFormDataContent())
                 {
