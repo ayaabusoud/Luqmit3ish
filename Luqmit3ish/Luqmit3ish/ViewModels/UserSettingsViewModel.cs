@@ -65,6 +65,23 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _userInfo, value);
         }
 
+        public bool DarkTheme
+        {
+            get => Preferences.Get("DarkTheme", false);
+            set
+            {
+                if (value)
+                {
+                    App.Current.UserAppTheme = OSAppTheme.Dark;
+                }
+                else
+                {
+                    App.Current.UserAppTheme = OSAppTheme.Light;
+                }
+                Preferences.Set("DarkTheme", value);
+                OnPropertyChanged(nameof(DarkTheme));
+            }
+        }
 
         private async void OnInit()
         {

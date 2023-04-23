@@ -4,7 +4,8 @@
              x:Class="Luqmit3ish.Views.FoodDetailPage"
              x:Name='FoodDetails'
              Title="Food Detail"
-             Shell.TabBarIsVisible="False">
+             Shell.TabBarIsVisible="False"
+             Style="{StaticResource ContentPageColor}">
     <ContentPage.Content>
         <Grid RowDefinitions="0.4*,0.6*" Margin="0">
             <Image Grid.Row="0" Source="{Binding DishInfo.Photo}"  Aspect="AspectFill"/>
