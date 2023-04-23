@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Luqmit3ish.Connection;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
+using Luqmit3ish.Utilities;
 using Luqmit3ish.ViewModels;
 using Newtonsoft.Json;
 
@@ -17,11 +18,11 @@ namespace Luqmit3ish.Services
     class OrderService
     {
         private readonly HttpClient _httpClient;
-        private  readonly string _apiUrl = App.BaseUrl + "api/Orders";
-        private  readonly string _orderApiUrl = App.BaseUrl + "api/CharityOrders";
-        private  readonly string _restaurantApiUrl = App.BaseUrl + "api/RestaurantOrders";
-        private readonly string _receive = App.BaseUrl + "api/";
-        private readonly string _bestRestaurantUrl = App.BaseUrl + "BestRestaurant";
+        private  readonly string _apiUrl = Constants.BaseUrl + "api/Orders";
+        private  readonly string _orderApiUrl = Constants.BaseUrl + "api/CharityOrders";
+        private  readonly string _restaurantApiUrl = Constants.BaseUrl + "api/RestaurantOrders";
+        private readonly string _receive = Constants.BaseUrl + "api/";
+        private readonly string _bestRestaurantUrl = Constants.BaseUrl + "BestRestaurant";
 
         private IConnection _connection;
 
