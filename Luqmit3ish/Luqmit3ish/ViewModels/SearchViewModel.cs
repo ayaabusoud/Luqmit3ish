@@ -1,12 +1,8 @@
-﻿using Luqmit3ish.Views;
+using Luqmit3ish.Views;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Xamarin.Essentials;
 using System.Diagnostics;
 using Luqmit3ish.Services;
 using System.Collections.ObjectModel;
@@ -21,8 +17,7 @@ namespace Luqmit3ish.ViewModels
         private INavigation _navigation { get; set; }
         public FoodServices foodServices;
         public UserServices userServices;
-
-        public Command<DishCard> FoodDetailCommand { protected set; get; }
+        public ICommand FoodDetailCommand { protected set; get; }
         public ICommand BackCommand { protected set; get; }
 
         private ObservableCollection<Dish> _dishes;
@@ -60,7 +55,18 @@ namespace Luqmit3ish.ViewModels
 
         private void OnBackClicked()
         {
-            _navigation.PopAsync();
+            try
+            {
+                _navigation.PopAsync();
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         private string _searchText = string.Empty;
@@ -74,8 +80,6 @@ namespace Luqmit3ish.ViewModels
                 {
                     _searchText = value;
                     SetProperty(ref _searchText, value);
-
-                    // Perform the search
                     if (SearchCommand.CanExecute(null))
                     {
                         SearchCommand.Execute(null);
@@ -106,48 +110,52 @@ namespace Luqmit3ish.ViewModels
         #endregion
 
 
-        private async Task OnInit()
+        private void OnInit()
         {
+            Task.Run(async  () => { 
             try
-            {
-                DishCard = await foodServices.GetSearchCards(_searchText, "All");
-                Debug.WriteLine(DishCard.Count);          
-            }
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            catch (HttpRequestException e)
-            {
-                throw new HttpRequestException(e.Message);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            if (DishCard.Count > 0)
-            {
-                EmptyResult = false;
-                foreach (DishCard dish in DishCard)
                 {
-                    if (dish.Quantity == 0)
+                    DishCard = await foodServices.GetSearchCards(_searchText, "All");
+                    Debug.WriteLine(DishCard.Count);
+                }
+                catch (ConnectionException e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
+                catch (HttpRequestException e)
+                {
+                    throw new HttpRequestException(e.Message);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
+                if (DishCard.Count > 0)
+                {
+                    EmptyResult = false;
+                    foreach (DishCard dish in DishCard)
                     {
-                        DishCard.Remove(dish);
+                        if (dish.Quantity == 0)
+                        {
+                            DishCard.Remove(dish);
+                        }
                     }
                 }
-            }
-            else
-            {
-                EmptyResult = true;
-          
-            }
+                else
+                {
+                    EmptyResult = true;
+
+                }
+
+            }).Wait();
+           
 
         }
         private async Task OnFrameClicked(DishCard dish)
         {
             try
             {
-                await _navigation.PushAsync(new FoodDetailPage(dish.Id));
+                await _navigation.PushAsync(new FoodDetailPage(dish));
             }
             catch (ArgumentException e)
             {
