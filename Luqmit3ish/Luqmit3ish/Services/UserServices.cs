@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Luqmit3ish.Connection;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
+using Luqmit3ish.Utilities;
 using Luqmit3ish.ViewModels;
 using Newtonsoft.Json;
 
@@ -17,7 +18,7 @@ namespace Luqmit3ish.Services
     public class UserServices
     {
         private readonly HttpClient _httpClient;
-        private readonly string _apiUrl = "https://luqmit3ishv2.azurewebsites.net/api/Users";
+        private readonly string _apiUrl = Constants.BaseUrl + "api/Users";
         private readonly IConnection _connection;
 
         public UserServices()
@@ -93,14 +94,14 @@ namespace Luqmit3ish.Services
             }
             catch (HttpRequestException e)
             {
+                Debug.WriteLine(e.Message);
                 return false;
             }
             catch (Exception e)
             {
+                Debug.WriteLine(e.Message);
                 return false;
             }
-
-
         }
 
         public async Task<ObservableCollection<User>> GetUsers()
@@ -186,7 +187,7 @@ namespace Luqmit3ish.Services
             try
             {
                 var content = JsonConvert.SerializeObject(user);
-                var response = await _httpClient.PutAsync($"{_apiUrl}/{user.id}", new StringContent(content, UnicodeEncoding.UTF8, "application/json"));
+                var response = await _httpClient.PutAsync($"{_apiUrl}/{user.Id}", new StringContent(content, UnicodeEncoding.UTF8, "application/json"));
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new HttpRequestException(response.StatusCode + ": failed to update data " + response.ReasonPhrase);

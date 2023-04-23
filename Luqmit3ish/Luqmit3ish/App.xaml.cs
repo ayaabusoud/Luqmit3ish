@@ -8,7 +8,6 @@ namespace Luqmit3ish
 {
     public partial class App : Application
     {
-
         public App()
         {
             InitializeComponent();

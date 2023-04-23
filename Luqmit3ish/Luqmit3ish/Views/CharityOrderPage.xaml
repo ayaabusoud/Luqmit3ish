@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.CharityOrderPage"
@@ -36,13 +36,18 @@
                             <StackLayout>
                                <Frame BorderColor="LightGray" CornerRadius="10" HeightRequest="80" HasShadow="True"  >
                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer CommandParameter="{Binding .}" Command="{Binding BindingContext.OrderCommand , Source={x:Reference CharityOrder}}"/>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}"
+                                                              Command="{Binding BindingContext.OrderCommand , Source={x:Reference CharityOrder}}"/>
                                     </Frame.GestureRecognizers>
-                                    <StackLayout Orientation="Horizontal" Padding="0" Margin="0" HorizontalOptions="Start">
-                                    <Image HeightRequest="60" WidthRequest="60" VerticalOptions="Center" HorizontalOptions="Center" Source="{Binding image}" />
+                                    <StackLayout Orientation="Horizontal" Padding="0"
+                                                 Margin="0" HorizontalOptions="Start">
+                                    <Image HeightRequest="60" WidthRequest="60" VerticalOptions="Center" 
+                                           HorizontalOptions="Center" Source="{Binding Owner.Photo}" />
                                         <StackLayout Margin="20,0,0,0">
-                                            <Label MaxLines="1" HorizontalTextAlignment="Start" Text="{Binding name}" TextColor="Black" FontSize="Medium" FontAttributes="Bold"/>
-                                            <CollectionView  HorizontalOptions="Start" ItemsSource="{Binding data}">
+                                            <Label MaxLines="1" HorizontalTextAlignment="Start"
+                                                   Text="{Binding Owner.Name}" TextColor="Black" 
+                                                   FontSize="Medium" FontAttributes="Bold"/>
+                                            <CollectionView  HorizontalOptions="Start" ItemsSource="{Binding Orders}">
                                             <CollectionView.ItemsLayout>
                                                 <LinearItemsLayout Orientation="Vertical" 
                                                ItemSpacing="5"/>
@@ -50,13 +55,14 @@
                                             <CollectionView.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackLayout>
-                                                        <Label MaxLines="1" HorizontalTextAlignment="Start" TextColor="#2F3246" FontSize="Small">
+                                                        <Label MaxLines="1" HorizontalTextAlignment="Start" 
+                                                               TextColor="#2F3246" FontSize="Small">
                                                             <Label.FormattedText>
                                                                 <FormattedString>
                                                                     <FormattedString.Spans>
-                                                                        <Span Text="{Binding dishName}"/>
+                                                                        <Span Text="{Binding DishName}"/>
                                                                         <Span Text=": "/>
-                                                                        <Span Text="{Binding number_of_dish}"  />
+                                                                        <Span Text="{Binding Quantity}"  />
                                                                     </FormattedString.Spans>
                                                                 </FormattedString>
                                                             </Label.FormattedText>
@@ -66,10 +72,12 @@
                                             </CollectionView.ItemTemplate>
                                         </CollectionView>
                                         </StackLayout>
-                                        <Label WidthRequest="30"  HorizontalOptions="Start" VerticalOptions="End" TextColor="{StaticResource SecondaryLight}" Text="&#xf2ed;" FontFamily="FontAwesomeIcons"  FontSize="20" >
+                                        <Label WidthRequest="30"  HorizontalOptions="Start" 
+                                               VerticalOptions="End" TextColor="{StaticResource SecondaryLight}"
+                                               Text="&#xf2ed;" FontFamily="FontAwesomeIcons"  FontSize="20" >
                                             <Label.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}"
-                                                                                  CommandParameter="{Binding id}"/>
+                                                                                  CommandParameter="{Binding Id}"/>
                                             </Label.GestureRecognizers>
                                         </Label>
                                     </StackLayout>

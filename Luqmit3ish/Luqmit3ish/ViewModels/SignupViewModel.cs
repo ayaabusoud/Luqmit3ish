@@ -2,21 +2,18 @@ using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Xml.Linq;
-using Xamarin.Essentials;
 using Xamarin.Forms;
-using static Xamarin.Essentials.Permissions;
 using System.Diagnostics;
 using Luqmit3ish.Exceptions;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
+using Rg.Plugins.Popup.Services;
+using System.Threading;
+using static Xamarin.Essentials.Permissions;
+using Xamarin.Essentials;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -52,34 +49,53 @@ namespace Luqmit3ish.ViewModels
                         Location = _selectedLocation.ToString(),
                         Type = _selectedType.ToString()
                     };
-                     Application.Current.MainPage = new VerificationPage(signUpRequest);
+                    Application.Current.MainPage = new VerificationPage(signUpRequest);
                 }
                 else
                 {
-                    await App.Current.MainPage.DisplayAlert("Error", "Please fill in all the required fields correctly.", "OK");
+                    await PopupNavigation.Instance.PushAsync(new PopUp("Please fill in all the required fields correctly."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
                 }
             }
             catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
-                await App.Current.MainPage.DisplayAlert("Error", "There was a problem with your internet connection.", "OK");
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
             catch (HttpRequestException e)
             {
                 Debug.WriteLine(e.Message);
-                await App.Current.MainPage.DisplayAlert("Error", "Unable to connect to the server. Please check your internet connection and try again.", "OK");
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                await App.Current.MainPage.DisplayAlert("Error", "An unexpected error has occurred. Please try again later.", "OK");
-
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
         }
 
         private async Task OnLoginClicked()
         {
-            await _navigation.PushModalAsync(new LoginPage());
+            try
+            {
+                await _navigation.PushModalAsync(new LoginPage());
+
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         #region NameField
@@ -137,7 +153,8 @@ namespace Luqmit3ish.ViewModels
         private bool isValidName(string name)
         {
             string namePattern = @"^[a-zA-Z0-9_-]{4,16}$";
-            if (string.IsNullOrEmpty(name)) {
+            if (string.IsNullOrEmpty(name))
+            {
                 return false;
             }
 
@@ -147,7 +164,6 @@ namespace Luqmit3ish.ViewModels
             }
             return false;
         }
-
         private Color _nameFrameColor;
         public Color NameFrameColor
         {
@@ -254,7 +270,7 @@ namespace Luqmit3ish.ViewModels
 
                 if (isValidPassword(_password))
                 {
-                   
+
                     _passwordErrorVisible = false;
                     _passwordValid = true;
                     _passwordInvalid = false;
@@ -272,7 +288,6 @@ namespace Luqmit3ish.ViewModels
                 OnPropertyChanged(nameof(PasswordInvalid));
                 OnPropertyChanged(nameof(PasswordFrameColor));
                 OnPropertyChanged(nameof(PasswordErrorMessage));
-
             }
         }
 
@@ -351,7 +366,6 @@ namespace Luqmit3ish.ViewModels
                 OnPropertyChanged(nameof(ConfirmInvalid));
                 OnPropertyChanged(nameof(ConfirmFrameColor));
                 OnPropertyChanged(nameof(ConfirmErrorMessage));
-
             }
         }
 
@@ -479,7 +493,7 @@ namespace Luqmit3ish.ViewModels
         #endregion
 
         #region LocationField
-        private int _location = -1; 
+        private int _location = -1;
         public int Location
         {
             get => _location;
@@ -546,7 +560,8 @@ namespace Luqmit3ish.ViewModels
         }
 
         private string _selectedLocation;
-        public string SelectedLocation {
+        public string SelectedLocation
+        {
             get => _selectedLocation;
             set => SetProperty(ref _selectedLocation, value);
         }
@@ -640,9 +655,32 @@ namespace Luqmit3ish.ViewModels
 
         private async void OnInit()
         {
-            Users = await userServices.GetUsers();
+            try
+            {
+                Users = await userServices.GetUsers();
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
         }
-
 
         public ICommand LoginClicked
         {

@@ -2,9 +2,11 @@ using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -25,13 +27,13 @@ namespace Luqmit3ish.ViewModels
         public LoginViewModel(INavigation navigation)
         {
             _navigation = navigation;
-            ForgotPassCommand = new Command(() => OnForgotPassClicked());
+            ForgotPassCommand = new Command(OnForgotPassClicked);
             SignupCommand = new Command(() => OnSignupClicked());
             LoginCommand = new Command(() => OnLoginClicked());
             _userServices = new UserServices();
         }
 
-        private async void OnForgotPassClicked()
+        private void OnForgotPassClicked()
         {
             try
             {
@@ -82,10 +84,11 @@ namespace Luqmit3ish.ViewModels
                     User user = await _userServices.GetUserByEmail(Email);
 
                     Preferences.Set("userEmail", Email);
-                    Preferences.Set("userId", user.id.ToString());
+                    Preferences.Set("userId", user.Id.ToString());
                     if (user.Type.Equals("Restaurant"))
                     {
                         Application.Current.MainPage = new AppShellRestaurant();
+                        
                     }
                     else
                     {
@@ -93,28 +96,41 @@ namespace Luqmit3ish.ViewModels
                     }
                     return true;
                 }
-
-                await Application.Current.MainPage.DisplayAlert("Invalid input", "You have entered an invalid username or password", "Ok");
+                await PopupNavigation.Instance.PushAsync(new PopUp("You have entered an invalid username or password."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
                 return false;
             }
             catch (ArgumentException e)
             {
                 Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
                 return false;
             }
-            catch (HttpRequestException)
+            catch (ConnectionException e)
             {
-                await Application.Current.MainPage.DisplayAlert("Invalid credentials", "Please check your username and password and try again", "Ok");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
                 return false;
             }
-            catch (ConnectionException)
+            catch (HttpRequestException e)
             {
-                await Application.Current.MainPage.DisplayAlert("Bad request", $"There is no internet connection, please check your connection", "Ok");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
                 return false;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
                 return false;
             }
         }

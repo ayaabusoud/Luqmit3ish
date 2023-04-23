@@ -1,47 +1,71 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Luqmit3ish.Views.LoginPage"
-             Shell.NavBarIsVisible="False" NavigationPage.HasNavigationBar="False"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False"
              BackgroundImageSource="https://i.pinimg.com/originals/2c/90/3e/2c903e31b99b8f7816a67bc480108fe1.jpg">
 
     <ContentPage.Content>
         <ScrollView HeightRequest="500">
             <StackLayout Margin="0">
                 <Image Source="icon3.png" WidthRequest="100" Margin="0,40,0,0"/>
-                <Frame HorizontalOptions="Fill" VerticalOptions="EndAndExpand"  Margin="0,0,0,-40" HeightRequest="450" CornerRadius="30" HasShadow="True">
-                    <StackLayout Margin="10" HorizontalOptions="Fill" Spacing="15" Padding="20">
-                        <Label Text="Sign In" HorizontalOptions="Center" FontSize="30" FontAttributes="Bold" TextColor="Black" Margin="-20"/>
-                        <Label Text="Email" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
+                <Frame HorizontalOptions="Fill" VerticalOptions="EndAndExpand" 
+                       Margin="0,0,0,-40" HeightRequest="450" CornerRadius="30"
+                       HasShadow="True">
+                    <StackLayout Margin="10" HorizontalOptions="Fill"
+                                 Spacing="15" Padding="20">
+                        <Label Text="Sign In" HorizontalOptions="Center"
+                               FontSize="30" FontAttributes="Bold"
+                               TextColor="Black" Margin="-20"/>
+                        <Label Text="Email" TextColor="Black"
+                               FontSize="Medium" Margin="0,0,0,5"/>
                         <Frame Style="{StaticResource textFeildFrame}">
-                            <StackLayout Orientation="Horizontal" Margin="10,0,0,0" Padding="0">
-                                <Label Text="&#xf0e0;" FontFamily="FontAwesomeIcons" FontSize="20" TextColor="Black"/>
-                                <Entry   FontSize="Medium" Placeholder="Enter your email" Keyboard="Email" Style="{StaticResource textFeild}" Text="{Binding Email}" ClearButtonVisibility="WhileEditing" />
+                            <StackLayout Orientation="Horizontal"
+                                         Margin="10,0,0,0" Padding="0">
+                                <Label Text="&#xf0e0;" FontFamily="FontAwesomeIcons"
+                                       FontSize="20" TextColor="Black"/>
+                                <Entry   FontSize="Medium" Placeholder="Enter your email"
+                                         Keyboard="Email" Style="{StaticResource textFeild}"
+                                         Text="{Binding Email}" 
+                                         ClearButtonVisibility="WhileEditing" />
                             </StackLayout>
                         </Frame>
 
                         <Label Text="Password" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
                         <Frame Style="{StaticResource textFeildFrame}" >
-                            <StackLayout Orientation="Horizontal" Margin="10,0,0,0" Padding="0">
-                                <Label Text="&#xf023;" FontFamily="FontAwesomeIcons" FontSize="20" TextColor="Black"/>
-                                <Entry FontSize="Medium" Placeholder="Enter your password" IsPassword="True" Keyboard="Text" Style="{StaticResource textFeild}" Text="{Binding Password}" ClearButtonVisibility="WhileEditing" />
+                            <StackLayout Orientation="Horizontal" 
+                                         Margin="10,0,0,0" Padding="0">
+                                <Label Text="&#xf023;" FontFamily="FontAwesomeIcons"
+                                       FontSize="20" TextColor="Black"/>
+                                <Entry FontSize="Medium" Placeholder="Enter your password" 
+                                       IsPassword="True" Keyboard="Text" 
+                                       Style="{StaticResource textFeild}"
+                                       Text="{Binding Password}" 
+                                       ClearButtonVisibility="WhileEditing" />
                             </StackLayout>
                         </Frame>
-                        <Label Text="Forgot password?" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Start" >
+                        <Label Text="Forgot password?" TextColor="Black"
+                               VerticalOptions="Center" HorizontalOptions="Start" >
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ForgotPassCommand}" />
                             </Label.GestureRecognizers>
                         </Label>
-                        <Button Margin="0,20,0,0"  Text="Sign in" Command="{Binding LoginCommand}" Style="{StaticResource LargeBorderButton}" IsEnabled="{Binding LoginButtonEnable}"/>
+                        <Button Margin="0,20,0,0"  Text="Sign in" Command="{Binding LoginCommand}" 
+                                Style="{StaticResource LargeBorderButton}" 
+                                IsEnabled="{Binding LoginButtonEnable}"/>
 
                         <Label VerticalOptions="Center" HorizontalOptions="Center" Margin="0,40,0,0">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="Don't have an account? " TextColor="Black" FontSize="16"/>
-                                    <Span Text="Sign Up" TextColor="{StaticResource PrimaryLight}" TextDecorations="Underline" FontAttributes="Bold" FontSize="16"/>
+                                    <Span Text="Don't have an account? "
+                                          TextColor="Black" FontSize="16"/>
+                                    <Span Text="Sign Up" TextColor="{StaticResource PrimaryLight}"
+                                          TextDecorations="Underline" FontAttributes="Bold"
+                                          FontSize="16"/>
                                 </FormattedString>
                             </Label.FormattedText>
                             <Label.GestureRecognizers>

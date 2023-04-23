@@ -1,9 +1,12 @@
-﻿using Luqmit3ish.Models;
+using Luqmit3ish.Exceptions;
+using Luqmit3ish.Models;
 using Luqmit3ish.Services;
+using Luqmit3ish.Views;
+using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -36,9 +39,11 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnResendClicked(string recipientName, string recipientEmail)
         {
+
             OnInit(recipientName, recipientEmail);
-            await Application.Current.MainPage.DisplayAlert("Successfully", "We have been resent the verfication code", "ok");
-            
+            await PopupNavigation.Instance.PushAsync(new PopUp("We have been resent the verfication code."));
+            Thread.Sleep(3000);
+            await PopupNavigation.Instance.PopAsync();            
         }
 
         private async Task OnContinueClicked(SignUpRequest newUser)
@@ -46,7 +51,7 @@ namespace Luqmit3ish.ViewModels
             try
             {
                 var code = int.Parse(sentCode);
-                if(code == PIN)
+                if(code == _pin)
                 {
                     bool IsInserted = await _userServices.InsertUser(newUser);
                     if (IsInserted)
@@ -71,16 +76,64 @@ namespace Luqmit3ish.ViewModels
             catch (ArgumentException e)
             {
                 Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
         }
-        private async void OnInit(string recipientName, string recipientEmail)
+        private void OnInit(string recipientName, string recipientEmail)
         {
-            
-             sentCode = await _emaiService.SendVerificationCode(recipientName, recipientEmail);
+
+            Task.Run(async () => {
+                try
+                {
+                    sentCode = await _emaiService.SendVerificationCode(recipientName, recipientEmail);
+
+                }
+                catch (ConnectionException e)
+                {
+                    Debug.WriteLine(e.Message);
+                    await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
+                }
+                catch (HttpRequestException e)
+                {
+                    Debug.WriteLine(e.Message);
+                    await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
+                }
+            }).Wait();
+           
         }
     }
 }

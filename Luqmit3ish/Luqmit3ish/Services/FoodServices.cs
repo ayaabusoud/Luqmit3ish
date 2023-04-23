@@ -1,6 +1,7 @@
 using Luqmit3ish.Connection;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
+using Luqmit3ish.Utilities;
 using Luqmit3ish.Views;
 using Newtonsoft.Json;
 using System;
@@ -19,7 +20,7 @@ namespace Luqmit3ish.Services
     class FoodServices
     {
         private readonly HttpClient _httpClient;
-        private readonly string _apiUrl = "https://luqmit3ishv2.azurewebsites.net/api/Food";
+        private readonly string _apiUrl = Constants.BaseUrl + "api/Food";
         private readonly IConnection _connection;
 
         public FoodServices()
@@ -230,11 +231,24 @@ namespace Luqmit3ish.Services
 
         public async Task DeleteFood(int food_id)
         {
+            try
+            {
+
+            
             var response = await _httpClient.DeleteAsync($"{_apiUrl}/{food_id}");
 
             if (!response.IsSuccessStatusCode)
             {
                 Debug.WriteLine("failed to delete item");
+            }
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
 

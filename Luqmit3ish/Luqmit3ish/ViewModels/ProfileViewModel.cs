@@ -2,38 +2,33 @@ using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
+using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Essentials;
 using Xamarin.Forms;
-using static System.Net.WebRequestMethods;
 
 
 namespace Luqmit3ish.ViewModels
 {
     class ProfileViewModel : ViewModelBase
     {
-        private INavigation _navigation { get; set; }
         public ICommand EditCommand { protected set; get; }
         public ICommand DoneCommand { protected set; get; }
         public ICommand CancelCommand { protected set; get; }
 
-        public const string DefultImage= "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
        
-        public ProfileViewModel(INavigation navigation)
+        public ProfileViewModel(INavigation navigation, User UserInfo)
         {
-            this._navigation = navigation;
-            EditCommand = new Command(async () => await OnEditClicked());
+            EditCommand = new Command( OnEditClicked);
             DoneCommand = new Command(async () => await OnDoneClicked());
-            CancelCommand=new Command(async () => await OnCancelClicked());
+            CancelCommand=new Command(OnCancelClicked);
             userServices = new UserServices();
+            this._userInfo = UserInfo;
             OnInit();
         }
 
@@ -202,169 +197,85 @@ namespace Luqmit3ish.ViewModels
 
      
 
-        private async void OnInit()
+        private void OnInit()
         {
-            string email;
-            Photo = DefultImage;
-
-            try
-            {
-              email = Preferences.Get("userEmail", null);
-                if (string.IsNullOrEmpty(email))
+            if (_userInfo != null)
                 {
-                    return;
-                }
-                UserInfo = await userServices.GetUserByEmail(email);
-
-                if (UserInfo != null)
-                {
-                    if (UserInfo.Photo == null)
-                    {
-                        Photo = DefultImage;
-                    }
-                    else
-                    {
-                        Photo = UserInfo.Photo;
-                    }
-                    Email = UserInfo.Email;
-                    Phone = UserInfo.Phone;
-                    Name = UserInfo.Name;
-                    Location = UserInfo.Location;
-                }
-            }
-            catch (ConnectionException )
-            {
-                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
-            }
-            catch (HttpRequestException )
-            {
-                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
-
-            }
-            catch (Exception )
-            {
-                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
-            }
-
+                    Email = _userInfo.Email;
+                    Phone = _userInfo.Phone;
+                    Name = _userInfo.Name;
+                    Location = _userInfo.Location;
+            }  
         }
+
         private async Task OnDoneClicked()
         {
-            string email;
-
-
-            try
+            User user = new User
             {
-                email = Preferences.Get("userEmail", null);
-                if (string.IsNullOrEmpty(email))
-                {
-                    return;
-                }
-                UserInfo = await userServices.GetUserByEmail(email);
-                if (UserInfo != null)
-                {
-                    if (UserInfo.Photo == null)
-                    {
-                        Photo = DefultImage;
-                    }
-                    else
-                    {
-                        Photo = UserInfo.Photo;
-                    }
+                Id = _userInfo.Id,
+                Name = Name,
+                Email = Email,
+                Location = Location,
+                Phone = Phone,
+                Photo = UserInfo.Photo,
+                Type = _userInfo.Type,
+                Password = _userInfo.Password
+            };
 
-                    User user = new User
+            if (EmailErrorVisible || PhoneErrorVisible || LocationErrorVisible || NameErrorVisible)
                     {
-                        id = UserInfo.id,
-                        Name = Name,
-                        Email = Email,
-                        Location = Location,
-                        Phone = Phone,
-                        Photo = UserInfo.Photo,
-                        Type = UserInfo.Type,
-                        Password = UserInfo.Password
-                    };
-                    if ((EmailErrorVisible || PhoneErrorVisible || LocationErrorVisible || NameErrorVisible))
-                    {
-                        await Application.Current.MainPage.DisplayAlert("Warning", "Please make sure all information is valid before saving changes.", "OK");
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please make sure all information is valid before saving changes."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
                         return;
                     }
 
-                    await userServices.EditProfile(user);
-                    EditEnable = false;
-                    ViewEnable = true;
-                }
-            }
-            catch (ConnectionException )
+            try
             {
-                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+                await userServices.EditProfile(user);
+                
             }
-            catch (HttpRequestException )
-            {
-                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
 
-            }
-            catch (Exception )
+            catch (ConnectionException e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
-        
-
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
+            EditEnable = false;
+            ViewEnable = true;
         }
             
         
-        private async Task OnCancelClicked()
+        private void OnCancelClicked()
         {
-            string email;
-            Photo = DefultImage;
 
-            try
-            {
-                email = Preferences.Get("userEmail", null);
-                if (string.IsNullOrEmpty(email))
-                {
-                    return;
-                }
-                UserInfo = await userServices.GetUserByEmail(email);
-
-
-                if (UserInfo != null)
-                {
-                    if (UserInfo.Photo == null)
-                    {
-                        Photo = DefultImage;
-                    }
-                    else
-                    {
-                        Photo = UserInfo.Photo;
-                    }
-                    Email = UserInfo.Email;
-                    Phone = UserInfo.Phone;
-                    Name = UserInfo.Name;
-                    Location = UserInfo.Location;
-                }
-                ViewEnable = true;
-                EditEnable = false;
-
-            }
-            catch (ConnectionException)
-            {
-                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
-            }
-            catch (HttpRequestException)
-            {
-                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
-
-            }
-            catch (Exception)
-            {
-                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
-            }
-
-
-
+           Email = _userInfo.Email;
+           Phone = _userInfo.Phone;
+           Name = _userInfo.Name;
+           Location = _userInfo.Location;
+                
+           ViewEnable = true;
+           EditEnable = false;
 
         }
 
-        private async Task OnEditClicked()
+        private void OnEditClicked()
         {
            EditEnable = true;
            ViewEnable = false;

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Luqmit3ish.Connection;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
+using Luqmit3ish.Utilities;
 using Luqmit3ish.ViewModels;
 using Newtonsoft.Json;
 
@@ -17,11 +18,11 @@ namespace Luqmit3ish.Services
     class OrderService
     {
         private readonly HttpClient _httpClient;
-        private  readonly string _apiUrl = "https://luqmit3ishv2.azurewebsites.net/api/Orders";
-        private  readonly string _orderApiUrl = "https://luqmit3ishv2.azurewebsites.net/api/CharityOrders";
-        private  readonly string _restaurantApiUrl = "https://luqmit3ishv2.azurewebsites.net/api/RestaurantOrders";
-        private readonly string _receive = "https://luqmit3ishv2.azurewebsites.net/api/";
-        private readonly string _bestRestaurantUrl = "https://luqmit3ishv2.azurewebsites.net/BestRestaurant";
+        private  readonly string _apiUrl = Constants.BaseUrl + "api/Orders";
+        private  readonly string _orderApiUrl = Constants.BaseUrl + "api/CharityOrders";
+        private  readonly string _restaurantApiUrl = Constants.BaseUrl + "api/RestaurantOrders";
+        private readonly string _receive = Constants.BaseUrl + "api/";
+        private readonly string _bestRestaurantUrl = Constants.BaseUrl + "BestRestaurant";
 
         private IConnection _connection;
 
@@ -198,10 +199,12 @@ namespace Luqmit3ish.Services
             }
             catch (HttpRequestException e)
             {
+                Debug.WriteLine(e.Message);
                 return false;
             }
             catch (Exception e)
             {
+                Debug.WriteLine(e.Message);
                 return false;
             }
 

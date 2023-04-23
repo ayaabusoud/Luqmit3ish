@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<popup:PopupPage
+xmlns="http://xamarin.com/schemas/2014/forms"
+xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+x:Class="Luqmit3ish.Views.PopUp">
+    <StackLayout VerticalOptions="End"  >
+        <Frame VerticalOptions="End" 
+               CornerRadius="10"  
+               Margin="20,20,20,63" 
+               Padding="10,16" 
+               HorizontalOptions="FillAndExpand">
+            <Label TextColor="Black" 
+                   HorizontalTextAlignment="Center"
+                   Text="{Binding Message}"/>
+
+        </Frame>
+    </StackLayout>
+</popup:PopupPage>

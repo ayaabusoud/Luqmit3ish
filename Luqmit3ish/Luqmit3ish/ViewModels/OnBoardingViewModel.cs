@@ -1,4 +1,4 @@
-﻿using Luqmit3ish.Views;
+using Luqmit3ish.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

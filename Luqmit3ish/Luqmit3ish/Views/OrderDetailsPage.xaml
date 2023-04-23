@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:Luqmit3ish.ViewModels" 
              x:Class="Luqmit3ish.Views.OrderDetailsPage"
@@ -9,20 +9,31 @@
     <ContentPage.Content>
         <StackLayout>
 
-            <Frame  CornerRadius="60" WidthRequest="80" HeightRequest="80" VerticalOptions="Center" HorizontalOptions="Center" Margin="0,20,0,0">
-                <Image Source="{Binding UserPhoto}" Aspect="AspectFill"/>
+            <Frame  CornerRadius="60" WidthRequest="80" HeightRequest="80"
+                    VerticalOptions="Center" HorizontalOptions="Center"
+                    Margin="0,20,0,0">
+                <Image Source="{Binding Order.Owner.Photo}" Aspect="AspectFill"/>
             </Frame>
 
-            <Label Margin="0"  Text="{Binding RestaurantName}" HorizontalOptions="Center" FontSize="Large" FontAttributes="Bold" TextColor="Black" />
+            <Label Margin="0"  Text="{Binding Order.Owner.Name}"
+                   HorizontalOptions="Center" FontSize="Large"
+                   FontAttributes="Bold" TextColor="Black" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ProfileCommand}" 
+                                          CommandParameter="{Binding Order.Owner}"  />
+                </Label.GestureRecognizers>
+            </Label>
 
-            <Frame  Margin="20,10,20,5" CornerRadius="35"  HeightRequest="350" HorizontalOptions="Center">
+            <Frame  Margin="20,10,20,5" CornerRadius="35" 
+                    HeightRequest="350" HorizontalOptions="Center">
                 <StackLayout HorizontalOptions="Center">
                     <ScrollView >
-                        <CollectionView ItemsSource="{Binding Dishes}">
+                        <CollectionView ItemsSource="{Binding Order.Orders}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <StackLayout Padding="5" HorizontalOptions="Center">
-                                        <Frame Padding="0" HorizontalOptions="FillAndExpand" HasShadow="True" CornerRadius="10">
+                                        <Frame Padding="0" HorizontalOptions="FillAndExpand"
+                                               HasShadow="True" CornerRadius="10">
                                             <Grid Padding="5" BackgroundColor="AntiqueWhite">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -32,24 +43,35 @@
                                                     <Label.FormattedText>
                                                         <FormattedString>
                                                             <FormattedString.Spans>
-                                                                <Span FontAttributes="Bold"  Text="{Binding dishName}" TextColor="Black" />
-                                                                <Span FontAttributes="Bold"  Text=" : " TextColor="Black"/>
+                                                                <Span FontAttributes="Bold"
+                                                                      Text="{Binding DishName}" 
+                                                                      TextColor="Black" />
+                                                                <Span FontAttributes="Bold"  
+                                                                      Text=" : " TextColor="Black"/>
                                                             </FormattedString.Spans>
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
-                                                <StackLayout Orientation="Horizontal" Margin="15,-5,0,0" WidthRequest="100" VerticalOptions="Center" Grid.Column="1"  >
+                                                <StackLayout Orientation="Horizontal" Margin="15,-5,0,0"
+                                                             WidthRequest="100" VerticalOptions="Center"
+                                                             Grid.Column="1"  >
 
 
-                                                    <Label Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="25" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
+                                                    <Label Text="&#xf056;" FontFamily="FontAwesomeIcons"
+                                                           FontSize="25" Margin="0,10,0,0" 
+                                                           TextColor="{StaticResource PrimaryLight}">
                                                         <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer CommandParameter="{Binding id}"  Command="{Binding BindingContext.MinusCommand , Source={x:Reference OrderDetails}}"/>
+                                                            <TapGestureRecognizer CommandParameter="{Binding Id}"
+                                                                                  Command="{Binding BindingContext.MinusCommand , Source={x:Reference OrderDetails}}"/>
                                                         </Label.GestureRecognizers>
                                                     </Label>
-                                                    <Label Text="{Binding number_of_dish}" FontAttributes="Bold" Margin="5,12,5,0"/>
-                                                    <Label  Text="&#xf055;" FontFamily="FontAwesomeIcons" FontSize="25" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
+                                                    <Label Text="{Binding Quantity}" FontAttributes="Bold"
+                                                           Margin="5,12,5,0"/>
+                                                    <Label  Text="&#xf055;" FontFamily="FontAwesomeIcons" 
+                                                            FontSize="25" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
                                                         <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer CommandParameter="{Binding id}" Command="{Binding BindingContext.PlusCommand  , Source={x:Reference OrderDetails}}"/>
+                                                            <TapGestureRecognizer CommandParameter="{Binding Id}" 
+                                                                                  Command="{Binding BindingContext.PlusCommand  , Source={x:Reference OrderDetails}}"/>
                                                         </Label.GestureRecognizers>
                                                     </Label>
                                                 </StackLayout>
