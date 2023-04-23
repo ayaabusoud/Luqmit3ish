@@ -77,7 +77,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushAsync(new FoodDetailPage(dish));
+                await _navigation.PushAsync(new FoodDetailPage(dish.Id));
             }
             catch (ArgumentException e)
             {

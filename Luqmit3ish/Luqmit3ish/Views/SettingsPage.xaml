@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:Luqmit3ish.ViewModels" x:DataType="viewmodels:UserSettingsViewModel"
              x:Class="Luqmit3ish.Views.settingsPage" 
@@ -27,7 +27,7 @@
                     <Label Margin="0,0,5,0" Text="&#xf084;" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center"/>
                             <Label Text="Reset password"  HorizontalTextAlignment="Start" FontAttributes="Bold" TextColor="Black" FontSize="15" VerticalOptions="Center" Grid.Row="2" Grid.Column="1" ></Label>
                             <Button Text="&#xf105;" Background="white"  TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="0" Grid.Column="3" Command="{Binding MyProfileCommand}" ></Button>
-                    <Button Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="3" Grid.Column="3" CommandParameter="{Binding UserInfo.id}" Command="{Binding DeleteCommand}" HorizontalOptions="End"></Button>
+                    <Button Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="3" Grid.Column="3" CommandParameter="{Binding UserInfo.Id}" Command="{Binding DeleteCommand}" HorizontalOptions="End"></Button>
                             <Button Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="2" Grid.Column="3" Command="{Binding ResetPassCommand}" HorizontalOptions="End"></Button>
                     <Button  Margin="5,0,0,20" Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="4" Grid.Column="3" Command="{Binding LogOutCommand}" HorizontalOptions="End"></Button>
                     <Label Text="&#xf559;" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center"/>

@@ -1,4 +1,5 @@
 ﻿using Luqmit3ish.ViewModels;
+using Xamarin.Forms.Xaml;
 
 namespace Luqmit3ish.Views
 {

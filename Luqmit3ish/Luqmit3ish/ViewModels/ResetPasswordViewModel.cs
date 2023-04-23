@@ -183,7 +183,7 @@ namespace Luqmit3ish.ViewModels
                 }
                
               
-                bool IsUpdatedPassword = await userServices.ResetPassword(user.id, Password);
+                bool IsUpdatedPassword = await userServices.ResetPassword(user.Id, Password);
                 if (IsUpdatedPassword)
                 {
                     await _navigation.PushModalAsync(new LoginPage());

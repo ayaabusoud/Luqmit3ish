@@ -85,22 +85,22 @@ namespace Luqmit3ish.ViewModels
                 Counter++;
             }
         }
-        private async Task OnProfileClicked(int restaurantId)
-        {
-            try
-            {
-                await _navigation.PushAsync(new OtherProfilePage(restaurantId));
+        //private async Task OnProfileClicked(int restaurantId)
+        //{
+        //    try
+        //    {
+        //        await _navigation.PushAsync(new OtherProfilePage(restaurantId));
 
-            }
-            catch (ArgumentException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }
+        //    }
+        //    catch (ArgumentException e)
+        //    {
+        //        Debug.WriteLine(e.Message);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Debug.WriteLine(e.Message);
+        //    }
+        //}
         private ObservableCollection<DishCard> _dishCard ;
 
         public ObservableCollection<DishCard> DishCard
@@ -119,12 +119,12 @@ namespace Luqmit3ish.ViewModels
                 Dish dish = await _foodServices.GetFoodById(FoodId);
 
                 Order newOrder = new Order();
-                newOrder.char_id = UserId;
-                newOrder.res_id = dish.user_id;
-                newOrder.dish_id = dish.id;
-                newOrder.date = DateTime.Now;
-                newOrder.number_of_dish = Counter;
-                newOrder.receive = false;
+                newOrder.CharId = UserId;
+                newOrder.ResId = dish.UserId;
+                newOrder.DishId = dish.Id;
+                newOrder.Date = DateTime.Now;
+                newOrder.Quantity = Counter;
+                newOrder.Receive = false;
 
                 await _orderService.ReserveOrder(newOrder);
 
@@ -159,7 +159,7 @@ namespace Luqmit3ish.ViewModels
         public FoodDetailViewModel(int id, INavigation navigation)
         {
             this._navigation = navigation;
-            ProfileCommand = new Command<int>(async (int restaurantId) => await OnProfileClicked(restaurantId));
+            //ProfileCommand = new Command<int>(async (int restaurantId) => await OnProfileClicked(restaurantId));
             PlusCommand = new Command<int>(OnPlusClicked);
             MinusCommand = new Command(OnMinusClicked);
             ReserveCommand = new Command<int>(async (int FoodId) => await OnReserveClicked(FoodId));

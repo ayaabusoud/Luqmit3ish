@@ -36,7 +36,7 @@ namespace Luqmit3ish.ViewModels
             this._navigation = navigation;
             this._order = order;
             PlusCommand = new Command<int>(OnPlusClicked);
-            MinusCommand = new Command<int>(OnMinusClicked);
+            MinusCommand = new Command(async () => await OnMinusClickedAsync());
             ProfileCommand = new Command<User>(async (User restaurant) => await OnProfileClicked(restaurant));
             _orderService = new OrderService();
             _foodService = new FoodServices();
@@ -46,7 +46,7 @@ namespace Luqmit3ish.ViewModels
 
 
      
-        private  void OnMinusClicked(int orderId)
+        private async Task OnMinusClickedAsync()
         {
             try
             {

@@ -130,7 +130,7 @@ namespace Luqmit3ish.ViewModels
                 EmptyResult = false;
                 foreach (DishCard dish in DishCard)
                 {
-                    if (dish.quantity == 0)
+                    if (dish.Quantity == 0)
                     {
                         DishCard.Remove(dish);
                     }
@@ -147,7 +147,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushAsync(new FoodDetailPage(dish.id));
+                await _navigation.PushAsync(new FoodDetailPage(dish.Id));
             }
             catch (ArgumentException e)
             {

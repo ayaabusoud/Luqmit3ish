@@ -160,7 +160,7 @@ namespace Luqmit3ish.ViewModels
                         dish.KeepValid >= filterInfo.LowerKeepValid && dish.KeepValid <= filterInfo.UpperKeepValid &&
                         dish.Quantity >= filterInfo.LowerQuantity && dish.Quantity <= filterInfo.UpperQuantity &&
                         (filterInfo.TypeValues == null || !filterInfo.TypeValues.Any() || filterInfo.TypeValues.Contains(dish.Type)) &&
-                        (!filterUsers.Any() || filterUsers.Any(user => user.id == dish.Restaurant.id))
+                        (!filterUsers.Any() || filterUsers.Any(user => user.Id == dish.Restaurant.Id))
                     )
                 );
 

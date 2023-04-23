@@ -212,7 +212,7 @@ namespace Luqmit3ish.ViewModels
         {
             User user = new User
             {
-                id = _userInfo.id,
+                Id = _userInfo.Id,
                 Name = Name,
                 Email = Email,
                 Location = Location,
