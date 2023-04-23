@@ -1,7 +1,8 @@
-﻿using Luqmit3ish.Exceptions;
+using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,6 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -19,22 +21,14 @@ namespace Luqmit3ish.ViewModels
     class FoodDetailViewModel : ViewModelBase
     {
         private INavigation _navigation { get; set; }
-        public Command<int> PlusCommand { protected set; get; }
+        public ICommand PlusCommand { protected set; get; }
         public ICommand MinusCommand { protected set; get; }
-        public Command<int> ReserveCommand { protected set; get; }
-        public Command<int> ProfileCommand { protected set; get; }
-        private FoodServices _foodServices;
+        public ICommand ReserveCommand { protected set; get; }
+        public ICommand ProfileCommand { protected set; get; }
         private OrderService _orderService;
 
-        private bool _isEnabled = false;
 
-        public bool IsEnabled
-        {
-            get => _isEnabled;
-            set => SetProperty(ref _isEnabled, value);
-        }
-
-        private int _counter = 0;
+        private int _counter = 1;
 
         public int Counter
         {
@@ -42,38 +36,44 @@ namespace Luqmit3ish.ViewModels
             set
             {
                 SetProperty(ref _counter, value);
-                if (_counter > 0)
-                {
-                    IsEnabled = true;
-                }
-                if (_counter == 0)
-                {
-                    IsEnabled = false;
-                }
             }
         }
-        private ObservableCollection<DishCard> _dish;
-        public ObservableCollection<DishCard> Dish
+
+        private DishCard _dishInfo;
+
+        public DishCard DishInfo
         {
-            get => _dish;
-            set => SetProperty(ref _dish, value);
+            get => _dishInfo;
+            set => SetProperty(ref _dishInfo, value);
         }
 
         private void OnMinusClicked()
         {
-            if (Counter == 0)
+            if (Counter == 1)
             {
                 return;
             }
-            if (Counter < 0)
+            if (Counter < 1)
             {
-                Counter = 0;
+                Counter = 1;
                 return;
             }
 
             Counter--;
         }
 
+        public FoodDetailViewModel(DishCard dish, INavigation navigation)
+        {
+            this._navigation = navigation;
+            ProfileCommand = new Command<User>(async (User restaurant) => await OnProfileClicked(restaurant));
+            PlusCommand = new Command<int>(OnPlusClicked);
+            MinusCommand = new Command(OnMinusClicked);
+            ReserveCommand = new Command<int>(async (int FoodId) => await OnReserveClicked(FoodId));
+            _orderService = new OrderService();
+            this._dishInfo = dish;
+        }
+
+       
         private void OnPlusClicked(int quantity)
         {
             if (Counter == quantity)
@@ -85,108 +85,74 @@ namespace Luqmit3ish.ViewModels
                 Counter++;
             }
         }
-        //private async Task OnProfileClicked(int restaurantId)
-        //{
-        //    try
-        //    {
-        //        await _navigation.PushAsync(new OtherProfilePage(restaurantId));
-
-        //    }
-        //    catch (ArgumentException e)
-        //    {
-        //        Debug.WriteLine(e.Message);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Debug.WriteLine(e.Message);
-        //    }
-        //}
-        private ObservableCollection<DishCard> _dishCard ;
-
-        public ObservableCollection<DishCard> DishCard
+        private async Task OnProfileClicked(User restaurant)
         {
-            get => _dishCard;
-            set => SetProperty(ref _dishCard, value);
-        }
-      
+            try
+            {
+                await _navigation.PushAsync(new OtherProfilePage(restaurant));
 
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+    
         private async Task OnReserveClicked(int FoodId)
         {
             try
             {
                 var id = Preferences.Get("userId", "null");
                 int UserId = int.Parse(id);
-                Dish dish = await _foodServices.GetFoodById(FoodId);
 
                 Order newOrder = new Order();
                 newOrder.CharId = UserId;
-                newOrder.ResId = dish.UserId;
-                newOrder.DishId = dish.Id;
+                newOrder.ResId = _dishInfo.Restaurant.id;
+                newOrder.DishId = _dishInfo.Id;
                 newOrder.Date = DateTime.Now;
                 newOrder.Quantity = Counter;
                 newOrder.Receive = false;
 
                 await _orderService.ReserveOrder(newOrder);
 
-                //DishCard quantityDish = _dishCard.FirstOrDefault(d => d.id == dish.id);
-                //if (quantityDish != null)
-                //{
-                //    quantityDish.quantity -= Counter;
-                //}
+                await _navigation.PopAsync();
+                await PopupNavigation.Instance.PushAsync(new PopUp("Your order has been successfully booked"));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
 
-                //if (Counter > 0) Counter = 0;
-
-                //DishCard = await _foodServices.GetDishCards();
-
-                //foreach (DishCard item in DishCard)
-                //{
-                //    if (item.quantity == 0)
-                //    {
-                //        DishCard.Remove(item);
-                //    }
-                //}
-                await OnInit(FoodId);
-                await App.Current.MainPage.DisplayAlert("successfuly", "Your order has been successfully booked", "ok");
-
-            }
-            catch (Exception e)
-            {
-                await App.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
-            }
-
-        }
-
-        public FoodDetailViewModel(int id, INavigation navigation)
-        {
-            this._navigation = navigation;
-            //ProfileCommand = new Command<int>(async (int restaurantId) => await OnProfileClicked(restaurantId));
-            PlusCommand = new Command<int>(OnPlusClicked);
-            MinusCommand = new Command(OnMinusClicked);
-            ReserveCommand = new Command<int>(async (int FoodId) => await OnReserveClicked(FoodId));
-            _foodServices = new FoodServices();
-            _orderService = new OrderService();
-            OnInit(id);
-        }
-
-
-        private async Task OnInit(int id)
-        {
-            try
-            {
-                Dish = await _foodServices.GetDishCardById(id);
             }
             catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
             catch (HttpRequestException e)
             {
                 Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
+
         }
+
+
+
+
+       
     }
 }
