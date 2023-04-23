@@ -3,36 +3,39 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.RestaurantOrderPage"
              Title="Order"
-             x:Name="RestaurantOrder">
+             x:Name="RestaurantOrder"
+             Style="{StaticResource ContentPageColor}">
     <ContentPage.Content>
         <Grid Margin="20,35,20,20" HorizontalOptions="Fill" VerticalOptions="Fill">
             <StackLayout IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
                 <Image Source="https://luqmit3ish5.blob.core.windows.net/photos/1_EmptyCart.png"
-                           HeightRequest="200" 
-                           WidthRequest="200"
-                           VerticalOptions="Center"/>
+                       HeightRequest="200" 
+                       WidthRequest="200"
+                       VerticalOptions="Center"/>
                 <Label Text="There is no orders yet"
-                           FontSize="Medium"
-                           TextColor="DimGray"
-                           HorizontalOptions="Fill" 
-                           HorizontalTextAlignment="Center"
-                           FontAttributes="Bold"
-                           Margin="0,2,0,0"/>
+                       FontSize="Medium"
+                       TextColor="{AppThemeBinding Light=DimGray, Dark={StaticResource TextColorDark}}"
+                       HorizontalOptions="Fill" 
+                       HorizontalTextAlignment="Center"
+                       FontAttributes="Bold"
+                       Margin="0,2,0,0"
+                       Style="{StaticResource LabelColor}"/>
                 <Label Text="Go ahead and add new food to receive orders!"
-                         FontSize="Small"
-                         HorizontalOptions="Fill" 
-                         HorizontalTextAlignment="Center"
-                         Margin="0,0,0,10"/>
+                       FontSize="Small"
+                       HorizontalOptions="Fill" 
+                       HorizontalTextAlignment="Center"
+                       Margin="0,0,0,10"
+                       Style="{StaticResource LabelColor}"/>
             </StackLayout>
             <StackLayout  Margin="20,10,20,20">
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="Not Recieved" TextColor="Black"
+                    <Label Text="Not Recieved" Style="{StaticResource LabelColor}"
                            FontSize="16" Margin="80,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding BindingContext.NotRecievedCommand, Source={x:Reference RestaurantOrder}}"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="Recieved" TextColor="Black"
+                    <Label Text="Recieved" Style="{StaticResource LabelColor}"
                            FontSize="16" Margin="-62,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding BindingContext.RecievedCommand, Source={x:Reference RestaurantOrder}}"/>
@@ -54,7 +57,7 @@
                     <DataTemplate>
                         <StackLayout>
                             <Frame BorderColor="LightGray" CornerRadius="10" 
-                                   HeightRequest="80" HasShadow="True"  >
+                                   HeightRequest="80" HasShadow="True" Style="{StaticResource FrameColor}" >
                                 <Frame.GestureRecognizers>
                                         <TapGestureRecognizer CommandParameter="{Binding .}"
                                                               Command="{Binding BindingContext.OrderCommand , Source={x:Reference RestaurantOrder}}"/>
@@ -65,7 +68,7 @@
                                            HorizontalOptions="Center" Source="{Binding Owner.Photo}" />
                                         <StackLayout Margin="20,0,0,0">
                                             <Label MaxLines="1" HorizontalTextAlignment="Start" 
-                                                   Text="{Binding Owner.Name}" TextColor="Black"
+                                                   Text="{Binding Owner.Name}" Style="{StaticResource LabelColor}"
                                                    FontSize="Medium" FontAttributes="Bold"/>
                                             <CollectionView  HorizontalOptions="Start" ItemsSource="{Binding Orders}">
                                                 <CollectionView.ItemsLayout>
@@ -76,7 +79,7 @@
                                                     <DataTemplate>
                                                         <StackLayout>
                                                             <Label MaxLines="1" HorizontalTextAlignment="Start"
-                                                                   TextColor="#2F3246" FontSize="Small">
+                                                                   TextColor="{AppThemeBinding Light=#2F3246, Dark={StaticResource TextColorDark}}" FontSize="Small">
                                                                 <Label.FormattedText>
                                                                     <FormattedString>
                                                                         <FormattedString.Spans>
@@ -98,7 +101,7 @@
                                                Text="&#xf00c;" FontFamily="FontAwesomeIcons"  FontSize="20" >
                                             <Label.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding BindingContext.DoneCommand , Source={x:Reference RestaurantOrder}}"
-                                                                                  CommandParameter="{Binding .}"/>
+                                                                      CommandParameter="{Binding .}"/>
                                             </Label.GestureRecognizers>
                                         </Label>
                                     </StackLayout>

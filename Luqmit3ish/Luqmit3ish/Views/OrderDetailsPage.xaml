@@ -4,27 +4,27 @@
              x:Class="Luqmit3ish.Views.OrderDetailsPage"
              x:Name="OrderDetails"
              Shell.TabBarIsVisible="False"
-            BackgroundColor="WhiteSmoke">
+             Style="{StaticResource ContentPageColor}">
 
     <ContentPage.Content>
         <StackLayout>
 
-            <Frame  CornerRadius="60" WidthRequest="80" HeightRequest="80"
-                    VerticalOptions="Center" HorizontalOptions="Center"
-                    Margin="0,20,0,0">
+            <Frame CornerRadius="60" WidthRequest="80" HeightRequest="80"
+                   VerticalOptions="Center" HorizontalOptions="Center"
+                   Margin="0,20,0,0">
                 <Image Source="{Binding Order.Owner.Photo}" Aspect="AspectFill"/>
             </Frame>
 
             <Label Margin="0"  Text="{Binding Order.Owner.Name}"
                    HorizontalOptions="Center" FontSize="Large"
-                   FontAttributes="Bold" TextColor="Black" >
+                   FontAttributes="Bold" Style="{StaticResource LabelColor}" >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ProfileCommand}" 
                                           CommandParameter="{Binding Order.Owner}"  />
                 </Label.GestureRecognizers>
             </Label>
 
-            <Frame  Margin="20,10,20,5" CornerRadius="35" 
+            <Frame  Margin="20,10,20,5" CornerRadius="35" Style="{StaticResource FrameColor}"
                     HeightRequest="350" HorizontalOptions="Center">
                 <StackLayout HorizontalOptions="Center">
                     <ScrollView >
@@ -33,21 +33,20 @@
                                 <DataTemplate>
                                     <StackLayout Padding="5" HorizontalOptions="Center">
                                         <Frame Padding="0" HorizontalOptions="FillAndExpand"
-                                               HasShadow="True" CornerRadius="10">
+                                               HasShadow="True" CornerRadius="10" >
                                             <Grid Padding="5" BackgroundColor="AntiqueWhite">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="0.6*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <Label MaxLines="1" VerticalOptions="Center">
+                                                <Label MaxLines="1" VerticalOptions="Center" TextColor="Black">
                                                     <Label.FormattedText>
                                                         <FormattedString>
                                                             <FormattedString.Spans>
                                                                 <Span FontAttributes="Bold"
-                                                                      Text="{Binding DishName}" 
-                                                                      TextColor="Black" />
+                                                                      Text="{Binding DishName}"/>
                                                                 <Span FontAttributes="Bold"  
-                                                                      Text=" : " TextColor="Black"/>
+                                                                      Text=" : " />
                                                             </FormattedString.Spans>
                                                         </FormattedString>
                                                     </Label.FormattedText>

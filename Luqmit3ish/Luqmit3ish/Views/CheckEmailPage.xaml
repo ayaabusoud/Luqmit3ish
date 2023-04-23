@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.CheckEmailPage"
              xmlns:xfpinview="clr-namespace:XFPINView;assembly=XFPINView"
-             Title="Check Your Email">
+             Title="Check Your Email"
+             Style="{StaticResource ContentPageColor}">
     <ContentPage.Content>
         <StackLayout Margin="16,34,16,35" VerticalOptions="Center" HorizontalOptions="Center">
             <Image Source="https://freeiconshop.com/wp-content/uploads/edd/mail-open-outline-filled.png" 
@@ -11,7 +12,7 @@
                    WidthRequest="160"></Image>
             <Label Text="Check Your Email"
                    FontSize="Title"
-                   TextColor="black"
+                   Style="{StaticResource LabelColor}"
                    HorizontalOptions="Fill" 
                    HorizontalTextAlignment="Center"
                    FontAttributes="Bold"
@@ -26,9 +27,9 @@
                    BoxShape="Squere"
                    PINLength="4"
                    PINValue="{Binding PIN}"
-                   Color="black" 
+                   Color="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" 
                    BackgroundColor="Transparent"
-                   BoxBorderColor="Black"
+                   BoxBorderColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"
                    AutoDismissKeyboard="True"
                    PINInputType="Numeric"
                    IsPassword="False"/>
@@ -40,7 +41,8 @@
                     Margin="0,20,0,15"/>
             <Label FontSize="Small"
                    HorizontalOptions="Fill" 
-                   HorizontalTextAlignment="Center">
+                   HorizontalTextAlignment="Center"
+                   Style="{StaticResource LabelColor}">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="if you haven't recieved a code" />

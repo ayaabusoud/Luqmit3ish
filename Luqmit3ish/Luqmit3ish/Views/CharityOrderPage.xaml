@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.CharityOrderPage"
              x:Name="CharityOrder"
-             Title="Orders">
-
+             Title="Orders"
+             Style="{StaticResource ContentPageColor}">
 
     <ContentPage.Content>
             <Grid Margin="20,35,20,20" HorizontalOptions="Fill" VerticalOptions="Fill">
@@ -15,16 +15,18 @@
                            VerticalOptions="Center"/>
                     <Label Text="Your cart is empty"
                            FontSize="Medium"
-                           TextColor="DimGray"
+                           TextColor="{AppThemeBinding Light=DimGray, Dark={StaticResource TextColorDark}}"
                            HorizontalOptions="Fill" 
                            HorizontalTextAlignment="Center"
                            FontAttributes="Bold"
-                           Margin="0,2,0,0"/>
+                           Margin="0,2,0,0"
+                           Style="{StaticResource LabelColor}"/>
                   <Label Text="Go ahead and receive food."
                          FontSize="Small"
                          HorizontalOptions="Fill" 
                          HorizontalTextAlignment="Center"
-                         Margin="0,0,0,10"/>
+                         Margin="0,0,0,10"
+                         Style="{StaticResource LabelColor}"/>
                    </StackLayout>
                 <CollectionView ItemsSource="{Binding OrderCard}" >
                     <CollectionView.ItemsLayout>
@@ -34,7 +36,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout>
-                               <Frame BorderColor="LightGray" CornerRadius="10" HeightRequest="80" HasShadow="True"  >
+                               <Frame BorderColor="LightGray" CornerRadius="10" HeightRequest="80" HasShadow="True" Style="{StaticResource FrameColor}" >
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer CommandParameter="{Binding .}"
                                                               Command="{Binding BindingContext.OrderCommand , Source={x:Reference CharityOrder}}"/>
@@ -45,7 +47,7 @@
                                            HorizontalOptions="Center" Source="{Binding Owner.Photo}" />
                                         <StackLayout Margin="20,0,0,0">
                                             <Label MaxLines="1" HorizontalTextAlignment="Start"
-                                                   Text="{Binding Owner.Name}" TextColor="Black" 
+                                                   Text="{Binding Owner.Name}" Style="{StaticResource LabelColor}" 
                                                    FontSize="Medium" FontAttributes="Bold"/>
                                             <CollectionView  HorizontalOptions="Start" ItemsSource="{Binding Orders}">
                                             <CollectionView.ItemsLayout>
@@ -56,7 +58,7 @@
                                                 <DataTemplate>
                                                     <StackLayout>
                                                         <Label MaxLines="1" HorizontalTextAlignment="Start" 
-                                                               TextColor="#2F3246" FontSize="Small">
+                                                               TextColor="{AppThemeBinding Light=#2F3246, Dark={StaticResource TextColorDark}}" FontSize="Small">
                                                             <Label.FormattedText>
                                                                 <FormattedString>
                                                                     <FormattedString.Spans>
@@ -73,7 +75,7 @@
                                         </CollectionView>
                                         </StackLayout>
                                         <Label WidthRequest="30"  HorizontalOptions="Start" 
-                                               VerticalOptions="End" TextColor="{StaticResource SecondaryLight}"
+                                               VerticalOptions="End" TextColor="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource PrimaryLight}}"
                                                Text="&#xf2ed;" FontFamily="FontAwesomeIcons"  FontSize="20" >
                                             <Label.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}"

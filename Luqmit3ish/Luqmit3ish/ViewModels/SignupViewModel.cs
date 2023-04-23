@@ -119,7 +119,7 @@ namespace Luqmit3ish.ViewModels
                     _nameErrorVisible = true;
                     _nameValid = false;
                     _nameInvalid = true;
-                    _nameFrameColor = Color.Red;
+                    _nameFrameColor = Color.DarkRed;
                 }
                 OnPropertyChanged(nameof(NameErrorVisible));
                 OnPropertyChanged(nameof(NameValid));
@@ -200,7 +200,7 @@ namespace Luqmit3ish.ViewModels
                     _emailErrorVisible = true;
                     _emailValid = false;
                     _emailInValid = true;
-                    _emailFrameColor = Color.Red;
+                    _emailFrameColor = Color.DarkRed;
                 }
                 OnPropertyChanged(nameof(EmailErrorVisible));
                 OnPropertyChanged(nameof(EmailValid));
@@ -281,7 +281,7 @@ namespace Luqmit3ish.ViewModels
                     _passwordErrorVisible = true;
                     _passwordValid = false;
                     _passwordInvalid = true;
-                    _passwordFrameColor = Color.Red;
+                    _passwordFrameColor = Color.DarkRed;
                 }
                 OnPropertyChanged(nameof(PasswordErrorVisible));
                 OnPropertyChanged(nameof(PasswordValid));
@@ -359,7 +359,7 @@ namespace Luqmit3ish.ViewModels
                     _confirmErrorVisible = true;
                     _confirmValid = false;
                     _confirmInvalid = true;
-                    _confirmFrameColor = Color.Red;
+                    _confirmFrameColor = Color.DarkRed;
                 }
                 OnPropertyChanged(nameof(ConfirmErrorVisible));
                 OnPropertyChanged(nameof(ConfirmValid));
@@ -433,7 +433,7 @@ namespace Luqmit3ish.ViewModels
                     _phoneErrorVisible = true;
                     _phoneValid = false;
                     _phoneInvalid = true;
-                    _phoneFrameColor = Color.Red;
+                    _phoneFrameColor = Color.DarkRed;
                 }
                 OnPropertyChanged(nameof(PhoneErrorVisible));
                 OnPropertyChanged(nameof(PhoneValid));
@@ -513,7 +513,7 @@ namespace Luqmit3ish.ViewModels
                     _locationErrorVisible = true;
                     _locationValid = false;
                     _locationInvalid = true;
-                    _locationFrameColor = Color.Red;
+                    _locationFrameColor = Color.DarkRed;
                 }
                 OnPropertyChanged(nameof(LocationErrorVisible));
                 OnPropertyChanged(nameof(LocationValid));
@@ -588,7 +588,7 @@ namespace Luqmit3ish.ViewModels
                     _typeErrorVisible = true;
                     _typeValid = false;
                     _typeInvalid = true;
-                    _typeFrameColor = Color.Red;
+                    _typeFrameColor = Color.DarkRed;
                 }
                 OnPropertyChanged(nameof(TtypeErrorVisible));
                 OnPropertyChanged(nameof(TtypeValid));
