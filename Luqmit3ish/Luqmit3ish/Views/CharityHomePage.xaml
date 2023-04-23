@@ -4,15 +4,14 @@
              x:Class="Luqmit3ish.Views.CharityHomePage"
              xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
              Title="Home"
-             x:Name="CharityPage"
-             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
+             x:Name="CharityPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="icon_search.png" Command="{Binding SearchCommand}" />
         <ToolbarItem Icon="icon_filter.png" Command="{Binding FilterCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
 
-        <Grid Margin="16,30,16,0" HorizontalOptions="Fill" VerticalOptions="Fill">
+        <Grid Margin="16,30,16,25" HorizontalOptions="Fill" VerticalOptions="Fill">
             <StackLayout  IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
                 <Image Source="https://luqmit3ish5.blob.core.windows.net/photos/1_CharityFood.png"
                        HeightRequest="200" 
@@ -46,14 +45,14 @@
                                 </Frame.GestureRecognizers>
                                 <StackLayout>
                                     <Image Source="{Binding photo}"  Style="{StaticResource ImageFoodCard}" />
-                                    <Label MaxLines="1" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" Text="{Binding dishName}" Margin="15,0" FontSize="Medium"/>
-                                    <Label WidthRequest="150" MaxLines="1" Text="{Binding restaurantName}" Margin="15,0" FontSize="Small" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
+                                    <Label MaxLines="1" FontAttributes="Bold" TextColor="Black" Text="{Binding dishName}" Margin="15,0" FontSize="Medium"/>
+                                    <Label WidthRequest="150" MaxLines="1" Text="{Binding restaurantName}" Margin="15,0" FontSize="Small"/>
                                     <Label MaxLines="1" Margin="15,0,0,0"  >
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
                                                     <Span FontSize="18"  Text="{Binding quantity}" TextColor="{StaticResource PrimaryLight}"/>
-                                                    <Span FontSize="12" Text=" Dishes" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" />
+                                                    <Span FontSize="12" Text=" Dishes"  />
                                                 </FormattedString.Spans>
                                             </FormattedString>
                                         </Label.FormattedText>

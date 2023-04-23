@@ -2,10 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.SearchPage"
+             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Shell.NavBarIsVisible="False"
              Shell.TabBarIsVisible="False"
-             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
              x:Name="SearchFoodPage">
 
     <ContentPage.Content>
@@ -22,30 +22,28 @@
                     </Label.GestureRecognizers>
                 </Label>
                 <SearchBar PlaceholderColor="White" CancelButtonColor="White" xct:IconTintColorEffect.TintColor="White" TextColor="white"  Grid.Column="1" Placeholder="Search" Text="{Binding SearchText}" 
-                    SearchCommand="{Binding SearchCommand}" HeightRequest="56"/>
+           SearchCommand="{Binding SearchCommand}" HeightRequest="56"/>
             </Grid>
 
             <Grid Margin="16,30,16,25" HorizontalOptions="Fill"  VerticalOptions="Fill">
                 <StackLayout  IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center"   VerticalOptions="Center">
                     <Image Source="Notfound.png"
-                            HeightRequest="200" 
-                            WidthRequest="200"
-                            VerticalOptions="Center"/>
-
+                       HeightRequest="200" 
+                       WidthRequest="200"
+                       VerticalOptions="Center"/>
                     <Label Text="No results found "
-                            FontSize="Medium"
-                            TextColor="{AppThemeBinding Light= DimGray, Dark={StaticResource TextColorDark}}"
-                            HorizontalOptions="Fill" 
-                            HorizontalTextAlignment="Center"
-                            FontAttributes="Bold"
-                            Margin="0,2,0,0"/>
-
+                           
+                   FontSize="Medium"
+                   TextColor="DimGray"
+                   HorizontalOptions="Fill" 
+                   HorizontalTextAlignment="Center"
+                   FontAttributes="Bold"
+                   Margin="0,2,0,0"/>
                     <Label Text="We can't find any item matching your search " 
-                            FontSize="Small"
-                            HorizontalOptions="Fill" 
-                            HorizontalTextAlignment="Center"
-                            Margin="0,0,0,10"
-                            TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
+                   FontSize="Small"
+                   HorizontalOptions="Fill" 
+                   HorizontalTextAlignment="Center"
+                   Margin="0,0,0,10"/>
                 </StackLayout>
                 <CollectionView ItemsSource="{Binding DishCard}">
 
@@ -62,9 +60,9 @@
                                     </Frame.GestureRecognizers>
                                     <StackLayout>
                                         <Image Source="{Binding photo}" />
-                                        <Label MaxLines="1" FontAttributes="Bold" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" Text="{Binding dishName}" Margin="15,0" FontSize="Medium"/>
-                                        <Label WidthRequest="150" MaxLines="1" Text="{Binding restaurantName}" Margin="15,0" FontSize="Small" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
-                                        <Label MaxLines="1" Margin="15,0,0,0" TextColor="{AppThemeBinding Light= {StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" >
+                                        <Label MaxLines="1" FontAttributes="Bold" TextColor="Black" Text="{Binding dishName}" Margin="15,0" FontSize="Medium"/>
+                                        <Label WidthRequest="150" MaxLines="1" Text="{Binding restaurantName}" Margin="15,0" FontSize="Small"/>
+                                        <Label MaxLines="1" Margin="15,0,0,0"  >
                                             <Label.FormattedText>
                                                 <FormattedString>
                                                     <FormattedString.Spans>
@@ -80,7 +78,10 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+
             </Grid>
+
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

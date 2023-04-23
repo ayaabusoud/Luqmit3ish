@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Luqmit3ish.ViewModels"  
              xmlns:model="clr-namespace:Luqmit3ish.Models" 
-             x:Class="Luqmit3ish.Views.BestRestaurantPage"
-             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
+             x:Class="Luqmit3ish.Views.BestRestaurantPage">
     <ContentPage.Content>
         <StackLayout Margin="16,64,16,35">
             <Label Text="Welcome to Xamarin.Forms!"

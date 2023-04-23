@@ -12,25 +12,25 @@
         <ScrollView HeightRequest="500">
             <StackLayout Margin="0">
                 <Image Source="icon3.png" WidthRequest="100" Margin="0,40,0,0"/>
-                <Frame HorizontalOptions="Fill" VerticalOptions="EndAndExpand"  Margin="0,0,0,-40" HeightRequest="450" CornerRadius="30" HasShadow="True" BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark=Black}">
+                <Frame HorizontalOptions="Fill" VerticalOptions="EndAndExpand"  Margin="0,0,0,-40" HeightRequest="450" CornerRadius="30" HasShadow="True">
                     <StackLayout Margin="10" HorizontalOptions="Fill" Spacing="15" Padding="20">
-                        <Label Text="Sign In" HorizontalOptions="Center" FontSize="30" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" Margin="-20"/>
-                        <Label Text="Email" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontSize="Medium" Margin="0,0,0,5"/>
+                        <Label Text="Sign In" HorizontalOptions="Center" FontSize="30" FontAttributes="Bold" TextColor="Black" Margin="-20"/>
+                        <Label Text="Email" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
                         <Frame Style="{StaticResource textFeildFrame}">
                             <StackLayout Orientation="Horizontal" Margin="10,0,0,0" Padding="0">
-                                <Label Text="&#xf0e0;" FontFamily="FontAwesomeIcons" FontSize="20" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
-                                <Entry FontSize="Medium" Placeholder="Enter your email" Keyboard="Email" Style="{StaticResource textFeild}" Text="{Binding Email}" ClearButtonVisibility="WhileEditing" />
+                                <Label Text="&#xf0e0;" FontFamily="FontAwesomeIcons" FontSize="20" TextColor="Black"/>
+                                <Entry   FontSize="Medium" Placeholder="Enter your email" Keyboard="Email" Style="{StaticResource textFeild}" Text="{Binding Email}" ClearButtonVisibility="WhileEditing" />
                             </StackLayout>
                         </Frame>
 
-                        <Label Text="Password" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontSize="Medium" Margin="0,0,0,5"/>
+                        <Label Text="Password" TextColor="Black" FontSize="Medium" Margin="0,0,0,5"/>
                         <Frame Style="{StaticResource textFeildFrame}" >
                             <StackLayout Orientation="Horizontal" Margin="10,0,0,0" Padding="0">
-                                <Label Text="&#xf023;" FontFamily="FontAwesomeIcons" FontSize="20" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
+                                <Label Text="&#xf023;" FontFamily="FontAwesomeIcons" FontSize="20" TextColor="Black"/>
                                 <Entry FontSize="Medium" Placeholder="Enter your password" IsPassword="True" Keyboard="Text" Style="{StaticResource textFeild}" Text="{Binding Password}" ClearButtonVisibility="WhileEditing" />
                             </StackLayout>
                         </Frame>
-                        <Label Text="Forgot password?" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" VerticalOptions="Center" HorizontalOptions="Start" >
+                        <Label Text="Forgot password?" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Start" >
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ForgotPassCommand}" />
                             </Label.GestureRecognizers>
@@ -40,7 +40,7 @@
                         <Label VerticalOptions="Center" HorizontalOptions="Center" Margin="0,40,0,0">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="Don't have an account? " TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" FontSize="16"/>
+                                    <Span Text="Don't have an account? " TextColor="Black" FontSize="16"/>
                                     <Span Text="Sign Up" TextColor="{StaticResource PrimaryLight}" TextDecorations="Underline" FontAttributes="Bold" FontSize="16"/>
                                 </FormattedString>
                             </Label.FormattedText>

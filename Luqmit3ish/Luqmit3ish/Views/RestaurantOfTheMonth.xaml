@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.RestaurantOfTheMonth"
              Shell.TabBarIsVisible="False"
-             Title="Restaurant Of The Month"
-             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
+             Title="Restaurant Of The Month">
     <ContentPage.Content>
         <Grid Margin="16,30,16,25" HorizontalOptions="Fill" VerticalOptions="Fill">
             <StackLayout  IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
@@ -27,7 +26,7 @@
             <StackLayout IsVisible="{Binding NonEmptyResult}" VerticalOptions="Center" HorizontalOptions="Center">
                 <Image  Source="https://img.freepik.com/premium-vector/donation-boxes-with-canned-food-illustration-freshly-prepared-food-packaged-sealed-jars-helping-people-need-poor-people-giving-out-charities-saving-from-hunger-vector-kindness_146957-1033.jpg" 
                          HorizontalOptions="Fill" />
-                <Label HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light={StaticResource TextColorLight},Dark={StaticResource TextColorDark}}" FontSize="Small">
+                <Label HorizontalTextAlignment="Center" TextColor="Black" FontSize="Small">
                     <Label.FormattedText>
                         <FormattedString>
                             <FormattedString.Spans>
@@ -37,7 +36,7 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Label  Text="{Binding RestaurantName}" HorizontalTextAlignment="Center" FontAttributes="Bold"  TextColor="{AppThemeBinding Light={StaticResource TextColorLight},Dark={StaticResource TextColorDark}}" FontSize="Medium"/>
+                <Label  Text="{Binding RestaurantName}" HorizontalTextAlignment="Center" FontAttributes="Bold"  TextColor="Black" FontSize="Medium"/>
 
             </StackLayout>
         </Grid>
