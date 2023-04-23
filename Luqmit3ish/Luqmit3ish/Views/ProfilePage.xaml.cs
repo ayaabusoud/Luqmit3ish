@@ -1,4 +1,5 @@
-﻿using Luqmit3ish.ViewModels;
+﻿using Luqmit3ish.Models;
+using Luqmit3ish.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +14,11 @@ namespace Luqmit3ish.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ProfilePage : ContentPage
     {
-        public ProfilePage()
+
+        public ProfilePage(User UserInfo)
         {
             InitializeComponent();
-            this.BindingContext = new ProfileViewModel(Navigation);
+            this.BindingContext = new ProfileViewModel(Navigation, UserInfo);
         }
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            this.BindingContext = new ProfileViewModel(Navigation);
-        }
-
     }
 }
