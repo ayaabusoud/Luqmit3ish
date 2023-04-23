@@ -15,7 +15,7 @@ namespace Luqmit3ish.Views
         public RestaurantOfTheMonth()
         {
             InitializeComponent();
-            this.BindingContext = new RestaurantOfTheMonthViewModel(Navigation);
+            this.BindingContext = new RestaurantOfTheMonthViewModel();
         }
     }
 }

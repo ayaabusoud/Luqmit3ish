@@ -11,7 +11,7 @@ namespace Luqmit3ish.Services
     class EmailService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _apiUrl = "https://luqmit3ishv2.azurewebsites.net/api/Email/send";
+        private readonly string _apiUrl = App.BaseUrl + "api/Email/send";
         private readonly IConnection _connection;
 
         public EmailService()

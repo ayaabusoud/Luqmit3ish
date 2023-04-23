@@ -8,6 +8,7 @@ namespace Luqmit3ish
 {
     public partial class App : Application
     {
+        public readonly static string BaseUrl = "https://luqmit3ishv2.azurewebsites.net/";
 
         public App()
         {

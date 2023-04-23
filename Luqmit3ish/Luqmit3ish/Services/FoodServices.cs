@@ -19,7 +19,7 @@ namespace Luqmit3ish.Services
     class FoodServices
     {
         private readonly HttpClient _httpClient;
-        private readonly string _apiUrl = "https://luqmit3ishv2.azurewebsites.net/api/Food";
+        private readonly string _apiUrl = App.BaseUrl + "api/Food";
         private readonly IConnection _connection;
 
         public FoodServices()
@@ -230,11 +230,24 @@ namespace Luqmit3ish.Services
 
         public async Task DeleteFood(int food_id)
         {
+            try
+            {
+
+            
             var response = await _httpClient.DeleteAsync($"{_apiUrl}/{food_id}");
 
             if (!response.IsSuccessStatusCode)
             {
                 Debug.WriteLine("failed to delete item");
+            }
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
 

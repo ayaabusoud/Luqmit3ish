@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.RestaurantHomePage"
-             xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Title="Home"
              x:Name="RestaurantPage">
@@ -35,11 +34,14 @@
                         <StackLayout>
                             <Frame Style="{StaticResource FoodCard}" Margin="3" HeightRequest="170" >
                                 <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer CommandParameter="{Binding .}"  Command="{Binding BindingContext.FoodDetailCommand , Source={x:Reference RestaurantPage}}"></TapGestureRecognizer>
+                                    <TapGestureRecognizer CommandParameter="{Binding .}"
+                                                          Command="{Binding BindingContext.FoodDetailCommand , Source={x:Reference RestaurantPage}}"></TapGestureRecognizer>
                                 </Frame.GestureRecognizers>
                                 <StackLayout Spacing="5">
-                                    <Image Source="{Binding photo}"  Style="{StaticResource ImageFoodCard}" />
-                                    <Label Margin="15,0,0,0" MaxLines="1" Text="{Binding name}" TextColor="Black" FontSize="Medium"/>
+                                    <Image Source="{Binding Photo}" 
+                                           Style="{StaticResource ImageFoodCard}" />
+                                    <Label Margin="15,0,0,0" MaxLines="1" Text="{Binding Name}"
+                                           TextColor="Black" FontSize="Medium"/>
                                     <Grid Margin="15,0,15,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="0.85*"/>
@@ -49,13 +51,15 @@
                                             <Label.FormattedText>
                                                 <FormattedString>
                                                     <FormattedString.Spans>
-                                                        <Span Text="{Binding number}" />
+                                                        <Span Text="{Binding Quantity}" />
                                                         <Span Text=" Dishes"  />
                                                     </FormattedString.Spans>
                                                 </FormattedString>
                                             </Label.FormattedText>
                                         </Label>
-                                        <Label Grid.Column="1" Text="&#xf2ed;" FontFamily="FontAwesomeIcons" FontSize="20" TextColor="{StaticResource SecondaryLight}" >
+                                        <Label Grid.Column="1" Text="&#xf2ed;"
+                                               FontFamily="FontAwesomeIcons" FontSize="20"
+                                               TextColor="{StaticResource SecondaryLight}" >
                                             <Label.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand , Source={x:Reference RestaurantPage}}"
                                                                                       CommandParameter="{Binding id}"/>

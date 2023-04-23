@@ -2,6 +2,7 @@ using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,13 +10,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
-using Xamarin.Forms.PancakeView;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -25,7 +24,7 @@ namespace Luqmit3ish.ViewModels
 
         public ICommand EditCommand { protected set; get; }
         public ICommand DeleteCommand { protected set; get; }
-        public Command<OrderCard> OrderCommand { protected set; get; }
+        public ICommand OrderCommand { protected set; get; }
        
         private OrderService _orderService;
 
@@ -82,20 +81,25 @@ namespace Luqmit3ish.ViewModels
                     bool result =  await _orderService.DeleteOrder(userId, restaurantId);
                     if(result == true)
                     {
-                    await App.Current.MainPage.DisplayAlert("Success", 
-                        "The order have been deleted successfully", "ok");
+                        await PopupNavigation.Instance.PushAsync(new PopUp("The order have been deleted successfully."));
+                        Thread.Sleep(3000);
+                        await PopupNavigation.Instance.PopAsync();
                     OnInit();
                     }
                     else
                     {
-                        await App.Current.MainPage.DisplayAlert("Faild", 
-                            "The Order has not been deleted , please try again", "ok");
+                        await PopupNavigation.Instance.PushAsync(new PopUp("The Order has not been deleted , please try again."));
+                        Thread.Sleep(3000);
+                        await PopupNavigation.Instance.PopAsync();
                     }
                 }
                 catch (Exception e)
                 {
-                    await App.Current.MainPage.DisplayAlert("Error", "An error occur, please try again", "ok");
 
+                    Debug.WriteLine(e.Message);
+                    await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
                 }
             }
 
