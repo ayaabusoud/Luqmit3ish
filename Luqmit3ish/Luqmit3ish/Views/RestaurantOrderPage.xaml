@@ -1,8 +1,6 @@
-﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.RestaurantOrderPage"
-             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              Title="Order"
              x:Name="RestaurantOrder">
     <ContentPage.Content>
@@ -27,20 +25,24 @@
             </StackLayout>
             <StackLayout  Margin="20,10,20,20">
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="Not Recieved" TextColor="Black" FontSize="16" Margin="80,0">
+                    <Label Text="Not Recieved" TextColor="Black"
+                           FontSize="16" Margin="80,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding BindingContext.NotRecievedCommand, Source={x:Reference RestaurantOrder}}"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="Recieved" TextColor="Black" FontSize="16" Margin="-62,0">
+                    <Label Text="Recieved" TextColor="Black"
+                           FontSize="16" Margin="-62,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding BindingContext.RecievedCommand, Source={x:Reference RestaurantOrder}}"/>
                         </Label.GestureRecognizers>
                     </Label>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" Spacing="15">
-                    <BoxView BackgroundColor="{Binding BindingContext.NotRecievedColor, Source={x:Reference RestaurantOrder}}" WidthRequest="180" HeightRequest="2"></BoxView>
-                    <BoxView BackgroundColor="{Binding BindingContext.RecievedColor, Source={x:Reference RestaurantOrder}}" WidthRequest="180" HeightRequest="2"></BoxView>
+                    <BoxView BackgroundColor="{Binding BindingContext.NotRecievedColor, Source={x:Reference RestaurantOrder}}"
+                             WidthRequest="180" HeightRequest="2"/>
+                    <BoxView BackgroundColor="{Binding BindingContext.RecievedColor, Source={x:Reference RestaurantOrder}}" 
+                             WidthRequest="180" HeightRequest="2"/>
                 </StackLayout>
                 <CollectionView ItemsSource="{Binding OrderCard}" >
                 <CollectionView.ItemsLayout>
@@ -50,15 +52,21 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout>
-                            <Frame BorderColor="LightGray" CornerRadius="10" HeightRequest="80" HasShadow="True"  >
+                            <Frame BorderColor="LightGray" CornerRadius="10" 
+                                   HeightRequest="80" HasShadow="True"  >
                                 <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer CommandParameter="{Binding .}" Command="{Binding BindingContext.OrderCommand , Source={x:Reference RestaurantOrder}}"/>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}"
+                                                              Command="{Binding BindingContext.OrderCommand , Source={x:Reference RestaurantOrder}}"/>
                                 </Frame.GestureRecognizers>
-                                <StackLayout Orientation="Horizontal" Padding="0" Margin="0" HorizontalOptions="Start">
-                                    <Image HeightRequest="60" WidthRequest="60" VerticalOptions="Center" HorizontalOptions="Center" Source="{Binding image}" />
+                                <StackLayout Orientation="Horizontal" Padding="0" 
+                                             Margin="0" HorizontalOptions="Start">
+                                    <Image HeightRequest="60" WidthRequest="60" VerticalOptions="Center"
+                                           HorizontalOptions="Center" Source="{Binding Owner.Photo}" />
                                         <StackLayout Margin="20,0,0,0">
-                                            <Label MaxLines="1" HorizontalTextAlignment="Start" Text="{Binding name}" TextColor="Black" FontSize="Medium" FontAttributes="Bold"/>
-                                            <CollectionView  HorizontalOptions="Start" ItemsSource="{Binding data}">
+                                            <Label MaxLines="1" HorizontalTextAlignment="Start" 
+                                                   Text="{Binding Owner.Name}" TextColor="Black"
+                                                   FontSize="Medium" FontAttributes="Bold"/>
+                                            <CollectionView  HorizontalOptions="Start" ItemsSource="{Binding Orders}">
                                                 <CollectionView.ItemsLayout>
                                                     <LinearItemsLayout Orientation="Vertical" 
                                                ItemSpacing="5"/>
@@ -66,13 +74,14 @@
                                                 <CollectionView.ItemTemplate>
                                                     <DataTemplate>
                                                         <StackLayout>
-                                                            <Label MaxLines="1" HorizontalTextAlignment="Start" TextColor="#2F3246" FontSize="Small">
+                                                            <Label MaxLines="1" HorizontalTextAlignment="Start"
+                                                                   TextColor="#2F3246" FontSize="Small">
                                                                 <Label.FormattedText>
                                                                     <FormattedString>
                                                                         <FormattedString.Spans>
-                                                                            <Span Text="{Binding dishName}"/>
+                                                                            <Span Text="{Binding DishName}"/>
                                                                             <Span Text=": "/>
-                                                                            <Span Text="{Binding number_of_dish}"  />
+                                                                            <Span Text="{Binding Quantity}"  />
                                                                         </FormattedString.Spans>
                                                                     </FormattedString>
                                                                 </Label.FormattedText>
@@ -82,7 +91,10 @@
                                                 </CollectionView.ItemTemplate>
                                             </CollectionView>
                                         </StackLayout>
-                                        <Label IsVisible="{Binding BindingContext.ReceievedCheck , Source={x:Reference RestaurantOrder}}" WidthRequest="30"  HorizontalOptions="Start" VerticalOptions="End" TextColor="{StaticResource SecondaryLight}"  Text="&#xf00c;" FontFamily="FontAwesomeIcons"  FontSize="20" >
+                                        <Label IsVisible="{Binding BindingContext.ReceievedCheck , Source={x:Reference RestaurantOrder}}" 
+                                               WidthRequest="30"  HorizontalOptions="Start"
+                                               VerticalOptions="End" TextColor="{StaticResource SecondaryLight}" 
+                                               Text="&#xf00c;" FontFamily="FontAwesomeIcons"  FontSize="20" >
                                             <Label.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding BindingContext.DoneCommand , Source={x:Reference RestaurantOrder}}"
                                                                                   CommandParameter="{Binding .}"/>
