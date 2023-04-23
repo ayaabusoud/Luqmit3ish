@@ -1,4 +1,5 @@
 ﻿using Luqmit3ish.Connection;
+using Luqmit3ish.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Luqmit3ish.Services
     class EmailService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _apiUrl = App.BaseUrl + "api/Email/send";
+        private readonly string _apiUrl = Constants.BaseUrl + "api/Email/send";
         private readonly IConnection _connection;
 
         public EmailService()

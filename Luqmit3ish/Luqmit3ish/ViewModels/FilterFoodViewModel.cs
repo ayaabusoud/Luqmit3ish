@@ -2,19 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Globalization;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Net.NetworkInformation;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
+using Luqmit3ish.Utilities;
 using Luqmit3ish.Views;
-using Xamarin.Essentials;
+using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
 
 namespace Luqmit3ish.ViewModels
@@ -32,8 +31,8 @@ namespace Luqmit3ish.ViewModels
             SelectedTypeValues = new ObservableCollection<object>();
             this._navigation = navigation;
 
-            InitializTypeValues();
-            InitializLocationValues();
+            _typeValues = Constants.TypeValues;
+            _locationValues = Constants.LocationValues;
 
             Apply = new Command(async () => await OnApplyAsync());
             ClearAll = new Command(OnClearAll);
@@ -42,33 +41,6 @@ namespace Luqmit3ish.ViewModels
             _upperQuantity = 100;
             _upperKeepValid = 10;
             _lowerQuantity = _lowerKeepValid = 0;
-            
-        }
-
-        private void InitializTypeValues()
-        {
-            _typeValues = new ObservableCollection<TypeField>
-            {
-                new TypeField { Name = "Food", IconText = "\ue4c6;" },
-                new TypeField { Name = "Drink", IconText = "\uf4e3;" },
-                new TypeField { Name = "Cake", IconText = "\uf7ef;" },
-                new TypeField { Name = "Snack", IconText = "\uf787;" },
-                new TypeField { Name = "Candies", IconText = "\uf786;" },
-                new TypeField { Name = "Fish", IconText = "\uf578;" }
-            };
-        }
-
-        private void InitializLocationValues()
-        {
-            _locationValues = new ObservableCollection<LocationField>
-            {
-                 new LocationField{ Name="Nablus" },
-                 new LocationField{ Name="Ramallah" },
-                 new LocationField{ Name="Jenin" },
-                 new LocationField{ Name="Jericho" },
-                 new LocationField{ Name="Jerusalem" },
-                 new LocationField{ Name="Tulkarm" },
-            };
         }
 
         public ICommand TypeMultiSelectionCommand => new Command<IList<object>>((itemSelected) =>
@@ -135,7 +107,6 @@ namespace Luqmit3ish.ViewModels
 
         private void OnClearAll()
         {
-
             ClearTypeValues();
             ClearLocationValues();
             LowerKeepValid = LowerQuantity = 0;
@@ -156,11 +127,9 @@ namespace Luqmit3ish.ViewModels
             {
                 ClearAll = new Command<IList>(items =>
                 {
-                    // Other code...
-                    SelectedTypeValues.Clear(); // Deselect all items
+                    SelectedTypeValues.Clear();
                 });
             }
-
         }
 
         private void ClearLocationValues()
@@ -176,15 +145,6 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                var id = Preferences.Get("userId", null);
-                bool isValidUserSession = await ValidateUserSession(id);
-                if (!isValidUserSession)
-                {
-                    return;
-                }
-
-                int userId = int.Parse(id);
-
                 FilterInfo filterInfo = new FilterInfo();
                 InitializFilterInfo(filterInfo);
 
@@ -195,30 +155,38 @@ namespace Luqmit3ish.ViewModels
                     (allUsers.Where(user => filterInfo.LocationValues.Contains(user.Location)));
 
 
-                ObservableCollection<DishCard> filterDishes = new ObservableCollection<DishCard>
-                    (allDishes.Where(dish =>
-                        (dish.keepValid >= filterInfo.LowerKeepValid && dish.keepValid <= filterInfo.UpperKeepValid) &&
-                        (dish.quantity >= filterInfo.LowerQuantity && dish.quantity <= filterInfo.UpperQuantity) &&
-                        (filterInfo.TypeValues == null || !filterInfo.TypeValues.Any() || filterInfo.TypeValues.Contains(dish.type)) &&
-                        ((filterUsers.Count == 0) || (filterUsers.Any(user => user.id == dish.restaurantId)))
-                        )
-                    ) ;
+                ObservableCollection<DishCard> filteredDishes = new ObservableCollection<DishCard>(
+                    allDishes.Where(dish =>
+                        dish.KeepValid >= filterInfo.LowerKeepValid && dish.KeepValid <= filterInfo.UpperKeepValid &&
+                        dish.Quantity >= filterInfo.LowerQuantity && dish.Quantity <= filterInfo.UpperQuantity &&
+                        (filterInfo.TypeValues == null || !filterInfo.TypeValues.Any() || filterInfo.TypeValues.Contains(dish.Type)) &&
+                        (!filterUsers.Any() || filterUsers.Any(user => user.id == dish.Restaurant.id))
+                    )
+                );
 
-                MessagingCenter.Send<FilterFoodViewModel, ObservableCollection<DishCard>>(this, "EditDishes", filterDishes);
+                MessagingCenter.Send<FilterFoodViewModel, ObservableCollection<DishCard>>(this, "EditDishes", filteredDishes);
                 await _navigation.PopAsync();
-
             }
-            catch (ConnectionException)
+            catch (ConnectionException e)
             {
-                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
-            catch (HttpRequestException)
+            catch (HttpRequestException e)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Something went bad on this reservation, you can try again", "Ok");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
         }
 

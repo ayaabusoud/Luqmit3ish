@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Luqmit3ish.Connection;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
+using Luqmit3ish.Utilities;
 using Luqmit3ish.ViewModels;
 using Newtonsoft.Json;
 
@@ -17,7 +18,7 @@ namespace Luqmit3ish.Services
     public class UserServices
     {
         private readonly HttpClient _httpClient;
-        private readonly string _apiUrl = App.BaseUrl + "api/Users";
+        private readonly string _apiUrl = Constants.BaseUrl + "api/Users";
         private readonly IConnection _connection;
 
         public UserServices()
@@ -99,8 +100,6 @@ namespace Luqmit3ish.Services
             {
                 return false;
             }
-
-
         }
 
         public async Task<ObservableCollection<User>> GetUsers()
