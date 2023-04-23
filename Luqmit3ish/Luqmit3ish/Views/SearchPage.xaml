@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.SearchPage"
@@ -11,22 +11,34 @@
     <ContentPage.Content>
 
         <StackLayout Margin="0,0,0,35">
-            <Grid  BackgroundColor="{StaticResource PrimaryLight}" HeightRequest="80" Padding="0" Margin="0">
+            <Grid  BackgroundColor="{StaticResource PrimaryLight}" 
+                   HeightRequest="80" Padding="0" Margin="0">
                 <Grid.ColumnDefinitions >
                     <ColumnDefinition Width="0.1*"/>
                     <ColumnDefinition Width="0.9*"/>
                 </Grid.ColumnDefinitions>
-                <Label Margin="0,20,0,0" VerticalOptions="Center" HorizontalOptions="End" Grid.Column="0" HeightRequest="56" TextColor="white" Text="&#xf060;" FontFamily="FontAwesomeIcons" FontSize="20" >
+                <Label Margin="0,20,0,0" VerticalOptions="Center"
+                       HorizontalOptions="End" Grid.Column="0" 
+                       HeightRequest="56" TextColor="white" 
+                       Text="&#xf060;" FontFamily="FontAwesomeIcons"
+                       FontSize="20" >
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding BackCommand}"/>
                     </Label.GestureRecognizers>
                 </Label>
-                <SearchBar PlaceholderColor="White" CancelButtonColor="White" xct:IconTintColorEffect.TintColor="White" TextColor="white"  Grid.Column="1" Placeholder="Search" Text="{Binding SearchText}" 
+                <SearchBar PlaceholderColor="White"
+                           CancelButtonColor="White" 
+                           xct:IconTintColorEffect.TintColor="White" 
+                           TextColor="white"  Grid.Column="1"
+                           Placeholder="Search" Text="{Binding SearchText}" 
            SearchCommand="{Binding SearchCommand}" HeightRequest="56"/>
             </Grid>
 
-            <Grid Margin="16,30,16,25" HorizontalOptions="Fill"  VerticalOptions="Fill">
-                <StackLayout  IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center"   VerticalOptions="Center">
+            <Grid Margin="16,30,16,25" HorizontalOptions="Fill" 
+                  VerticalOptions="Fill">
+                <StackLayout  IsVisible="{Binding EmptyResult}"  
+                              HorizontalOptions="Center"  
+                              VerticalOptions="Center">
                     <Image Source="Notfound.png"
                        HeightRequest="200" 
                        WidthRequest="200"
@@ -56,17 +68,21 @@
                             <StackLayout>
                                 <Frame Style="{StaticResource FoodCard}" Margin="3">
                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer CommandParameter="{Binding .}"  Command="{Binding BindingContext.FoodDetailCommand , Source={x:Reference SearchFoodPage}}"></TapGestureRecognizer>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}"  Command="{Binding BindingContext.FoodDetailCommand , Source={x:Reference CharityPage}}"></TapGestureRecognizer>
                                     </Frame.GestureRecognizers>
                                     <StackLayout>
-                                        <Image Source="{Binding photo}" />
-                                        <Label MaxLines="1" FontAttributes="Bold" TextColor="Black" Text="{Binding dishName}" Margin="15,0" FontSize="Medium"/>
-                                        <Label WidthRequest="150" MaxLines="1" Text="{Binding restaurantName}" Margin="15,0" FontSize="Small"/>
+                                        <Image Source="{Binding Photo}"  Style="{StaticResource ImageFoodCard}" />
+                                        <Label MaxLines="1" FontAttributes="Bold"
+                                           TextColor="Black" Text="{Binding DishName}" 
+                                           Margin="15,0" FontSize="Medium"/>
+                                        <Label WidthRequest="150" MaxLines="1" Text="{Binding Restaurant.Name}" 
+                                           Margin="15,0" FontSize="Small"/>
                                         <Label MaxLines="1" Margin="15,0,0,0"  >
                                             <Label.FormattedText>
                                                 <FormattedString>
                                                     <FormattedString.Spans>
-                                                        <Span FontSize="18"  Text="{Binding quantity}" TextColor="{StaticResource PrimaryLight}"/>
+                                                        <Span FontSize="18"  Text="{Binding Quantity}"
+                                                          TextColor="{StaticResource PrimaryLight}"/>
                                                         <Span FontSize="12" Text=" Dishes"  />
                                                     </FormattedString.Spans>
                                                 </FormattedString>
