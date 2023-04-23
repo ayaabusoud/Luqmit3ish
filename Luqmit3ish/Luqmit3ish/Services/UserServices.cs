@@ -94,10 +94,12 @@ namespace Luqmit3ish.Services
             }
             catch (HttpRequestException e)
             {
+                Debug.WriteLine(e.Message);
                 return false;
             }
             catch (Exception e)
             {
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }

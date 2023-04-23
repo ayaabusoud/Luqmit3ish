@@ -39,14 +39,6 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _description, value);
         }
 
-
-        private ObservableCollection<Dish> _dishes;
-
-        public ObservableCollection<Dish> Dishes
-        {
-            get => _dishes;
-            set => SetProperty(ref _dishes, value);
-        }
         private ObservableCollection<DishCard> _dishCard;
 
         public ObservableCollection<DishCard> DishCard
@@ -77,7 +69,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushAsync(new FoodDetailPage(dish.Id));
+                await _navigation.PushAsync(new FoodDetailPage(dish));
             }
             catch (ArgumentException e)
             {
@@ -148,7 +140,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                if (DishCard == null)
+                if (DishCard.Count == 0)
                 {
                     await PopupNavigation.Instance.PushAsync(new PopUp("There is no Dishes to filter, please try again later."));
                     Thread.Sleep(3000);
@@ -171,7 +163,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                if (DishCard == null)
+                if (DishCard.Count ==  0)
                 {
                     await PopupNavigation.Instance.PushAsync(new PopUp("There is no Dishes to Search for, please try again later."));
                     Thread.Sleep(3000);

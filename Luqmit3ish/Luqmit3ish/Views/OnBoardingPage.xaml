@@ -20,8 +20,7 @@
                    HorizontalOptions="Fill" />
             <Label Text="Fight Hunger And Save &#10; Food With Us" HorizontalTextAlignment="Center" 
                    FontSize="25" FontAttributes="Bold"  TextColor="Black" />
-            <Label Margin="35,0" Text="By bridging the gap between charities and restaurants.
-                   We hope to have a positive impact on the world by reducing food waste and fighting hunger."
+            <Label Margin="35,0" Text="By bridging the gap between charities and restaurants. We hope to have a positive impact on the world by reducing food waste and fighting hunger."
                    HorizontalTextAlignment="Center" TextColor="Black" FontSize="16" />
             <Button VerticalOptions="Center" Text="Join us" Command="{Binding SignupCommand}" 
                     Style="{StaticResource BorderButton}" Margin="0,20"/>

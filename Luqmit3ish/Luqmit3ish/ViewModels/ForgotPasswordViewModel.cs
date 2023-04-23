@@ -22,7 +22,7 @@ namespace Luqmit3ish.ViewModels
         {
             this._navigation = navigation;
             SendEmailCommand = new Command(OnSendEmailClicked);
-            LoginCommand = new Command(async () => await OnLoginClicked());
+            LoginCommand = new Command( OnLoginClicked);
         }
 
         private void OnSendEmailClicked()
@@ -41,7 +41,7 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
-        private async Task OnLoginClicked()
+        private void OnLoginClicked()
         {
             try
             {

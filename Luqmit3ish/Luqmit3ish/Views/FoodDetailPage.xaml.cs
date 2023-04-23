@@ -8,10 +8,10 @@ namespace Luqmit3ish.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class FoodDetailPage : ContentPage
     {
-        public FoodDetailPage(int id)
+        public FoodDetailPage(DishCard dish)
         {
             InitializeComponent();
-            this.BindingContext = new FoodDetailViewModel(id, Navigation);
+            this.BindingContext = new FoodDetailViewModel(dish, Navigation);
         }
     }
 }

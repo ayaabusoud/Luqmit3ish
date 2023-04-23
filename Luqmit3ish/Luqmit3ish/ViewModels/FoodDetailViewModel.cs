@@ -112,7 +112,7 @@ namespace Luqmit3ish.ViewModels
 
                 Order newOrder = new Order();
                 newOrder.CharId = UserId;
-                newOrder.ResId = _dishInfo.Restaurant.id;
+                newOrder.ResId = _dishInfo.Restaurant.Id;
                 newOrder.DishId = _dishInfo.Id;
                 newOrder.Date = DateTime.Now;
                 newOrder.Quantity = Counter;

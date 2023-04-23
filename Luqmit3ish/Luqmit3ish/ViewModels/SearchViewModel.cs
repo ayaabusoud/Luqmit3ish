@@ -20,13 +20,6 @@ namespace Luqmit3ish.ViewModels
         public ICommand FoodDetailCommand { protected set; get; }
         public ICommand BackCommand { protected set; get; }
 
-        private ObservableCollection<Dish> _dishes;
-
-        public ObservableCollection<Dish> Dishes
-        {
-            get => _dishes;
-            set => SetProperty(ref _dishes, value);
-        }
         private ObservableCollection<DishCard> _dishCard;
 
         public ObservableCollection<DishCard> DishCard

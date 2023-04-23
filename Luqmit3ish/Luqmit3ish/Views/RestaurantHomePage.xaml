@@ -62,7 +62,7 @@
                                                TextColor="{StaticResource SecondaryLight}" >
                                             <Label.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand , Source={x:Reference RestaurantPage}}"
-                                                                                      CommandParameter="{Binding id}"/>
+                                                                                      CommandParameter="{Binding Id}"/>
                                             </Label.GestureRecognizers>
                                         </Label>
                                     </Grid>
