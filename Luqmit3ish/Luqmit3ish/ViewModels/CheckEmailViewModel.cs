@@ -1,4 +1,4 @@
-﻿using Luqmit3ish.Views;
+using Luqmit3ish.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Luqmit3ish.ViewModels
@@ -13,11 +14,12 @@ namespace Luqmit3ish.ViewModels
     class CheckEmailViewModel : ViewModelBase
     {
         private INavigation _navigation { get; set; }
-        
+        private string _email;
 
         public ICommand ResetCommand { protected set; get; }
-        public CheckEmailViewModel(INavigation navigation)
+        public CheckEmailViewModel(INavigation navigation, string email)
         {
+            _email = email;
             this._navigation = navigation;
             ResetCommand = new Command(OnResetClicked);
 
@@ -27,7 +29,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                 //Application.Current.MainPage = new ResetPasswordPage();
+                 Application.Current.MainPage = new ResetPasswordForgetPage(_email);
 
             }
             catch (ArgumentException e)
@@ -39,7 +41,5 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
-
     }
-
 }
