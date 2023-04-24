@@ -47,7 +47,8 @@
                         <CollectionView x:Name="LocationCollectionView" 
                                         ItemsSource="{Binding LocationValues}" HeightRequest="120"
                                         SelectionMode="Multiple" SelectionChangedCommand="{Binding LocationMultiSelectionCommand}" 
-                                        SelectionChangedCommandParameter="{Binding SelectedItems, Source={x:Reference LocationCollectionView}}">
+                                        SelectionChangedCommandParameter="{Binding SelectedItems, Source={x:Reference LocationCollectionView}}"
+                                        SelectedItems="{Binding SelectedLocationValues}">
                             <CollectionView.ItemsLayout>
                                 <GridItemsLayout Orientation="Vertical" Span="3" HorizontalItemSpacing="15"
                                                  VerticalItemSpacing="15" />
