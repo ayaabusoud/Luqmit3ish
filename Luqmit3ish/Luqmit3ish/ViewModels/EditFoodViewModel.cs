@@ -27,7 +27,6 @@ namespace Luqmit3ish.ViewModels
         private FoodServices _foodServices;
 
         public ICommand SubmitCommand { protected set; get; }
-
         public ICommand Photo_clicked { protected set; get; }
         public ICommand Blus { get; private set; }
         public ICommand Minus { protected get; set; }
@@ -41,8 +40,8 @@ namespace Luqmit3ish.ViewModels
 
         public EditFoodViewModel(INavigation navigation, Dish dish)
         {
-            this._foodId = dish.Id;
-            this._navigation = navigation;
+            _foodId = dish.Id;
+            _navigation = navigation;
             _dish = dish;
             _foodServices = new FoodServices();
 
@@ -59,7 +58,7 @@ namespace Luqmit3ish.ViewModels
             SelectedType = TypeValues.FirstOrDefault();
             InitializeAsync();
         }
-       
+
         private void InitializeAsync()
         {
             try
@@ -72,6 +71,7 @@ namespace Luqmit3ish.ViewModels
                     KeepValid = _dish.KeepValid;
                     Pack_time = _dish.PickUpTime;
                     Quantity = _dish.Quantity;
+                    PhotoPath = _dish.Photo;
 
                     var selectedTypeName = _dish.Type;
                     var selectedType = TypeValues.FirstOrDefault(tf => tf.Name == selectedTypeName);
@@ -138,90 +138,11 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                bool userSelect = await App.Current.MainPage.DisplayAlert("Upload Image", "", "Take photo", "select from Gallary");
-
-                if (userSelect)
+                await PopupNavigation.Instance.PushAsync(new UploadImagePopUp());
+                MessagingCenter.Subscribe<UploadImagePopUpViewModel, string>(this, "PhotoPath", (sender, photoPath) =>
                 {
-                    TakePhoto();
-                }
-                else
-                {
-                    SelectFromGallary();
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-        }
-
-        private async void TakePhoto()
-        {
-            try
-            {
-                var result = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
-                {
-                    Title = "Take Photo"
+                    _photoPath = photoPath;
                 });
-
-                if (result != null)
-                {
-                    _photoPath = result.FullPath;
-                    await PopupNavigation.Instance.PushAsync(new PopUp("The photo have been updated successfully."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
-                }
-                else
-                {
-                    _photoPath = string.Empty;
-                }
-            }
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-
-        }
-
-        private async void SelectFromGallary()
-        {
-            try
-            {
-                await Permissions.RequestAsync<Permissions.Photos>();
-
-                var result = await MediaPicker.PickPhotoAsync();
-
-                if (result != null)
-                {
-                    _photoPath = result.FullPath;
-                    await PopupNavigation.Instance.PushAsync(new PopUp("The photo have been updated successfully."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
-                }
-                else
-                {
-                    Console.WriteLine("User cancelled photo picker.");
-                }
             }
             catch (ConnectionException e)
             {
@@ -280,10 +201,7 @@ namespace Luqmit3ish.ViewModels
                 };
 
                 UpdateDish(foodRequest);
-                await _navigation.PopAsync();
-                await PopupNavigation.Instance.PushAsync(new PopUp("The Dish have been updated successfully."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                
             }
             catch (ConnectionException e)
             {
@@ -356,7 +274,7 @@ namespace Luqmit3ish.ViewModels
                 var request = await _foodServices.UpdateDish(foodRequest, _foodId);
                 if (request)
                 {
-                    await AddNewPhoto(_photoPath, _foodId);
+                    await UpdatePhoto(_photoPath, _foodId);
                     return;
                 }
                 await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
@@ -386,11 +304,21 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private async Task AddNewPhoto(string photoPath, int foodId)
+        private async Task UpdatePhoto(string photoPath, int foodId)
         {
             try
             {
                 var response = await _foodServices.UploadPhoto(photoPath, foodId);
+                if (response)
+                {
+                    await _navigation.PopAsync();
+                    await PopupNavigation.Instance.PushAsync(new PopUp("The Dish have been updated successfully."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
+                    return;
+                }
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
             }
             catch (ConnectionException e)
             {

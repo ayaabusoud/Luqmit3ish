@@ -193,9 +193,20 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnResetClicked()
         {
-            //await _navigation.PushModalAsync(new ResetPassSettingsPage());
-
+            try
+            {
+                await _navigation.PushModalAsync(new ResetPasswordPage(UserInfo.Email));
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
+
         private async Task OnProfileClicked(User UserInfo)
         {
             try

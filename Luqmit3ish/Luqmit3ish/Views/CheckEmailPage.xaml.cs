@@ -1,4 +1,4 @@
-﻿using Luqmit3ish.ViewModels;
+using Luqmit3ish.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +13,10 @@ namespace Luqmit3ish.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CheckEmailPage : ContentPage
     {
-        public CheckEmailPage()
+        public CheckEmailPage(string email)
         {
             InitializeComponent();
-            this.BindingContext = new CheckEmailViewModel(Navigation);
+            this.BindingContext = new CheckEmailViewModel(Navigation,email);
         }
-
-
     }
 }
