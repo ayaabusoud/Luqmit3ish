@@ -13,6 +13,7 @@
     <Shell.Resources>
         <ResourceDictionary>
             <Style x:Key="BaseStyle" TargetType="Element">
+
                 <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryLight}, Dark={StaticResource PrimaryDark}}" />
                 <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Light=White, Dark={StaticResource PrimaryLight}}" />
                 <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light=White, Dark={StaticResource PrimaryLight}}" />
@@ -22,6 +23,7 @@
                 <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
                 <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
                 <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+
             </Style>
             <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
             <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
@@ -31,7 +33,7 @@
     <TabBar>
         <ShellContent Title="Home" Icon="icon_home.png"  Route="CharityHomePage"  ContentTemplate="{DataTemplate local:CharityHomePage}" />
         <ShellContent Title="Order" Icon="icon_list.png" Route="CharityOrderPage"  ContentTemplate="{DataTemplate local:CharityOrderPage}" />
-        <ShellContent Title="profile" Icon="icon_profile.png" Route="ProfilePage" ContentTemplate="{DataTemplate local:settingsPage}" />
+        <ShellContent Title="Profile" Icon="icon_profile.png" Route="ProfilePage" ContentTemplate="{DataTemplate local:settingsPage}" />
     </TabBar>
 
     <!--

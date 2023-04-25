@@ -49,7 +49,7 @@
                                             <ColumnDefinition Width="0.85*"/>
                                             <ColumnDefinition Width="0.15*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Label  Grid.Column="0" MaxLines="1" FontSize="Small" Style="{StaticResource LabelColor}">
+                                        <Label  TextColor="gray" Grid.Column="0" MaxLines="1" FontSize="Small" Style="{StaticResource LabelColor}">
                                             <Label.FormattedText>
                                                 <FormattedString>
                                                     <FormattedString.Spans>

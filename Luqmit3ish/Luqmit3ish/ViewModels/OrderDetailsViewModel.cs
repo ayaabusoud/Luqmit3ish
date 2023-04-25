@@ -31,25 +31,28 @@ namespace Luqmit3ish.ViewModels
         public ICommand MinusCommand { protected set; get; }
         public ICommand ProfileCommand { protected set; get; }
 
+        public ObservableCollection<OrderDish> Items { get; set; } = new ObservableCollection<OrderDish>();
+
         public OrderDetailsViewModel(OrderCard order, INavigation navigation)
         {
             this._navigation = navigation;
             this._order = order;
-            PlusCommand = new Command<int>(OnPlusClicked);
-            MinusCommand = new Command(async () => await OnMinusClickedAsync());
+            this.Items = order.Orders;
+            PlusCommand = new Command<OrderDish>(async (OrderDish orderDish) => await OnPlusClicked(orderDish));
+            MinusCommand = new Command<OrderDish>(async (OrderDish orderDish) => await OnMinusClickedAsync(orderDish));
             ProfileCommand = new Command<User>(async (User restaurant) => await OnProfileClicked(restaurant));
             _orderService = new OrderService();
             _foodService = new FoodServices();
         }
-  
-    
-
 
      
-        private async Task OnMinusClickedAsync()
+        private async Task OnMinusClickedAsync(OrderDish orderDish)
         {
             try
             {
+                Debug.WriteLine(orderDish.Quantity);
+                orderDish.Quantity--;
+                Debug.WriteLine(orderDish.Quantity);
                 //    await _orderService.UpdateOrderDishCount(orderId, "Minus");
             }
             catch (ConnectionException e)
@@ -75,12 +78,14 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private async void OnPlusClicked(int orderId)
+        private async Task OnPlusClicked(OrderDish orderDish)
         {
             try
             {
-               
-              //  await _orderService.UpdateOrderDishCount(orderId, "plus");
+                Debug.WriteLine(orderDish.Quantity);
+                orderDish.Quantity++;
+                Debug.WriteLine(orderDish.Quantity);
+                //  await _orderService.UpdateOrderDishCount(orderId, "plus");
             }
             catch (ConnectionException e)
             {

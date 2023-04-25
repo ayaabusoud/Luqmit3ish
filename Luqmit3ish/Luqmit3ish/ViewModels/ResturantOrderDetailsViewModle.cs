@@ -23,10 +23,7 @@ namespace Luqmit3ish.ViewModels
             get => _order;
             set => SetProperty(ref _order, value);
         }
-        private OrderService _orderService;
-        private FoodServices _foodService;
-        public ICommand PlusCommand { protected set; get; }
-        public ICommand MinusCommand { protected set; get; }
+
         public ICommand ProfileCommand { protected set; get; }
 
         public ResturantOrderDetailsViewModle(OrderCard order, INavigation navigation)
@@ -34,8 +31,6 @@ namespace Luqmit3ish.ViewModels
             this._navigation = navigation;
             this._order = order;
             ProfileCommand = new Command<User>(async (User restaurant) => await OnProfileClicked(restaurant));
-            _orderService = new OrderService();
-            _foodService = new FoodServices();
         }
 
         private async Task OnProfileClicked(User restaurant)
