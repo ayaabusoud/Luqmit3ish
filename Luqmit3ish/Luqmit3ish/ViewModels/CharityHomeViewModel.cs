@@ -97,7 +97,20 @@ namespace Luqmit3ish.ViewModels
                         {
                             DishCards.Clear();
                         }
+
                         DishCards = editedDishes;
+                        if (DishCards.Count == 0)
+                        {
+                            EmptyResult = true;
+                            Title = "No Filter Match Found";
+                            Description = "There are no filters that match the food card you're looking for!";
+                        }
+                        else
+                        {
+                            EmptyResult = false;
+                        }
+
+
                     });
 
                     DishCards = await _foodServices.GetDishCards();
@@ -108,7 +121,7 @@ namespace Luqmit3ish.ViewModels
                     Debug.WriteLine(e.Message);
                     await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
                     Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync(); 
+                    await PopupNavigation.Instance.PopAsync();
                     return;
                 }
                 catch (HttpRequestException e)
@@ -146,16 +159,19 @@ namespace Luqmit3ish.ViewModels
                     Description = "Come back later to explore new food!";
                 }
             }).Wait();
+
             }catch(Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
+
         }
 
         private async Task OnFilterClicked()
         {
             try
             {
+
                 if (DishCards.Count == 0)
                 {
                     await PopupNavigation.Instance.PushAsync(new PopUp("There is no Dishes to filter, please try again later."));
@@ -179,6 +195,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
+
                 if (DishCards.Count ==  0)
                 {
                     await PopupNavigation.Instance.PushAsync(new PopUp("There is no Dishes to Search for, please try again later."));
@@ -198,6 +215,5 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
-
     }
 }
