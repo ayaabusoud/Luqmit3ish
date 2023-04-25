@@ -47,7 +47,7 @@ namespace Luqmit3ish.ViewModels
             OnInit();
         }
 
-        private async void OnInit()
+        private async Task OnInit()
         {
 
             var id = Preferences.Get("userId", null);
@@ -83,6 +83,14 @@ namespace Luqmit3ish.ViewModels
                     if (dish.Quantity == 0)
                     {
                         Dishes.Remove(dish);
+                    }
+                    else if (dish.Quantity == 1)
+                    {
+                        dish.Items = "1 Dish";
+                    }
+                    else
+                    {
+                        dish.Items = dish.Quantity + " Dishes";
                     }
                 }
             }

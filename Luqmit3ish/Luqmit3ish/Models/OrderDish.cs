@@ -9,10 +9,10 @@ namespace Luqmit3ish.Models
         public int Id { get; set; }
         public int ResId { get; set; }
         public int CharId { get; set; }
-        public int DishId { get; set; }
-        public string DishName { get; set; }
-        public DateTime Date { get; set; }
+        public Dish Dish { get; set; }
         public int Quantity { get; set; }
         public Boolean Receive { get; set; }
+        public string Items { get; set; }
+
     }
 }
