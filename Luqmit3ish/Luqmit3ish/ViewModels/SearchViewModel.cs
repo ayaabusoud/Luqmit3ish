@@ -20,12 +20,19 @@ namespace Luqmit3ish.ViewModels
         public ICommand FoodDetailCommand { protected set; get; }
         public ICommand BackCommand { protected set; get; }
 
-        private ObservableCollection<DishCard> _dishCard;
+        private ObservableCollection<Dish> _dishes;
 
-        public ObservableCollection<DishCard> DishCard
+        public ObservableCollection<Dish> Dishes
         {
-            get => _dishCard;
-            set => SetProperty(ref _dishCard, value);
+            get => _dishes;
+            set => SetProperty(ref _dishes, value);
+        }
+        private ObservableCollection<DishCard> _dishCards;
+
+        public ObservableCollection<DishCard> DishCards
+        {
+            get => _dishCards;
+            set => SetProperty(ref _dishCards, value);
         }
         private bool _emptyResult;
 
@@ -37,9 +44,9 @@ namespace Luqmit3ish.ViewModels
 
         public SearchViewModel(INavigation navigation)
         {
-            this._navigation = navigation;       
-          
-            BackCommand = new Command(OnBackClicked);       
+            this._navigation = navigation;
+
+            BackCommand = new Command(OnBackClicked);
             foodServices = new FoodServices();
             FoodDetailCommand = new Command<DishCard>(async (DishCard dish) => await OnFrameClicked(dish));
             userServices = new UserServices();
@@ -73,6 +80,8 @@ namespace Luqmit3ish.ViewModels
                 {
                     _searchText = value;
                     SetProperty(ref _searchText, value);
+
+                    // Perform the search
                     if (SearchCommand.CanExecute(null))
                     {
                         SearchCommand.Execute(null);
@@ -105,43 +114,57 @@ namespace Luqmit3ish.ViewModels
 
         private void OnInit()
         {
-            Task.Run(async  () => { 
             try
+            {
+                Task.Run(async () =>
                 {
-                    DishCard = await foodServices.GetSearchCards(_searchText, "All");
-                    Debug.WriteLine(DishCard.Count);
-                }
-                catch (ConnectionException e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
-                catch (HttpRequestException e)
-                {
-                    throw new HttpRequestException(e.Message);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
-                if (DishCard.Count > 0)
-                {
-                    EmptyResult = false;
-                    foreach (DishCard dish in DishCard)
+                    try
                     {
-                        if (dish.Quantity == 0)
+                        DishCards = await foodServices.GetSearchCards(_searchText, "Dishes");
+                        Debug.WriteLine(DishCards.Count);
+                    }
+                    catch (ConnectionException e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
+                    catch (HttpRequestException e)
+                    {
+                        throw new HttpRequestException(e.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
+                    if (DishCards.Count > 0)
+                    {
+                        EmptyResult = false;
+                        foreach (DishCard dish in DishCards)
                         {
-                            DishCard.Remove(dish);
+                            if (dish.Quantity == 0)
+                            {
+                                DishCards.Remove(dish);
+                            }
+                            else if (dish.Quantity == 1)
+                            {
+                                dish.Items = "1 Dish";
+                            }
+                            else
+                            {
+                                dish.Items = dish.Quantity + " Dishes";
+                            }
                         }
                     }
-                }
-                else
-                {
-                    EmptyResult = true;
+                    else
+                    {
+                        EmptyResult = true;
 
-                }
+                    }
 
-            }).Wait();
-           
+                }).Wait();
+            }catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
 
         }
         private async Task OnFrameClicked(DishCard dish)

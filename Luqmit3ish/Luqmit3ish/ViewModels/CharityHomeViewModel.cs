@@ -39,12 +39,12 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _description, value);
         }
 
-        private ObservableCollection<DishCard> _dishCard;
+        private ObservableCollection<DishCard> _dishCards;
 
-        public ObservableCollection<DishCard> DishCard
+        public ObservableCollection<DishCard> DishCards
         {
-            get => _dishCard;
-            set => SetProperty(ref _dishCard, value);
+            get => _dishCards;
+            set => SetProperty(ref _dishCards, value);
         }
         private bool _emptyResult;
 
@@ -84,17 +84,22 @@ namespace Luqmit3ish.ViewModels
 
         private void OnInit()
         {
+            try
+            {
+
+            
             Task.Run(async () => {
                 try
                 {
                     MessagingCenter.Subscribe<FilterFoodViewModel, ObservableCollection<DishCard>>(this, "EditDishes", (sender, editedDishes) =>
                     {
-                        if (DishCard != null)
+                        if (DishCards != null)
                         {
-                            DishCard.Clear();
+                            DishCards.Clear();
                         }
-                        DishCard = editedDishes;
-                        if (DishCard.Count == 0)
+
+                        DishCards = editedDishes;
+                        if (DishCards.Count == 0)
                         {
                             EmptyResult = true;
                             Title = "No Filter Match Found";
@@ -104,9 +109,11 @@ namespace Luqmit3ish.ViewModels
                         {
                             EmptyResult = false;
                         }
+
+
                     });
 
-                    DishCard = await _foodServices.GetDishCards();
+                    DishCards = await _foodServices.GetDishCards();
 
                 }
                 catch (ConnectionException e)
@@ -125,15 +132,24 @@ namespace Luqmit3ish.ViewModels
                 {
                     Debug.WriteLine(e.Message);
                 }
-                if (DishCard.Count > 0)
+                if (DishCards.Count > 0)
                 {
                     EmptyResult = false;
-                    foreach (DishCard dish in DishCard)
+                    foreach (DishCard dish in DishCards)
                     {
                         if (dish.Quantity == 0)
                         {
-                            DishCard.Remove(dish);
+                            DishCards.Remove(dish);
                         }
+                        else if (dish.Quantity == 1)
+                        {
+                            dish.Items = "1 Dish";
+                        }
+                        else
+                        {
+                            dish.Items = dish.Quantity + " Dishes";
+                        }
+
                     }
                 }
                 else
@@ -144,12 +160,25 @@ namespace Luqmit3ish.ViewModels
                 }
             }).Wait();
 
+            }catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+
         }
 
         private async Task OnFilterClicked()
         {
             try
             {
+
+                if (DishCards.Count == 0)
+                {
+                    await PopupNavigation.Instance.PushAsync(new PopUp("There is no Dishes to filter, please try again later."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
+                    return;
+                }
                 await _navigation.PushAsync(new FilterFoodPage());
             }
             catch (ArgumentException e)
@@ -166,7 +195,8 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                if (DishCard.Count == 0)
+
+                if (DishCards.Count ==  0)
                 {
                     await PopupNavigation.Instance.PushAsync(new PopUp("There is no Dishes to Search for, please try again later."));
                     Thread.Sleep(3000);

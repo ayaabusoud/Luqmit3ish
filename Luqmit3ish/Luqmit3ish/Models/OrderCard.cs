@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace Luqmit3ish.Models
@@ -8,6 +9,7 @@ namespace Luqmit3ish.Models
     {
         public int Id { get; set; }
         public User Owner { get; set; }
-        public List<OrderDish> Orders { get; set; }
+        public ObservableCollection<OrderDish> Orders { get; set; }
+        public string Items { get; set; }
     }
 }
