@@ -13,10 +13,10 @@ namespace Luqmit3ish.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CheckEmailPage : ContentPage
     {
-        public CheckEmailPage()
+        public CheckEmailPage(string Email)
         {
             InitializeComponent();
-            this.BindingContext = new CheckEmailViewModel(Navigation);
+            this.BindingContext = new CheckEmailViewModel(Navigation, Email);
         }
 
 
