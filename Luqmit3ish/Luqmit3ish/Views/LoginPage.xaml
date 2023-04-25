@@ -49,7 +49,7 @@
                             </StackLayout>
                         </Frame>
                         <Label Text="Forgot password?" Style="{StaticResource LabelColor}"
-                               VerticalOptions="Center" HorizontalOptions="Start" >
+                               VerticalOptions="Center" HorizontalOptions="Start" FontAttributes="Bold">
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ForgotPassCommand}" />
                             </Label.GestureRecognizers>

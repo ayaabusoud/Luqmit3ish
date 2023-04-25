@@ -15,5 +15,6 @@ namespace Luqmit3ish.Models
         public int KeepValid { get; set; }
         public String PickUpTime { get; set; }
         public int Quantity { get; set; }
+        public string Items { get; set; }
     }
 }
