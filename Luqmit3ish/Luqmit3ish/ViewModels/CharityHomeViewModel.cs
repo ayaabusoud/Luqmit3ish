@@ -94,6 +94,16 @@ namespace Luqmit3ish.ViewModels
                             DishCard.Clear();
                         }
                         DishCard = editedDishes;
+                        if (DishCard.Count == 0)
+                        {
+                            EmptyResult = true;
+                            Title = "No Filter Match Found";
+                            Description = "There are no filters that match the food card you're looking for!";
+                        }
+                        else
+                        {
+                            EmptyResult = false;
+                        }
                     });
 
                     DishCard = await _foodServices.GetDishCards();
@@ -104,7 +114,7 @@ namespace Luqmit3ish.ViewModels
                     Debug.WriteLine(e.Message);
                     await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
                     Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync(); 
+                    await PopupNavigation.Instance.PopAsync();
                     return;
                 }
                 catch (HttpRequestException e)
@@ -133,20 +143,13 @@ namespace Luqmit3ish.ViewModels
                     Description = "Come back later to explore new food!";
                 }
             }).Wait();
-  
+
         }
 
         private async Task OnFilterClicked()
         {
             try
             {
-                if (DishCard.Count == 0)
-                {
-                    await PopupNavigation.Instance.PushAsync(new PopUp("There is no Dishes to filter, please try again later."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
-                    return;
-                }
                 await _navigation.PushAsync(new FilterFoodPage());
             }
             catch (ArgumentException e)
@@ -163,7 +166,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                if (DishCard.Count ==  0)
+                if (DishCard.Count == 0)
                 {
                     await PopupNavigation.Instance.PushAsync(new PopUp("There is no Dishes to Search for, please try again later."));
                     Thread.Sleep(3000);
@@ -182,6 +185,5 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
-
     }
 }
