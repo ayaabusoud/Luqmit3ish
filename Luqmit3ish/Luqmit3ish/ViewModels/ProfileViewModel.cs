@@ -4,40 +4,81 @@ using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using Rg.Plugins.Popup.Services;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
+using static System.Net.WebRequestMethods;
 
 
 namespace Luqmit3ish.ViewModels
 {
     class ProfileViewModel : ViewModelBase
     {
+        private INavigation _navigation { get; set; }
         public ICommand EditCommand { protected set; get; }
         public ICommand DoneCommand { protected set; get; }
         public ICommand CancelCommand { protected set; get; }
+        public ICommand EditPhotoClicked { protected set; get; }
+        public string ConstName { protected set; get; }
+        private User _userInfo;
 
-       
-        public ProfileViewModel(INavigation navigation, User UserInfo)
+        public ProfileViewModel(INavigation navigation, User userInfo)
         {
-            EditCommand = new Command( OnEditClicked);
+            this._navigation = navigation;
+            _userInfo = userInfo;
+            ConstName = userInfo.Name;
             DoneCommand = new Command(async () => await OnDoneClicked());
-            CancelCommand=new Command(OnCancelClicked);
+            CancelCommand = new Command(async () => await OnCancelClicked());
+            EditPhotoClicked = new Command(async () => await OnEditPhotoClicked());
             userServices = new UserServices();
-            this._userInfo = UserInfo;
             OnInit();
         }
 
-        private User _userInfo;
-        public User UserInfo
+        private async Task OnEditPhotoClicked()
         {
-            get => _userInfo;
-            set => SetProperty(ref _userInfo, value);
+            try
+            {
+                string photoPath = string.Empty;
+                await Permissions.RequestAsync<Permissions.Photos>();
+
+                var result = await MediaPicker.PickPhotoAsync();
+
+                if (result != null)
+                {
+                    photoPath = result.FullPath;
+                    _photo = photoPath;
+                    OnPropertyChanged(nameof(Photo));
+                }
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await Application.Current.MainPage.DisplayAlert("Error", "Something went bad on this reservation, you can try again", "Ok");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
         }
+
+        
+
         public UserServices userServices;
         private string _email;
         public string Email
@@ -46,31 +87,23 @@ namespace Luqmit3ish.ViewModels
             set
             {
                 SetProperty(ref _email, value);
-                if (Regex.IsMatch(value, "^[^@]+@[^\\.]+\\..+$"))
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    EmailErrorVisible = false;
+                    ErrorVisible = true;
+                    ErrorMessage = "Email address is required";
+                }
+                else if (Regex.IsMatch(value, "^[^@]+@[^\\.]+\\..+$"))
+                {
+                    ErrorVisible = false;
                 }
                 else
                 {
-                    EmailErrorVisible = true;
-                    EmailErrorMessage = "Invalid email address";
+                    ErrorVisible = true;
+                    ErrorMessage = "Invalid email address";
                 }
             }
         }
 
-        private bool _emailErrorVisible;
-        public bool EmailErrorVisible
-        {
-            get => _emailErrorVisible;
-            set => SetProperty(ref _emailErrorVisible, value);
-        }
-        
-        private string _emailErrorMessage;
-        public string EmailErrorMessage
-        {
-            get => _emailErrorMessage;
-            set => SetProperty(ref _emailErrorMessage, value);
-        }
 
         private string _phone;
         public string Phone
@@ -79,31 +112,31 @@ namespace Luqmit3ish.ViewModels
             set
             {
                 SetProperty(ref _phone, value);
-                if (Regex.IsMatch(value, "^[0-9]{8,10}$"))
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    PhoneErrorVisible = false;
+                    ErrorVisible = true;
+                    ErrorMessage = "Phone is required";
+                }
+                else if (Regex.IsMatch(value, "^[0-9]{8,10}$"))
+                {
+                    ErrorVisible = false;
                 }
                 else
                 {
-                    PhoneErrorVisible = true;
-                    PhoneErrorMessage = "Phone number must be 8-10 digits";
+                    ErrorVisible = true;
+                    ErrorMessage = "Phone number must be 8-10 digits";
                 }
             }
         }
 
-        private bool _phoneErrorVisible;
-        public bool PhoneErrorVisible
+
+        private string _errorMessage;
+        public string ErrorMessage
         {
-            get => _phoneErrorVisible;
-            set => SetProperty(ref _phoneErrorVisible, value);
+            get => _errorMessage;
+            set => SetProperty(ref _errorMessage, value);
         }
 
-        private string _phoneErrorMessage;
-        public string PhoneErrorMessage
-        {
-            get => _phoneErrorMessage;
-            set => SetProperty(ref _phoneErrorMessage, value);
-        }
 
         private string _name;
         public string Name
@@ -112,30 +145,21 @@ namespace Luqmit3ish.ViewModels
             set
             {
                 SetProperty(ref _name, value);
-                if (Regex.IsMatch(value, "^[a-zA-Z0-9 ]*$"))
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    NameErrorVisible = false;
+                    ErrorVisible = true;
+                    ErrorMessage = "Name is required";
+                }
+                else if (Regex.IsMatch(value, "^[a-zA-Z0-9 ]*$"))
+                {
+                    ErrorVisible = false;
                 }
                 else
                 {
-                    NameErrorVisible = true;
-                    NameErrorMessage = "Name can only contain letters,numbers and spaces";
+                    ErrorVisible = true;
+                    ErrorMessage = "Name can only contain letters,numbers and spaces";
                 }
             }
-        }
-
-        private bool _nameErrorVisible;
-        public bool NameErrorVisible
-        {
-            get => _nameErrorVisible;
-            set => SetProperty(ref _nameErrorVisible, value);
-        }
-
-        private string _nameErrorMessage;
-        public string NameErrorMessage
-        {
-            get => _nameErrorMessage;
-            set => SetProperty(ref _nameErrorMessage, value);
         }
 
         private string _location;
@@ -145,41 +169,38 @@ namespace Luqmit3ish.ViewModels
             set
             {
                 SetProperty(ref _location, value);
-                if (Regex.IsMatch(value, "^[a-zA-Z0-9 ]*$"))
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    LocationErrorVisible = false;
-
+                    ErrorVisible = true;
+                    ErrorMessage = "Location is required";
+                }
+                if (Regex.IsMatch(value, "^[a-zA-Z0-9]*$"))
+                {
+                    ErrorVisible = false;
                 }
 
                 else
                 {
-                    LocationErrorVisible = true;
-                    LocationErrorMessage = "Location can only contain letters, numbers, and spaces";
+                    ErrorVisible = true;
+                    ErrorMessage = "Location can only contain letters, numbers, and spaces";
                 }
             }
         }
         private string _photo;
         public string Photo
         {
-            get=> _photo;
+            get => _photo;
             set
             {
                 SetProperty(ref _photo, value);
             }
         }
-       
-        private bool _locationErrorVisible;
-        public bool LocationErrorVisible
-        {
-            get => _locationErrorVisible;
-            set => SetProperty(ref _locationErrorVisible, value);
-        }
 
-        private string _locationErrorMessage;
-        public string LocationErrorMessage
+        private bool _errorVisible;
+        public bool ErrorVisible
         {
-            get => _locationErrorMessage;
-            set => SetProperty(ref _locationErrorMessage, value);
+            get => _errorVisible;
+            set => SetProperty(ref _errorVisible, value);
         }
 
         private bool _edit = false;
@@ -195,94 +216,134 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _viewEnable, value);
         }
 
-     
-
-        private void OnInit()
+        private async void OnInit()
         {
-            if (_userInfo != null)
+            string email;
+
+            try
+            {
+                email = Preferences.Get("userEmail", null);
+                if (string.IsNullOrEmpty(email))
+                {
+                    return;
+                }
+
+                if (_userInfo != null)
                 {
                     Email = _userInfo.Email;
                     Phone = _userInfo.Phone;
                     Name = _userInfo.Name;
                     Location = _userInfo.Location;
-            }  
-        }
+                    Photo = _userInfo.Photo;
+                }
+            }
+            catch (ConnectionException)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+            }
+            catch (HttpRequestException)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
 
+            }
+            catch (Exception)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
+            }
+
+        }
         private async Task OnDoneClicked()
         {
-            User user = new User
-            {
-                Id = _userInfo.Id,
-                Name = Name,
-                Email = Email,
-                Location = Location,
-                Phone = Phone,
-                Photo = UserInfo.Photo,
-                Type = _userInfo.Type,
-                Password = _userInfo.Password
-            };
-
-            if (EmailErrorVisible || PhoneErrorVisible || LocationErrorVisible || NameErrorVisible)
-                    {
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please make sure all information is valid before saving changes."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-                        return;
-                    }
+            string email;
 
             try
             {
-                await userServices.EditProfile(user);
-                
-            }
+                email = Preferences.Get("userEmail", null);
+                if (string.IsNullOrEmpty(email))
+                {
+                    return;
+                }
+               
+                if (_userInfo != null)
+                {
+                    User user = new User
+                    {
+                        Id = _userInfo.Id,
+                        Name = Name,
+                        Email = _userInfo.Email,
+                        Location = Location,
+                        Phone = Phone,
+                        Photo = Photo,
+                        Type = _userInfo.Type,
+                        Password = _userInfo.Password
+                    };
+                    if ((ErrorVisible ))
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Warning", "Please make sure all information is valid before saving changes.", "OK");
+                        return;
+                    }
+                    if (!HasFieldsChanged(_userInfo))
+                    {
+                        return;
+                    }
 
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                    await userServices.EditProfile(user);
+                    if(Photo != null)
+                    {
+                        await userServices.UploadPhoto(Photo, _userInfo.Id );
+                    }
+                    await _navigation.PopModalAsync();
+                    await PopupNavigation.Instance.PushAsync(new PopUp("The dish has been added successfully"));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
+                }
             }
-            catch (HttpRequestException e)
+            catch (ConnectionException)
             {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
             }
-            catch (Exception e)
+            catch (HttpRequestException)
             {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
+
             }
-            EditEnable = false;
-            ViewEnable = true;
+            catch (Exception)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
+            }
         }
-            
-        
-        private void OnCancelClicked()
+
+        public bool HasFieldsChanged(User user)
         {
-
-           Email = _userInfo.Email;
-           Phone = _userInfo.Phone;
-           Name = _userInfo.Name;
-           Location = _userInfo.Location;
-                
-           ViewEnable = true;
-           EditEnable = false;
-
+            return (_email != user.Email) || (_phone != user.Phone) || (_name != user.Name) || (_location != user.Location || _photo!=user.Photo);
         }
 
-        private void OnEditClicked()
+
+        private async Task OnCancelClicked()
         {
-           EditEnable = true;
-           ViewEnable = false;
+            string email;
+            try
+            {
+                email = Preferences.Get("userEmail", null);
+                if (email is null)
+                {
+                    return;
+                }
+                await _navigation.PopModalAsync();
+            }
+            catch (ConnectionException)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+            }
+            catch (HttpRequestException)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
+
+            }
+            catch (Exception)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
+            }
         }
-      
-    
-
-
     }
 }

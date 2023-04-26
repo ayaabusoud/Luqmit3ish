@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.CharityHomePage"
              Title="Home"
-             x:Name="CharityPage">
+             x:Name="CharityPage"
+             Style="{StaticResource ContentPageColor}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="icon_search.png" Command="{Binding SearchCommand}" />
         <ToolbarItem Icon="icon_filter.png" Command="{Binding FilterCommand}" />
@@ -17,19 +18,21 @@
                        WidthRequest="200"
                        VerticalOptions="Center"/>
                 <Label Text="{Binding Title}"
-                   FontSize="Medium"
-                   TextColor="DimGray"
-                   HorizontalOptions="Fill" 
-                   HorizontalTextAlignment="Center"
-                   FontAttributes="Bold"
-                   Margin="0,2,0,0"/>
+                       FontSize="Medium"
+                       TextColor="{AppThemeBinding Light=DimGray, Dark={StaticResource TextColorDark}}"
+                       HorizontalOptions="Fill" 
+                       HorizontalTextAlignment="Center"
+                       FontAttributes="Bold"
+                       Margin="0,2,0,0"
+                       Style="{StaticResource LabelColor}"/>
                 <Label Text="{Binding Description}" 
-                   FontSize="Small"
-                   HorizontalOptions="Fill" 
-                   HorizontalTextAlignment="Center"
-                   Margin="0,0,0,10"/>
+                       FontSize="Small"
+                       HorizontalOptions="Fill" 
+                       HorizontalTextAlignment="Center"
+                       Margin="0,0,0,10"
+                       Style="{StaticResource LabelColor}"/>
             </StackLayout>
-            <CollectionView ItemsSource="{Binding DishCard}">
+            <CollectionView ItemsSource="{Binding DishCards}">
 
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="6"/>
@@ -45,17 +48,16 @@
                                 <StackLayout>
                                     <Image Source="{Binding Photo}"  Style="{StaticResource ImageFoodCard}" />
                                     <Label MaxLines="1" FontAttributes="Bold"
-                                           TextColor="Black" Text="{Binding DishName}" 
+                                           Style="{StaticResource LabelColor}" Text="{Binding DishName}" 
                                            Margin="15,0" FontSize="Medium"/>
                                     <Label WidthRequest="150" MaxLines="1" Text="{Binding Restaurant.Name}" 
-                                           Margin="15,0" FontSize="Small"/>
-                                    <Label MaxLines="1" Margin="15,0,0,0"  >
+                                           Margin="15,0" FontSize="Small" Style="{StaticResource LabelColor}"/>
+                                    <Label  FontSize="Small" MaxLines="1" Margin="15,0,0,0" Style="{StaticResource LabelColor}">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
-                                                    <Span FontSize="18"  Text="{Binding Quantity}"
-                                                          TextColor="{StaticResource PrimaryLight}"/>
-                                                    <Span FontSize="12" Text=" Dishes"  />
+                                                    <Span  Text="{Binding Quantity}" />
+                                                    <Span  Text=" Dishes"  />
                                                 </FormattedString.Spans>
                                             </FormattedString>
                                         </Label.FormattedText>
@@ -66,7 +68,6 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
         </Grid>
     </ContentPage.Content>
 </ContentPage>

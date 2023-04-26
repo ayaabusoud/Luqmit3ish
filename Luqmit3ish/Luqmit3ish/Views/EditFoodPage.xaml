@@ -4,13 +4,13 @@
              x:Class="Luqmit3ish.Views.EditFoodPage"
              Title="Edit Food"
              Shell.TabBarIsVisible="False"
-             BackgroundColor="#EDF2F5">
+             Style="{StaticResource ContentPageColor}">
     <ContentPage.Content>
         <ScrollView HeightRequest="500">
             <StackLayout Margin="20">
-                <Frame CornerRadius="10" Padding="0">
+                <Frame CornerRadius="10" Padding="0" Style="{StaticResource FrameColor}">
                     <StackLayout Margin="5">
-                        <Label Text="Photo" TextColor="Black"/>
+                        <Label Text="Photo" Style="{StaticResource LabelColor}"/>
                         <Image Source="{Binding ImageSource}"/>
                         <Button Text="&#xf083;" FontFamily="FontAwesomeIcons" 
                                 FontSize="60" TextColor="{StaticResource PrimaryLight}"
@@ -18,31 +18,23 @@
                                 Margin="0,-20,0,0" Command="{Binding TakePhotoCommand}"/>
                     </StackLayout>
                 </Frame>
-                <Frame CornerRadius="10" Padding="0">
+
+                <Frame CornerRadius="10" Padding="0" Style="{StaticResource FrameColor}">
                     <StackLayout Margin="5">
-                        <Label Text="Type" TextColor="Black"/>
-                        <CollectionView ItemsSource="{Binding TypeValues}" HeightRequest="100" 
-                                        SelectionMode="Single" SelectedItem="{Binding SelectedType}"
-                                        SelectionChangedCommand="{Binding MyCollectionSelectedCommand}">
+                        <Label Text="Type" Style="{StaticResource LabelColor}"/>
+                        <CollectionView ItemsSource="{Binding TypeValues}" HeightRequest="100" SelectionMode="Single" SelectedItem="{Binding SelectedType}" SelectionChangedCommand="{Binding MyCollectionSelectedCommand}">
                             <CollectionView.ItemsLayout>
                                 <GridItemsLayout HorizontalItemSpacing="15" Orientation="Horizontal"/>
                             </CollectionView.ItemsLayout>
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Padding="5" BackgroundColor="{Binding StackLayoutBackgroundColor}">
-                                        <Frame Padding="0" CornerRadius="10" WidthRequest="70" 
-                                               HeightRequest="70" 
-                                               BackgroundColor="{Binding StackLayoutBackgroundColor1}" 
-                                               BorderColor="{StaticResource PrimaryLight}" >
+                                    <StackLayout Padding="5" Style="{StaticResource StackLayoutColor}">
+                                        <Frame Padding="0" CornerRadius="10" WidthRequest="70" HeightRequest="70"  BackgroundColor="{Binding FrameBackgroundColor}" BorderColor="{StaticResource PrimaryLight}" >
                                             <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-                                                <Label Text="{Binding IconText}"
-                                                       FontFamily="FontAwesomeIcons" FontSize="Title"
-                                                       TextColor="{StaticResource PrimaryLight}" />
+                                                <Label Text="{Binding IconText}" FontFamily="FontAwesomeIcons" FontSize="Title" TextColor="{Binding TextBackgroundColor}" />
                                             </StackLayout>
                                         </Frame>
-                                        <Label Text="{Binding Name}"  FontSize="Small" 
-                                               HorizontalOptions="Center" FontAttributes="Bold"
-                                               TextColor="Black"/>
+                                        <Label Text="{Binding Name}"  FontSize="Small" HorizontalOptions="Center" FontAttributes="Bold" Style="{StaticResource LabelColor}"/>
                                     </StackLayout>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
@@ -50,34 +42,34 @@
                     </StackLayout>
                 </Frame>
 
-                <Frame CornerRadius="10" Padding="0">
+                <Frame CornerRadius="10" Padding="0" Style="{StaticResource FrameColor}">
                     <StackLayout Spacing="0" Margin="5">
-                        <Frame Padding="0" HasShadow="False">
+                        <Frame Padding="0" HasShadow="False" Style="{StaticResource FrameColor}">
                             <StackLayout  Spacing="-10" >
-                                <Label Text="Title" TextColor="Black"/>
+                                <Label Text="Title" Style="{StaticResource LabelColor}"/>
                                 <Entry Placeholder="ex: Pizza" FontSize="Small" 
-                                       TextColor="Black" Text="{Binding Title}"/>
+                                       Style="{StaticResource LabelColor}" Text="{Binding Title}"/>
                             </StackLayout>
                         </Frame>
                         
-                        <Frame Padding="0" HasShadow="False">
+                        <Frame Padding="0" HasShadow="False" Style="{StaticResource FrameColor}">
                             <StackLayout Spacing="-10" >
-                                <Label Text="Description" TextColor="Black"/>
+                                <Label Text="Description" Style="{StaticResource LabelColor}"/>
                                 <Entry Placeholder="ex: mini pizza with chees"
-                                       FontSize="Small" TextColor="Black" Text="{Binding Description}"/>
+                                       FontSize="Small" Style="{StaticResource LabelColor}" Text="{Binding Description}"/>
                             </StackLayout>
                         </Frame>
                     </StackLayout>
                 </Frame>
 
-                <Frame CornerRadius="10" Padding="0">
+                <Frame CornerRadius="10" Padding="0" Style="{StaticResource FrameColor}">
                     <StackLayout Spacing="0" Margin="10">
                         <Grid >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="7*"/>
                                 <ColumnDefinition Width="3*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Text="Keep listed for (day/s)" TextColor="Black"/>
+                            <Label Text="Keep listed for (day/s)" Style="{StaticResource LabelColor}"/>
                                 
                             <StackLayout Orientation="Horizontal" Margin="0,-5,20,0"
                                          WidthRequest="100" VerticalOptions="Center" Grid.Column="1">
@@ -88,7 +80,7 @@
                                     </Label.GestureRecognizers>
                                 </Label>
                                 <Label Text="{Binding KeepValid}" FontAttributes="Bold"
-                                       Margin="3,7,3,0" FontSize="Medium" TextColor="Black"/>
+                                       Margin="3,7,3,0" FontSize="Medium" Style="{StaticResource LabelColor}"/>
                                 <Label Text="&#xf056;" FontFamily="FontAwesomeIcons"
                                        FontSize="20" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
                                     <Label.GestureRecognizers>
@@ -100,27 +92,27 @@
                     </StackLayout>
                 </Frame>
 
-                <Frame CornerRadius="10" Padding="0">
+                <Frame CornerRadius="10" Padding="0" Style="{StaticResource FrameColor}">
                     <StackLayout Spacing="0" Margin="5">
-                        <Frame Padding="0" HasShadow="False">
+                        <Frame Padding="0" HasShadow="False" Style="{StaticResource FrameColor}">
                             <StackLayout  Spacing="-10" >
-                                <Label Text="Pack-up Time" TextColor="Black"/>
+                                <Label Text="Pack-up Time" Style="{StaticResource LabelColor}"/>
                                 <Entry Placeholder="e.g weekday every evening only"
-                                       FontSize="Small" TextColor="Black" Text="{Binding Pack_time}"/>
+                                       FontSize="Small" Style="{StaticResource LabelColor}" Text="{Binding Pack_time}"/>
                             </StackLayout>
                         </Frame>
                     </StackLayout>
                 </Frame>
 
-                <Frame CornerRadius="10" Padding="0">
+                <Frame CornerRadius="10" Padding="0" Style="{StaticResource FrameColor}">
                     <StackLayout Spacing="0" Margin="5">
-                        <Frame Padding="0" HasShadow="False" Margin="5">
+                        <Frame Padding="0" HasShadow="False" Margin="5" Style="{StaticResource FrameColor}">
                             <Grid >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="7*"/>
                                     <ColumnDefinition Width="3*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Text="Quantity" TextColor="Black"/>
+                                <Label Text="Quantity" Style="{StaticResource LabelColor}"/>
                                 
                                 <StackLayout Orientation="Horizontal" Margin="0,-5,20,0"
                                              WidthRequest="100" VerticalOptions="Center" Grid.Column="1">
@@ -132,7 +124,7 @@
                                         </Label.GestureRecognizers>
                                     </Label>
                                     <Label Text="{Binding Quantity}" FontAttributes="Bold"
-                                           Margin="3,7,3,0" FontSize="Medium" TextColor="Black"/>
+                                           Margin="3,7,3,0" FontSize="Medium" Style="{StaticResource LabelColor}"/>
                                     <Label Text="&#xf056;" FontFamily="FontAwesomeIcons"
                                            FontSize="20" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
                                         <Label.GestureRecognizers>

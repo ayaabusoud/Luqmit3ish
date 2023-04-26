@@ -4,20 +4,14 @@ using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
-using Xamarin.Forms.PancakeView;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -76,7 +70,7 @@ namespace Luqmit3ish.ViewModels
             get => _recievedColor;
             set => SetProperty(ref _recievedColor, value);
         }
-        private string _notRecievedColor = "Black";
+        private string _notRecievedColor = "DarkOrange";
         public string NotRecievedColor
         {
             get => _notRecievedColor;
@@ -85,8 +79,10 @@ namespace Luqmit3ish.ViewModels
         private void OnRecievedClicked()
         {
             IsVisible = false;
-            RecievedColor = "Black";
+            RecievedColor = "DarkOrange";
             NotRecievedColor = "#D9D9D9";
+            NotRecievedTextColor = Color.LightGray;
+            RecievedTextColor = Color.Black;
             Selected(true);
             ReceievedCheck = false;
         }
@@ -94,8 +90,10 @@ namespace Luqmit3ish.ViewModels
         private void OnNotRecievedClicked()
         {
             IsVisible = true;
-            NotRecievedColor = "Black";
+            NotRecievedColor = "DarkOrange";
             RecievedColor = "#D9D9D9";
+            RecievedTextColor = Color.LightGray;
+            NotRecievedTextColor = Color.Black;
             Selected(false);
             ReceievedCheck = true;
         }
@@ -160,12 +158,26 @@ namespace Luqmit3ish.ViewModels
 
    
 
-        private ObservableCollection<OrderCard> _orderCard;
+        private ObservableCollection<OrderCard> _orderCards;
 
-        public ObservableCollection<OrderCard> OrderCard
+        public ObservableCollection<OrderCard> OrderCards
         {
-            get => _orderCard;
-            set => SetProperty(ref _orderCard, value);
+            get => _orderCards;
+            set => SetProperty(ref _orderCards, value);
+        }
+
+        private Color  _notRecievedTextColor = Color.Black;
+        public Color NotRecievedTextColor
+        {
+            get => _notRecievedTextColor;
+            set => SetProperty(ref _notRecievedTextColor, value);
+        }
+
+        private Color _recievedTextColor;
+        public Color RecievedTextColor
+        {
+            get => _recievedTextColor;
+            set => SetProperty(ref _recievedTextColor, value);
         }
 
         private async void Selected(bool status)
@@ -182,7 +194,7 @@ namespace Luqmit3ish.ViewModels
             var userId = int.Parse(id);
             try
             {
-                OrderCard = await _orderService.GetRestaurantOrders(userId, status);
+                OrderCards = await _orderService.GetRestaurantOrders(userId, status);
             }
             catch (ConnectionException e)
             {
@@ -205,7 +217,7 @@ namespace Luqmit3ish.ViewModels
                 Thread.Sleep(3000);
                 await PopupNavigation.Instance.PopAsync();
             }
-            if (OrderCard.Count > 0)
+            if (OrderCards.Count > 0)
             {
                 EmptyResult = false;
             }
@@ -219,3 +231,4 @@ namespace Luqmit3ish.ViewModels
      
     }
 }
+

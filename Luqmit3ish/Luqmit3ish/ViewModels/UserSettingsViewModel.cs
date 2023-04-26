@@ -65,6 +65,23 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _userInfo, value);
         }
 
+        public bool DarkTheme
+        {
+            get => Preferences.Get("DarkTheme", false);
+            set
+            {
+                if (value)
+                {
+                    App.Current.UserAppTheme = OSAppTheme.Dark;
+                }
+                else
+                {
+                    App.Current.UserAppTheme = OSAppTheme.Light;
+                }
+                Preferences.Set("DarkTheme", value);
+                OnPropertyChanged(nameof(DarkTheme));
+            }
+        }
 
         private async void OnInit()
         {
@@ -176,9 +193,20 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnResetClicked()
         {
-            //await _navigation.PushModalAsync(new ResetPassSettingsPage());
-
+            try
+            {
+                await _navigation.PushModalAsync(new ResetPasswordPage(UserInfo.Email));
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
+
         private async Task OnProfileClicked(User UserInfo)
         {
             try

@@ -4,7 +4,8 @@
              x:Class="Luqmit3ish.Views.RestaurantHomePage"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Title="Home"
-             x:Name="RestaurantPage">
+             x:Name="RestaurantPage"
+             Style="{StaticResource ContentPageColor}">
 
     <ContentPage.Content>
         <Grid Margin="16,0,16,25" HorizontalOptions="Fill" VerticalOptions="Fill">
@@ -15,7 +16,7 @@
                        VerticalOptions="Center"/>
                 <Label Text="Add New Dishes" 
                    FontSize="Medium"
-                   TextColor="DimGray"
+                   TextColor="{AppThemeBinding Light=DimGray, Dark={StaticResource TextColorDark}}"
                    HorizontalOptions="Fill" 
                    HorizontalTextAlignment="Center"
                    FontAttributes="Bold"/>
@@ -23,7 +24,8 @@
                    FontSize="Small"
                    HorizontalOptions="Fill" 
                    HorizontalTextAlignment="Center"
-                   Margin="0,0,0,10"/>
+                   Margin="0,0,0,10"
+                   Style="{StaticResource LabelColor}"/>
             </StackLayout>
             <CollectionView ItemsSource="{Binding Dishes}" Margin="0,35,0,0">
                 <CollectionView.ItemsLayout>
@@ -41,13 +43,13 @@
                                     <Image Source="{Binding Photo}" 
                                            Style="{StaticResource ImageFoodCard}" />
                                     <Label Margin="15,0,0,0" MaxLines="1" Text="{Binding Name}"
-                                           TextColor="Black" FontSize="Medium"/>
+                                           Style="{StaticResource LabelColor}" FontSize="Medium"/>
                                     <Grid Margin="15,0,15,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="0.85*"/>
                                             <ColumnDefinition Width="0.15*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Label  Grid.Column="0" MaxLines="1" FontSize="Small" >
+                                        <Label  TextColor="gray" Grid.Column="0" MaxLines="1" FontSize="Small" Style="{StaticResource LabelColor}">
                                             <Label.FormattedText>
                                                 <FormattedString>
                                                     <FormattedString.Spans>
@@ -59,7 +61,7 @@
                                         </Label>
                                         <Label Grid.Column="1" Text="&#xf2ed;"
                                                FontFamily="FontAwesomeIcons" FontSize="20"
-                                               TextColor="{StaticResource SecondaryLight}" >
+                                               Style="{StaticResource SecondaryLightColor}" >
                                             <Label.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand , Source={x:Reference RestaurantPage}}"
                                                                                       CommandParameter="{Binding Id}"/>
@@ -79,7 +81,7 @@
                              Source="plus_icon.png"
                              Aspect="AspectFit"
                              BorderWidth="1"
-                             BackgroundColor="{StaticResource SecondaryLight}" 
+                             BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource PrimaryLight}}"
                              HorizontalOptions="End" 
                              WidthRequest="56"
                              HeightRequest="56"

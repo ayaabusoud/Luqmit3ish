@@ -2,8 +2,10 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Luqmit3ish.Connection;
@@ -241,5 +243,46 @@ namespace Luqmit3ish.Services
             }
 
         }
+        internal async Task<bool> UploadPhoto(string photoPath, int userId)
+        {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                ByteArrayContent fileContent;
+                if (Uri.TryCreate(photoPath, UriKind.Absolute, out Uri uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+                {
+                    using (var client = new HttpClient())
+                    {
+                        var bytes = await client.GetByteArrayAsync(uri);
+                        fileContent = new ByteArrayContent(bytes);
+                    }
+                }
+                else
+                {
+                    fileContent = new ByteArrayContent(File.ReadAllBytes(photoPath));
+                }
+
+                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/jpeg");
+                using (var formData = new MultipartFormDataContent())
+                {
+                    formData.Add(fileContent, "photo", Path.GetFileName(photoPath));
+                    var response = await _httpClient.PostAsync($"{_apiUrl}/UploadPhoto/{userId}", formData);
+                    return response.IsSuccessStatusCode;
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        
+        
     }
 }

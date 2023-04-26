@@ -35,14 +35,7 @@ namespace Luqmit3ish.ViewModels
             get => _emptyResult;
             set => SetProperty(ref _emptyResult, value);
         }
-
-        private ObservableCollection<Dish> _dishes;
-
-        public ObservableCollection<Dish> Dishes
-        {
-            get => _dishes;
-            set => SetProperty(ref _dishes, value);
-        }
+ 
         public CharityOrderViewModel(INavigation navigation)
         {
             this._navigation = navigation;
@@ -105,12 +98,12 @@ namespace Luqmit3ish.ViewModels
 
         }
 
-        private ObservableCollection<OrderCard> _orderCard;
+        private ObservableCollection<OrderCard> _orderCards;
 
-        public ObservableCollection<OrderCard> OrderCard
+        public ObservableCollection<OrderCard> OrderCards
         {
-            get => _orderCard;
-            set => SetProperty(ref _orderCard, value);
+            get => _orderCards;
+            set => SetProperty(ref _orderCards, value);
         }
 
         private async void OnInit()
@@ -123,7 +116,7 @@ namespace Luqmit3ish.ViewModels
             var userId = int.Parse(id);
             try
             {
-                OrderCard = await _orderService.GetOrders(userId);
+                OrderCards = await _orderService.GetOrders(userId);
             }
             catch (ConnectionException e)
             {
@@ -137,8 +130,19 @@ namespace Luqmit3ish.ViewModels
             {
                 Debug.WriteLine(e.Message);
             }
-            if (OrderCard.Count > 0)
+            if (OrderCards.Count > 0)
             {
+              foreach(OrderCard order in OrderCards)
+                {
+                    if(order.Orders.Count == 1)
+                    {
+                        order.Items = "1 item";
+                    }
+                    else
+                    {
+                        order.Items = order.Orders.Count + " items";
+                    }
+                }
                 EmptyResult = false;
             }
             else

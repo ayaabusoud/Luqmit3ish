@@ -4,89 +4,71 @@
              x:Class="Luqmit3ish.Views.OrderDetailsPage"
              x:Name="OrderDetails"
              Shell.TabBarIsVisible="False"
-            BackgroundColor="WhiteSmoke">
+             Title="Order Details">
 
     <ContentPage.Content>
-        <StackLayout>
-
-            <Frame  CornerRadius="60" WidthRequest="80" HeightRequest="80"
-                    VerticalOptions="Center" HorizontalOptions="Center"
-                    Margin="0,20,0,0">
-                <Image Source="{Binding Order.Owner.Photo}" Aspect="AspectFill"/>
-            </Frame>
-
-            <Label Margin="0"  Text="{Binding Order.Owner.Name}"
-                   HorizontalOptions="Center" FontSize="Large"
-                   FontAttributes="Bold" TextColor="Black" >
+        <StackLayout Margin="16,0">
+            <Label Text="{Binding Order.Owner.Name}"  TextColor="Black" FontSize="Title" FontAttributes="Bold" Margin="0,30,0,0">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ProfileCommand}" 
                                           CommandParameter="{Binding Order.Owner}"  />
                 </Label.GestureRecognizers>
             </Label>
-
-            <Frame  Margin="20,10,20,5" CornerRadius="35" 
-                    HeightRequest="350" HorizontalOptions="Center">
-                <StackLayout HorizontalOptions="Center">
-                    <ScrollView >
-                        <CollectionView ItemsSource="{Binding Order.Orders}">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <StackLayout Padding="5" HorizontalOptions="Center">
-                                        <Frame Padding="0" HorizontalOptions="FillAndExpand"
-                                               HasShadow="True" CornerRadius="10">
-                                            <Grid Padding="5" BackgroundColor="AntiqueWhite">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="0.6*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label MaxLines="1" VerticalOptions="Center">
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <FormattedString.Spans>
-                                                                <Span FontAttributes="Bold"
-                                                                      Text="{Binding DishName}" 
-                                                                      TextColor="Black" />
-                                                                <Span FontAttributes="Bold"  
-                                                                      Text=" : " TextColor="Black"/>
-                                                            </FormattedString.Spans>
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
-                                                <StackLayout Orientation="Horizontal" Margin="15,-5,0,0"
-                                                             WidthRequest="100" VerticalOptions="Center"
-                                                             Grid.Column="1"  >
-
-
-                                                    <Label Text="&#xf056;" FontFamily="FontAwesomeIcons"
+            <Label FontSize="Small" TextColor="Gray"  Margin="0,0,0,10">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="&#xf48b;" FontFamily="FontAwesomeIcons" FontSize="16"  />
+                            <Span  Text=" Pickup Time: " />
+                            <Span  Text="8:00am-9:00pm"  /> 
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <CollectionView ItemsSource="{Binding Items}" >
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="3" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout HorizontalOptions="Fill">
+                            <Grid Padding="0,12" ColumnDefinitions="auto,*,auto" ColumnSpacing="30"
+                                              HorizontalOptions="Fill">
+                                <Image   Grid.Column="0" HeightRequest="60" WidthRequest="60" VerticalOptions="End" 
+                                           HorizontalOptions="Center" Source="{Binding Dish.Photo}" 
+                                           Aspect="AspectFill"/>
+                                <Label VerticalOptions="Center" MaxLines="1" HorizontalTextAlignment="Start"
+                                                   Text="{Binding Dish.Name}" TextColor="Black" 
+                                        Grid.Column="1" Margin="0,10"
+                                                   FontSize="Medium" FontAttributes="Bold"/>
+              
+                                <StackLayout Grid.Column="2" HorizontalOptions="Center" Orientation="Horizontal" Margin="15,-5,0,0"
+                                                             WidthRequest="100" VerticalOptions="Center" >
+                                    <Label Text="&#xf056;" FontFamily="FontAwesomeIcons"
                                                            FontSize="25" Margin="0,10,0,0" 
                                                            TextColor="{StaticResource PrimaryLight}">
-                                                        <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer CommandParameter="{Binding Id}"
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer CommandParameter="{Binding . }"
                                                                                   Command="{Binding BindingContext.MinusCommand , Source={x:Reference OrderDetails}}"/>
-                                                        </Label.GestureRecognizers>
-                                                    </Label>
-                                                    <Label Text="{Binding Quantity}" FontAttributes="Bold"
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Label Text="{Binding Quantity}" FontAttributes="Bold"
                                                            Margin="5,12,5,0"/>
-                                                    <Label  Text="&#xf055;" FontFamily="FontAwesomeIcons" 
+                                    <Label  Text="&#xf055;" FontFamily="FontAwesomeIcons" 
                                                             FontSize="25" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
-                                                        <Label.GestureRecognizers>
-                                                            <TapGestureRecognizer CommandParameter="{Binding Id}" 
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer CommandParameter="{Binding . }" 
                                                                                   Command="{Binding BindingContext.PlusCommand  , Source={x:Reference OrderDetails}}"/>
-                                                        </Label.GestureRecognizers>
-                                                    </Label>
-                                                </StackLayout>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </StackLayout>
+                            </Grid>
+                            <BoxView HeightRequest="1" BackgroundColor="LightGray" />
+                        </StackLayout>
 
-                                            </Grid>
-                                        </Frame>
-                                    </StackLayout>
-
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </ScrollView>
-                </StackLayout>
-
-            </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
         </StackLayout>
 
