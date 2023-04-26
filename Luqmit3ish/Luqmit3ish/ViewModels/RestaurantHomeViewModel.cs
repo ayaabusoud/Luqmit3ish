@@ -47,10 +47,14 @@ namespace Luqmit3ish.ViewModels
             OnInit();
         }
 
-        private async Task OnInit()
+        private void OnInit()
         {
+            try
+            {
 
-            var id = Preferences.Get("userId", null);
+
+                Task.Run(async () => {
+                 var id = Preferences.Get("userId", null);
             if (id is null)
             {
                 return;
@@ -98,6 +102,16 @@ namespace Luqmit3ish.ViewModels
             {
                 EmptyResult = true;
             }
+                
+                }).Wait();
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+
+           
         }
         private async Task OnFrameClicked(Dish dish)
         {

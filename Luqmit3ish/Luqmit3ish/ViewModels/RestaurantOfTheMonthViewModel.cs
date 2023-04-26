@@ -48,6 +48,12 @@ namespace Luqmit3ish.Views
         }
         private void OnInit()
         {
+            try
+            {
+
+
+
+            
             Task.Run(async () => {
                 try
                 {
@@ -81,7 +87,11 @@ namespace Luqmit3ish.Views
                     Debug.WriteLine(e.Message);
                 }
             }).Wait();
-           
+           }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
            
 
         }

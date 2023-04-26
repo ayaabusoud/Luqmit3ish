@@ -59,15 +59,15 @@ namespace Luqmit3ish.ViewModels
         }
         private async void getData(int orderId)
         {
-
+            try
+            {
             var user = Preferences.Get("userId", null);
             if (user is null)
             {
                 return;
             }
             var userId = int.Parse(user);
-            try
-            {
+            
                 ObservableCollection<OrderCard> cards = await _orderService.GetOrders(userId);
                 foreach (OrderCard order in cards)
                 {
@@ -80,15 +80,18 @@ namespace Luqmit3ish.ViewModels
             }
             catch (ConnectionException e)
             {
+                Debug.WriteLine(e.Message);
                 await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
             }
             catch (HttpRequestException e)
             {
+                Debug.WriteLine(e.Message);
                 await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
 
             }
             catch (Exception e)
             {
+                Debug.WriteLine(e.Message);
                 await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
             }
 

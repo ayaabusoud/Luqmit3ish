@@ -107,49 +107,63 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _orderCards, value);
         }
 
-        private async void OnInit()
+        private  void OnInit()
         {
-            var id = Preferences.Get("userId", null);
-            if (id is null)
-            {
-                return;
-            }
-            var userId = int.Parse(id);
             try
             {
-                OrderCards = await _orderService.GetOrders(userId);
-            }
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
+
+
+                Task.Run(async () => {
+                    var id = Preferences.Get("userId", null);
+                    if (id is null)
+                    {
+                        return;
+                    }
+                    var userId = int.Parse(id);
+                    try
+                    {
+                        OrderCards = await _orderService.GetOrders(userId);
+                    }
+                    catch (ConnectionException e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
+                    catch (HttpRequestException e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
+                    if (OrderCards.Count > 0)
+                    {
+                        foreach (OrderCard order in OrderCards)
+                        {
+                            if (order.Orders.Count == 1)
+                            {
+                                order.Items = "1 item";
+                            }
+                            else
+                            {
+                                order.Items = order.Orders.Count + " items";
+                            }
+                        }
+                        EmptyResult = false;
+                    }
+                    else
+                    {
+                        EmptyResult = true;
+                    }
+
+                }).Wait();
+
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
-            if (OrderCards.Count > 0)
-            {
-              foreach(OrderCard order in OrderCards)
-                {
-                    if(order.Orders.Count == 1)
-                    {
-                        order.Items = "1 item";
-                    }
-                    else
-                    {
-                        order.Items = order.Orders.Count + " items";
-                    }
-                }
-                EmptyResult = false;
-            }
-            else
-            {
-                EmptyResult = true;
-            }
+            
         }
 
 

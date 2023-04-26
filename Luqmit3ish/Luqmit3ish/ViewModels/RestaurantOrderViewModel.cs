@@ -180,9 +180,14 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _recievedTextColor, value);
         }
 
-        private async void Selected(bool status)
+        private void Selected(bool status)
         {
-            var id = Preferences.Get("userId", null);
+            try
+            {
+
+
+                Task.Run(async () => {
+                var id = Preferences.Get("userId", null);
             if (id == null)
                 {
                 await PopupNavigation.Instance.PushAsync(new PopUp("Your login session has been expired."));
@@ -219,12 +224,33 @@ namespace Luqmit3ish.ViewModels
             }
             if (OrderCards.Count > 0)
             {
+                foreach (OrderCard order in OrderCards)
+                {
+                    if (order.Orders.Count == 1)
+                    {
+                        order.Items = "1 item";
+                    }
+                    else
+                    {
+                        order.Items = order.Orders.Count + " items";
+                    }
+                }
                 EmptyResult = false;
             }
             else
             {
                 EmptyResult = true;
             }
+                
+                
+                }).Wait();
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            
 
         }
 

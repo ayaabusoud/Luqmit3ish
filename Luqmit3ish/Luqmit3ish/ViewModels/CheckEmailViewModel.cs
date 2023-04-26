@@ -40,6 +40,12 @@ namespace Luqmit3ish.ViewModels
 
         private void OnInit(string Email)
         {
+            try
+            {
+
+
+
+            
             Task.Run(async () => {
                 try
                 {
@@ -68,6 +74,11 @@ namespace Luqmit3ish.ViewModels
                     await PopupNavigation.Instance.PopAsync();
                 }
             }).Wait();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         private void OnContinueClicked(string Email)

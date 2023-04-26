@@ -169,11 +169,6 @@ namespace Luqmit3ish.ViewModels
             set
             {
                 SetProperty(ref _location, value);
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    ErrorVisible = true;
-                    ErrorMessage = "Location is required";
-                }
                 if (Regex.IsMatch(value, "^[a-zA-Z0-9]*$"))
                 {
                     ErrorVisible = false;
@@ -216,9 +211,14 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _viewEnable, value);
         }
 
-        private async void OnInit()
+        private void OnInit()
         {
-            string email;
+            try
+            {
+
+
+                Task.Run(async () => {
+                string email;
 
             try
             {
@@ -250,6 +250,15 @@ namespace Luqmit3ish.ViewModels
             {
                 await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
             }
+                
+                }).Wait();
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            
 
         }
         private async Task OnDoneClicked()

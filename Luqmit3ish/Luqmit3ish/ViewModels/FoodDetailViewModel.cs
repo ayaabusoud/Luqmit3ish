@@ -47,7 +47,7 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _dishInfo, value);
         }
 
-        private string _plusColor = "{StaticResource PrimaryLight}";
+        private string _plusColor = "Orange";
         public string PlusColor
         {
             get => _plusColor;
@@ -97,14 +97,14 @@ namespace Luqmit3ish.ViewModels
             if (Counter == 1)
             {
                 MinusColor = "Gray";
-                PlusColor = "{StaticResource PrimaryLight}";
+                PlusColor = "Orange";
                 return;
             }
             if (Counter < 1)
             {
                 Counter = 1;
                 MinusColor = "Gray";
-                PlusColor = "{StaticResource PrimaryLight}";
+                PlusColor = "Orange";
                 return;
             }
 
@@ -112,13 +112,13 @@ namespace Luqmit3ish.ViewModels
             if (Counter == 1)
             {
                 MinusColor = "Gray";
-                PlusColor = "{StaticResource PrimaryLight}";
+                PlusColor = "Orange";
                 return;
             }
             if (Counter > 1)
             {
-                PlusColor = "{StaticResource PrimaryLight}";
-                MinusColor = "{StaticResource PrimaryLight}";
+                PlusColor = "Orange";
+                MinusColor = "Orange";
             }
         }
 
@@ -146,13 +146,13 @@ namespace Luqmit3ish.ViewModels
             if (Counter == quantity)
             {
                 PlusColor = "Gray";
-                MinusColor = "{StaticResource PrimaryLight}";
+                MinusColor = "Orange";
                 return;
             }
             if(Counter > 1)
             {
-                PlusColor = "{StaticResource PrimaryLight}";
-                MinusColor = "{StaticResource PrimaryLight}";
+                PlusColor = "Orange";
+                MinusColor = "Orange";
                 return;
             }
         }

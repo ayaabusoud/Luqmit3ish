@@ -83,10 +83,14 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private async void OnInit()
+        private void OnInit()
         {
-
             try
+            {
+
+
+                Task.Run(async () => { 
+                 try
             {
                 string email = Preferences.Get("userEmail", "none");
                 if (string.IsNullOrEmpty(email)) { 
@@ -116,6 +120,16 @@ namespace Luqmit3ish.ViewModels
                 Thread.Sleep(3000);
                 await PopupNavigation.Instance.PopAsync();
             }
+                
+                
+                }).Wait();
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+           
 
         }
         private void OnDarkModeClicked()
