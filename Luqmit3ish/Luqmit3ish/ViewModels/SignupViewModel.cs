@@ -88,6 +88,29 @@ namespace Luqmit3ish.ViewModels
                     };
                     Application.Current.MainPage = new VerificationPage(signUpRequest);
                 }
+                else if (!isValidEmail(_email))
+                {
+                    EmailErrorVisible = true;
+                    EmailInValid = true;
+                    EmailFrameColor = Color.DarkRed;
+                }
+                else if (!isValidPassword(_password))
+                {
+                    PasswordErrorVisible = true;
+                    PasswordValid = false;
+                    PasswordInvalid = true;
+                    ShowPassword = false;
+                    HidePassword = false;
+                    IsPassword = true;
+                    PasswordFrameColor = Color.DarkRed;
+                }
+                else if (!isValidPhone(_phone))
+                {
+                        PhoneErrorVisible = true;
+                        PhoneValid = false;
+                        PhoneInvalid = true;
+                        PhoneFrameColor = Color.DarkRed;
+                }
                 else
                 {
                     await PopupNavigation.Instance.PushAsync(new PopUp("Please fill in all the required fields correctly."));
@@ -179,20 +202,14 @@ namespace Luqmit3ish.ViewModels
                     _emailValid = true;
                     _emailInValid = false;
                     _emailFrameColor = Color.Green;
-                }
-                else
-                {
-                    _emailErrorVisible = true;
-                    _emailValid = false;
-                    _emailInValid = true;
-                    _emailFrameColor = Color.DarkRed;
-                }
-                OnPropertyChanged(nameof(EmailErrorVisible));
-                OnPropertyChanged(nameof(EmailValid));
-                OnPropertyChanged(nameof(EmailInValid));
-                OnPropertyChanged(nameof(EmailFrameColor));
-                OnPropertyChanged(nameof(EmailErrorMessage));
+                    EmailErrorVisible = false;
+                    EmailInValid = false;
 
+                }
+                OnPropertyChanged(nameof(EmailValid));
+                OnPropertyChanged(nameof(EmailFrameColor));
+                OnPropertyChanged(nameof(EmailErrorVisible));
+                OnPropertyChanged(nameof(EmailInValid));
             }
         }
         private bool _emailErrorVisible = false;
@@ -243,7 +260,17 @@ namespace Luqmit3ish.ViewModels
         }
         #endregion
 
-        #region PasswordField
+
+
+       //             _passwordValid = true;
+      //              _passwordFrameColor = Color.Green;
+       //             HidePassword = true;
+        //            IsPassword = true;
+        //            ShowPassword = false;
+        //            PasswordErrorVisible = false;
+         //           PasswordInvalid = false;
+
+#region PasswordField
         private string _password;
         public string Password
         {
@@ -258,26 +285,22 @@ namespace Luqmit3ish.ViewModels
                     _passwordErrorVisible = false;
                     _passwordValid = true;
                     _passwordInvalid = false;
-                    HidePassword = true;
-                    IsPassword = true;
-                    ShowPassword = false;
                     _passwordFrameColor = Color.Green;
-                }
-                else
-                {
-                    _passwordErrorVisible = true;
-                    _passwordValid = false;
-                    _passwordInvalid = true;
-                    ShowPassword = false;
-                    HidePassword = false;
-                    IsPassword = true;
-                    _passwordFrameColor = Color.DarkRed;
+                    _passwordErrorVisible = false;
+                    _passwordInvalid = false;
+                     HidePassword = true;
+                     IsPassword = true;
+                     ShowPassword = false;
                 }
                 OnPropertyChanged(nameof(PasswordErrorVisible));
                 OnPropertyChanged(nameof(PasswordValid));
                 OnPropertyChanged(nameof(PasswordInvalid));
                 OnPropertyChanged(nameof(PasswordFrameColor));
                 OnPropertyChanged(nameof(PasswordErrorMessage));
+                OnPropertyChanged(nameof(HidePassword));
+                OnPropertyChanged(nameof(IsPassword));
+                OnPropertyChanged(nameof(ShowPassword));
+
             }
         }
 
@@ -304,7 +327,7 @@ namespace Luqmit3ish.ViewModels
 
         private bool isValidPassword(string password)
         {
-            string passwordPattern = @"^(?=.[A-Z])(?=.[a-z])(?=.\d)(?=.[^\da-zA-Z]).{8,}$";
+            string passwordPattern = @"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
             if (string.IsNullOrEmpty(password)) return false;
             if (Regex.IsMatch(password, passwordPattern))
             {
@@ -339,23 +362,16 @@ namespace Luqmit3ish.ViewModels
 
                 if (isValidPhone(_phone))
                 {
-                    _phoneErrorVisible = false;
-                    _phoneValid = true;
-                    _phoneInvalid = false;
                     _phoneFrameColor = Color.Green;
+                    PhoneErrorVisible = false;
+                    PhoneValid = true;
+                    PhoneInvalid = false;
+
                 }
-                else
-                {
-                    _phoneErrorVisible = true;
-                    _phoneValid = false;
-                    _phoneInvalid = true;
-                    _phoneFrameColor = Color.DarkRed;
-                }
-                OnPropertyChanged(nameof(PhoneErrorVisible));
                 OnPropertyChanged(nameof(PhoneValid));
-                OnPropertyChanged(nameof(PhoneInvalid));
                 OnPropertyChanged(nameof(PhoneFrameColor));
-                OnPropertyChanged(nameof(PhoneErrorMessage));
+                OnPropertyChanged(nameof(PhoneErrorVisible));
+                OnPropertyChanged(nameof(PhoneInvalid));
 
             }
         }
