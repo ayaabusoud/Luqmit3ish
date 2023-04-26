@@ -47,19 +47,47 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _dishInfo, value);
         }
 
+        private string _plusColor = "Orange";
+        public string PlusColor
+        {
+            get => _plusColor;
+            set => SetProperty(ref _plusColor, value);
+        }
+        private string _minusColor;
+        public string MinusColor
+        {
+            get => _minusColor;
+            set => SetProperty(ref _minusColor, value);
+        }
+
         private void OnMinusClicked()
         {
             if (Counter == 1)
             {
+                MinusColor = "Gray";
+                PlusColor = "Orange";
                 return;
             }
             if (Counter < 1)
             {
                 Counter = 1;
+                MinusColor = "Gray";
+                PlusColor = "Orange";
                 return;
             }
 
             Counter--;
+            if (Counter == 1)
+            {
+                MinusColor = "Gray";
+                PlusColor = "Orange";
+                return;
+            }
+            if (Counter > 1)
+            {
+                PlusColor = "Orange";
+                MinusColor = "Orange";
+            }
         }
 
         public FoodDetailViewModel(DishCard dish, INavigation navigation)
@@ -80,9 +108,20 @@ namespace Luqmit3ish.ViewModels
             {
                 return;
             }
-            else
+
+            Counter++;
+
+            if (Counter == quantity)
             {
-                Counter++;
+                PlusColor = "Gray";
+                MinusColor = "Orange";
+                return;
+            }
+            if(Counter > 1)
+            {
+                PlusColor = "Orange";
+                MinusColor = "Orange";
+                return;
             }
         }
         private async Task OnProfileClicked(User restaurant)
