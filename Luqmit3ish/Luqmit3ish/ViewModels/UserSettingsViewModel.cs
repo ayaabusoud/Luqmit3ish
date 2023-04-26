@@ -223,7 +223,19 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnProfileClicked()
         {
-            await _navigation.PushModalAsync(new ProfilePage(UserInfo));
+            try
+            {
+                await _navigation.PushAsync(new ProfilePage(UserInfo));
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            
         }
 
     }

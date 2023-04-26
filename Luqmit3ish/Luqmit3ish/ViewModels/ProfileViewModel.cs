@@ -77,7 +77,7 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        
+
 
         public UserServices userServices;
         private string _email;
@@ -217,40 +217,41 @@ namespace Luqmit3ish.ViewModels
             {
 
 
-                Task.Run(async () => {
-                string email;
-
-            try
-            {
-                email = Preferences.Get("userEmail", null);
-                if (string.IsNullOrEmpty(email))
+                Task.Run(async () =>
                 {
-                    return;
-                }
+                    string email;
 
-                if (_userInfo != null)
-                {
-                    Email = _userInfo.Email;
-                    Phone = _userInfo.Phone;
-                    Name = _userInfo.Name;
-                    Location = _userInfo.Location;
-                    Photo = _userInfo.Photo;
-                }
-            }
-            catch (ConnectionException)
-            {
-                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
-            }
-            catch (HttpRequestException)
-            {
-                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
+                    try
+                    {
+                        email = Preferences.Get("userEmail", null);
+                        if (string.IsNullOrEmpty(email))
+                        {
+                            return;
+                        }
 
-            }
-            catch (Exception)
-            {
-                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
-            }
-                
+                        if (_userInfo != null)
+                        {
+                            Email = _userInfo.Email;
+                            Phone = _userInfo.Phone;
+                            Name = _userInfo.Name;
+                            Location = _userInfo.Location;
+                            Photo = _userInfo.Photo;
+                        }
+                    }
+                    catch (ConnectionException)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+                    }
+                    catch (HttpRequestException)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
+
+                    }
+                    catch (Exception)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
+                    }
+
                 }).Wait();
 
             }
@@ -258,7 +259,7 @@ namespace Luqmit3ish.ViewModels
             {
                 Debug.WriteLine(e.Message);
             }
-            
+
 
         }
         private async Task OnDoneClicked()
@@ -272,7 +273,7 @@ namespace Luqmit3ish.ViewModels
                 {
                     return;
                 }
-               
+
                 if (_userInfo != null)
                 {
                     User user = new User
@@ -282,11 +283,11 @@ namespace Luqmit3ish.ViewModels
                         Email = _userInfo.Email,
                         Location = Location,
                         Phone = Phone,
-                        Photo = Photo,
+                        Photo = this.Photo,
                         Type = _userInfo.Type,
                         Password = _userInfo.Password
                     };
-                    if ((ErrorVisible ))
+                    if ((ErrorVisible))
                     {
                         await Application.Current.MainPage.DisplayAlert("Warning", "Please make sure all information is valid before saving changes.", "OK");
                         return;
@@ -297,11 +298,11 @@ namespace Luqmit3ish.ViewModels
                     }
 
                     await userServices.EditProfile(user);
-                    if(Photo != null)
+                    if (Photo != _userInfo.Photo)
                     {
-                        await userServices.UploadPhoto(Photo, _userInfo.Id );
+                        await userServices.UploadPhoto(Photo, _userInfo.Id);
                     }
-                    await _navigation.PopModalAsync();
+                    await _navigation.PopAsync();
                     await PopupNavigation.Instance.PushAsync(new PopUp("The dish has been added successfully"));
                     Thread.Sleep(3000);
                     await PopupNavigation.Instance.PopAsync();
@@ -324,7 +325,7 @@ namespace Luqmit3ish.ViewModels
 
         public bool HasFieldsChanged(User user)
         {
-            return (_email != user.Email) || (_phone != user.Phone) || (_name != user.Name) || (_location != user.Location || _photo!=user.Photo);
+            return (_email != user.Email) || (_phone != user.Phone) || (_name != user.Name) || (_location != user.Location || _photo != user.Photo);
         }
 
 
@@ -338,7 +339,7 @@ namespace Luqmit3ish.ViewModels
                 {
                     return;
                 }
-                await _navigation.PopModalAsync();
+                await _navigation.PopAsync();
             }
             catch (ConnectionException)
             {
