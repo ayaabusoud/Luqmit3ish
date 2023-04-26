@@ -320,7 +320,7 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _passwordFrameColor, value);
         }
 
-        private string _passwordErrorMessage = "Enter at least 8 characters, one uppercase letter and a special character.";
+        private string _passwordErrorMessage = "Enter at least 8 characters including one number, one uppercase letter and a special character.";
         public string PasswordErrorMessage
         {
             get => _passwordErrorMessage;

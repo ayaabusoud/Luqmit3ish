@@ -102,7 +102,7 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private string _passwordErrorMessage = "Your password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.";
+        private string _passwordErrorMessage = "Enter at least 8 characters including one number, one uppercase letter and a special character.";
         public string PasswordErrorMessage
         {
             get { return _passwordErrorMessage; }

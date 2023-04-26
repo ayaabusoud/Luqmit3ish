@@ -11,12 +11,12 @@
             <Label Text="1/3 of food is wasted!" HorizontalTextAlignment="Center"
                    FontAttributes="Bold"  Style="{StaticResource LabelColor}" FontSize="Title"/>
             <Label Text="And we want to change that." HorizontalTextAlignment="Center" 
-                  Style="{StaticResource LabelColor}" FontSize="Small"/>
+                  Style="{StaticResource LabelColor}" FontSize="16"/>
         </StackLayout>
     </ContentPage>
 
     <ContentPage>
-        <StackLayout Margin="20,0" HorizontalOptions="Center" VerticalOptions="Center">
+        <StackLayout Margin="20,0" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
             <Image Source="https://luqmit3ish1.blob.core.windows.net/photos/Donation2.png"
                    HorizontalOptions="Fill" />
             <Label Text="Fight Hunger And Save &#10; Food With Us" HorizontalTextAlignment="Center" 
@@ -24,7 +24,7 @@
             <Label Margin="35,0" Text="By bridging the gap between charities and restaurants. We hope to have a positive impact on the world by reducing food waste and fighting hunger."
                    HorizontalTextAlignment="Center" Style="{StaticResource LabelColor}" FontSize="16" />
             <Button VerticalOptions="Center" Text="Join us" Command="{Binding SignupCommand}" 
-                    Style="{StaticResource BorderButton}" Margin="0,20"/>
+                    Style="{StaticResource BorderButton}" Margin="0,20" WidthRequest="160"/>
         </StackLayout>
     </ContentPage>
 </CarouselPage>
