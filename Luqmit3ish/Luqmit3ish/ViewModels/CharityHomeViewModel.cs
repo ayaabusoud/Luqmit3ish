@@ -103,7 +103,7 @@ namespace Luqmit3ish.ViewModels
                         {
                             EmptyResult = true;
                             Title = "No Filter Match Found";
-                            Description = "There are no filters that match the food card you're looking for!";
+                            Description = "There is no food matches the filters you're looking for!";
                         }
                         else
                         {
@@ -171,14 +171,6 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-
-                if (DishCards.Count == 0)
-                {
-                    await PopupNavigation.Instance.PushAsync(new PopUp("There is no Dishes to filter, please try again later."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
-                    return;
-                }
                 await _navigation.PushAsync(new FilterFoodPage());
             }
             catch (ArgumentException e)
@@ -195,14 +187,6 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-
-                if (DishCards.Count ==  0)
-                {
-                    await PopupNavigation.Instance.PushAsync(new PopUp("There is no Dishes to Search for, please try again later."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
-                    return;
-                }
                 await _navigation.PushAsync(new SearchPage());
 
             }
