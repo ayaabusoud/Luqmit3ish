@@ -9,57 +9,68 @@
              BackgroundColor="#FCF5EF">
 
     <ContentPage.Content >
-           <StackLayout Margin="0,40,0,0" >
-               <Grid ColumnDefinitions="*,*,*">
-                   <Frame WidthRequest="130" HeightRequest="130" HorizontalOptions="Center" CornerRadius="200" Padding="0" Grid.Column="1">
-                        <Image Source="{Binding Photo}" Aspect="Fill"/>
-                    </Frame>
-                   <Frame Grid.Column="1" Padding="0" CornerRadius="50" BackgroundColor="{StaticResource PrimaryLight}" WidthRequest="30" HeightRequest="30" VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,-5,-60">
-                        <Label Text="&#xf303;"  FontFamily="FontAwesomeIcons" FontSize="Small" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center">
-                            <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding EditPhotoClicked}" />
-                            </Label.GestureRecognizers>
+           <StackLayout Margin="0,30,0,0" >
+            <Grid ColumnDefinitions="*,*,*">
+                <Frame WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" CornerRadius="200" Padding="0" Grid.Column="1">
+                    <Image Source="{Binding Photo}" Aspect="Fill"/>
+                </Frame>
+                <Frame Grid.Column="1" Padding="0" CornerRadius="50" BackgroundColor="{StaticResource PrimaryLight}" WidthRequest="30" HeightRequest="30" VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,-5,-60">
+                    <Label Text="&#xf303;"  FontFamily="FontAwesomeIcons" FontSize="Small" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding EditPhotoClicked}" />
+                        </Label.GestureRecognizers>
 
-                        </Label>
-                   </Frame>
+                    </Label>
+                </Frame>
 
-               </Grid>
-                
+            </Grid>
             <Label Text="{Binding ConstName}" HorizontalOptions="Center" TextColor="{StaticResource PrimaryLight}" FontSize="Title" FontAttributes="Bold"/>
-            <Label Text="{Binding Email}" HorizontalOptions="Center" TextColor="Black" FontSize="Small" Margin="0,-5,0,0"/>
+            <Label Text="{Binding Email}" HorizontalOptions="Center" TextColor="Black" FontSize="Small" Margin="0,-5,0,10"/>
                <Frame Padding="0" Margin="0" BackgroundColor="White" VerticalOptions="FillAndExpand">
                    <ScrollView>
                         <StackLayout Margin="0" BackgroundColor="White" Padding="30">
-                    <StackLayout>
-                            <Label Text="Name" TextColor="{StaticResource PrimaryLight}" FontSize="Medium" FontAttributes="Bold"/>
+                    <StackLayout >
                         <StackLayout Orientation="Horizontal" >
                             <Label TextColor="Black" Text="&#xf007;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
-                        <Entry Text="{Binding Name}" TextColor="Black" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="FillAndExpand"/>
+                                <Label Text="Name: " VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+
+                                <Entry Text="{Binding Name}" TextColor="Black" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="FillAndExpand"/>
                         </StackLayout>
                     </StackLayout>
-                    <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,0"/>
+                        <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,5" />
 
                     <StackLayout>
-                            <Label Text="Phone" TextColor="{StaticResource PrimaryLight}" FontSize="Medium" FontAttributes="Bold"/>
                         <StackLayout Orientation="Horizontal">
                             <Label TextColor="Black" Text="&#xf095;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
-                        <Entry Text="{Binding Phone}" TextColor="Black" FontSize="Medium" VerticalOptions="Center"  HorizontalOptions="FillAndExpand"/>
+                                <Label Text="Phone: " VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
+                                <Entry Text="{Binding Phone}" TextColor="Black" FontSize="Medium" VerticalOptions="Center"  HorizontalOptions="FillAndExpand"/>
 
                         </StackLayout>
                     </StackLayout>
-                    <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,0"/>
+                    <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,5"/>
 
                     <StackLayout>
-                            <Label Text="Location" TextColor="{StaticResource PrimaryLight}" FontSize="Medium" FontAttributes="Bold"/>
                         <StackLayout Orientation="Horizontal">
                             <Label TextColor="Black" Text="&#xf3c5;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
+                                <Label Text="Location: " VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"/>
 
-                        <Entry Text="{Binding Location}" TextColor="Black" FontSize="Medium" VerticalOptions="Center"  HorizontalOptions="FillAndExpand"/>
+                                <Entry Text="{Binding Location}" TextColor="Black" FontSize="Medium" VerticalOptions="Center"  HorizontalOptions="FillAndExpand"/>
                         </StackLayout>
                     </StackLayout>
-                    <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,0"/>
+                    <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,5"/>
+                            
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label TextColor="Black" Text="&#xf073;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
+                                <Label VerticalOptions="Center" Text="Opening Hours: "  FontSize="Medium" FontAttributes="Bold"/>
 
-                    <Label  Margin="15,0" Text="{Binding ErrorMessage}" IsVisible="{Binding ErrorVisible}" TextColor="Red"></Label>
+                                <Entry Text="{Binding OpeningHours}" TextColor="Black" FontSize="Medium" VerticalOptions="Center"  HorizontalOptions="FillAndExpand"/>
+                            </StackLayout>
+                        </StackLayout>
+                        <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,5"/>
+
+
+                        <Label  Margin="15,10" Text="{Binding ErrorMessage}" IsVisible="{Binding ErrorVisible}" TextColor="Red"></Label>
 
                 
                     <Grid ColumnDefinitions="*,*" Padding="10">

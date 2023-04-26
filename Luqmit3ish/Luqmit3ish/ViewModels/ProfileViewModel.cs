@@ -145,20 +145,6 @@ namespace Luqmit3ish.ViewModels
             set
             {
                 SetProperty(ref _name, value);
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    ErrorVisible = true;
-                    ErrorMessage = "Name is required";
-                }
-                else if (Regex.IsMatch(value, "^[a-zA-Z0-9 ]*$"))
-                {
-                    ErrorVisible = false;
-                }
-                else
-                {
-                    ErrorVisible = true;
-                    ErrorMessage = "Name can only contain letters,numbers and spaces";
-                }
             }
         }
 
@@ -169,16 +155,6 @@ namespace Luqmit3ish.ViewModels
             set
             {
                 SetProperty(ref _location, value);
-                if (Regex.IsMatch(value, "^[a-zA-Z0-9]*$"))
-                {
-                    ErrorVisible = false;
-                }
-
-                else
-                {
-                    ErrorVisible = true;
-                    ErrorMessage = "Location can only contain letters, numbers, and spaces";
-                }
             }
         }
         private string _photo;
@@ -190,6 +166,16 @@ namespace Luqmit3ish.ViewModels
                 SetProperty(ref _photo, value);
             }
         }
+        private string _openingHours;
+        public string OpeningHours
+        {
+            get => _openingHours;
+            set
+            {
+                SetProperty(ref _openingHours, value);
+            }
+        }
+        
 
         private bool _errorVisible;
         public bool ErrorVisible
@@ -236,20 +222,28 @@ namespace Luqmit3ish.ViewModels
                             Name = _userInfo.Name;
                             Location = _userInfo.Location;
                             Photo = _userInfo.Photo;
+                            OpeningHours = _userInfo.OpeningHours;
+                            if(OpeningHours == null )
+                            {
+                                OpeningHours = "11:00am-11:00pm";
+                            }
                         }
                     }
-                    catch (ConnectionException)
+                    catch (ConnectionException e)
                     {
-                        await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+                        Debug.WriteLine(e.Message);
+                        await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                        Thread.Sleep(3000);
+                        await PopupNavigation.Instance.PopAsync();
                     }
-                    catch (HttpRequestException)
+                    catch (HttpRequestException e)
                     {
-                        await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
+                        Debug.WriteLine(e.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message);
 
-                    }
-                    catch (Exception)
-                    {
-                        await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
                     }
 
                 }).Wait();
@@ -285,15 +279,20 @@ namespace Luqmit3ish.ViewModels
                         Phone = Phone,
                         Photo = this.Photo,
                         Type = _userInfo.Type,
-                        Password = _userInfo.Password
+                        Password = _userInfo.Password,
+                        OpeningHours = OpeningHours
+                      
                     };
                     if ((ErrorVisible))
                     {
-                        await Application.Current.MainPage.DisplayAlert("Warning", "Please make sure all information is valid before saving changes.", "OK");
+                        await PopupNavigation.Instance.PushAsync(new PopUp("Please make sure all information is valid before saving changes."));
+                        Thread.Sleep(3000);
+                        await PopupNavigation.Instance.PopAsync();
                         return;
                     }
                     if (!HasFieldsChanged(_userInfo))
                     {
+                        await _navigation.PopAsync();
                         return;
                     }
 
@@ -303,23 +302,31 @@ namespace Luqmit3ish.ViewModels
                         await userServices.UploadPhoto(Photo, _userInfo.Id);
                     }
                     await _navigation.PopAsync();
-                    await PopupNavigation.Instance.PushAsync(new PopUp("The dish has been added successfully"));
+                    await PopupNavigation.Instance.PushAsync(new PopUp("The Profile has been edited successfully"));
                     Thread.Sleep(3000);
                     await PopupNavigation.Instance.PopAsync();
                 }
             }
-            catch (ConnectionException)
+            catch (ConnectionException e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
-            catch (HttpRequestException)
+            catch (HttpRequestException e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
-
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
         }
 
@@ -341,18 +348,21 @@ namespace Luqmit3ish.ViewModels
                 }
                 await _navigation.PopAsync();
             }
-            catch (ConnectionException)
+            catch (ConnectionException e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
-            catch (HttpRequestException)
+            catch (HttpRequestException e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
-
+                Debug.WriteLine(e.Message);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
+                Debug.WriteLine(e.Message);
+ 
             }
         }
     }
