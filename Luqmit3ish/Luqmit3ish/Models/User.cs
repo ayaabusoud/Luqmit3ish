@@ -15,6 +15,8 @@ namespace Luqmit3ish.Models
 
         public String Location { get; set; }
 
+        public String OpeningHours { get; set; }
+
         public String Type { get; set; }
 
         public String Photo { get; set; }

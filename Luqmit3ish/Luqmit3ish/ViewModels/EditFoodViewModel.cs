@@ -69,7 +69,6 @@ namespace Luqmit3ish.ViewModels
                     Title = _dish.Name;
                     Description = _dish.Description;
                     KeepValid = _dish.KeepValid;
-                    Pack_time = _dish.PickUpTime;
                     Quantity = _dish.Quantity;
                     PhotoPath = _dish.Photo;
 
@@ -196,7 +195,6 @@ namespace Luqmit3ish.ViewModels
                     Name = _title,
                     Description = _description,
                     keepValid = KeepValid,
-                    PickUpTime = _packTime,
                     Quantity = Quantity
                 };
 

@@ -13,7 +13,6 @@ namespace Luqmit3ish.Models
         public String Type { get; set; }
         public String Photo { get; set; }
         public int KeepValid { get; set; }
-        public String PickUpTime { get; set; }
         public int Quantity { get; set; }
         public string Items { get; set; }
     }

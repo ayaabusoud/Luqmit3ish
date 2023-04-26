@@ -6,7 +6,7 @@ namespace Luqmit3ish.Utilities
 {
 	public class Constants
 	{
-        public readonly static string BaseUrl = "https://luqmit3ishv2.azurewebsites.net/";
+        public readonly static string BaseUrl = "https://luqmit3ishv3.azurewebsites.net/";
 
         public static ObservableCollection<TypeField> TypeValues { get; } = new ObservableCollection<TypeField>
         {

@@ -119,7 +119,6 @@ namespace Luqmit3ish.ViewModels
                     Name = _title,
                     Description = _description,
                     keepValid = KeepValid,
-                    PickUpTime = _packTime,
                     Quantity = Quantity
                 };
 

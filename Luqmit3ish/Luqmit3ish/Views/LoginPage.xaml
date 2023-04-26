@@ -7,7 +7,7 @@
              x:Class="Luqmit3ish.Views.LoginPage"
              Shell.NavBarIsVisible="False"
              NavigationPage.HasNavigationBar="False"
-             BackgroundImageSource="https://i.pinimg.com/originals/2c/90/3e/2c903e31b99b8f7816a67bc480108fe1.jpg">
+             BackgroundImageSource="https://luqmit3ish1.blob.core.windows.net/photos/wallpaper.jpg">
 
     <ContentPage.Content>
         <ScrollView HeightRequest="500">
