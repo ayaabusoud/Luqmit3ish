@@ -7,7 +7,7 @@
              BackgroundImageSource="https://i.pinimg.com/originals/2c/90/3e/2c903e31b99b8f7816a67bc480108fe1.jpg">
     <ContentPage.Content>
         <StackLayout Margin="0">
-            <Frame HorizontalOptions="Fill" VerticalOptions="EndAndExpand"  Margin="0,0,0,-40" HeightRequest="570" CornerRadius="30" HasShadow="True">
+            <Frame HorizontalOptions="Fill" VerticalOptions="EndAndExpand"  Margin="0,0,0,-40" HeightRequest="570" CornerRadius="30" HasShadow="True" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundDark}}">
                 <ScrollView HeightRequest="500">
                     <StackLayout Margin="10" HorizontalOptions="Fill" Padding="20,0" >
                         <Label VerticalOptions="Start" Text="Sign Up" 

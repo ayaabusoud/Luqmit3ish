@@ -2,11 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.SearchPage"
-             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Shell.NavBarIsVisible="False"
              Shell.TabBarIsVisible="False"
-             x:Name="SearchFoodPage">
+             x:Name="SearchFoodPage"
+             Style="{StaticResource ContentPageColor}">
 
     <ContentPage.Content>
 

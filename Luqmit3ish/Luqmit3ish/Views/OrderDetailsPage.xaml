@@ -4,11 +4,12 @@
              x:Class="Luqmit3ish.Views.OrderDetailsPage"
              x:Name="OrderDetails"
              Shell.TabBarIsVisible="False"
-             Title="Order Details">
+             Title="Order Details"
+             Style="{StaticResource ContentPageColor}">
 
     <ContentPage.Content>
         <StackLayout Margin="16,0">
-            <Label Text="{Binding Order.Owner.Name}"  TextColor="Black" FontSize="Title" FontAttributes="Bold" Margin="0,30,0,0">
+            <Label Text="{Binding Order.Owner.Name}" Style="{StaticResource LabelColor}" FontSize="Title" FontAttributes="Bold" Margin="0,30,0,0">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ProfileCommand}" 
                                           CommandParameter="{Binding Order.Owner}"  />
@@ -38,7 +39,7 @@
                                            HorizontalOptions="Center" Source="{Binding Dish.Photo}" 
                                            Aspect="AspectFill"/>
                                 <Label VerticalOptions="Center" MaxLines="1" HorizontalTextAlignment="Start"
-                                                   Text="{Binding Dish.Name}" TextColor="Black" 
+                                                   Text="{Binding Dish.Name}" Style="{StaticResource LabelColor}"
                                         Grid.Column="1" Margin="0,10"
                                                    FontSize="Medium" FontAttributes="Bold"/>
               
@@ -53,7 +54,7 @@
                                         </Label.GestureRecognizers>
                                     </Label>
                                     <Label Text="{Binding Quantity}" FontAttributes="Bold"
-                                                           Margin="5,12,5,0"/>
+                                                           Margin="5,12,5,0" Style="{StaticResource LabelColor}"/>
                                     <Label  Text="&#xf055;" FontFamily="FontAwesomeIcons" 
                                                             FontSize="25" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
                                         <Label.GestureRecognizers>

@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.RestaurantOrderPage"
              Title="Order"
-             x:Name="RestaurantOrder">
+             x:Name="RestaurantOrder"
+             Style="{StaticResource ContentPageColor}">
     <ContentPage.Content>
         <Grid Margin="20,0,20,20" HorizontalOptions="Fill" VerticalOptions="Fill">
             <StackLayout IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
@@ -28,13 +29,13 @@
                 <Frame Padding="10" CornerRadius="10"  HeightRequest="50" BackgroundColor="Transparent">
                     <StackLayout >
                         <Grid ColumnDefinitions="*,*" >
-                            <Label Text="Not Received" TextColor="{Binding NotRecievedTextColor}"
+                            <Label Text="Not Received" Style="{StaticResource LabelColor}"
                                    FontSize="16" HorizontalOptions="Center">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.NotRecievedCommand, Source={x:Reference RestaurantOrder}}"/>
                                 </Label.GestureRecognizers>
                             </Label>
-                            <Label Text="Received" TextColor="{Binding RecievedTextColor}"
+                            <Label Text="Received" Style="{StaticResource LabelColor}"
                                    FontSize="16" Grid.Column="1" HorizontalOptions="Center">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.RecievedCommand, Source={x:Reference RestaurantOrder}}"/>
@@ -60,7 +61,7 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <SwipeView IsEnabled="{Binding BindingContext.ReceievedCheck , Source={x:Reference RestaurantOrder}}">
+                            <SwipeView IsEnabled="{Binding BindingContext.ReceievedCheck , Source={x:Reference RestaurantOrder}}" BackgroundColor="{AppThemeBinding Dark=#212121}">
                                 <SwipeView.RightItems>
                                     <SwipeItems>
                                         <SwipeItem Text="Received"
@@ -82,7 +83,7 @@
                                            HorizontalOptions="Center" Source="{Binding Owner.Photo}" />
                                             <StackLayout VerticalOptions="Center" Margin="20,0,0,0">
                                                 <Label  MaxLines="1" HorizontalTextAlignment="Start"
-                                                   Text="{Binding Owner.Name}" TextColor="Black" 
+                                                   Text="{Binding Owner.Name}" Style="{StaticResource LabelColor}"
                                                    FontSize="Medium" FontAttributes="Bold"/>
                                                 <Label  MaxLines="1" HorizontalTextAlignment="Start"
                                                  FontSize="Small" TextColor="Gray"

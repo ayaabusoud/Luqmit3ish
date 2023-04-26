@@ -1,13 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:Luqmit3ish.ViewModels" x:DataType="viewmodels:UserSettingsViewModel"
              x:Class="Luqmit3ish.Views.settingsPage" 
-             Title="Profile">
+             Title="Profile"
+             Style="{StaticResource ContentPageColor}">
     <ContentPage.Content >
         <StackLayout Margin="16,0" VerticalOptions="Center"  >
 
 
-            <StackLayout>
+            <StackLayout >
                 <Grid ColumnDefinitions="0.25*,*,0.2*" ColumnSpacing="10" VerticalOptions="Center" Margin="0,0,0,20" >
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding MyProfileCommand}" />
@@ -17,7 +18,7 @@
                     </Frame>
                     <StackLayout Grid.Column="1">
                         <Label  VerticalOptions="Center" FontAttributes="Bold"  FontSize="24" Style="{StaticResource LabelColor}" Text="{Binding UserInfo.Name}"  ></Label>
-                        <Label  VerticalOptions="Center"  Text="Edit Personal details" FontAttributes="Bold" />
+                        <Label  VerticalOptions="Center"  Text="Edit Personal details" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
                     </StackLayout>
 
                     <Button  Grid.Column="2" Text="&#xf105;" Background="Transparent" Style="{StaticResource LabelColor}" FontFamily="FontAwesomeIcons" FontSize="25" ></Button>
@@ -42,7 +43,7 @@
                         <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Text="&#xf084;" Style="{StaticResource LabelColor}" FontFamily="FontAwesomeIcons" FontSize="16" Padding="0,0,0,0"  />
                     </Frame>
                     <Label VerticalOptions="Center" Grid.Column="1" Text="Reset password" FontAttributes="Bold" Style="{StaticResource LabelColor}" FontSize="18" />
-                    <Button Grid.Column="2" Text="&#xf105;" Background="Transparent" FontFamily="FontAwesomeIcons" FontSize="25" Command="{Binding ResetPassCommand}" HorizontalOptions="End"></Button>
+                    <Button Grid.Column="2" Text="&#xf105;" Background="Transparent" FontFamily="FontAwesomeIcons" FontSize="25" Command="{Binding ResetPassCommand}" HorizontalOptions="End" Style="{StaticResource LabelColor}" ></Button>
 
                 </Grid>
 
@@ -55,7 +56,7 @@
                         <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="&#xf506;" Style="{StaticResource LabelColor}" FontFamily="FontAwesomeIcons" FontSize="13"   />
                     </Frame>
                     <Label VerticalOptions="Center"  Grid.Column="1" Text="Delete Account" FontAttributes="Bold" Style="{StaticResource LabelColor}" FontSize="18"  />
-                    <Button  Grid.Column="2" Text="&#xf105;" BackgroundColor="Transparent"  FontFamily="FontAwesomeIcons" FontSize="25" CommandParameter="{Binding UserInfo.Id}" Command="{Binding DeleteCommand}" HorizontalOptions="End"></Button>
+                    <Button  Grid.Column="2" Text="&#xf105;" BackgroundColor="Transparent"  FontFamily="FontAwesomeIcons" FontSize="25" CommandParameter="{Binding UserInfo.Id}" Command="{Binding DeleteCommand}" HorizontalOptions="End" Style="{StaticResource LabelColor}" ></Button>
                 </Grid>
 
                 <Label Margin="0,5"   Grid.Column="0" HorizontalOptions="StartAndExpand" FontSize="15" FontAttributes="Bold" Text="Awards" TextColor="Gray"/>
@@ -68,7 +69,7 @@
                         <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Text="&#xf559;" Style="{StaticResource LabelColor}" FontFamily="FontAwesomeIcons" FontSize="15" Padding="1,0,0,0"  />
                     </Frame>
                     <Label VerticalOptions="Center"  Grid.Column="1" Text="Restaurant of the month" FontAttributes="Bold" Style="{StaticResource LabelColor}" FontSize="18"  />
-                    <Button  Grid.Column="2" Text="&#xf105;" Background="Transparent"  FontFamily="FontAwesomeIcons" FontSize="22" Command="{Binding RestaurantCommand}"/>
+                    <Button  Grid.Column="2" Text="&#xf105;" Background="Transparent"  FontFamily="FontAwesomeIcons" FontSize="22" Command="{Binding RestaurantCommand}" Style="{StaticResource LabelColor}" />
                 </Grid>
 
                 <Label Margin="0,5"  Grid.Column="0" HorizontalOptions="StartAndExpand" FontSize="15" FontAttributes="Bold" Text="Regional"  TextColor="Gray"/>
@@ -81,7 +82,7 @@
                         <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="&#xf2f5;" Style="{StaticResource LabelColor}"  FontFamily="FontAwesomeIcons" FontSize="16"  />
                     </Frame>
                     <Label VerticalOptions="Center" Grid.Column="1" Text="Log Out" FontAttributes="Bold" Style="{StaticResource LabelColor}"  FontSize="18"  />
-                    <Button  Grid.Column="2" Text="&#xf105;" Background="Transparent"   FontFamily="FontAwesomeIcons" FontSize="22"   Command="{Binding LogOutCommand}" />
+                    <Button  Grid.Column="2" Text="&#xf105;" Background="Transparent"   FontFamily="FontAwesomeIcons" FontSize="22" Style="{StaticResource LabelColor}"   Command="{Binding LogOutCommand}" />
 
                 </Grid>
 

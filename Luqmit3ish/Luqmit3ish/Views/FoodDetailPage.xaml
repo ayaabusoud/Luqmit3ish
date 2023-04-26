@@ -10,12 +10,13 @@
         <Grid RowDefinitions="0.4*,0.6*" Margin="0">
             <Image Grid.Row="0" Source="{Binding DishInfo.Photo}" Aspect="AspectFill"/>
             <Frame  Grid.Row="1" HorizontalOptions="Fill" VerticalOptions="Fill"  
-                    Margin="-15,-40,0,-40"   HasShadow="True">
+                    Margin="-15,-40,0,-40"   HasShadow="True"
+                    Style="{StaticResource FrameColor}">
                 <StackLayout Margin="10" HorizontalOptions="Fill"
                              Spacing="15" Padding="7">
                    
                         <Label Text="{Binding  DishInfo.Restaurant.Name}" 
-                           FontSize="Medium" TextColor="Black" Margin="0,0,0,-15">
+                           FontSize="Medium" Style="{StaticResource LabelColor}" Margin="0,0,0,-15">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ProfileCommand}"
                                                   CommandParameter="{Binding DishInfo.Restaurant}"  />
@@ -24,7 +25,7 @@
                    
                         <Grid ColumnDefinitions="*,auto" >
                          <Label Grid.Column="0" Text="{Binding  DishInfo.DishName}" 
-                           FontSize="Title" TextColor="Black" FontAttributes="Bold"/>
+                           FontSize="Title" Style="{StaticResource LabelColor}" FontAttributes="Bold"/>
 
                         <StackLayout  Orientation="Horizontal"
                                      Grid.Column="1" Margin="26,-5,0,0">
@@ -36,7 +37,7 @@
                                 </Label.GestureRecognizers>
                             </Label>
                             <Label Text="{Binding Counter}" FontAttributes="Bold" 
-                                   Margin="3,11,3,0" FontSize="19"/>
+                                   Margin="3,11,3,0" FontSize="19" Style="{StaticResource LabelColor}"/>
                             <Label Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="30" 
                                    VerticalOptions="Center" Margin="0,10,0,0" TextColor="{Binding MinusColor}">
                                 <Label.GestureRecognizers>
@@ -47,44 +48,44 @@
                     </Grid>
                         
                    
-                    <Label VerticalOptions="Start" Text="Description" TextColor="Black" FontSize="Medium" FontAttributes="Bold"/>
-                    <Label VerticalOptions="Start" TextColor="Black" Text="{Binding DishInfo.Description}" Margin="0,-10,0,0" FontSize="16"/>
+                    <Label VerticalOptions="Start" Text="Description" Style="{StaticResource LabelColor}" FontSize="Medium" FontAttributes="Bold"/>
+                    <Label VerticalOptions="Start" Style="{StaticResource LabelColor}" Text="{Binding DishInfo.Description}" Margin="0,-10,0,0" FontSize="16"/>
                     <StackLayout Orientation="Horizontal" Spacing="10">
-                        <Label  Text="&#xf48b;" FontFamily="FontAwesomeIcons" FontSize="22" Margin="0,7,0,0"/>
-                        <Label  FontSize="17" TextColor="Black" Margin="0,6,0,0">
+                        <Label  Text="&#xf48b;" FontFamily="FontAwesomeIcons" FontSize="22" Margin="0,7,0,0" Style="{StaticResource LabelColor}"/>
+                        <Label  FontSize="17" Style="{StaticResource LabelColor}" Margin="0,6,0,0" >
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="Opening Hours: " />
-                                    <Span Text="{Binding DishInfo.Restaurant.OpeningHours}" TextColor="Black" FontAttributes="Bold" FontSize="17" />
+                                    <Span Text="{Binding DishInfo.Restaurant.OpeningHours}" Style="{StaticResource LabelColor}" FontAttributes="Bold" FontSize="17" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
                     </StackLayout>
                     <StackLayout Orientation="Horizontal" Spacing="12" Margin="3,0">
-                        <Label Text="&#xf251;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,5,0,0"/>
-                        <Label FontSize="17" TextColor="Black" Margin="0,5,0,0">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="Keep valid for:  " />
-                                    <Span Text="{Binding DishInfo.KeepValid}" TextColor="Black" FontAttributes="Bold" FontSize="17" />
-                                    <Span Text=" " FontSize="0" />
-                                    <Span Text="{Binding DayOrDays}" TextColor="Black" FontAttributes="Bold" FontSize="17"/>
-                            </FormattedString>
-                        </Label.FormattedText>
+                        <Label Text="&#xf251;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,5,0,0" Style="{StaticResource LabelColor}"/>
+                        <Label FontSize="17" Style="{StaticResource LabelColor}" Margin="0,5,0,0">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Keep valid for:  "  />
+                                        <Span Text="{Binding DishInfo.KeepValid}"  FontAttributes="Bold" FontSize="17" />
+                                        <Span Text=" " FontSize="0" />
+                                        <Span Text="{Binding DayOrDays}" FontAttributes="Bold" FontSize="17"/>
+                                </FormattedString>
+                            </Label.FormattedText>
                     </Label>
                     </StackLayout>
                     <StackLayout Orientation="Horizontal" Spacing="5">
-                        <Label Text="&#xf562;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,5,0,0"/>
-                        <Label VerticalOptions="Center" Margin="0,-5,0,0">
+                        <Label Text="&#xf562;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,5,0,0" Style="{StaticResource LabelColor}"/>
+                        <Label VerticalOptions="Center" Margin="0,-5,0,0" Style="{StaticResource LabelColor}">
                         <Label.FormattedText>
                             <FormattedString >
                                     <Span Text="Available quantity: " 
-                                      TextColor="Black" FontSize="18"/>
+                                       FontSize="18"/>
                                     <Span Text="{Binding DishInfo.Quantity}" 
-                                      TextColor="Black"
+                                     
                                       FontAttributes="Bold" FontSize="Medium"/>
                                     <Span Text=" " FontSize="0" />
-                                    <Span Text="{Binding DishOrDishes}" TextColor="Black" FontSize="Medium" FontAttributes="Bold"/>
+                                    <Span Text="{Binding DishOrDishes}" FontSize="Medium" FontAttributes="Bold"/>
                                 </FormattedString>
                         </Label.FormattedText>
                             

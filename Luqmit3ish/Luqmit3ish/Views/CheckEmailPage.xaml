@@ -27,7 +27,7 @@
                    BoxShape="Squere"
                    PINLength="4"
                    PINValue="{Binding PIN}"
-                   Color="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" 
+                   Color="Black"
                    BackgroundColor="Transparent"
                    BoxBorderColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"
                    AutoDismissKeyboard="True"

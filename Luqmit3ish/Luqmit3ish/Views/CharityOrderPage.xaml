@@ -25,7 +25,7 @@
                          FontSize="Small"
                          HorizontalOptions="Fill" 
                          HorizontalTextAlignment="Center"
-                         BackgroundColor="#FAF9F6"
+                         BackgroundColor="Transparent"
                          Margin="0,0,0,10"/>
             </StackLayout>
             <CollectionView Margin="0,10,0,0" ItemsSource="{Binding OrderCards}" >
@@ -34,7 +34,7 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <SwipeView>
+                        <SwipeView BackgroundColor="{AppThemeBinding Dark=#212121}">
                             <SwipeView.RightItems>
                                 <SwipeItems Mode="Execute">
                                     <SwipeItem Text="Delete"
@@ -54,10 +54,10 @@
                                 <StackLayout Orientation="Horizontal" Padding="0"
                                                  Margin="0" HorizontalOptions="Start">
                                     <Image HeightRequest="60" WidthRequest="60" VerticalOptions="Center" 
-                                           HorizontalOptions="Center" Source="{Binding Owner.Photo}" />
+                                           HorizontalOptions="Center" Source="{Binding Owner.Photo}" BackgroundColor="White" />
                                     <StackLayout VerticalOptions="Center" Margin="20,0,0,0">
                                         <Label  MaxLines="1" HorizontalTextAlignment="Start"
-                                                   Text="{Binding Owner.Name}" TextColor="Black" 
+                                                   Text="{Binding Owner.Name}" Style="{StaticResource LabelColor}"
                                                    FontSize="Medium" FontAttributes="Bold"/>
                                             <Label  MaxLines="1" HorizontalTextAlignment="Start"
                                                  FontSize="Small" TextColor="Gray"

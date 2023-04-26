@@ -256,6 +256,7 @@ namespace Luqmit3ish.ViewModels
                 {
                     _passwordErrorVisible = false;
                     OnPropertyChanged(nameof(PasswordErrorVisible));
+                    await _navigation.PopAsync();
                     await PopupNavigation.Instance.PushAsync(new PopUp("Your password has been successfully reset."));
                     Thread.Sleep(3000);
                     await PopupNavigation.Instance.PopAsync();

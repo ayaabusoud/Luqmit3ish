@@ -34,7 +34,6 @@ namespace Luqmit3ish.ViewModels
             ResetPassCommand = new Command(async () => await OnResetClicked());
                LogOutCommand= new Command(async () => await OnLogOutClicked());
                DeleteCommand = new Command<int>(async (int id) => await OnDeleteAccountClicked(id));
-               DarkModeCommand = new Command (OnDarkModeClicked);
                RestaurantCommand = new Command(async () => await OnRestaurantClicked());
 
             _userServices = new UserServices();
@@ -132,10 +131,6 @@ namespace Luqmit3ish.ViewModels
            
 
         }
-        private void OnDarkModeClicked()
-        {
-            //implm
-        }
 
         private async Task OnDeleteAccountClicked(int id)
         {
@@ -209,7 +204,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushModalAsync(new ResetPasswordPage(UserInfo.Email));
+                await _navigation.PushAsync(new ResetPasswordPage(UserInfo.Email));
             }
             catch (ArgumentException e)
             {
