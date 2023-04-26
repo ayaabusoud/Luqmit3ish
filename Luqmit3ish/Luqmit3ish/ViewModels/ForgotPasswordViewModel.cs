@@ -35,7 +35,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                _navigation.PushAsync(new CheckEmailPage(_email));
+                Application.Current.MainPage = new CheckEmailPage(Email);
 
             }
             catch (ArgumentException e)
