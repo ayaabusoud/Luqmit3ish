@@ -14,7 +14,7 @@
                                HorizontalOptions="Center" FontSize="30" 
                                FontAttributes="Bold" Style="{StaticResource LabelColor}"/>
 
-                        <Label Text="Name" Style="{StaticResource LabelColor}"
+                        <Label Text="Name *" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
                         <Frame Style="{StaticResource textFeildFrame}" BorderColor="{Binding NameFrameColor}" >
                             <StackLayout Orientation="Horizontal
@@ -29,7 +29,7 @@
                             </StackLayout>
                         </Frame>
 
-                        <Label Text="Email" Style="{StaticResource LabelColor}"
+                        <Label Text="Email *" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
                         <Frame Style="{StaticResource textFeildFrame}"
                                BorderColor="{Binding EmailFrameColor}">
@@ -51,7 +51,7 @@
                                " FontSize="Small" Margin="15,0"
                                IsVisible="{Binding EmailErrorVisible}"/>
 
-                        <Label Text="Password" Style="{StaticResource LabelColor}"
+                        <Label Text="Password *" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
 
                         <Frame Style="{StaticResource textFeildFrame}"
@@ -85,7 +85,7 @@
                                Margin="15,0" 
                                IsVisible="{Binding PasswordErrorVisible}"/>
 
-                        <Label Text="Phone Number" Style="{StaticResource LabelColor}"
+                        <Label Text="Phone Number *" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
 
                         <Frame Style="{StaticResource textFeildFrame}"
@@ -109,7 +109,7 @@
 
 
 
-                        <Label Text="Type" Style="{StaticResource LabelColor}"
+                        <Label Text="Type *" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
                         <Frame Style="{StaticResource textFeildFrame}" 
                                BorderColor="{Binding TypeFrameColor}" >

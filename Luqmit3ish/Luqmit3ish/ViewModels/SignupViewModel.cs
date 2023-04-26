@@ -76,7 +76,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                if (isValidEmail(_email) && isValidPassword(_password) && isValidPhone(_phone) && _type != -1)
+                if ( isValidEmail(_email) && isValidPassword(_password) && isValidPhone(_phone) && _type != -1 && _name.Length > 0)
                 {
                     SignUpRequest signUpRequest = new SignUpRequest()
                     {
@@ -99,9 +99,6 @@ namespace Luqmit3ish.ViewModels
                     PasswordErrorVisible = true;
                     PasswordValid = false;
                     PasswordInvalid = true;
-                    ShowPassword = false;
-                    HidePassword = false;
-                    IsPassword = true;
                     PasswordFrameColor = Color.DarkRed;
                 }
                 else if (!isValidPhone(_phone))
@@ -113,7 +110,7 @@ namespace Luqmit3ish.ViewModels
                 }
                 else
                 {
-                    await PopupNavigation.Instance.PushAsync(new PopUp("Please fill in all the required fields correctly."));
+                    await PopupNavigation.Instance.PushAsync(new PopUp("Please fill in all the required fields."));
                     Thread.Sleep(3000);
                     await PopupNavigation.Instance.PopAsync();
                 }
@@ -202,10 +199,18 @@ namespace Luqmit3ish.ViewModels
                     _emailValid = true;
                     _emailInValid = false;
                     _emailFrameColor = Color.Green;
-                    EmailErrorVisible = false;
-                    EmailInValid = false;
 
                 }
+                else
+                {
+                    if (_emailValid)
+                    {
+                        _emailValid = false;
+                        _emailInValid = true;
+                        _emailFrameColor = Color.DarkRed;
+                    }
+                }
+
                 OnPropertyChanged(nameof(EmailValid));
                 OnPropertyChanged(nameof(EmailFrameColor));
                 OnPropertyChanged(nameof(EmailErrorVisible));
@@ -261,16 +266,7 @@ namespace Luqmit3ish.ViewModels
         #endregion
 
 
-
-       //             _passwordValid = true;
-      //              _passwordFrameColor = Color.Green;
-       //             HidePassword = true;
-        //            IsPassword = true;
-        //            ShowPassword = false;
-        //            PasswordErrorVisible = false;
-         //           PasswordInvalid = false;
-
-#region PasswordField
+      #region PasswordField
         private string _password;
         public string Password
         {
@@ -278,19 +274,37 @@ namespace Luqmit3ish.ViewModels
             set
             {
                 SetProperty(ref _password, value);
+                if (_hidePassword)
+                {
+                    _hidePassword = true;
+                    _showPassword = false;
+                    _isPassword = true;
+                }
+                else
+                {
+                    _hidePassword = false;
+                    _showPassword = true;
+                    _isPassword = false;
+                }
 
                 if (isValidPassword(_password))
                 {
-
                     _passwordErrorVisible = false;
                     _passwordValid = true;
                     _passwordInvalid = false;
                     _passwordFrameColor = Color.Green;
                     _passwordErrorVisible = false;
                     _passwordInvalid = false;
-                     HidePassword = true;
-                     IsPassword = true;
-                     ShowPassword = false;
+                    SetProperty(ref _password, value);
+                }
+                else
+                {
+                    if (_passwordValid)
+                    {
+                        _passwordValid = false;
+                        _passwordInvalid = true;
+                        _passwordFrameColor = Color.DarkRed;
+                    }
                 }
                 OnPropertyChanged(nameof(PasswordErrorVisible));
                 OnPropertyChanged(nameof(PasswordValid));
@@ -363,10 +377,19 @@ namespace Luqmit3ish.ViewModels
                 if (isValidPhone(_phone))
                 {
                     _phoneFrameColor = Color.Green;
-                    PhoneErrorVisible = false;
-                    PhoneValid = true;
-                    PhoneInvalid = false;
+                    _phoneErrorVisible = false;
+                    _phoneValid = true;
+                    _phoneInvalid = false;
 
+                }
+                else
+                {
+                    if(PhoneValid)
+                    {
+                        _phoneValid = false;
+                        _phoneInvalid = true;
+                        _phoneFrameColor = Color.DarkRed;
+                    }
                 }
                 OnPropertyChanged(nameof(PhoneValid));
                 OnPropertyChanged(nameof(PhoneFrameColor));

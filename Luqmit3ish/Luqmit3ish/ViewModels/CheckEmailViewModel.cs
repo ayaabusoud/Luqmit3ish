@@ -31,8 +31,8 @@ namespace Luqmit3ish.ViewModels
             OnInit(Email);
         }
 
-        private int _pin;
-        public int PIN
+        private string _pin;
+        public string PIN
         {
             get => _pin;
             set => SetProperty(ref _pin, value);
@@ -76,7 +76,7 @@ namespace Luqmit3ish.ViewModels
             {
                 var code = int.Parse(verificationCode);
                 Console.WriteLine(code);
-                if (code == PIN)
+                if (code == int.Parse(PIN))
                 {
                     Application.Current.MainPage = new ResetPasswordForgetPage(Email);
                 }

@@ -22,7 +22,45 @@ namespace Luqmit3ish.ViewModels
         public ICommand ForgotPassCommand { get; }
         public ICommand SignupCommand { get; }
         public ICommand LoginCommand { get; }
+        public ICommand HidePasswordCommand { protected set; get; }
+        public ICommand ShowPasswordCommand { protected set; get; }
 
+
+
+        private bool _isPassword = true;
+        public bool IsPassword
+        {
+            get => _isPassword;
+            set => SetProperty(ref _isPassword, value);
+
+        }
+
+        private bool _showPassword = false;
+        public bool ShowPassword
+        {
+            get => _showPassword;
+            set => SetProperty(ref _showPassword, value);
+
+        }
+        private bool _hidePassword = true;
+        public bool HidePassword
+        {
+            get => _hidePassword;
+            set => SetProperty(ref _hidePassword, value);
+
+        }
+        private void OnHidePasswordClicked()
+        {
+            IsPassword = false;
+            ShowPassword = true;
+            HidePassword = false;
+        }
+        private void OnUnHidePasswordClicked()
+        {
+            IsPassword = true;
+            ShowPassword = false;
+            HidePassword = true;
+        }
         private UserServices _userServices;
         public LoginViewModel(INavigation navigation)
         {
@@ -30,6 +68,8 @@ namespace Luqmit3ish.ViewModels
             ForgotPassCommand = new Command(OnForgotPassClicked);
             SignupCommand = new Command(() => OnSignupClicked());
             LoginCommand = new Command(() => OnLoginClicked());
+            ShowPasswordCommand = new Command(OnUnHidePasswordClicked);
+            HidePasswordCommand = new Command(OnHidePasswordClicked);
             _userServices = new UserServices();
         }
 
@@ -159,8 +199,27 @@ namespace Luqmit3ish.ViewModels
             set
             {
                 SetProperty(ref _password, value);
+                if (_hidePassword)
+                {
+                    _hidePassword = true;
+                    _showPassword = false;
+                    _isPassword = true;
+                }
+                else
+                {
+                    _hidePassword = false;
+                    _showPassword = true;
+                    _isPassword = false;
+                }
                 if (_password != null)
+                {
                     LoginButtonEnable = true;
+
+                }
+                OnPropertyChanged(nameof(HidePassword));
+                OnPropertyChanged(nameof(ShowPassword));
+                OnPropertyChanged(nameof(IsPassword));
+
             }
         }
     }

@@ -23,7 +23,21 @@ namespace Luqmit3ish.ViewModels
         public OrderCard Order
         {
             get => _order;
-            set => SetProperty(ref _order, value);
+            set 
+            {
+                SetProperty(ref _order, value);
+
+                OnPropertyChanged(nameof(Order));
+
+            }
+    }
+
+
+        private ObservableCollection<OrderDish> _items;
+        public ObservableCollection<OrderDish> Items
+        {
+            get => _items;
+            set =>  SetProperty(ref _items, value);
         }
         private OrderService _orderService;
         private FoodServices _foodService;
@@ -31,7 +45,6 @@ namespace Luqmit3ish.ViewModels
         public ICommand MinusCommand { protected set; get; }
         public ICommand ProfileCommand { protected set; get; }
 
-        public ObservableCollection<OrderDish> Items { get; set; } = new ObservableCollection<OrderDish>();
 
         public OrderDetailsViewModel(OrderCard order, INavigation navigation)
         {
@@ -44,16 +57,52 @@ namespace Luqmit3ish.ViewModels
             _orderService = new OrderService();
             _foodService = new FoodServices();
         }
+        private async void getData(int orderId)
+        {
 
-     
+            var user = Preferences.Get("userId", null);
+            if (user is null)
+            {
+                return;
+            }
+            var userId = int.Parse(user);
+            try
+            {
+                ObservableCollection<OrderCard> cards = await _orderService.GetOrders(userId);
+                foreach (OrderCard order in cards)
+                {
+                    if (order.Id == orderId)
+                    {
+                        Items = new ObservableCollection<OrderDish>(order.Orders);
+                    }
+                }
+
+            }
+            catch (ConnectionException e)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+            }
+            catch (HttpRequestException e)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
+
+            }
+            catch (Exception e)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
+            }
+
+        }
+
+
+
         private async Task OnMinusClickedAsync(OrderDish orderDish)
         {
             try
             {
-                Debug.WriteLine(orderDish.Quantity);
-                orderDish.Quantity--;
-                Debug.WriteLine(orderDish.Quantity);
-                //    await _orderService.UpdateOrderDishCount(orderId, "Minus");
+                await _orderService.UpdateOrderDishCount(orderDish.Id, "Minus");
+                getData(Order.Id);
+
             }
             catch (ConnectionException e)
             {
@@ -82,10 +131,8 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                Debug.WriteLine(orderDish.Quantity);
-                orderDish.Quantity++;
-                Debug.WriteLine(orderDish.Quantity);
-                //  await _orderService.UpdateOrderDishCount(orderId, "plus");
+                await _orderService.UpdateOrderDishCount(orderDish.Id, "plus");
+                getData(Order.Id);
             }
             catch (ConnectionException e)
             {

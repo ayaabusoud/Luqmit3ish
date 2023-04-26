@@ -51,14 +51,21 @@ namespace Luqmit3ish.ViewModels
             try
             {
                 var code = int.Parse(sentCode);
-                if(code == int.Parse(_pin))
+
+                int enteredCode = int.Parse(_pin);
+
+                Debug.WriteLine(code);
+                Debug.WriteLine(_pin);
+
+                if (code == enteredCode)
                 {
+
+
                     bool IsInserted = await _userServices.InsertUser(newUser);
+
                     if (IsInserted)
                     {
-                        User user = await _userServices.GetUserByEmail(newUser.Email);
-
-                        if (user.Type.Equals("Restaurant"))
+                        if (newUser.Type.Equals("Restaurant"))
                         {
                             Application.Current.MainPage = new AppShellRestaurant();
                         }
@@ -67,9 +74,19 @@ namespace Luqmit3ish.ViewModels
                             Application.Current.MainPage = new AppShellCharity();
                         }
                     }
+                    else
+                    {
+                        await PopupNavigation.Instance.PushAsync(new PopUp("The code is incorrect, please try again."));
+                        Thread.Sleep(3000);
+                        await PopupNavigation.Instance.PopAsync();
+                        return;
+                    }
                 }
                 else
                 {
+                    await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
                     return;
                 }
             }

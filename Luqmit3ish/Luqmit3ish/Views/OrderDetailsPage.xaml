@@ -20,7 +20,7 @@
                         <FormattedString.Spans>
                             <Span Text="&#xf48b;" FontFamily="FontAwesomeIcons" FontSize="16"  />
                             <Span  Text=" Pickup Time: " />
-                            <Span  Text="8:00am-9:00pm"  /> 
+                            <Span  Text="{Binding Order.Owner.OpeningHours}"  /> 
                         </FormattedString.Spans>
                     </FormattedString>
                 </Label.FormattedText>

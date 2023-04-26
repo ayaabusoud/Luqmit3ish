@@ -42,10 +42,20 @@
                                 <Label Text="&#xf023;" FontFamily="FontAwesomeIcons"
                                        FontSize="20" Style="{StaticResource LabelColor}"/>
                                 <Entry FontSize="Medium" Placeholder="Enter your password" 
-                                       IsPassword="True" Keyboard="Text" 
+                                      IsPassword="{Binding IsPassword}"
                                        Style="{StaticResource textFeild}"
-                                       Text="{Binding Password}" 
-                                       ClearButtonVisibility="WhileEditing" />
+                                       Text="{Binding Password}"
+                                       ClearButtonVisibility="WhileEditing"/>
+                                <Label TextColor="DimGray" Text="&#xf070;" FontFamily="FontAwesomeIcons" FontSize="20" Style="{StaticResource LabelColor}" IsVisible="{Binding HidePassword }" >
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding HidePasswordCommand}"  />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <Label TextColor="DimGray" Text="&#xf06e;" FontFamily="FontAwesomeIcons" FontSize="20" Style="{StaticResource LabelColor}" IsVisible="{Binding ShowPassword }">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ShowPasswordCommand}"   />
+                                    </Label.GestureRecognizers>
+                                </Label>
                             </StackLayout>
                         </Frame>
                         <Label Text="Forgot password?" Style="{StaticResource LabelColor}"
