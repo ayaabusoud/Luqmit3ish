@@ -160,7 +160,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushAsync(new OtherProfilePage(restaurant));
+                await PopupNavigation.Instance.PushAsync(new OtherProfilePage(restaurant));
 
             }
             catch (ArgumentException e)

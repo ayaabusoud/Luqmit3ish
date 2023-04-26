@@ -12,7 +12,7 @@ using Xamarin.Forms.Xaml;
 namespace Luqmit3ish.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class OtherProfilePage : ContentPage
+    public partial class OtherProfilePage : Rg.Plugins.Popup.Pages.PopupPage
     {
         public OtherProfilePage(User user)
         {

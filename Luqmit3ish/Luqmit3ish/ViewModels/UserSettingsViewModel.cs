@@ -30,8 +30,8 @@ namespace Luqmit3ish.ViewModels
 
         public UserSettingsViewModel(INavigation navigation) {
                this._navigation = navigation;
-               MyProfileCommand= new Command(async () => await OnProfileClicked(UserInfo));
-               ResetPassCommand = new Command(async () => await OnResetClicked());
+            MyProfileCommand = new Command(async () => await OnProfileClicked());
+            ResetPassCommand = new Command(async () => await OnResetClicked());
                LogOutCommand= new Command(async () => await OnLogOutClicked());
                DeleteCommand = new Command<int>(async (int id) => await OnDeleteAccountClicked(id));
                DarkModeCommand = new Command (OnDarkModeClicked);
@@ -207,20 +207,10 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private async Task OnProfileClicked(User UserInfo)
+        private async Task OnProfileClicked()
         {
-            try
-            {
-                await _navigation.PushModalAsync(new ProfilePage(UserInfo));
-            }
-            catch (ArgumentException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
+            await _navigation.PushModalAsync(new ProfilePage(UserInfo));
         }
+
     }
 }

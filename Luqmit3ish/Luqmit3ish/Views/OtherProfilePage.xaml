@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+<popup:PopupPage
              x:Class="Luqmit3ish.Views.OtherProfilePage"
-             Title="{Binding UserInfo.Name}">
-    <ContentPage.Content>
-        <StackLayout Margin="16,64,16,35">
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+        <StackLayout VerticalOptions="Center" Margin="16,64,16,35">
             <Frame BackgroundColor="White" BorderColor="LightGray" Margin="15,70,15,0" >
                 <AbsoluteLayout>
                     <Frame  VerticalOptions="Center" Padding="0"
@@ -56,5 +56,4 @@
                 </AbsoluteLayout>
             </Frame>
         </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
+    </popup:PopupPage>

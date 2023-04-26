@@ -47,7 +47,7 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _dishInfo, value);
         }
 
-        private string _plusColor = "Orange";
+        private string _plusColor = "{StaticResource PrimaryLight}";
         public string PlusColor
         {
             get => _plusColor;
@@ -97,14 +97,14 @@ namespace Luqmit3ish.ViewModels
             if (Counter == 1)
             {
                 MinusColor = "Gray";
-                PlusColor = "Orange";
+                PlusColor = "{StaticResource PrimaryLight}";
                 return;
             }
             if (Counter < 1)
             {
                 Counter = 1;
                 MinusColor = "Gray";
-                PlusColor = "Orange";
+                PlusColor = "{StaticResource PrimaryLight}";
                 return;
             }
 
@@ -112,13 +112,13 @@ namespace Luqmit3ish.ViewModels
             if (Counter == 1)
             {
                 MinusColor = "Gray";
-                PlusColor = "Orange";
+                PlusColor = "{StaticResource PrimaryLight}";
                 return;
             }
             if (Counter > 1)
             {
-                PlusColor = "Orange";
-                MinusColor = "Orange";
+                PlusColor = "{StaticResource PrimaryLight}";
+                MinusColor = "{StaticResource PrimaryLight}";
             }
         }
 
@@ -146,13 +146,13 @@ namespace Luqmit3ish.ViewModels
             if (Counter == quantity)
             {
                 PlusColor = "Gray";
-                MinusColor = "Orange";
+                MinusColor = "{StaticResource PrimaryLight}";
                 return;
             }
             if(Counter > 1)
             {
-                PlusColor = "Orange";
-                MinusColor = "Orange";
+                PlusColor = "{StaticResource PrimaryLight}";
+                MinusColor = "{StaticResource PrimaryLight}";
                 return;
             }
         }
@@ -160,7 +160,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushAsync(new OtherProfilePage(restaurant));
+                await PopupNavigation.Instance.PushAsync(new OtherProfilePage(restaurant));
 
             }
             catch (ArgumentException e)

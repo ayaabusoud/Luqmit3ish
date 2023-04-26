@@ -11,8 +11,6 @@ namespace Luqmit3ish.Models
 
         public String Password { get; set; }
 
-        public String Location { get; set; }
-
         public String Type { get; set; }
     }
 }

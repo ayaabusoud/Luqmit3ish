@@ -8,7 +8,7 @@
              Style="{StaticResource ContentPageColor}">
     <ContentPage.Content>
         <Grid RowDefinitions="0.4*,0.6*" Margin="0">
-            <Image Grid.Row="0" Source="{Binding DishInfo.Photo}" Aspect="Fill"/>
+            <Image Grid.Row="0" Source="{Binding DishInfo.Photo}" Aspect="AspectFill"/>
             <Frame  Grid.Row="1" HorizontalOptions="Fill" VerticalOptions="Fill"  
                     Margin="-15,-40,0,-40"   HasShadow="True">
                 <StackLayout Margin="10" HorizontalOptions="Fill"
@@ -97,7 +97,7 @@
                                     TextColor="White" Text="Reserve" CornerRadius="10"
                                     Margin="10,3,0,0" HeightRequest="50" 
                                     HorizontalOptions="Start" WidthRequest="800"
-                                    BackgroundColor="Orange" FontAttributes="Bold"  />
+                                    BackgroundColor="{StaticResource PrimaryLight}" FontAttributes="Bold"  />
 
                 </StackLayout>
             </Frame>

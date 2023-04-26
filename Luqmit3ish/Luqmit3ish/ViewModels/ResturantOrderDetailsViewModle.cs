@@ -2,6 +2,7 @@ using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -37,7 +38,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushAsync(new OtherProfilePage(restaurant));
+                await PopupNavigation.Instance.PushAsync(new OtherProfilePage(restaurant));
 
             }
             catch (ArgumentException e)

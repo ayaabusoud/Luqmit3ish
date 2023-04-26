@@ -49,7 +49,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushAsync(new OrderDetailsPage(order));
+                await _navigation.PushAsync(new  OrderDetailsPage(order));
 
             }catch(Exception e)
             {
