@@ -1,4 +1,4 @@
-﻿using Luqmit3ish.Views;
+using Luqmit3ish.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,8 +10,8 @@ using Xamarin.Forms;
 
 namespace Luqmit3ish.ViewModels
 {
-
-    class ForgotPasswordViewModel : ViewModelBase
+   
+    class ForgotPasswordViewModel :ViewModelBase
     {
         private INavigation _navigation { get; set; }
 
@@ -22,7 +22,7 @@ namespace Luqmit3ish.ViewModels
         {
             this._navigation = navigation;
             SendEmailCommand = new Command(OnSendEmailClicked);
-            LoginCommand = new Command(OnLoginClicked);
+            LoginCommand = new Command( OnLoginClicked);
         }
         private string _email;
         public string Email
@@ -35,7 +35,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                Application.Current.MainPage = new CheckEmailPage(Email);
+                _navigation.PushAsync(new CheckEmailPage(_email));
 
             }
             catch (ArgumentException e)

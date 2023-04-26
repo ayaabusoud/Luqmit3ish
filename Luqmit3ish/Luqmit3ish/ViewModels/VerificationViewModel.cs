@@ -30,8 +30,8 @@ namespace Luqmit3ish.ViewModels
             OnInit(signUpRequest.Name, signUpRequest.Email);
         }
 
-        private int _pin;
-        public int PIN
+        private string _pin = null;
+        public string PIN
         {
             get => _pin;
             set => SetProperty(ref _pin, value);
@@ -51,7 +51,7 @@ namespace Luqmit3ish.ViewModels
             try
             {
                 var code = int.Parse(sentCode);
-                if(code == _pin)
+                if(code == int.Parse(_pin))
                 {
                     bool IsInserted = await _userServices.InsertUser(newUser);
                     if (IsInserted)

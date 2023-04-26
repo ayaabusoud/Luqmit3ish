@@ -74,10 +74,11 @@ namespace Luqmit3ish.ViewModels
                     bool result =  await _orderService.DeleteOrder(userId, restaurantId);
                     if(result == true)
                     {
+                        OnInit();
                         await PopupNavigation.Instance.PushAsync(new PopUp("The order have been deleted successfully."));
                         Thread.Sleep(3000);
                         await PopupNavigation.Instance.PopAsync();
-                    OnInit();
+                    
                     }
                     else
                     {
