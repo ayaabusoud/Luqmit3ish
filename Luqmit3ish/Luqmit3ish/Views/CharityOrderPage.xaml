@@ -1,85 +1,77 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.CharityOrderPage"
              x:Name="CharityOrder"
+             Style="{StaticResource ContentPageColor}"
              Title="Orders">
 
 
     <ContentPage.Content>
-            <Grid Margin="20,35,20,20" HorizontalOptions="Fill" VerticalOptions="Fill">
-                <StackLayout IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
-                <Image Source="https://luqmit3ish5.blob.core.windows.net/photos/1_EmptyCart.png"
+        <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+            <StackLayout IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
+                <Image Source="https://luqmit3ish1.blob.core.windows.net/photos/1_EmptyCart.png"
                            HeightRequest="200" 
                            WidthRequest="200"
                            VerticalOptions="Center"/>
-                    <Label Text="Your cart is empty"
+                <Label Text="Your cart is empty"
                            FontSize="Medium"
                            TextColor="DimGray"
                            HorizontalOptions="Fill" 
                            HorizontalTextAlignment="Center"
                            FontAttributes="Bold"
                            Margin="0,2,0,0"/>
-                  <Label Text="Go ahead and receive food."
+                <Label Text="Go ahead and receive food."
                          FontSize="Small"
                          HorizontalOptions="Fill" 
                          HorizontalTextAlignment="Center"
+                         BackgroundColor="Transparent"
                          Margin="0,0,0,10"/>
-                   </StackLayout>
-                <CollectionView ItemsSource="{Binding OrderCard}" >
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" 
-                                               ItemSpacing="10"/>
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
+            </StackLayout>
+            <CollectionView Margin="0,10,0,0" ItemsSource="{Binding OrderCards}" >
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="3" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView BackgroundColor="{AppThemeBinding Dark=#212121}">
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="Delete"
+                                               
+                                               IconImageSource="https://luqmit3ish1.blob.core.windows.net/photos/deleteIcon.png"
+                                               BackgroundColor="LightGray"
+                                               Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}"
+                                               CommandParameter="{Binding Id}"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
                             <StackLayout>
-                               <Frame BorderColor="LightGray" CornerRadius="10" HeightRequest="80" HasShadow="True"  >
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer CommandParameter="{Binding .}" Command="{Binding BindingContext.OrderCommand , Source={x:Reference CharityOrder}}"/>
-                                    </Frame.GestureRecognizers>
-                                    <StackLayout Orientation="Horizontal" Padding="0" Margin="0" HorizontalOptions="Start">
-                                    <Image HeightRequest="60" WidthRequest="60" VerticalOptions="Center" HorizontalOptions="Center" Source="{Binding image}" />
-                                        <StackLayout Margin="20,0,0,0">
-                                            <Label MaxLines="1" HorizontalTextAlignment="Start" Text="{Binding name}" TextColor="Black" FontSize="Medium" FontAttributes="Bold"/>
-                                            <CollectionView  HorizontalOptions="Start" ItemsSource="{Binding data}">
-                                            <CollectionView.ItemsLayout>
-                                                <LinearItemsLayout Orientation="Vertical" 
-                                               ItemSpacing="5"/>
-                                            </CollectionView.ItemsLayout>
-                                            <CollectionView.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackLayout>
-                                                        <Label MaxLines="1" HorizontalTextAlignment="Start" TextColor="#2F3246" FontSize="Small">
-                                                            <Label.FormattedText>
-                                                                <FormattedString>
-                                                                    <FormattedString.Spans>
-                                                                        <Span Text="{Binding dishName}"/>
-                                                                        <Span Text=": "/>
-                                                                        <Span Text="{Binding number_of_dish}"  />
-                                                                    </FormattedString.Spans>
-                                                                </FormattedString>
-                                                            </Label.FormattedText>
-                                                        </Label>
-                                                    </StackLayout>
-                                                </DataTemplate>
-                                            </CollectionView.ItemTemplate>
-                                        </CollectionView>
+                            <StackLayout Margin="5,0" Padding="10"  HorizontalOptions="Fill">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding    .}"
+                                                              Command="{Binding BindingContext.OrderCommand , Source={x:Reference CharityOrder}}"/>
+                                </StackLayout.GestureRecognizers>
+                                <StackLayout Orientation="Horizontal" Padding="0"
+                                                 Margin="0" HorizontalOptions="Start">
+                                    <Image HeightRequest="60" WidthRequest="60" VerticalOptions="Center" 
+                                           HorizontalOptions="Center" Source="{Binding Owner.Photo}" BackgroundColor="White" />
+                                    <StackLayout VerticalOptions="Center" Margin="20,0,0,0">
+                                        <Label  MaxLines="1" HorizontalTextAlignment="Start"
+                                                   Text="{Binding Owner.Name}" Style="{StaticResource LabelColor}"
+                                                   FontSize="Medium" FontAttributes="Bold"/>
+                                            <Label  MaxLines="1" HorizontalTextAlignment="Start"
+                                                 FontSize="Small" TextColor="Gray"
+                                                    Text="{Binding Items}"/>
                                         </StackLayout>
-                                        <Label WidthRequest="30"  HorizontalOptions="Start" VerticalOptions="End" TextColor="{StaticResource SecondaryLight}" Text="&#xf2ed;" FontFamily="FontAwesomeIcons"  FontSize="20" >
-                                            <Label.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}"
-                                                                                  CommandParameter="{Binding id}"/>
-                                            </Label.GestureRecognizers>
-                                        </Label>
-                                    </StackLayout>
-                                </Frame>
+                                </StackLayout>
                             </StackLayout>
+                                <BoxView HeightRequest="1" BackgroundColor="LightGray" Margin="16,0"/>
+                            </StackLayout>
+                        </SwipeView>
 
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
-

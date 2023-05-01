@@ -2,10 +2,12 @@ using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -19,7 +21,7 @@ namespace Luqmit3ish.ViewModels
         private INavigation _navigation { get; set; }
         public ICommand FilterCommand { protected set; get; }
         public ICommand SearchCommand { protected set; get; }
-        public Command<DishCard> FoodDetailCommand { protected set; get; }
+        public ICommand FoodDetailCommand { protected set; get; }
 
         private FoodServices _foodServices;
 
@@ -37,20 +39,12 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _description, value);
         }
 
+        private ObservableCollection<DishCard> _dishCards;
 
-        private ObservableCollection<Dish> _dishes;
-
-        public ObservableCollection<Dish> Dishes
+        public ObservableCollection<DishCard> DishCards
         {
-            get => _dishes;
-            set => SetProperty(ref _dishes, value);
-        }
-        private ObservableCollection<DishCard> _dishCard;
-
-        public ObservableCollection<DishCard> DishCard
-        {
-            get => _dishCard;
-            set => SetProperty(ref _dishCard, value);
+            get => _dishCards;
+            set => SetProperty(ref _dishCards, value);
         }
         private bool _emptyResult;
 
@@ -75,7 +69,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushAsync(new FoodDetailPage(dish.id));
+                await _navigation.PushAsync(new FoodDetailPage(dish));
             }
             catch (ArgumentException e)
             {
@@ -88,51 +82,87 @@ namespace Luqmit3ish.ViewModels
         }
 
 
-        private async Task OnInit()
+        private void OnInit()
         {
             try
             {
-                MessagingCenter.Subscribe<FilterFoodViewModel, ObservableCollection<DishCard>>(this, "EditDishes", (sender, editedDishes) =>
-                {
-                    if(DishCard != null)
-                    {
-                        DishCard.Clear();
-                    }
-                    DishCard = editedDishes;
-                });
 
-                DishCard = await _foodServices.GetDishCards();
-                
-            }
-            catch (ConnectionException e)
-            {
-                await Application.Current.MainPage.DisplayAlert("", "There is no internet connection, please check your connection", "Ok");
-                return;
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            if (DishCard.Count > 0)
-            {
-                EmptyResult = false;
-                foreach (DishCard dish in DishCard)
+            
+            Task.Run(async () => {
+                try
                 {
-                    if (dish.quantity == 0)
+                    MessagingCenter.Subscribe<FilterFoodViewModel, ObservableCollection<DishCard>>(this, "EditDishes", (sender, editedDishes) =>
                     {
-                        DishCard.Remove(dish);
+                        if (DishCards != null)
+                        {
+                            DishCards.Clear();
+                        }
+
+                        DishCards = editedDishes;
+                        if (DishCards.Count == 0)
+                        {
+                            EmptyResult = true;
+                            Title = "No Filter Match Found";
+                            Description = "There is no food matches the filters you're looking for!";
+                        }
+                        else
+                        {
+                            EmptyResult = false;
+                        }
+
+
+                    });
+
+                    DishCards = await _foodServices.GetDishCards();
+
+                }
+                catch (ConnectionException e)
+                {
+                    Debug.WriteLine(e.Message);
+                    await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
+                    return;
+                }
+                catch (HttpRequestException e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
+                if (DishCards.Count > 0)
+                {
+                    EmptyResult = false;
+                    foreach (DishCard dish in DishCards)
+                    {
+                        if (dish.Quantity == 0)
+                        {
+                            DishCards.Remove(dish);
+                        }
+                        else if (dish.Quantity == 1)
+                        {
+                            dish.Items = "1 Dish";
+                        }
+                        else
+                        {
+                            dish.Items = dish.Quantity + " Dishes";
+                        }
+
                     }
                 }
-            }
-            else
+                else
+                {
+                    EmptyResult = true;
+                    Title = "No Food Available";
+                    Description = "Come back later to explore new food!";
+                }
+            }).Wait();
+
+            }catch(Exception e)
             {
-                EmptyResult = true;
-                Title = "No Food Available";
-                Description = "Come back later to explore new food!";
+                Debug.WriteLine(e.Message);
             }
 
         }
@@ -141,11 +171,6 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                if (DishCard == null)
-                {
-                    await Application.Current.MainPage.DisplayAlert("", "There is no Dishes to filter, please try again later.", "Ok");
-                    return;
-                }
                 await _navigation.PushAsync(new FilterFoodPage());
             }
             catch (ArgumentException e)
@@ -162,11 +187,6 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                if (DishCard == null)
-                {
-                    await Application.Current.MainPage.DisplayAlert("", "There is no Dishes to Search for, please try again later.", "Ok");
-                    return;
-                }
                 await _navigation.PushAsync(new SearchPage());
 
             }
@@ -179,6 +199,5 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
-
     }
 }

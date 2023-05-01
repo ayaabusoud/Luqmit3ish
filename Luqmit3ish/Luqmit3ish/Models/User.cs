@@ -3,7 +3,7 @@ namespace Luqmit3ish.Models
 {
     public class User
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
         public String Name { get; set; }
 
@@ -14,6 +14,8 @@ namespace Luqmit3ish.Models
         public String Password { get; set; }
 
         public String Location { get; set; }
+
+        public String OpeningHours { get; set; }
 
         public String Type { get; set; }
 

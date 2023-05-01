@@ -4,19 +4,17 @@ using System.Text;
 
 namespace Luqmit3ish.Models
 {
-    class DishCard
+    public class DishCard
     {
-        public int id { get; set; }
-        public int restaurantId { get; set; }
-        public String dishName { get; set; }
-        public String description { get; set; }
-        public String type { get; set; }
-        public String photo { get; set; }
-        public int keepValid { get; set; }
-        public String pickUpTime { get; set; }
-        public int quantity { get; set; }
-        public String restaurantName { get; set; }
-        public bool IsExpanded { get; set; }
+        public int Id { get; set; }
+        public string DishName { get; set; }
+        public string Description { get; set; }
+        public string Type { get; set; }
+        public string Photo { get; set; }
+        public int KeepValid { get; set; }
+        public int Quantity { get; set; }
+        public string Items { get; set; }
+        public User Restaurant { get; set; }
 
     }
 }

@@ -1,8 +1,5 @@
 ﻿using Luqmit3ish.Views;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -13,6 +10,8 @@ using System.Collections.ObjectModel;
 using Luqmit3ish.Models;
 using Luqmit3ish.Exceptions;
 using System.Net.Http;
+using Rg.Plugins.Popup.Services;
+using System.Threading;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -48,9 +47,14 @@ namespace Luqmit3ish.ViewModels
             OnInit();
         }
 
-        private async void OnInit()
+        private void OnInit()
         {
-            var id = Preferences.Get("userId", null);
+            try
+            {
+
+
+                Task.Run(async () => {
+                 var id = Preferences.Get("userId", null);
             if (id is null)
             {
                 return;
@@ -62,7 +66,10 @@ namespace Luqmit3ish.ViewModels
             }
             catch (ConnectionException e)
             {
-                await Application.Current.MainPage.DisplayAlert("", "There is no internet connection, please check your connection", "Ok");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
             catch (HttpRequestException e)
             {
@@ -77,9 +84,17 @@ namespace Luqmit3ish.ViewModels
                 EmptyResult = false;
                 foreach (Dish dish in Dishes)
                 {
-                    if (dish.number == 0)
+                    if (dish.Quantity == 0)
                     {
                         Dishes.Remove(dish);
+                    }
+                    else if (dish.Quantity == 1)
+                    {
+                        dish.Items = "1 Dish";
+                    }
+                    else
+                    {
+                        dish.Items = dish.Quantity + " Dishes";
                     }
                 }
             }
@@ -87,6 +102,16 @@ namespace Luqmit3ish.ViewModels
             {
                 EmptyResult = true;
             }
+                
+                }).Wait();
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+
+           
         }
         private async Task OnFrameClicked(Dish dish)
         {

@@ -2,20 +2,16 @@ using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
+using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
-using Xamarin.Forms.PancakeView;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -28,7 +24,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand NotRecievedCommand { protected set; get; }
         public ICommand RecievedCommand { protected set; get; }
         private OrderService _orderService;
-        public Command<OrderCard> OrderCommand { protected set; get; }
+        public ICommand OrderCommand { protected set; get; }
 
 
         private ObservableCollection<Dish> _dishes;
@@ -74,7 +70,7 @@ namespace Luqmit3ish.ViewModels
             get => _recievedColor;
             set => SetProperty(ref _recievedColor, value);
         }
-        private string _notRecievedColor = "Black";
+        private string _notRecievedColor = "DarkOrange";
         public string NotRecievedColor
         {
             get => _notRecievedColor;
@@ -83,8 +79,10 @@ namespace Luqmit3ish.ViewModels
         private void OnRecievedClicked()
         {
             IsVisible = false;
-            RecievedColor = "Black";
+            RecievedColor = "DarkOrange";
             NotRecievedColor = "#D9D9D9";
+            NotRecievedTextColor = Color.LightGray;
+            RecievedTextColor = Color.Black;
             Selected(true);
             ReceievedCheck = false;
         }
@@ -92,8 +90,10 @@ namespace Luqmit3ish.ViewModels
         private void OnNotRecievedClicked()
         {
             IsVisible = true;
-            NotRecievedColor = "Black";
+            NotRecievedColor = "DarkOrange";
             RecievedColor = "#D9D9D9";
+            RecievedTextColor = Color.LightGray;
+            NotRecievedTextColor = Color.Black;
             Selected(false);
             ReceievedCheck = true;
         }
@@ -102,8 +102,12 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushAsync(new OrderDetailsPage(order));
+                await _navigation.PushAsync(new ResturantOrderDetailsPage(order));
 
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
             }
             catch (Exception e)
             {
@@ -115,78 +119,142 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                foreach (OrderDish order in orders.data)
+                foreach (OrderDish order in orders.Orders)
                 {
-                    await _orderService.UpdateOrderReceiveStatus(order.id);
+                    await _orderService.UpdateOrderReceiveStatus(order.Id);
                 }
                 Selected(false);
             }
             catch (ArgumentException e)
             {
                 Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
-            catch (ConnectionException)
+            catch (ConnectionException e)
             {
-                await Application.Current.MainPage.DisplayAlert("Bad Request", "Please check your connection", "Ok");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
-            catch (HttpRequestException)
+            catch (HttpRequestException e)
             {
-                await Application.Current.MainPage.DisplayAlert("Sorry", "Something went bad here, you can try again", "Ok");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", e.Message, "ok");
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
         }
 
 
    
 
-        private ObservableCollection<OrderCard> _orderCard;
+        private ObservableCollection<OrderCard> _orderCards;
 
-        public ObservableCollection<OrderCard> OrderCard
+        public ObservableCollection<OrderCard> OrderCards
         {
-            get => _orderCard;
-            set => SetProperty(ref _orderCard, value);
+            get => _orderCards;
+            set => SetProperty(ref _orderCards, value);
         }
 
-        private async void Selected(bool status)
+        private Color  _notRecievedTextColor = Color.Black;
+        public Color NotRecievedTextColor
         {
-            var id = Preferences.Get("userId", null);
+            get => _notRecievedTextColor;
+            set => SetProperty(ref _notRecievedTextColor, value);
+        }
+
+        private Color _recievedTextColor;
+        public Color RecievedTextColor
+        {
+            get => _recievedTextColor;
+            set => SetProperty(ref _recievedTextColor, value);
+        }
+
+        private void Selected(bool status)
+        {
+            try
+            {
+
+
+                Task.Run(async () => {
+                var id = Preferences.Get("userId", null);
             if (id == null)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Error", "Your login session has been expired", "Ok");
+                await PopupNavigation.Instance.PushAsync(new PopUp("Your login session has been expired."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
                    await _navigation.PushAsync(new LoginPage());
                     return;
                 }
             var userId = int.Parse(id);
             try
             {
-                OrderCard = await _orderService.GetRestaurantOrders(userId, status);
-            }
-             catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
+                OrderCards = await _orderService.GetRestaurantOrders(userId, status);
             }
             catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
-            if (OrderCard.Count > 0)
+            if (OrderCards.Count > 0)
             {
+                foreach (OrderCard order in OrderCards)
+                {
+                    if (order.Orders.Count == 1)
+                    {
+                        order.Items = "1 item";
+                    }
+                    else
+                    {
+                        order.Items = order.Orders.Count + " items";
+                    }
+                }
                 EmptyResult = false;
             }
             else
             {
                 EmptyResult = true;
             }
+                
+                
+                }).Wait();
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            
 
         }
 
      
     }
 }
+

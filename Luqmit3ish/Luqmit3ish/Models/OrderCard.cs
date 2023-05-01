@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace Luqmit3ish.Models
 {
     public class OrderCard
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string image { get; set; }
-        public List<OrderDish> data { get; set; }
+        public int Id { get; set; }
+        public User Owner { get; set; }
+        public ObservableCollection<OrderDish> Orders { get; set; }
+        public string Items { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Luqmit3ish.ViewModels;
+﻿using Luqmit3ish.Models;
+using Luqmit3ish.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,12 @@ using Xamarin.Forms.Xaml;
 namespace Luqmit3ish.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class OtherProfilePage : ContentPage
+    public partial class OtherProfilePage : Rg.Plugins.Popup.Pages.PopupPage
     {
-        public OtherProfilePage(int id)
+        public OtherProfilePage(User user)
         {
             InitializeComponent();
-            this.BindingContext = new OtherProfileViewModel(id);
+            this.BindingContext = new OtherProfileViewModel(user);
         }
     }
 }

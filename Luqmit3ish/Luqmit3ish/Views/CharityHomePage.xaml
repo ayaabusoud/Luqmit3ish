@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.CharityHomePage"
-             xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
              Title="Home"
-             x:Name="CharityPage">
+             x:Name="CharityPage"
+             Style="{StaticResource ContentPageColor}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="icon_search.png" Command="{Binding SearchCommand}" />
         <ToolbarItem Icon="icon_filter.png" Command="{Binding FilterCommand}" />
@@ -13,24 +13,26 @@
 
         <Grid Margin="16,30,16,25" HorizontalOptions="Fill" VerticalOptions="Fill">
             <StackLayout  IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
-                <Image Source="https://luqmit3ish5.blob.core.windows.net/photos/1_CharityFood.png"
+                <Image Source="https://luqmit3ish1.blob.core.windows.net/photos/1_CharityFood.png"
                        HeightRequest="200" 
                        WidthRequest="200"
                        VerticalOptions="Center"/>
                 <Label Text="{Binding Title}"
-                   FontSize="Medium"
-                   TextColor="DimGray"
-                   HorizontalOptions="Fill" 
-                   HorizontalTextAlignment="Center"
-                   FontAttributes="Bold"
-                   Margin="0,2,0,0"/>
+                       FontSize="Medium"
+                       TextColor="{AppThemeBinding Light=DimGray, Dark={StaticResource TextColorDark}}"
+                       HorizontalOptions="Fill" 
+                       HorizontalTextAlignment="Center"
+                       FontAttributes="Bold"
+                       Margin="0,2,0,0"
+                       Style="{StaticResource LabelColor}"/>
                 <Label Text="{Binding Description}" 
-                   FontSize="Small"
-                   HorizontalOptions="Fill" 
-                   HorizontalTextAlignment="Center"
-                   Margin="0,0,0,10"/>
+                       FontSize="Small"
+                       HorizontalOptions="Fill" 
+                       HorizontalTextAlignment="Center"
+                       Margin="0,0,0,10"
+                       Style="{StaticResource LabelColor}"/>
             </StackLayout>
-            <CollectionView ItemsSource="{Binding DishCard}">
+            <CollectionView ItemsSource="{Binding DishCards}">
 
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="6"/>
@@ -44,15 +46,18 @@
                                     <TapGestureRecognizer CommandParameter="{Binding .}"  Command="{Binding BindingContext.FoodDetailCommand , Source={x:Reference CharityPage}}"></TapGestureRecognizer>
                                 </Frame.GestureRecognizers>
                                 <StackLayout>
-                                    <Image Source="{Binding photo}"  Style="{StaticResource ImageFoodCard}" />
-                                    <Label MaxLines="1" FontAttributes="Bold" TextColor="Black" Text="{Binding dishName}" Margin="15,0" FontSize="Medium"/>
-                                    <Label WidthRequest="150" MaxLines="1" Text="{Binding restaurantName}" Margin="15,0" FontSize="Small"/>
-                                    <Label MaxLines="1" Margin="15,0,0,0"  >
+                                    <Image Source="{Binding Photo}"  Style="{StaticResource ImageFoodCard}" />
+                                    <Label MaxLines="1" FontAttributes="Bold"
+                                           Style="{StaticResource LabelColor}" Text="{Binding DishName}" 
+                                           Margin="15,0" FontSize="Medium"/>
+                                    <Label WidthRequest="150" MaxLines="1" Text="{Binding Restaurant.Name}" 
+                                           Margin="15,0" FontSize="Small" Style="{StaticResource LabelColor}"/>
+                                    <Label  FontSize="Small" MaxLines="1" Margin="15,0,0,0" Style="{StaticResource LabelColor}">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
-                                                    <Span FontSize="18"  Text="{Binding quantity}" TextColor="{StaticResource PrimaryLight}"/>
-                                                    <Span FontSize="12" Text=" Dishes"  />
+                                                    <Span  Text="{Binding Quantity}" />
+                                                    <Span  Text=" Dishes"  />
                                                 </FormattedString.Spans>
                                             </FormattedString>
                                         </Label.FormattedText>
@@ -63,7 +68,6 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
         </Grid>
     </ContentPage.Content>
 </ContentPage>

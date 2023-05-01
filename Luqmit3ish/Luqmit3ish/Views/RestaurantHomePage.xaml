@@ -1,22 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.RestaurantHomePage"
-             xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Title="Home"
-             x:Name="RestaurantPage">
+             x:Name="RestaurantPage"
+             Style="{StaticResource ContentPageColor}">
 
     <ContentPage.Content>
         <Grid Margin="16,0,16,25" HorizontalOptions="Fill" VerticalOptions="Fill">
                 <StackLayout  IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
-                <Image Source="https://luqmit3ish5.blob.core.windows.net/photos/1_CharityFood.png"
+                <Image Source="https://luqmit3ish1.blob.core.windows.net/photos/1_CharityFood.png"
                        HeightRequest="200" 
                        WidthRequest="200"
                        VerticalOptions="Center"/>
                 <Label Text="Add New Dishes" 
                    FontSize="Medium"
-                   TextColor="DimGray"
+                   TextColor="{AppThemeBinding Light=DimGray, Dark={StaticResource TextColorDark}}"
                    HorizontalOptions="Fill" 
                    HorizontalTextAlignment="Center"
                    FontAttributes="Bold"/>
@@ -24,7 +24,8 @@
                    FontSize="Small"
                    HorizontalOptions="Fill" 
                    HorizontalTextAlignment="Center"
-                   Margin="0,0,0,10"/>
+                   Margin="0,0,0,10"
+                   Style="{StaticResource LabelColor}"/>
             </StackLayout>
             <CollectionView ItemsSource="{Binding Dishes}" Margin="0,35,0,0">
                 <CollectionView.ItemsLayout>
@@ -35,30 +36,35 @@
                         <StackLayout>
                             <Frame Style="{StaticResource FoodCard}" Margin="3" HeightRequest="170" >
                                 <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer CommandParameter="{Binding .}"  Command="{Binding BindingContext.FoodDetailCommand , Source={x:Reference RestaurantPage}}"></TapGestureRecognizer>
+                                    <TapGestureRecognizer CommandParameter="{Binding .}"
+                                                          Command="{Binding BindingContext.FoodDetailCommand , Source={x:Reference RestaurantPage}}"></TapGestureRecognizer>
                                 </Frame.GestureRecognizers>
                                 <StackLayout Spacing="5">
-                                    <Image Source="{Binding photo}"  Style="{StaticResource ImageFoodCard}" />
-                                    <Label Margin="15,0,0,0" MaxLines="1" Text="{Binding name}" TextColor="Black" FontSize="Medium"/>
+                                    <Image Source="{Binding Photo}" 
+                                           Style="{StaticResource ImageFoodCard}" />
+                                    <Label Margin="15,0,0,0" MaxLines="1" Text="{Binding Name}"
+                                           Style="{StaticResource LabelColor}" FontSize="Medium"/>
                                     <Grid Margin="15,0,15,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="0.85*"/>
                                             <ColumnDefinition Width="0.15*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Label  Grid.Column="0" MaxLines="1" FontSize="Small" >
+                                        <Label  TextColor="gray" Grid.Column="0" MaxLines="1" FontSize="Small" Style="{StaticResource LabelColor}">
                                             <Label.FormattedText>
                                                 <FormattedString>
                                                     <FormattedString.Spans>
-                                                        <Span Text="{Binding number}" />
+                                                        <Span Text="{Binding Quantity}" />
                                                         <Span Text=" Dishes"  />
                                                     </FormattedString.Spans>
                                                 </FormattedString>
                                             </Label.FormattedText>
                                         </Label>
-                                        <Label Grid.Column="1" Text="&#xf2ed;" FontFamily="FontAwesomeIcons" FontSize="20" TextColor="{StaticResource SecondaryLight}" >
+                                        <Label Grid.Column="1" Text="&#xf2ed;"
+                                               FontFamily="FontAwesomeIcons" FontSize="20"
+                                               Style="{StaticResource SecondaryLightColor}" >
                                             <Label.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding BindingContext.DeleteCommand , Source={x:Reference RestaurantPage}}"
-                                                                                      CommandParameter="{Binding id}"/>
+                                                                                      CommandParameter="{Binding Id}"/>
                                             </Label.GestureRecognizers>
                                         </Label>
                                     </Grid>
@@ -75,7 +81,7 @@
                              Source="plus_icon.png"
                              Aspect="AspectFit"
                              BorderWidth="1"
-                             BackgroundColor="{StaticResource SecondaryLight}" 
+                             BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource PrimaryLight}}"
                              HorizontalOptions="End" 
                              WidthRequest="56"
                              HeightRequest="56"

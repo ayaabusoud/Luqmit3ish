@@ -1,19 +1,16 @@
-﻿
-using Luqmit3ish.Exceptions;
+﻿using Luqmit3ish.Exceptions;
 using Luqmit3ish.Services;
 using Luqmit3ish.ViewModels;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Luqmit3ish.Views
 {
     class RestaurantOfTheMonthViewModel : ViewModelBase
     {
-        private INavigation _navigation { get; set; }
         private int _dishes;
         private OrderService _orderService;
         public int Dishes
@@ -44,41 +41,53 @@ namespace Luqmit3ish.Views
         }
         
 
-        public RestaurantOfTheMonthViewModel(INavigation navigation)
+        public RestaurantOfTheMonthViewModel()
         {
-            this._navigation = navigation;
             _orderService = new OrderService();
             OnInit();
         }
-        private async Task OnInit()
+        private void OnInit()
         {
             try
             {
-                var bestRestaurant = await _orderService.GetBestRestaurant();
-                if (bestRestaurant != null)
+
+
+
+            
+            Task.Run(async () => {
+                try
                 {
-                    Dishes = bestRestaurant.Dishes;
-                    RestaurantName = bestRestaurant.RestaurantName;
+                    var bestRestaurant = await _orderService.GetBestRestaurant();
+                    if (bestRestaurant != null)
+                    {
+                        _dishes = bestRestaurant.Dishes;
+                        _restaurantName = bestRestaurant.RestaurantName;
+                    }
+                    if (Dishes == 0)
+                    {
+                        _emptyResult = true;
+                        _nonEmptyResult = false;
+                    }
+                    else
+                    {
+                        _emptyResult = false;
+                        _nonEmptyResult = true;
+                    }
                 }
-                if(Dishes == 0)
+                catch (ConnectionException e)
                 {
-                    EmptyResult = true;
-                    NonEmptyResult = false;
+                    Debug.WriteLine(e.Message);
                 }
-                else
+                catch (HttpRequestException e)
                 {
-                    EmptyResult = false;
-                    NonEmptyResult = true;
+                    Debug.WriteLine(e.Message);
                 }
-            }
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
+            }).Wait();
+           }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);

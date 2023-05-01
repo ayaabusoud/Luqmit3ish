@@ -2,6 +2,7 @@ using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,13 +10,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
-using Xamarin.Forms.PancakeView;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -25,7 +24,7 @@ namespace Luqmit3ish.ViewModels
 
         public ICommand EditCommand { protected set; get; }
         public ICommand DeleteCommand { protected set; get; }
-        public Command<OrderCard> OrderCommand { protected set; get; }
+        public ICommand OrderCommand { protected set; get; }
        
         private OrderService _orderService;
 
@@ -36,14 +35,7 @@ namespace Luqmit3ish.ViewModels
             get => _emptyResult;
             set => SetProperty(ref _emptyResult, value);
         }
-
-        private ObservableCollection<Dish> _dishes;
-
-        public ObservableCollection<Dish> Dishes
-        {
-            get => _dishes;
-            set => SetProperty(ref _dishes, value);
-        }
+ 
         public CharityOrderViewModel(INavigation navigation)
         {
             this._navigation = navigation;
@@ -57,7 +49,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushAsync(new OrderDetailsPage(order));
+                await _navigation.PushAsync(new  OrderDetailsPage(order));
 
             }catch(Exception e)
             {
@@ -82,65 +74,96 @@ namespace Luqmit3ish.ViewModels
                     bool result =  await _orderService.DeleteOrder(userId, restaurantId);
                     if(result == true)
                     {
-                    await App.Current.MainPage.DisplayAlert("Success", 
-                        "The order have been deleted successfully", "ok");
-                    OnInit();
+                        OnInit();
+                        await PopupNavigation.Instance.PushAsync(new PopUp("The order have been deleted successfully."));
+                        Thread.Sleep(3000);
+                        await PopupNavigation.Instance.PopAsync();
+                    
                     }
                     else
                     {
-                        await App.Current.MainPage.DisplayAlert("Faild", 
-                            "The Order has not been deleted , please try again", "ok");
+                        await PopupNavigation.Instance.PushAsync(new PopUp("The Order has not been deleted , please try again."));
+                        Thread.Sleep(3000);
+                        await PopupNavigation.Instance.PopAsync();
                     }
                 }
                 catch (Exception e)
                 {
-                    await App.Current.MainPage.DisplayAlert("Error", "An error occur, please try again", "ok");
 
+                    Debug.WriteLine(e.Message);
+                    await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
                 }
             }
 
         }
 
-        private ObservableCollection<OrderCard> _orderCard;
+        private ObservableCollection<OrderCard> _orderCards;
 
-        public ObservableCollection<OrderCard> OrderCard
+        public ObservableCollection<OrderCard> OrderCards
         {
-            get => _orderCard;
-            set => SetProperty(ref _orderCard, value);
+            get => _orderCards;
+            set => SetProperty(ref _orderCards, value);
         }
 
-        private async void OnInit()
+        private  void OnInit()
         {
-            var id = Preferences.Get("userId", null);
-            if (id is null)
-            {
-                return;
-            }
-            var userId = int.Parse(id);
             try
             {
-                OrderCard = await _orderService.GetOrders(userId);
-            }
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
+
+
+                Task.Run(async () => {
+                    var id = Preferences.Get("userId", null);
+                    if (id is null)
+                    {
+                        return;
+                    }
+                    var userId = int.Parse(id);
+                    try
+                    {
+                        OrderCards = await _orderService.GetOrders(userId);
+                    }
+                    catch (ConnectionException e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
+                    catch (HttpRequestException e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
+                    if (OrderCards.Count > 0)
+                    {
+                        foreach (OrderCard order in OrderCards)
+                        {
+                            if (order.Orders.Count == 1)
+                            {
+                                order.Items = "1 item";
+                            }
+                            else
+                            {
+                                order.Items = order.Orders.Count + " items";
+                            }
+                        }
+                        EmptyResult = false;
+                    }
+                    else
+                    {
+                        EmptyResult = true;
+                    }
+
+                }).Wait();
+
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
-            if (OrderCard.Count > 0)
-            {
-                EmptyResult = false;
-            }
-            else
-            {
-                EmptyResult = true;
-            }
+            
         }
 
 

@@ -1,43 +1,98 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:Luqmit3ish.ViewModels" x:DataType="viewmodels:UserSettingsViewModel"
              x:Class="Luqmit3ish.Views.settingsPage" 
-             Shell.NavBarIsVisible="False"
-             Background="#EDF2F5">
+             Title="Profile"
+             Style="{StaticResource ContentPageColor}">
     <ContentPage.Content >
-        <StackLayout Margin="0"  >
-                <Frame      Padding="0"
-                            HorizontalOptions="CenterAndExpand"
-                            Margin="0,20,0,0"
-                            CornerRadius="100" IsClippedToBounds="True" HeightRequest="120" WidthRequest="120">
-                    <Image Source="{Binding Photo}" 
-                              VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="AspectFill"/>
-                </Frame>
-             <Label TextColor="Black" FontSize="Medium" Text="{Binding Name}" HorizontalTextAlignment="Center"/>
-            
-            <Frame  HorizontalOptions="Fill" VerticalOptions="EndAndExpand" Padding="40,20,0,20" Margin="0,0,0,-40"  CornerRadius="30" HasShadow="True" >
-                <Grid  ColumnDefinitions="Auto,Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" HorizontalOptions="Center" Padding="20" RowSpacing="20" ColumnSpacing="10">
-                    <Label Margin="0,0,5,0" Text="&#xf235;" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="3" Grid.Column="0"  VerticalTextAlignment="Center"/>
-                            <Label Text="Delete Account" FontAttributes="Bold" TextColor="Black" FontSize="15"   VerticalOptions="Center"  Grid.Row="3" Grid.Column="1"  ></Label>
-                    <Label Margin="0,0,5,0" Text="&#xf007;" TextColor="Black"   FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" />
-                            <Label Text="My profile" FontAttributes="Bold" TextColor="Black" FontSize="15" VerticalOptions="Center"  Grid.Row="0" Grid.Column="1" ></Label>
-                   
-                            <Label Margin="0,0,5,20" Text="&#xf2f5;"  BackgroundColor="White" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" FontFamily="FontAwesomeIcons" Grid.Column="0" Grid.Row="4" FontSize="25" ></Label>
-                    <Label  Margin="0,0,0,20" Text="Log Out"  BackgroundColor="White" FontAttributes="Bold" TextColor="Black"  FontSize="15" VerticalOptions="Center"   Grid.Column="1" Grid.Row="4" ></Label>
-                    <Label Margin="0,0,5,0" Text="&#xf084;" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center"/>
-                            <Label Text="Reset password"  HorizontalTextAlignment="Start" FontAttributes="Bold" TextColor="Black" FontSize="15" VerticalOptions="Center" Grid.Row="2" Grid.Column="1" ></Label>
-                            <Button Text="&#xf105;" Background="white"  TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="0" Grid.Column="3" Command="{Binding MyProfileCommand}" ></Button>
-                    <Button Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="3" Grid.Column="3" CommandParameter="{Binding Id}" Command="{Binding DeleteCommand}" HorizontalOptions="End"></Button>
-                            <Button Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="2" Grid.Column="3" Command="{Binding ResetPassCommand}" HorizontalOptions="End"></Button>
-                    <Button  Margin="5,0,0,20" Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="4" Grid.Column="3" Command="{Binding LogOutCommand}" HorizontalOptions="End"></Button>
-                    <Label Text="&#xf559;" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center"/>
-                    <Label  Text="Restaurant of the month"  HorizontalTextAlignment="Start" FontAttributes="Bold" TextColor="Black" FontSize="15" VerticalOptions="Center" Grid.Row="1" Grid.Column="1" ></Label>
-                    <Button  Text="&#xf105;" BackgroundColor="White" TextColor="Black" FontFamily="FontAwesomeIcons" FontSize="25" Grid.Row="1" Grid.Column="3" Command="{Binding RestaurantCommand}" HorizontalOptions="End"></Button>
+        <StackLayout Margin="16,0" VerticalOptions="Center"  >
+
+
+            <StackLayout >
+                <Grid ColumnDefinitions="0.25*,*,0.2*" ColumnSpacing="10" VerticalOptions="Center" Margin="0,0,0,20" >
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding MyProfileCommand}" />
+                    </Grid.GestureRecognizers>
+                    <Frame Grid.Column="0" Padding="0"  VerticalOptions="Center" HorizontalOptions="Start"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="60" WidthRequest="60"  >
+                        <Image Source="{Binding UserInfo.Photo}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="AspectFill"/>
+                    </Frame>
+                    <StackLayout Grid.Column="1">
+                        <Label  VerticalOptions="Center" FontAttributes="Bold"  FontSize="24" Style="{StaticResource LabelColor}" Text="{Binding UserInfo.Name}"  ></Label>
+                        <Label  VerticalOptions="Center"  Text="Edit Personal details" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
+                    </StackLayout>
+
+                    <Button  Grid.Column="2" Text="&#xf105;" Background="Transparent" Style="{StaticResource LabelColor}" FontFamily="FontAwesomeIcons" FontSize="25" ></Button>
+                </Grid>
+
+                <Grid ColumnDefinitions="0.2*,*,0.2*" ColumnSpacing="20" VerticalOptions="Center">
+
+                    <Frame  Grid.Column="0" Padding="0" VerticalOptions="Center" HorizontalOptions="Center"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="40" WidthRequest="40"  BackgroundColor="Gray" >
+                        <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Text="&#xf186;" Style="{StaticResource LabelColor}" FontFamily="FontAwesomeIcons" FontSize="16"  />
+                    </Frame>
+                    <Label VerticalOptions="Center"  Grid.Column="1" Text="Dark Mode" FontAttributes="Bold" Style="{StaticResource LabelColor}" FontSize="18"  />
+                    <Switch Grid.Column="2" ThumbColor="DarkOrange"  IsToggled="{Binding DarkTheme}" />
 
                 </Grid>
+                <Label Margin="0,5"  HorizontalOptions="StartAndExpand" FontSize="15" FontAttributes="Bold" Text="Profile" TextColor="Gray"/>
+
+                <Grid ColumnDefinitions="0.2*,*,0.2*" ColumnSpacing="20" VerticalOptions="Center" >
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer  Command="{Binding ResetPassCommand}" />
+                    </Grid.GestureRecognizers>
+                    <Frame Grid.Column="0" Padding="0" VerticalOptions="Center" HorizontalOptions="Center"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="40" WidthRequest="40"   BackgroundColor="#2957DD" >
+                        <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Text="&#xf084;" Style="{StaticResource LabelColor}" FontFamily="FontAwesomeIcons" FontSize="16" Padding="0,0,0,0"  />
                     </Frame>
-            
+                    <Label VerticalOptions="Center" Grid.Column="1" Text="Reset password" FontAttributes="Bold" Style="{StaticResource LabelColor}" FontSize="18" />
+                    <Button Grid.Column="2" Text="&#xf105;" Background="Transparent" FontFamily="FontAwesomeIcons" FontSize="25" Command="{Binding ResetPassCommand}" HorizontalOptions="End" Style="{StaticResource LabelColor}" ></Button>
+
+                </Grid>
+
+
+                <Grid ColumnDefinitions="0.2*,*,0.2*" ColumnSpacing="20" VerticalOptions="Center">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer  CommandParameter="{Binding UserInfo.Id}" Command="{Binding DeleteCommand}" />
+                    </Grid.GestureRecognizers>
+                    <Frame  Grid.Column="0" Padding="0" VerticalOptions="Center" HorizontalOptions="Center"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="40" WidthRequest="40"  BackgroundColor="#836189" >
+                        <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="&#xf506;" Style="{StaticResource LabelColor}" FontFamily="FontAwesomeIcons" FontSize="13"   />
+                    </Frame>
+                    <Label VerticalOptions="Center"  Grid.Column="1" Text="Delete Account" FontAttributes="Bold" Style="{StaticResource LabelColor}" FontSize="18"  />
+                    <Button  Grid.Column="2" Text="&#xf105;" BackgroundColor="Transparent"  FontFamily="FontAwesomeIcons" FontSize="25" CommandParameter="{Binding UserInfo.Id}" Command="{Binding DeleteCommand}" HorizontalOptions="End" Style="{StaticResource LabelColor}" ></Button>
+                </Grid>
+
+                <Label Margin="0,5"   Grid.Column="0" HorizontalOptions="StartAndExpand" FontSize="15" FontAttributes="Bold" Text="Awards" TextColor="Gray"/>
+
+                <Grid ColumnDefinitions="0.2*,*,0.2*" ColumnSpacing="20" VerticalOptions="Center">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer   Command="{Binding RestaurantCommand}" />
+                    </Grid.GestureRecognizers>
+                    <Frame  VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Padding="0"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="40" WidthRequest="40"  BackgroundColor="#F3A5D7" >
+                        <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Text="&#xf559;" Style="{StaticResource LabelColor}" FontFamily="FontAwesomeIcons" FontSize="15" Padding="1,0,0,0"  />
+                    </Frame>
+                    <Label VerticalOptions="Center"  Grid.Column="1" Text="Restaurant of the month" FontAttributes="Bold" Style="{StaticResource LabelColor}" FontSize="18"  />
+                    <Button  Grid.Column="2" Text="&#xf105;" Background="Transparent"  FontFamily="FontAwesomeIcons" FontSize="22" Command="{Binding RestaurantCommand}" Style="{StaticResource LabelColor}" />
+                </Grid>
+
+                <Label Margin="0,5"  Grid.Column="0" HorizontalOptions="StartAndExpand" FontSize="15" FontAttributes="Bold" Text="Regional"  TextColor="Gray"/>
+
+                <Grid  ColumnDefinitions="0.2*,*,0.2*" ColumnSpacing="20" VerticalOptions="Center">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer   Command="{Binding LogOutCommand}" />
+                    </Grid.GestureRecognizers>
+                    <Frame VerticalOptions="Center" HorizontalOptions="Center"  Grid.Column="0" Padding="0"    CornerRadius="100" IsClippedToBounds="True" HeightRequest="40" WidthRequest="40"  BackgroundColor="Olive" >
+                        <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="&#xf2f5;" Style="{StaticResource LabelColor}"  FontFamily="FontAwesomeIcons" FontSize="16"  />
+                    </Frame>
+                    <Label VerticalOptions="Center" Grid.Column="1" Text="Log Out" FontAttributes="Bold" Style="{StaticResource LabelColor}"  FontSize="18"  />
+                    <Button  Grid.Column="2" Text="&#xf105;" Background="Transparent"   FontFamily="FontAwesomeIcons" FontSize="22" Style="{StaticResource LabelColor}"   Command="{Binding LogOutCommand}" />
+
+                </Grid>
+
+
+
+
+            </StackLayout>
+
+
+
         </StackLayout>
-        
     </ContentPage.Content>
 </ContentPage>

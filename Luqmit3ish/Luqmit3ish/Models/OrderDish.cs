@@ -6,13 +6,13 @@ namespace Luqmit3ish.Models
 {
     public class OrderDish
     {
-        public int id { get; set; }
-        public int res_id { get; set; }
-        public int char_id { get; set; }
-        public int dish_id { get; set; }
-        public string dishName { get; set; }
-        public DateTime date { get; set; }
-        public int number_of_dish { get; set; }
-        public Boolean receive { get; set; }
+        public int Id { get; set; }
+        public int ResId { get; set; }
+        public int CharId { get; set; }
+        public Dish Dish { get; set; }
+        public int Quantity { get; set; }
+        public Boolean Receive { get; set; }
+        public string Items { get; set; }
+
     }
 }

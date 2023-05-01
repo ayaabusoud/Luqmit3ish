@@ -1,12 +1,8 @@
-﻿using Luqmit3ish.Views;
+using Luqmit3ish.Views;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Xamarin.Essentials;
 using System.Diagnostics;
 using Luqmit3ish.Services;
 using System.Collections.ObjectModel;
@@ -21,8 +17,7 @@ namespace Luqmit3ish.ViewModels
         private INavigation _navigation { get; set; }
         public FoodServices foodServices;
         public UserServices userServices;
-
-        public Command<DishCard> FoodDetailCommand { protected set; get; }
+        public ICommand FoodDetailCommand { protected set; get; }
         public ICommand BackCommand { protected set; get; }
 
         private ObservableCollection<Dish> _dishes;
@@ -32,12 +27,12 @@ namespace Luqmit3ish.ViewModels
             get => _dishes;
             set => SetProperty(ref _dishes, value);
         }
-        private ObservableCollection<DishCard> _dishCard;
+        private ObservableCollection<DishCard> _dishCards;
 
-        public ObservableCollection<DishCard> DishCard
+        public ObservableCollection<DishCard> DishCards
         {
-            get => _dishCard;
-            set => SetProperty(ref _dishCard, value);
+            get => _dishCards;
+            set => SetProperty(ref _dishCards, value);
         }
         private bool _emptyResult;
 
@@ -49,9 +44,9 @@ namespace Luqmit3ish.ViewModels
 
         public SearchViewModel(INavigation navigation)
         {
-            this._navigation = navigation;       
-          
-            BackCommand = new Command(OnBackClicked);       
+            this._navigation = navigation;
+
+            BackCommand = new Command(OnBackClicked);
             foodServices = new FoodServices();
             FoodDetailCommand = new Command<DishCard>(async (DishCard dish) => await OnFrameClicked(dish));
             userServices = new UserServices();
@@ -60,7 +55,18 @@ namespace Luqmit3ish.ViewModels
 
         private void OnBackClicked()
         {
-            _navigation.PopAsync();
+            try
+            {
+                _navigation.PopAsync();
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         private string _searchText = string.Empty;
@@ -106,40 +112,58 @@ namespace Luqmit3ish.ViewModels
         #endregion
 
 
-        private async Task OnInit()
+        private void OnInit()
         {
             try
             {
-                DishCard = await foodServices.GetSearchCards(_searchText, "All");
-                Debug.WriteLine(DishCard.Count);          
-            }
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            catch (HttpRequestException e)
-            {
-                throw new HttpRequestException(e.Message);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            if (DishCard.Count > 0)
-            {
-                EmptyResult = false;
-                foreach (DishCard dish in DishCard)
+                Task.Run(async () =>
                 {
-                    if (dish.quantity == 0)
+                    try
                     {
-                        DishCard.Remove(dish);
+                        DishCards = await foodServices.GetSearchCards(_searchText, "Dishes");
+                        Debug.WriteLine(DishCards.Count);
                     }
-                }
-            }
-            else
+                    catch (ConnectionException e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
+                    catch (HttpRequestException e)
+                    {
+                        throw new HttpRequestException(e.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
+                    if (DishCards.Count > 0)
+                    {
+                        EmptyResult = false;
+                        foreach (DishCard dish in DishCards)
+                        {
+                            if (dish.Quantity == 0)
+                            {
+                                DishCards.Remove(dish);
+                            }
+                            else if (dish.Quantity == 1)
+                            {
+                                dish.Items = "1 Dish";
+                            }
+                            else
+                            {
+                                dish.Items = dish.Quantity + " Dishes";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        EmptyResult = true;
+
+                    }
+
+                }).Wait();
+            }catch(Exception e)
             {
-                EmptyResult = true;
-          
+                Debug.WriteLine(e.Message);
             }
 
         }
@@ -147,7 +171,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushAsync(new FoodDetailPage(dish.id));
+                await _navigation.PushAsync(new FoodDetailPage(dish));
             }
             catch (ArgumentException e)
             {
