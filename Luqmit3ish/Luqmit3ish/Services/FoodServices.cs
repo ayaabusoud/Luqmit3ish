@@ -2,10 +2,8 @@ using Luqmit3ish.Connection;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Utilities;
-using Luqmit3ish.Views;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -152,7 +150,7 @@ namespace Luqmit3ish.Services
             }
         }
 
-        public async Task<int> AddNewDish(DishRequest dishRequest)
+        public async Task<bool> AddNewDish(DishRequest dishRequest)
         {
             if (!_connection.CheckInternetConnection())
             {
@@ -167,9 +165,50 @@ namespace Luqmit3ish.Services
                 if (response.IsSuccessStatusCode)
                 {
                     dynamic responseObject = JsonConvert.DeserializeObject(responseContent);
-                    return (int)responseObject.id;
+                    int id = (int)responseObject.id;
+                    await UploadPhoto(dishRequest.Photo, dishRequest.Id);
                 }
-                return 0;
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        internal async Task<bool> UploadPhoto(string photoPath, int foodId)
+        {
+            if (!_connection.CheckInternetConnection())
+            {
+                throw new ConnectionException("There is no internet connection");
+            }
+            try
+            {
+                ByteArrayContent fileContent;
+                if (Uri.TryCreate(photoPath, UriKind.Absolute, out Uri uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+                {
+                    using (var client = new HttpClient())
+                    {
+                        var bytes = await client.GetByteArrayAsync(uri);
+                        fileContent = new ByteArrayContent(bytes);
+                    }
+                }
+                else
+                {
+                    fileContent = new ByteArrayContent(File.ReadAllBytes(photoPath));
+                }
+
+                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/jpeg");
+                using (var formData = new MultipartFormDataContent())
+                {
+                    formData.Add(fileContent, "photo", Path.GetFileName(photoPath));
+                    var response = await _httpClient.PostAsync($"{_apiUrl}/UploadPhoto/{foodId}", formData);
+                    return response.IsSuccessStatusCode;
+                }
             }
             catch (HttpRequestException e)
             {
@@ -248,44 +287,6 @@ namespace Luqmit3ish.Services
             }
         }
 
-        internal async Task<bool> UploadPhoto(string photoPath, int foodId)
-        {
-            if (!_connection.CheckInternetConnection())
-            {
-                throw new ConnectionException("There is no internet connection");
-            }
-            try
-            {
-                ByteArrayContent fileContent;
-                if (Uri.TryCreate(photoPath, UriKind.Absolute, out Uri uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
-                {
-                    using (var client = new HttpClient())
-                    {
-                        var bytes = await client.GetByteArrayAsync(uri);
-                        fileContent = new ByteArrayContent(bytes);
-                    }
-                }
-                else
-                {
-                    fileContent = new ByteArrayContent(File.ReadAllBytes(photoPath));
-                }
-
-                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/jpeg");
-                using (var formData = new MultipartFormDataContent())
-                {
-                    formData.Add(fileContent, "photo", Path.GetFileName(photoPath));
-                    var response = await _httpClient.PostAsync($"{_apiUrl}/UploadPhoto/{foodId}", formData);
-                    return response.IsSuccessStatusCode;
-                }
-            }
-            catch (HttpRequestException e)
-            {
-                throw new HttpRequestException(e.Message);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
+        
     }
 }

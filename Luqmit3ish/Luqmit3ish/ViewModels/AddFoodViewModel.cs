@@ -58,6 +58,7 @@ namespace Luqmit3ish.ViewModels
                 MessagingCenter.Subscribe<UploadImagePopUpViewModel, string>(this, "PhotoPath", (sender, photoPath) =>
                 {
                     _photoPath = photoPath;
+                    OnPropertyChanged(nameof(PhotoPath));
                 });
             }
             catch (ConnectionException e)
@@ -96,7 +97,7 @@ namespace Luqmit3ish.ViewModels
                 }
                 int userId = int.Parse(id);
 
-                if (_type == null || _title == null || _description == null || KeepValid == 0 || _packTime == null || Quantity == 0)
+                if (_type == null || _title == null || _description == null || KeepValid == 0 || Quantity == 0)
                 {
                     await PopupNavigation.Instance.PushAsync(new PopUp("Please fill in all fields"));
                     Thread.Sleep(3000);
@@ -114,7 +115,7 @@ namespace Luqmit3ish.ViewModels
                 DishRequest foodRequest = new DishRequest()
                 {
                     UserId = userId,
-                    Photo = "",
+                    Photo = _photoPath,
                     Type = _type,
                     Name = _title,
                     Description = _description,
@@ -122,12 +123,18 @@ namespace Luqmit3ish.ViewModels
                     Quantity = Quantity
                 };
 
-                int? food_id = await AddNewDish(foodRequest);
-                if (food_id != null)
+                var response = await _foodServices.AddNewDish(foodRequest);
+                if (response)
                 {
-                    food_id = (int)food_id;
-                    await AddNewPhoto(_photoPath, (int)food_id);
+                    await _navigation.PopAsync();
+                    await PopupNavigation.Instance.PushAsync(new PopUp("The dish has been added successfully"));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
+                    return;
                 }
+                await PopupNavigation.Instance.PushAsync(new PopUp("The dish was not added."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
             }
             catch (ConnectionException e)
             {
@@ -149,43 +156,6 @@ namespace Luqmit3ish.ViewModels
                 await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, try again."));
                 Thread.Sleep(3000);
                 await PopupNavigation.Instance.PopAsync();
-            }
-        }
-
-        private async Task AddNewPhoto(string photoPath, int foodId)
-        {
-            var response = await _foodServices.UploadPhoto(photoPath, foodId);
-
-            if (response)
-            {
-                await _navigation.PopAsync();
-                await PopupNavigation.Instance.PushAsync(new PopUp("The dish has been added successfully"));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            else
-            {
-                await PopupNavigation.Instance.PushAsync(new PopUp("The dish was not added."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-        }
-
-        public async Task<int?> AddNewDish(DishRequest foodRequest)
-        {
-            try
-            {
-                int foodId = await _foodServices.AddNewDish(foodRequest);
-                if (foodId != 0)
-                {
-                    return foodId;
-                }
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                return null;
             }
         }
 
@@ -320,13 +290,6 @@ namespace Luqmit3ish.ViewModels
         {
             get => _keepListed;
             set => SetProperty(ref _keepListed, value);
-        }
-
-        private string _packTime;
-        public string Pack_time
-        {
-            get => _packTime;
-            set => SetProperty(ref _packTime, value);
         }
 
         private int _proximateNumber;

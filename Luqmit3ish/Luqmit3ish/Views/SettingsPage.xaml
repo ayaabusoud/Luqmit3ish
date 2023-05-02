@@ -5,7 +5,7 @@
              Title="Profile"
              Style="{StaticResource ContentPageColor}">
     <ContentPage.Content >
-        <StackLayout Margin="16,0" VerticalOptions="Center"  >
+        <StackLayout Margin="16,20" VerticalOptions="Start">
 
 
             <StackLayout >
@@ -85,14 +85,7 @@
                     <Button  Grid.Column="2" Text="&#xf105;" Background="Transparent"   FontFamily="FontAwesomeIcons" FontSize="22" Style="{StaticResource LabelColor}"   Command="{Binding LogOutCommand}" />
 
                 </Grid>
-
-
-
-
             </StackLayout>
-
-
-
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -32,6 +32,7 @@
                        Margin="0,0,0,10"
                        Style="{StaticResource LabelColor}"/>
             </StackLayout>
+            
             <CollectionView ItemsSource="{Binding DishCards}">
 
                 <CollectionView.ItemsLayout>
