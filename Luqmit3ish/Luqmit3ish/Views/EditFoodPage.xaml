@@ -11,14 +11,20 @@
                 <Frame CornerRadius="10" Padding="0" Style="{StaticResource FrameColor}">
                     <StackLayout Margin="5">
                         <Label Text="Photo" Style="{StaticResource LabelColor}"/>
-                        <Image Source="{Binding ImageSource}"/>
-                        <Button Text="&#xf083;" FontFamily="FontAwesomeIcons" 
-                                FontSize="60" TextColor="{StaticResource PrimaryLight}"
-                                HorizontalOptions="Center" BackgroundColor="Transparent"
-                                Margin="0,-20,0,0" Command="{Binding TakePhotoCommand}"/>
+                        <Grid ColumnDefinitions="*,*,*" BackgroundColor="{AppThemeBinding Light=white, Dark=#212121}">
+                            <Frame WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" CornerRadius="200" Padding="0" Margin="10" Grid.Column="1">
+                                <Image Source="{Binding PhotoPath}" Aspect="Fill"/>
+                            </Frame>
+                            <Frame Grid.Column="1" Padding="0" CornerRadius="50" BackgroundColor="Gray" WidthRequest="30" HeightRequest="30" VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,10,-60">
+                                <Label Text="&#xf303;"  FontFamily="FontAwesomeIcons" FontSize="Small" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Frame>
+                        </Grid>
                     </StackLayout>
                 </Frame>
-
                 <Frame CornerRadius="10" Padding="0" Style="{StaticResource FrameColor}">
                     <StackLayout Margin="5">
                         <Label Text="Type" Style="{StaticResource LabelColor}"/>
@@ -29,7 +35,7 @@
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <StackLayout Padding="5" Style="{StaticResource StackLayoutColor}">
-                                        <Frame Padding="0" CornerRadius="10" WidthRequest="70" HeightRequest="70"  BackgroundColor="{Binding FrameBackgroundColor}" BorderColor="{StaticResource PrimaryLight}" >
+                                        <Frame Padding="0" CornerRadius="10" WidthRequest="65" HeightRequest="65"  BackgroundColor="{Binding FrameBackgroundColor}" BorderColor="{StaticResource PrimaryLight}" >
                                             <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
                                                 <Label Text="{Binding IconText}" FontFamily="FontAwesomeIcons" FontSize="Title" TextColor="{Binding TextBackgroundColor}" />
                                             </StackLayout>
@@ -124,9 +130,14 @@
                         </Frame>
                     </StackLayout>
                 </Frame>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Delete" Command="{Binding DeleteCommand}" 
+                        Style="{StaticResource LargeBorderButton}" BorderColor="DarkRed" BorderWidth="2" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light=DarkRed,Dark= white}" />
+                    <Button Text="Submit" Command="{Binding SubmitCommand}" 
+                            Style="{StaticResource LargeBorderButton}" BackgroundColor="SeaGreen"/>
 
-                <Button Text="Submit" Command="{Binding SubmitCommand}" 
-                        Style="{StaticResource LargeBorderButton}" />
+                </StackLayout>
+                
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

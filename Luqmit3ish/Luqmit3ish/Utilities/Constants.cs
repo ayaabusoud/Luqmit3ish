@@ -26,6 +26,8 @@ namespace Luqmit3ish.Utilities
             new LocationField{ Name="Jericho" },
             new LocationField{ Name="Jerusalem" },
             new LocationField{ Name="Tulkarm" },
+            new LocationField{ Name="Bethlehem" },
+            new LocationField{ Name="Hebron" },
         };
     }
 }

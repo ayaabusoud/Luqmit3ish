@@ -91,7 +91,7 @@ namespace Luqmit3ish.ViewModels
             Task.Run(async () => {
                 try
                 {
-                    MessagingCenter.Subscribe<FilterFoodViewModel, ObservableCollection<DishCard>>(this, "EditDishes", (sender, editedDishes) =>
+                    MessagingCenter.Subscribe<FilterPopUpViewModel, ObservableCollection<DishCard>>(this, "EditDishes", (sender, editedDishes) =>
                     {
                         if (DishCards != null)
                         {
@@ -109,8 +109,7 @@ namespace Luqmit3ish.ViewModels
                         {
                             EmptyResult = false;
                         }
-
-
+                       
                     });
 
                     DishCards = await _foodServices.GetDishCards();
@@ -171,7 +170,8 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _navigation.PushAsync(new FilterFoodPage());
+                
+                await PopupNavigation.Instance.PushAsync(new FilterPopUp());
             }
             catch (ArgumentException e)
             {

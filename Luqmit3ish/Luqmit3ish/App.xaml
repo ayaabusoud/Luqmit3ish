@@ -179,6 +179,14 @@
                 <Setter Property="TrackHighlightColor" Value="{StaticResource PrimaryLight}" />
 
             </Style>
+
+            <Style x:Key="Slider" TargetType="Slider">
+                <Setter Property="MaximumTrackColor" Value="Gray" />
+                <Setter Property="MinimumTrackColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="ThumbColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="WidthRequest" Value="200" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

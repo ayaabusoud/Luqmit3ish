@@ -1,12 +1,4 @@
-﻿using Luqmit3ish.Models;
-using Luqmit3ish.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using Luqmit3ish.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -18,6 +10,11 @@ namespace Luqmit3ish.Views
         public CharityHomePage()
         {
             InitializeComponent();
+            this.BindingContext = new CharityHomeViewModel(Navigation);
+        }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
             this.BindingContext = new CharityHomeViewModel(Navigation);
         }
     }

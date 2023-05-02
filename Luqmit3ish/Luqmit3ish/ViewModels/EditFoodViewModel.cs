@@ -27,6 +27,7 @@ namespace Luqmit3ish.ViewModels
         private FoodServices _foodServices;
 
         public ICommand SubmitCommand { protected set; get; }
+        public ICommand DeleteCommand { protected set; get; }
         public ICommand Photo_clicked { protected set; get; }
         public ICommand Blus { get; private set; }
         public ICommand Minus { protected get; set; }
@@ -46,6 +47,7 @@ namespace Luqmit3ish.ViewModels
             _foodServices = new FoodServices();
 
             SubmitCommand = new Command(async () => await OnSubmitClicked());
+            DeleteCommand = new Command(async () => await OnDeleteClicked());
             Photo_clicked = new Command(async () => await PhotoClicked());
             TakePhotoCommand = new Command(async () => await PhotoClicked());
 
@@ -165,7 +167,43 @@ namespace Luqmit3ish.ViewModels
                 await PopupNavigation.Instance.PopAsync();
             }
         }
-
+        private async Task OnDeleteClicked()
+        {
+            try
+            {
+                var deleteConfirm = await Application.Current.MainPage.DisplayAlert("", "Are you sure that you want to delete this dish?", "Yes", "No");
+                if (deleteConfirm)
+                {
+                    await _foodServices.DeleteFood(_foodId);
+                    await _navigation.PopAsync();
+                    await PopupNavigation.Instance.PushAsync(new PopUp("The Dish have been deleted successfully."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
+                    return;
+                }
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
+        }
         private async Task OnSubmitClicked()
         {
             try
@@ -178,7 +216,7 @@ namespace Luqmit3ish.ViewModels
                 }
                 int userId = int.Parse(id);
 
-                if (_type == null || _title == null || _description == null || KeepValid == 0 || _packTime == null || Quantity == 0)
+                if (_type == null || _title == null || _description == null || KeepValid == 0 || Quantity == 0)
                 {
                     await PopupNavigation.Instance.PushAsync(new PopUp("Please fill in all fields."));
                     Thread.Sleep(3000);
@@ -190,7 +228,7 @@ namespace Luqmit3ish.ViewModels
                 {
                     Id = _foodId,
                     UserId = userId,
-                    Photo = "",
+                    Photo = _photoPath,
                     Type = _type,
                     Name = _title,
                     Description = _description,
@@ -412,13 +450,6 @@ namespace Luqmit3ish.ViewModels
         {
             get => _keepListed;
             set => SetProperty(ref _keepListed, value);
-        }
-
-        private string _packTime;
-        public string Pack_time
-        {
-            get => _packTime;
-            set => SetProperty(ref _packTime, value);
         }
 
         private int _proximateNumber;
