@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<popup:PopupPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    x:Class="Luqmit3ish.Views.FilterPopUp">
+
+            <Frame VerticalOptions="End"
+                   HeightRequest="600"
+                   CornerRadius="15"  
+                   Margin="0,0,0,-30" 
+                   Padding="0" 
+                   HorizontalOptions="FillAndExpand"
+                   Style="{StaticResource FrameColor}">
+                <StackLayout>
+                    <Grid ColumnDefinitions="*,*,*"
+                          Margin="10,10,10,0"
+                          RowDefinitions="*,*">
+                        <Label Style="{StaticResource LabelColor}"
+                               HorizontalTextAlignment="Center"
+                               Text="Filter Food"
+                               Grid.Column="1"
+                               FontSize="Title"
+                               FontAttributes="Bold"
+                               VerticalOptions="Center"/>
+
+                        <Label Style="{StaticResource LabelColor}"
+                               HorizontalTextAlignment="Center"
+                               Text="&#xf00d;"
+                               FontFamily="FontAwesomeIcons"
+                               Grid.Column="2"
+                               HorizontalOptions="End"
+                               Margin="0,0,15,0"
+                               VerticalOptions="Center"
+                               FontSize="Title">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding CancelCommand}" />
+                            </Label.GestureRecognizers>
+
+                        </Label>
+                    </Grid>
+                    <BoxView HeightRequest="1"
+                             Color="Gray"
+                             Margin="10,-20,10,0"
+                             HorizontalOptions="Fill"/>
+                    <ScrollView>
+                        <StackLayout Margin="10,0"
+                                     Spacing="5" >
+
+                                    <Label Text="Type"
+                                           Style="{StaticResource LabelColor}"
+                                           FontAttributes="Bold"/>
+                                    <CollectionView x:Name="TypeCollectionView"
+                                                    ItemsSource="{Binding TypeValues}"
+                                                    HeightRequest="100"
+                                                    SelectionMode="Multiple"
+                                                    SelectionChangedCommand="{Binding TypeMultiSelectionCommand}"
+                                                    SelectionChangedCommandParameter="{Binding SelectedItems, Source={x:Reference TypeCollectionView}}" 
+                                                    SelectedItems="{Binding SelectedTypeValues}" >
+                                        <CollectionView.ItemsLayout>
+                                            <GridItemsLayout HorizontalItemSpacing="15"
+                                                             Orientation="Horizontal"/>
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackLayout Padding="5"
+                                                             BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource PrimaryDark}}">
+                                                    <Frame Padding="0"
+                                                           CornerRadius="10"
+                                                           WidthRequest="60"
+                                                           HeightRequest="60"
+                                                           BackgroundColor="{Binding FrameBackgroundColor}"
+                                                           BorderColor="{StaticResource PrimaryLight}" >
+                                                        <StackLayout VerticalOptions="Center"
+                                                                     HorizontalOptions="Center">
+                                                            <Label Text="{Binding IconText}"
+                                                                   FontFamily="FontAwesomeIcons"
+                                                                   FontSize="Title"
+                                                                   TextColor="{Binding TextBackgroundColor}" />
+                                                        </StackLayout>
+                                                    </Frame>
+                                                    <Label Text="{Binding Name}"
+                                                           FontSize="Small" 
+                                                           HorizontalOptions="Center"
+                                                           FontAttributes="Bold" 
+                                                           Style="{StaticResource LabelColor}"/>
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+
+
+
+                                    <Label Text="Location"
+                                           Style="{StaticResource LabelColor}"
+                                           FontAttributes="Bold"/>
+                                    <CollectionView x:Name="LocationCollectionView" 
+                                                    ItemsSource="{Binding LocationValues}"
+                                                    HeightRequest="120"
+                                                    SelectionMode="Multiple"
+                                                    SelectionChangedCommand="{Binding LocationMultiSelectionCommand}" 
+                                                    SelectionChangedCommandParameter="{Binding SelectedItems, Source={x:Reference LocationCollectionView}}"
+                                                    SelectedItems="{Binding SelectedLocationValues}">
+                                        <CollectionView.ItemsLayout>
+                                            <GridItemsLayout Orientation="Vertical"
+                                                             Span="4"
+                                                             HorizontalItemSpacing="15"
+                                                             VerticalItemSpacing="15" />
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackLayout Padding="5"
+                                                             BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource PrimaryDark}}">
+                                                    <Frame Padding="0"
+                                                           CornerRadius="50"
+                                                           HeightRequest="35"
+                                                           BackgroundColor="{Binding FrameBackgroundColor}"
+                                                           BorderColor="{StaticResource PrimaryLight}" >
+                                                        <StackLayout VerticalOptions="Center"
+                                                                     HorizontalOptions="Center">
+                                                            <Label Text="{Binding Name}"
+                                                                   FontSize="Small"
+                                                                   TextColor="{Binding TextBackgroundColor}"/>
+                                                        </StackLayout>
+                                                    </Frame>
+                                               </StackLayout>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+    
+                                    <Label Text="Keep valid for"
+                                           Style="{StaticResource LabelColor}"
+                                           FontAttributes="Bold"/>
+
+                                    <xct:RangeSlider x:Name="KeepListedSlider"
+                                                     MaximumValue="10"
+                                                     UpperValue="{Binding UpperKeepValid}"
+                                                     LowerValue="{Binding LowerKeepValid}" 
+                                                     Style="{StaticResource RangeSlider}" 
+                                                     ValueLabelStringFormat="{}{0:F0} day" />
+
+
+                                    <Label Text="Quantity"
+                                           Style="{StaticResource LabelColor}"
+                                           FontAttributes="Bold"/>
+                                     <xct:RangeSlider x:Name="QuantitySlider"
+                                                      MaximumValue="100" 
+                                                      LowerValue="{Binding LowerQuantity}" 
+                                                      UpperValue="{Binding UpperQuantity}" 
+                                                      Style="{StaticResource RangeSlider}"
+                                                      ValueLabelStringFormat="{}{0:F0}" />
+
+                            <StackLayout Orientation="Horizontal"
+                                         HorizontalOptions="Center" 
+                                         VerticalOptions="EndAndExpand"
+                                         Margin="0,0,0,20">
+                                <Button Text="Clear all"
+                                        Style="{StaticResource BorderButtonFill}" 
+                                        Command="{Binding ClearAll}"/>
+                                <Button Text="Apply"
+                                        Style="{StaticResource BorderButton}"
+                                        Command="{Binding Apply}"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </ScrollView>
+                </StackLayout>
+            </Frame>
+</popup:PopupPage>
