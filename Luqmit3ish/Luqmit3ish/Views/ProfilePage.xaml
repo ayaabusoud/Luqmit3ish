@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.ProfilePage"
@@ -11,9 +11,9 @@
 
     <ContentPage.Content >
            <StackLayout Margin="0,30,0,0" Style="{StaticResource StackLayoutColor}" >
-            <Grid ColumnDefinitions="*,*,*" BackgroundColor="{AppThemeBinding Light=white, Dark=#212121}">
+            <Grid ColumnDefinitions=",,*" BackgroundColor="{AppThemeBinding Light=white, Dark=#212121}">
                 <Frame WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" CornerRadius="200" Padding="0" Grid.Column="1">
-                    <Image Source="{Binding Photo}" Aspect="Fill"/>
+                    <Image Source="{Binding UserInfo.Photo}" Aspect="Fill"/>
                 </Frame>
                 <Frame Grid.Column="1" Padding="0" CornerRadius="50" BackgroundColor="{StaticResource PrimaryLight}" WidthRequest="30" HeightRequest="30" VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,10,-60">
                     <Label Text="&#xf303;"  FontFamily="FontAwesomeIcons" FontSize="Small" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center">
@@ -25,17 +25,17 @@
                 </Frame>
 
             </Grid>
-            <Label Text="{Binding ConstName}" HorizontalOptions="Center" TextColor="{StaticResource PrimaryLight}" FontSize="Title" FontAttributes="Bold"/>
-            <Label Text="{Binding Email}" HorizontalOptions="Center" Style="{StaticResource LabelColor}" FontSize="Small" Margin="0,-5,0,10"/>
+            <Label Text="{Binding UserInfo.Name}" HorizontalOptions="Center" TextColor="{StaticResource PrimaryLight}" FontSize="Title" FontAttributes="Bold"/>
+            <Label Text="{Binding UserInfo.Email}" HorizontalOptions="Center" Style="{StaticResource LabelColor}" FontSize="Small" Margin="0,-5,0,10"/>
                <Frame Padding="0" Margin="0" Style="{StaticResource FrameColor}" VerticalOptions="FillAndExpand" >
                    <ScrollView>
                         <StackLayout Margin="0" Style="{StaticResource StackLayoutColor}" Padding="30">
                     <StackLayout >
                         <StackLayout Orientation="Horizontal" >
-                            <Label Style="{StaticResource LabelColor}" Text="&#xf007;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
+                            <Label  Style="{StaticResource LabelColor}" Text="&#xf007;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
                                 <Label Text="Name: " VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
 
-                                <Entry Text="{Binding Name}" Style="{StaticResource LabelColor}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="FillAndExpand"/>
+                                <Entry Text="{Binding UserInfo.Name}" Style="{StaticResource LabelColor}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="FillAndExpand"/>
                         </StackLayout>
                     </StackLayout>
                         <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,5" />
@@ -44,7 +44,7 @@
                         <StackLayout Orientation="Horizontal">
                             <Label Style="{StaticResource LabelColor}" Text="&#xf095;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
                                 <Label Text="Phone: " VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
-                                <Entry Text="{Binding Phone}" Style="{StaticResource LabelColor}" FontSize="Medium" VerticalOptions="Center"  HorizontalOptions="FillAndExpand"/>
+                                <Entry Text="{Binding UserInfo.Phone}" Style="{StaticResource LabelColor}" FontSize="Medium" VerticalOptions="Center"  HorizontalOptions="FillAndExpand"/>
 
                         </StackLayout>
                     </StackLayout>
@@ -55,7 +55,7 @@
                             <Label Style="{StaticResource LabelColor}" Text="&#xf3c5;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
                                 <Label Text="Location: " VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
 
-                                <Entry Text="{Binding Location}" Style="{StaticResource LabelColor}" FontSize="Medium" VerticalOptions="Center"  HorizontalOptions="FillAndExpand"/>
+                                <Entry Text="{Binding UserInfo.Location}" Style="{StaticResource LabelColor}" FontSize="Medium" VerticalOptions="Center"  HorizontalOptions="FillAndExpand"/>
                         </StackLayout>
                     </StackLayout>
                     <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,5"/>
@@ -65,16 +65,13 @@
                                 <Label Style="{StaticResource LabelColor}" Text="&#xf073;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
                                 <Label VerticalOptions="Center" Text="Opening Hours: "  FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
 
-                                <Entry Text="{Binding OpeningHours}" Style="{StaticResource LabelColor}" FontSize="Medium" VerticalOptions="Center"  HorizontalOptions="FillAndExpand"/>
+                                <Entry Text="{Binding UserInfo.OpeningHours}" Style="{StaticResource LabelColor}" FontSize="Medium" VerticalOptions="Center"  HorizontalOptions="FillAndExpand"/>
                             </StackLayout>
                         </StackLayout>
                         <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,5"/>
 
-
-                        <Label  Margin="15,10" Text="{Binding ErrorMessage}" IsVisible="{Binding ErrorVisible}" TextColor="Red"></Label>
-
                 
-                    <Grid ColumnDefinitions="*,*" Padding="10">
+                    <Grid ColumnDefinitions="," Padding="10">
                         <Button VerticalOptions="Center" BackgroundColor="{StaticResource PrimaryLight}" Text="Save" Command="{Binding DoneCommand}" Style="{StaticResource BorderButton}" HorizontalOptions="Fill"/>
                         <Button VerticalOptions="Center" BackgroundColor="Gray" Text="Cancel" Command="{Binding CancelCommand}" Style="{StaticResource BorderButton}" Grid.Column="1" HorizontalOptions="Fill"/>
                     </Grid>
