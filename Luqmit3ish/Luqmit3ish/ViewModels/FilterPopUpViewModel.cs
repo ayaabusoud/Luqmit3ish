@@ -1,34 +1,36 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Utilities;
 using Luqmit3ish.Views;
 using Rg.Plugins.Popup.Services;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
+using System.Linq;
+using Xamarin.Essentials;
+using Newtonsoft.Json;
 
 namespace Luqmit3ish.ViewModels
 {
-    class FilterFoodViewModel : ViewModelBase
-    {
+	public class FilterPopUpViewModel: ViewModelBase
+	{
         private INavigation _navigation { get; set; }
         public ICommand Apply { get; set; }
         public ICommand ClearAll { get; set; }
+        public ICommand CancelCommand { get; set; }
         private FoodServices _foodServices;
         private UserServices _userServices;
 
-        public FilterFoodViewModel(INavigation navigation)
+        public FilterPopUpViewModel(INavigation navigation)
         {
-            SelectedTypeValues = new ObservableCollection<object>();
+            //SelectedTypeValues = new ObservableCollection<object>();
             SelectedLocationValues = new ObservableCollection<object>();
             this._navigation = navigation;
 
@@ -37,11 +39,76 @@ namespace Luqmit3ish.ViewModels
 
             Apply = new Command(async () => await OnApplyAsync());
             ClearAll = new Command(async () => await OnClearAllAsync());
+            CancelCommand = new Command(async () => await OnCancelAsync());
+            InitializVariable();
+        }
+
+        private void InitializVariable()
+        {
+            int upperQuantity = Preferences.Get("UpperQuantity", 0);
+            if (upperQuantity == 0)
+            {
+                _upperQuantity = 100;
+            }
+            else
+            {
+                _upperQuantity = upperQuantity;
+            }
+            int upperKeepValid = Preferences.Get("UpperKeepValid", 0);
+            if (upperKeepValid == 0)
+            {
+                _upperKeepValid = 10;
+            }
+            else
+            {
+                _upperKeepValid = upperKeepValid;
+            }
+
+            int lowerQuantity = Preferences.Get("LowerQuantity", 0);
+            if (lowerQuantity == 0)
+            {
+                _lowerQuantity = 0;
+            }
+            else
+            {
+                _lowerQuantity = lowerQuantity;
+            }
+
+            int lowerKeepValid = Preferences.Get("LowerKeepValid", 0);
+            if (lowerKeepValid == 0)
+            {
+                _lowerKeepValid = 0;
+            }
+            else
+            {
+                _lowerKeepValid = lowerKeepValid;
+            }
+
+            string typeJson = Preferences.Get("SelectedTypeValues", string.Empty);
+
+            if (!string.IsNullOrEmpty(typeJson))
+            {
+                SelectedTypeValues = JsonConvert.DeserializeObject<ObservableCollection<object>>(typeJson);
+            }
+            else
+            {
+                SelectedTypeValues = new ObservableCollection<object>();
+            }
+
+            string locationJson = Preferences.Get("SelectedLocationValues", string.Empty);
+
+            if (!string.IsNullOrEmpty(locationJson))
+            {
+                SelectedLocationValues = JsonConvert.DeserializeObject<ObservableCollection<object>>(locationJson);
+            }
+            else
+            {
+                SelectedLocationValues = new ObservableCollection<object>();
+            }
+
             _foodServices = new FoodServices();
             _userServices = new UserServices();
-            _upperQuantity = 100;
-            _upperKeepValid = 10;
-            _lowerQuantity = _lowerKeepValid = 0;
+           
         }
 
         public ICommand TypeMultiSelectionCommand => new Command<IList<object>>(async (itemSelected) =>
@@ -150,7 +217,34 @@ namespace Luqmit3ish.ViewModels
                 }
             }
         }
-
+        private async Task OnCancelAsync()
+        {
+            try
+            {
+                await PopupNavigation.Instance.PopAsync();
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                Thread.Sleep(3000);
+                await PopupNavigation.Instance.PopAsync();
+            }
+        }
         private async Task OnClearAllAsync()
         {
             try
@@ -275,8 +369,21 @@ namespace Luqmit3ish.ViewModels
                     )
                 );
 
-                MessagingCenter.Send<FilterFoodViewModel, ObservableCollection<DishCard>>(this, "EditDishes", filteredDishes);
-                await _navigation.PopAsync();
+                Preferences.Set("LowerKeepValid", LowerKeepValid);
+                Preferences.Set("UpperKeepValid", UpperKeepValid);
+                Preferences.Set("LowerQuantity", LowerQuantity);
+                Preferences.Set("UpperQuantity", UpperQuantity);
+
+
+                string typeJson = JsonConvert.SerializeObject(SelectedTypeValues);
+                Preferences.Set("SelectedTypeValues", typeJson);
+
+                string locationJson = JsonConvert.SerializeObject(SelectedTypeValues);
+                Preferences.Set("SelectedLocationValues", locationJson);
+
+                MessagingCenter.Send<FilterPopUpViewModel, ObservableCollection<DishCard>>(this, "EditDishes", filteredDishes);
+
+                await PopupNavigation.Instance.PopAsync();
             }
             catch (ConnectionException e)
             {
