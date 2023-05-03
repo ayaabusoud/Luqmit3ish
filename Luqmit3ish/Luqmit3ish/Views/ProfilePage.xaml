@@ -10,9 +10,9 @@
              Shell.TabBarIsVisible="False">
 
     <ContentPage.Content >
-           <StackLayout Margin="0,30,0,0" Style="{StaticResource StackLayoutColor}" >
+           <StackLayout Margin="0" Style="{StaticResource StackLayoutColor}" >
             <Grid ColumnDefinitions="*,*,*" BackgroundColor="{AppThemeBinding Light=white, Dark=#212121}">
-                <Frame WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" CornerRadius="200" Padding="0" Grid.Column="1">
+                <Frame WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" CornerRadius="200" Padding="0" Grid.Column="1" Margin="0,30,0,0">
                     <Image Source="{Binding UserInfo.Photo}" Aspect="Fill"/>
                 </Frame>
                 <Frame Grid.Column="1" Padding="0" CornerRadius="50" BackgroundColor="{StaticResource PrimaryLight}" WidthRequest="30" HeightRequest="30" VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,10,-60">

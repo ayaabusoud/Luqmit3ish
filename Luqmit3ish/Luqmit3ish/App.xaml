@@ -39,6 +39,8 @@
 
             <Style x:Key="EntryPlaceHolderColor" TargetType="Entry">
                 <Setter Property="TextColor" Value="{AppThemeBinding Light=DimGray, Dark={StaticResource TextColorDark}}" />
+                <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light=DimGray, Dark={StaticResource TextColorDark}}" />
+
             </Style>
 
             <Style x:Key="FloatingButton" TargetType="Button">

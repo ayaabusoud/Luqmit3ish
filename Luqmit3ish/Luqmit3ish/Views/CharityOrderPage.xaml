@@ -26,7 +26,8 @@
                          HorizontalOptions="Fill" 
                          HorizontalTextAlignment="Center"
                          BackgroundColor="Transparent"
-                         Margin="0,0,0,10"/>
+                         Margin="0,0,0,10"
+                       TextColor="{AppThemeBinding Light=Black,Dark=White}"/>
             </StackLayout>
             <CollectionView Margin="0,10,0,0" ItemsSource="{Binding OrderCards}" >
                 <CollectionView.ItemsLayout>

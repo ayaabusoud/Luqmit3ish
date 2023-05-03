@@ -55,7 +55,8 @@
                    FontSize="Small"
                    HorizontalOptions="Fill" 
                    HorizontalTextAlignment="Center"
-                   Margin="0,0,0,10"/>
+                   Margin="0,0,0,10"
+                           TextColor="{AppThemeBinding Light=Black,Dark=White}"/>
                 </StackLayout>
                 <CollectionView ItemsSource="{Binding DishCards}">
 

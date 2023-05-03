@@ -40,7 +40,7 @@
                                     <StackLayout Padding="5" Style="{StaticResource StackLayoutColor}">
                                         <Frame Padding="0" CornerRadius="10" WidthRequest="65"
                                                HeightRequest="65"  BackgroundColor="{Binding FrameBackgroundColor}"
-                                               BorderColor="{StaticResource PrimaryLight}" >
+                                               BorderColor="{StaticResource PrimaryLight}">
                                             <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
                                                 <Label Text="{Binding IconText}" FontFamily="FontAwesomeIcons" 
                                                        FontSize="Title" TextColor="{Binding TextBackgroundColor}" />
