@@ -1,53 +1,17 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<popup:PopupPage
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-    x:Class="Luqmit3ish.Views.FilterPopUp">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Luqmit3ish.Views.FilterFoodPage"
+             Title="Filter"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             Style="{StaticResource ContentPageColor}"
+             Shell.TabBarIsVisible="False">
 
-            <Frame VerticalOptions="End"
-                   HeightRequest="600"
-                   CornerRadius="15"  
-                   Margin="0,0,0,-30" 
-                   Padding="0" 
-                   HorizontalOptions="FillAndExpand"
-                   Style="{StaticResource FrameColor}">
-                <StackLayout>
-                    <Grid ColumnDefinitions="*,*,*"
-                          Margin="10,10,10,0"
-                          RowDefinitions="*,*">
-                        <Label Style="{StaticResource LabelColor}"
-                               HorizontalTextAlignment="Center"
-                               Text="Filter Food"
-                               Grid.Column="1"
-                               FontSize="Title"
-                               FontAttributes="Bold"
-                               VerticalOptions="Center"/>
-
-                        <Label Style="{StaticResource LabelColor}"
-                               HorizontalTextAlignment="Center"
-                               Text="&#xf00d;"
-                               FontFamily="FontAwesomeIcons"
-                               Grid.Column="2"
-                               HorizontalOptions="End"
-                               Margin="0,0,15,0"
-                               VerticalOptions="Center"
-                               FontSize="Title">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding CancelCommand}" />
-                            </Label.GestureRecognizers>
-
-                        </Label>
-                    </Grid>
-                    <BoxView HeightRequest="1"
-                             Color="Gray"
-                             Margin="10,-20,10,0"
-                             HorizontalOptions="Fill"/>
+        <ScrollView>
                     <ScrollView>
-                        <StackLayout Margin="10,0"
-                                     Spacing="5" >
-
+                        <StackLayout Spacing="4"
+                                     Margin="15"
+                                     BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
                                     <Label Text="Type"
                                            Style="{StaticResource LabelColor}"
                                            FontAttributes="Bold"/>
@@ -57,7 +21,7 @@
                                                     SelectionMode="Multiple"
                                                     SelectionChangedCommand="{Binding TypeMultiSelectionCommand}"
                                                     SelectionChangedCommandParameter="{Binding SelectedItems, Source={x:Reference TypeCollectionView}}" 
-                                                    SelectedItems="{Binding SelectedTypeValues}" >
+                                                    SelectedItems="{Binding SelectedTypeValues}">
                                         <CollectionView.ItemsLayout>
                                             <GridItemsLayout HorizontalItemSpacing="15"
                                                              Orientation="Horizontal"/>
@@ -65,7 +29,7 @@
                                         <CollectionView.ItemTemplate>
                                             <DataTemplate>
                                                 <StackLayout Padding="5"
-                                                             BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource PrimaryDark}}">
+                                                             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
                                                     <Frame Padding="0"
                                                            CornerRadius="10"
                                                            WidthRequest="60"
@@ -111,7 +75,7 @@
                                         <CollectionView.ItemTemplate>
                                             <DataTemplate>
                                                 <StackLayout Padding="5"
-                                                             BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource PrimaryDark}}">
+                                                             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
                                                     <Frame Padding="0"
                                                            CornerRadius="50"
                                                            HeightRequest="35"
@@ -128,7 +92,8 @@
                                             </DataTemplate>
                                         </CollectionView.ItemTemplate>
                                     </CollectionView>
-    
+
+
                                     <Label Text="Keep valid for"
                                            Style="{StaticResource LabelColor}"
                                            FontAttributes="Bold"/>
@@ -164,6 +129,8 @@
                             </StackLayout>
                         </StackLayout>
                     </ScrollView>
-                </StackLayout>
-            </Frame>
-</popup:PopupPage>
+
+            </ScrollView>
+
+</ContentPage>
+
