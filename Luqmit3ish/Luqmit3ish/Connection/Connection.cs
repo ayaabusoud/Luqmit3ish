@@ -1,4 +1,5 @@
 ﻿using Luqmit3ish.Connection;
+using Plugin.Connectivity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +12,7 @@ namespace Luqmit3ish.Services
         public bool CheckInternetConnection()
         {
             var connection = Connectivity.NetworkAccess;
-            if (connection == NetworkAccess.None)
+            if (!CrossConnectivity.Current.IsConnected)
             {
                 return false;
             }
