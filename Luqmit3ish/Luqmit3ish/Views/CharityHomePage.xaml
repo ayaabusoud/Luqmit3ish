@@ -13,7 +13,7 @@
 
         <Grid Margin="16,30,16,25" HorizontalOptions="Fill" VerticalOptions="Fill">
             <StackLayout  IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
-                <Image Source="https://luqmit3ish1.blob.core.windows.net/photos/1_CharityFood.png"
+                <Image Source="https://luqmit3ish8.blob.core.windows.net/photos/1_CharityFood.png"
                        HeightRequest="200" 
                        WidthRequest="200"
                        VerticalOptions="Center"/>
