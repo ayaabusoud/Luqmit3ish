@@ -15,7 +15,7 @@ namespace Luqmit3ish.Droid
             base.OnCreate(savedInstanceState);
             Rg.Plugins.Popup.Popup.Init(this);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
         }
