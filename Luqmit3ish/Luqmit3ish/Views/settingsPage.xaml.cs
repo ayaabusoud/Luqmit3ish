@@ -18,5 +18,12 @@ namespace Luqmit3ish.Views
             InitializeComponent();
             this.BindingContext = new UserSettingsViewModel(Navigation);
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            this.BindingContext = new UserSettingsViewModel(Navigation);
+        }
     }
+
 }
