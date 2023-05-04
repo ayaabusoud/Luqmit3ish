@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.RestaurantHomePage"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              Title="Home"
              x:Name="RestaurantPage"
              Style="{StaticResource ContentPageColor}">
@@ -40,8 +41,11 @@
                                                           Command="{Binding BindingContext.FoodDetailCommand , Source={x:Reference RestaurantPage}}"></TapGestureRecognizer>
                                 </Frame.GestureRecognizers>
                                 <StackLayout Spacing="5">
-                                    <Image Source="{Binding Photo}" 
-                                           Style="{StaticResource ImageFoodCard}" />
+                                    <ffimageloading:CachedImage Source="{Binding Photo}"
+                                                                LoadingPlaceholder="loading.PNG"
+                                                                Aspect="AspectFill" HorizontalOptions="FillAndExpand" 
+                                                                VerticalOptions="Start" 
+                                                                HeightRequest="100" />
                                     <Label Margin="15,0,0,0" MaxLines="1" Text="{Binding Name}"
                                            Style="{StaticResource LabelColor}" FontSize="Medium"/>
                                     <Grid Margin="15,0,15,0">
