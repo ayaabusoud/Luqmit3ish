@@ -4,7 +4,6 @@
              x:Class="Luqmit3ish.Views.ProfilePage"
              xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
              x:DataType="vm:ProfileViewModel"
-              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              Shell.NavBarIsVisible="True"
              Title="Profile"
              Style="{StaticResource ContentPageColor}"
@@ -14,7 +13,7 @@
            <StackLayout Margin="0" Style="{StaticResource StackLayoutColor}" >
             <Grid ColumnDefinitions="*,*,*" BackgroundColor="{AppThemeBinding Light=white, Dark=#212121}">
                 <Frame WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" CornerRadius="200" Padding="0" Grid.Column="1" Margin="0,30,0,0">
-                    <ffimageloading:CachedImage LoadingPlaceholder="loading.PNG" Source="{Binding UserInfo.Photo}" Aspect="AspectFill" />
+                    <Image Source="{Binding UserInfo.Photo}" Aspect="Fill"/>
                 </Frame>
                 <Frame Grid.Column="1" Padding="0" CornerRadius="50" BackgroundColor="{StaticResource PrimaryLight}" WidthRequest="30" HeightRequest="30" VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,10,-60">
                     <Label Text="&#xf303;"  FontFamily="FontAwesomeIcons" FontSize="Small" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center">

@@ -147,7 +147,7 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnDeleteClicked(int id)
         {
-            var deleteConfirm = await Application.Current.MainPage.DisplayAlert("Delete", "Are you sure that you want to delete this dish?", "Yes", "No");
+            var deleteConfirm = await Application.Current.MainPage.DisplayAlert("", "Are you sure that you want to delete this dish?", "Yes", "No");
             if (deleteConfirm)
             {
                 await _foodServices.DeleteFood(id);
