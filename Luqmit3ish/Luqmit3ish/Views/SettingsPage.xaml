@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:Luqmit3ish.ViewModels" x:DataType="viewmodels:UserSettingsViewModel"
              x:Class="Luqmit3ish.Views.settingsPage" 
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              Title="Profile"
              Style="{StaticResource ContentPageColor}">
     <ContentPage.Content >
@@ -14,7 +15,12 @@
                         <TapGestureRecognizer Command="{Binding MyProfileCommand}" />
                     </Grid.GestureRecognizers>
                     <Frame Grid.Column="0" Padding="0"  VerticalOptions="Center" HorizontalOptions="Start"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="60" WidthRequest="60"  >
-                        <Image Source="{Binding UserInfo.Photo}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="AspectFill"/>
+
+                        <ffimageloading:CachedImage LoadingPlaceholder="loading.PNG" 
+                                                    Source="{Binding UserInfo.Photo}" 
+                                                    VerticalOptions="FillAndExpand"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    Aspect="AspectFill"/>
                     </Frame>
                     <StackLayout Grid.Column="1">
                         <Label  VerticalOptions="Center" FontAttributes="Bold"  FontSize="24" Style="{StaticResource LabelColor}" Text="{Binding UserInfo.Name}"  ></Label>

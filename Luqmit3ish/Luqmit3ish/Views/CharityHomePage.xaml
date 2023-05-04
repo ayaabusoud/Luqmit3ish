@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="Luqmit3ish.Views.CharityHomePage"
              Title="Home"
              x:Name="CharityPage"
@@ -47,7 +48,11 @@
                                     <TapGestureRecognizer CommandParameter="{Binding .}"  Command="{Binding BindingContext.FoodDetailCommand , Source={x:Reference CharityPage}}"></TapGestureRecognizer>
                                 </Frame.GestureRecognizers>
                                 <StackLayout>
-                                    <Image Source="{Binding Photo}"  Style="{StaticResource ImageFoodCard}" />
+                                    <ffimageloading:CachedImage Source="{Binding Photo}"
+                                                                LoadingPlaceholder="loading.PNG"
+                                                                Aspect="AspectFill" HorizontalOptions="FillAndExpand" 
+                                                                VerticalOptions="Start" 
+                                                                HeightRequest="100" />
                                     <Label MaxLines="1" FontAttributes="Bold"
                                            Style="{StaticResource LabelColor}" Text="{Binding DishName}" 
                                            Margin="15,0" FontSize="Medium"/>
