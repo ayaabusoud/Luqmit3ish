@@ -10,7 +10,7 @@
     <ContentPage.Content>
         <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
             <StackLayout IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
-                <Image Source="https://luqmit3ish1.blob.core.windows.net/photos/1_EmptyCart.png"
+                <Image Source="https://luqmit3ish8.blob.core.windows.net/photos/1_EmptyCart.png"
                            HeightRequest="200" 
                            WidthRequest="200"
                            VerticalOptions="Center"/>
@@ -26,7 +26,8 @@
                          HorizontalOptions="Fill" 
                          HorizontalTextAlignment="Center"
                          BackgroundColor="Transparent"
-                         Margin="0,0,0,10"/>
+                         Margin="0,0,0,10"
+                       TextColor="{AppThemeBinding Light=Black,Dark=White}"/>
             </StackLayout>
             <CollectionView Margin="0,10,0,0" ItemsSource="{Binding OrderCards}" >
                 <CollectionView.ItemsLayout>
@@ -39,7 +40,7 @@
                                 <SwipeItems Mode="Execute">
                                     <SwipeItem Text="Delete"
                                                
-                                               IconImageSource="https://luqmit3ish1.blob.core.windows.net/photos/deleteIcon.png"
+                                               IconImageSource="https://luqmit3ish8.blob.core.windows.net/photos/deleteIcon.png"
                                                BackgroundColor="LightGray"
                                                Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}"
                                                CommandParameter="{Binding Id}"/>

@@ -2,6 +2,7 @@ using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
+using Newtonsoft.Json;
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.ObjectModel;
@@ -10,6 +11,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 
@@ -91,30 +93,41 @@ namespace Luqmit3ish.ViewModels
             Task.Run(async () => {
                 try
                 {
-                    MessagingCenter.Subscribe<FilterFoodViewModel, ObservableCollection<DishCard>>(this, "EditDishes", (sender, editedDishes) =>
-                    {
-                        if (DishCards != null)
-                        {
-                            DishCards.Clear();
-                        }
+                   
 
-                        DishCards = editedDishes;
-                        if (DishCards.Count == 0)
+                    string dishesJson = Preferences.Get("FilteedDishes", string.Empty);
+
+                    if (!string.IsNullOrEmpty(dishesJson))
+                    {
+                        DishCards = JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(dishesJson);
+                        if (DishCards.Count > 0)
+                        {
+                            EmptyResult = false;
+                            RemoveEmptyDish();
+                        }
+                        else
                         {
                             EmptyResult = true;
                             Title = "No Filter Match Found";
                             Description = "There is no food matches the filters you're looking for!";
                         }
-                        else
+                    }
+                    else
+                    {
+                        DishCards = await _foodServices.GetDishCards();
+
+                        if (DishCards.Count > 0)
                         {
                             EmptyResult = false;
+                            RemoveEmptyDish();
                         }
-
-
-                    });
-
-                    DishCards = await _foodServices.GetDishCards();
-
+                        else
+                        {
+                            EmptyResult = true;
+                            Title = "No Food Available";
+                            Description = "Come back later to explore new food!";
+                        }
+                    }
                 }
                 catch (ConnectionException e)
                 {
@@ -132,32 +145,7 @@ namespace Luqmit3ish.ViewModels
                 {
                     Debug.WriteLine(e.Message);
                 }
-                if (DishCards.Count > 0)
-                {
-                    EmptyResult = false;
-                    foreach (DishCard dish in DishCards)
-                    {
-                        if (dish.Quantity == 0)
-                        {
-                            DishCards.Remove(dish);
-                        }
-                        else if (dish.Quantity == 1)
-                        {
-                            dish.Items = "1 Dish";
-                        }
-                        else
-                        {
-                            dish.Items = dish.Quantity + " Dishes";
-                        }
-
-                    }
-                }
-                else
-                {
-                    EmptyResult = true;
-                    Title = "No Food Available";
-                    Description = "Come back later to explore new food!";
-                }
+                
             }).Wait();
 
             }catch(Exception e)
@@ -167,11 +155,31 @@ namespace Luqmit3ish.ViewModels
 
         }
 
+        private void RemoveEmptyDish()
+        {
+            foreach (DishCard dish in DishCards)
+            {
+                if (dish.Quantity == 0)
+                {
+                    DishCards.Remove(dish);
+                }
+                else if (dish.Quantity == 1)
+                {
+                    dish.Items = "1 Dish";
+                }
+                else
+                {
+                    dish.Items = dish.Quantity + " Dishes";
+                }
+            }
+        }
+
         private async Task OnFilterClicked()
         {
             try
             {
                 await _navigation.PushAsync(new FilterFoodPage());
+                //await PopupNavigation.Instance.PushAsync(new FilterPopUp());
             }
             catch (ArgumentException e)
             {

@@ -42,7 +42,7 @@ namespace Luqmit3ish.Models
             field.IsSelected = !field.IsSelected;
         }
 
-        public System.Drawing.Color FrameBackgroundColor => IsSelected ? System.Drawing.Color.FromArgb(249, 117, 21) : System.Drawing.Color.FromArgb(0x4D, 249, 117, 21);
+        public System.Drawing.Color FrameBackgroundColor => IsSelected ? System.Drawing.Color.FromArgb(249, 117, 21) : System.Drawing.Color.Transparent;
         public System.Drawing.Color TextBackgroundColor => IsSelected ? System.Drawing.Color.White : System.Drawing.Color.FromArgb(249, 117, 21);
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")

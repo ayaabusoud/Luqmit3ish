@@ -34,7 +34,9 @@ x:Class="Luqmit3ish.Views.UploadImagePopUp">
                    </StackLayout>
                    <Button Text="Cancel"
                            HorizontalOptions="FillAndExpand"
-                           FontSize="Title" Style="{StaticResource LargeBorderButton}"
+                           BackgroundColor="Gray"
+                           TextTransform="None"
+                           FontSize="Medium" Style="{StaticResource LargeBorderButton}"
                            Grid.Row="1" Grid.ColumnSpan="2"
                            Command="{Binding CancelCommand}"/>
                </Grid>
