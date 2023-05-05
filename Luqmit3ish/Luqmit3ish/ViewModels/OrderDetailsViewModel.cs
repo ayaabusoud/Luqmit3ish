@@ -1,4 +1,5 @@
 using System;
+using Luqmit3ish.Interfaces;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net.Http;
@@ -39,8 +40,8 @@ namespace Luqmit3ish.ViewModels
             get => _items;
             set =>  SetProperty(ref _items, value);
         }
-        private OrderService _orderService;
-        private FoodServices _foodService;
+        private IOrderService _orderService;
+        private IFoodServices _foodService;
         public ICommand PlusCommand { protected set; get; }
         public ICommand MinusCommand { protected set; get; }
         public ICommand ProfileCommand { protected set; get; }

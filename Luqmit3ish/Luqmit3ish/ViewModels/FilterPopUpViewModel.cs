@@ -1,4 +1,5 @@
 ﻿using System;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
@@ -25,8 +26,8 @@ namespace Luqmit3ish.ViewModels
         public ICommand Apply { get; set; }
         public ICommand ClearAll { get; set; }
         public ICommand CancelCommand { get; set; }
-        private FoodServices _foodServices;
-        private UserServices _userServices;
+        private IFoodServices _foodServices;
+        private IUserServices _userServices;
 
         public FilterPopUpViewModel(INavigation navigation)
         {

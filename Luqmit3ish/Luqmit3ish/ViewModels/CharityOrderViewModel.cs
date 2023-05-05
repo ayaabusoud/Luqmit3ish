@@ -1,4 +1,5 @@
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -26,7 +27,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand DeleteCommand { protected set; get; }
         public ICommand OrderCommand { protected set; get; }
        
-        private OrderService _orderService;
+        private IOrderService _orderService;
 
         private bool _emptyResult;
 

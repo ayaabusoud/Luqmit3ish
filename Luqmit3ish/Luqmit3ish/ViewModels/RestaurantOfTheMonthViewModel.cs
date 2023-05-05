@@ -6,13 +6,14 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Luqmit3ish.Interfaces;
 
 namespace Luqmit3ish.Views
 {
     class RestaurantOfTheMonthViewModel : ViewModelBase
     {
         private int _dishes;
-        private OrderService _orderService;
+        private IOrderService _orderService;
         public int Dishes
         {
             get => _dishes;

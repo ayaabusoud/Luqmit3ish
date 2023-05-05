@@ -1,5 +1,6 @@
 using Luqmit3ish.Connection;
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Utilities;
 using Newtonsoft.Json;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Luqmit3ish.Services
 {
-    class FoodServices
+    class FoodServices : IFoodServices
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiUrl = Constants.BaseUrl + "api/Food";
@@ -287,6 +288,9 @@ namespace Luqmit3ish.Services
             }
         }
 
-        
+        Task<bool> IFoodServices.UploadPhoto(string photoPath, int foodId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

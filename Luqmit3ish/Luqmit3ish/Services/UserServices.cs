@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Luqmit3ish.Connection;
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Utilities;
 using Luqmit3ish.ViewModels;
@@ -17,7 +18,7 @@ using Newtonsoft.Json;
 
 namespace Luqmit3ish.Services
 {
-    public class UserServices
+    public class UserServices: IUserServices
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiUrl = Constants.BaseUrl + "api/Users";
@@ -243,6 +244,7 @@ namespace Luqmit3ish.Services
             }
 
         }
+
         internal async Task<bool> UploadPhoto(string photoPath, int userId)
         {
             if (!_connection.CheckInternetConnection())
@@ -282,7 +284,10 @@ namespace Luqmit3ish.Services
                 throw new Exception(e.Message);
             }
         }
-        
-        
+
+        async Task<bool> IUserServices.UploadPhoto(string photoPath, int userId)
+        {
+            return await UploadPhoto(photoPath, userId);
+        }
     }
 }

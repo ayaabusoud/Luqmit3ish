@@ -1,4 +1,5 @@
 using System;
+using Luqmit3ish.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
@@ -24,7 +25,7 @@ namespace Luqmit3ish.ViewModels
         private int _foodId;
         private Dish _dish;
         private INavigation _navigation;
-        private FoodServices _foodServices;
+        private IFoodServices _foodServices;
 
         public ICommand SubmitCommand { protected set; get; }
         public ICommand DeleteCommand { protected set; get; }

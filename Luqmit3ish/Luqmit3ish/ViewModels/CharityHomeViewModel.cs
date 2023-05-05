@@ -1,4 +1,5 @@
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -25,7 +26,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand SearchCommand { protected set; get; }
         public ICommand FoodDetailCommand { protected set; get; }
 
-        private FoodServices _foodServices;
+        private IFoodServices _foodServices;
 
 
         private string _title;

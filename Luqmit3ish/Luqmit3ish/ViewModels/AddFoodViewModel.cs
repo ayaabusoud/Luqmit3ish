@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Utilities;
@@ -18,7 +19,7 @@ namespace Luqmit3ish.ViewModels
     class AddFoodViewModel : ViewModelBase
     {
         private INavigation _navigation { get; set; }
-        private FoodServices _foodServices;
+        private IFoodServices _foodServices;
         public ICommand SubmitCommand { protected set; get; }
         public ICommand Photo_clicked { protected set; get; }
         public ICommand Blus { get; private set; }

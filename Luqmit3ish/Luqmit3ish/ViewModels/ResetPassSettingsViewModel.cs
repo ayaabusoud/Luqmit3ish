@@ -1,4 +1,5 @@
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using System;
@@ -22,7 +23,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand UnHidePasswordCommand { protected set; get; }
 
 
-        public readonly UserServices userServices;
+        public readonly IUserServices _userServices;
 
 
         public ResetPassSettingsViewModel(INavigation navigation)
@@ -31,7 +32,7 @@ namespace Luqmit3ish.ViewModels
             ResetPasswordCommand = new Command(async () => await OnResetClicked());
             UnHidePasswordCommand = new Command(OnUnHidePasswordClicked);
             HidePasswordCommand = new Command(OnHidePasswordClicked);
-            userServices = new UserServices();
+            _userServices = new UserServices();
         }
       
 
@@ -164,7 +165,7 @@ namespace Luqmit3ish.ViewModels
                 {
                     return;
                 }
-                bool IsUpdatedPassword = await userServices.ResetPassword(userId, Password);
+                bool IsUpdatedPassword = await _userServices.ResetPassword(userId, Password);
                 if (IsUpdatedPassword)
                 {
                     await Navigation.PushModalAsync(new LoginPage());

@@ -1,4 +1,5 @@
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -25,7 +26,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand MinusCommand { protected set; get; }
         public ICommand ReserveCommand { protected set; get; }
         public ICommand ProfileCommand { protected set; get; }
-        private OrderService _orderService;
+        private IOrderService _orderService;
 
 
         private int _counter = 1;

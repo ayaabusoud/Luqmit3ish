@@ -1,4 +1,5 @@
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -25,7 +26,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand DeleteCommand { protected set; get; }
         public ICommand DarkModeCommand { protected set; get; }
 
-        private readonly UserServices _userServices;
+        private readonly IUserServices _userServices;
 
 
         public UserSettingsViewModel(INavigation navigation) {
