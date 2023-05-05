@@ -42,7 +42,7 @@
                                     <SwipeItem Text="Delete"
                                                
                                                IconImageSource="https://luqmit3ish8.blob.core.windows.net/photos/deleteIcon.png"
-                                               BackgroundColor="LightGray"
+                                               BackgroundColor="#FF6666"
                                                Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}"
                                                CommandParameter="{Binding Id}"/>
                                 </SwipeItems>

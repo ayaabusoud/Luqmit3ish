@@ -70,7 +70,11 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
+            <Button  Text="Delete"
+                     BackgroundColor="#FF6666"
+                     Style="{StaticResource LargeBorderButton}" 
+                     Command="{Binding BindingContext.DeleteCommand , Source={x:Reference OrderDetails}}"
+                     CommandParameter="{Binding Order.Id}"/>
         </StackLayout>
 
     </ContentPage.Content>
