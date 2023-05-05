@@ -40,9 +40,8 @@
                             <SwipeView.RightItems>
                                 <SwipeItems Mode="Execute">
                                     <SwipeItem Text="Delete"
-                                               
                                                IconImageSource="https://luqmit3ish8.blob.core.windows.net/photos/deleteIcon.png"
-                                               BackgroundColor="LightGray"
+                                               BackgroundColor="{StaticResource RedColor}"
                                                Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}"
                                                CommandParameter="{Binding Id}"/>
                                 </SwipeItems>
@@ -71,7 +70,7 @@
                                         </StackLayout>
                                 </StackLayout>
                             </StackLayout>
-                                <BoxView HeightRequest="1" BackgroundColor="LightGray" Margin="16,0"/>
+                                <BoxView HeightRequest="1"  Margin="16,0" BackgroundColor="{AppThemeBinding Light=LightGray, Dark=Transparent}"/>
                             </StackLayout>
                         </SwipeView>
 

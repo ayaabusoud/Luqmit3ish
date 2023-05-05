@@ -72,7 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
+    <Compile Include="renders\CustomBottomNavView.cs" />
     <Compile Include="renders\CustomEntryRenderer.cs" />
+    <Compile Include="renders\CustomShellRenderer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -7,7 +7,7 @@
              x:Name="RestaurantOrder"
              Style="{StaticResource ContentPageColor}">
     <ContentPage.Content>
-        <Grid Margin="20,0,20,20" HorizontalOptions="Fill" VerticalOptions="Fill">
+        <Grid Margin="20,0,20,0" HorizontalOptions="Fill" VerticalOptions="Fill">
             <StackLayout IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
                 <Image Source="https://luqmit3ish8.blob.core.windows.net/photos/1_EmptyCart.png"
                            HeightRequest="200" 
@@ -68,7 +68,7 @@
                                     <SwipeItems>
                                         <SwipeItem Text="Received"
                                                IconImageSource="https://luqmit3ish8.blob.core.windows.net/photos/receivedIcon.png"
-                                               BackgroundColor="LightGray"
+                                               BackgroundColor="{StaticResource GreenColor}"
                                                Command="{Binding BindingContext.DoneCommand , Source={x:Reference RestaurantOrder}}"
                                                CommandParameter="{Binding .}"/>
                                     </SwipeItems>
@@ -95,7 +95,7 @@
                                             </StackLayout>
                                         </StackLayout>
                                     </StackLayout>
-                                    <BoxView HeightRequest="1" BackgroundColor="LightGray"/>
+                                    <BoxView HeightRequest="1" BackgroundColor="{AppThemeBinding Light=LightGray, Dark=Transparent}"/>
                                 </StackLayout>
                             </SwipeView>
 

@@ -16,8 +16,10 @@
             <Color x:Key="FrameBackGroundDark">#212121</Color>
             <Color x:Key="TextColorLight">Black</Color>
             <Color x:Key="TextColorDark">White</Color>
-
+            <Color x:Key="GreenColor">#4F7942</Color>
+            <Color x:Key="RedColor">#D22B2B</Color>
             <Style x:Key="LabelColor" TargetType="Label">
+                
                 <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" />
             </Style>
 
@@ -65,10 +67,11 @@
                 <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="BorderColor" Value="Transparent" />
                 <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextTransform" Value="None" />
             </Style>
 
             <Style x:Key="BorderButton" TargetType="Button">
-                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="FontSize" Value="Medium" />
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="BorderColor" Value="{StaticResource SecondaryLight}" />
@@ -76,10 +79,11 @@
                 <Setter Property="CornerRadius" Value="50" />
                 <Setter Property="MinimumWidthRequest" Value="100" />
                 <Setter Property="Margin" Value="10" />
+                <Setter Property="TextTransform" Value="None" />
             </Style>
 
             <Style x:Key="BorderButtonFill" TargetType="Button">
-                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="FontSize" Value="Medium" />
                 <Setter Property="TextColor" Value="{StaticResource PrimaryLight}" />
                 <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="BorderWidth" Value="1" />
@@ -88,10 +92,11 @@
                 <Setter Property="CornerRadius" Value="50" />
                 <Setter Property="MinimumWidthRequest" Value="100" />
                 <Setter Property="Margin" Value="10" />
+                <Setter Property="TextTransform" Value="None" />
             </Style>
 
             <Style x:Key="LargeBorderButton" TargetType="Button">
-                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="FontSize" Value="Medium" />
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="BorderColor" Value="{StaticResource SecondaryLight}" />
@@ -99,6 +104,7 @@
                 <Setter Property="CornerRadius" Value="5" />
                 <Setter Property="Margin" Value="15" />
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="TextTransform" Value="None" />
             </Style>
 
             <Style x:Key="validIcon" TargetType="Label">

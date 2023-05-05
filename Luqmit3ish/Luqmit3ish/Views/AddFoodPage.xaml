@@ -12,8 +12,8 @@
                     <StackLayout Margin="5">
                         <Label Text="Photo" Style="{StaticResource LabelColor}"/>
                         <Grid ColumnDefinitions="*,*,*" BackgroundColor="{AppThemeBinding Light=white, Dark=#212121}" Margin="0,-10,0,0">
-                            <Frame WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" CornerRadius="200" Padding="0" Margin="10" Grid.Column="1">
-                                <Image Source="{Binding PhotoPath}" Aspect="Fill"/>
+                            <Frame  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" CornerRadius="200" Padding="0" Margin="10" Grid.Column="1">
+                                <Image Source="{Binding PhotoPath}" Aspect="AspectFill"/>
                             </Frame>
                             <Frame Grid.Column="1" Padding="0" CornerRadius="50" BackgroundColor="Gray" WidthRequest="30" HeightRequest="30" VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,10,-60">
                                 <Label Text="&#xf083;"  FontFamily="FontAwesomeIcons" FontSize="Small" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center">

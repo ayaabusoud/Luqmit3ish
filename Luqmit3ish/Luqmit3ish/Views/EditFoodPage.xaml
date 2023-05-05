@@ -132,9 +132,9 @@
                 </Frame>
                 <StackLayout Orientation="Horizontal">
                     <Button Text="Delete" Command="{Binding DeleteCommand}" 
-                        Style="{StaticResource LargeBorderButton}" BorderColor="DarkRed" BorderWidth="2" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light=DarkRed,Dark= white}" />
+                        Style="{StaticResource LargeBorderButton}" BackgroundColor="{StaticResource RedColor}" />
                     <Button Text="Submit" Command="{Binding SubmitCommand}" 
-                            Style="{StaticResource LargeBorderButton}" BackgroundColor="SeaGreen"/>
+                            Style="{StaticResource LargeBorderButton}" BackgroundColor="{StaticResource PrimaryLight}"/>
 
                 </StackLayout>
                 
