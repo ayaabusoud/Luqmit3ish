@@ -46,7 +46,7 @@ namespace Luqmit3ish.Droid.renders
             }
             else
             {
-                bottomView.SetBackgroundColor(Android.Graphics.Color.DarkGray);
+                bottomView.SetBackgroundColor(Android.Graphics.Color.ParseColor("#212121"));
 
             }
         }

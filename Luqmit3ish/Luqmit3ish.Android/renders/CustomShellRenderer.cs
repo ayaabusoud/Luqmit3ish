@@ -15,6 +15,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer(typeof(AppShellCharity), typeof(CustomShellRenderer))]
+[assembly: ExportRenderer(typeof(AppShellRestaurant), typeof(CustomShellRenderer))]
+
 namespace Luqmit3ish.Droid.renders
 {
     public class CustomShellRenderer : ShellRenderer
