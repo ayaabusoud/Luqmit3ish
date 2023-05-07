@@ -60,38 +60,6 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _minusColor, value);
         }
 
-        private string _dishOrDishes = "Dishes";
-        public string DishOrDishes
-        {
-            get => _dishOrDishes;
-            set {
-                if( _dishInfo.Quantity > 1)
-                {
-                    _dishOrDishes = " Dishes";
-                }
-                else
-                {
-                    _dishOrDishes = " Dish";
-                }
-            }
-        }
-        private string _dayOrDays = "Days";
-        public string DayOrDays
-        {
-            get => _dayOrDays;
-            set
-            {
-                if(_dishInfo.KeepValid > 1)
-                {
-                    _dayOrDays = "Days";
-                }
-                else
-                {
-                    _dayOrDays = "Day";
-                }
-            }
-        }
-
         private void OnMinusClicked()
         {
             if (Counter == 1)

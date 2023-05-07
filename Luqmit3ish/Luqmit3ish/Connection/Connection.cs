@@ -11,7 +11,6 @@ namespace Luqmit3ish.Services
     {
         public bool CheckInternetConnection()
         {
-            var connection = Connectivity.NetworkAccess;
             if (!CrossConnectivity.Current.IsConnected)
             {
                 return false;

@@ -58,7 +58,7 @@ namespace Luqmit3ish.ViewModels
             _orderService = new OrderService();
             _foodService = new FoodServices();
         }
-        private async void getData(int orderId)
+        private async void GetData(int orderId)
         {
             try
             {
@@ -145,7 +145,7 @@ namespace Luqmit3ish.ViewModels
             try
             {
                 await _orderService.UpdateOrderDishCount(orderDish.Id, "Minus");
-                getData(Order.Id);
+                GetData(Order.Id);
 
             }
             catch (ConnectionException e)
@@ -176,7 +176,7 @@ namespace Luqmit3ish.ViewModels
             try
             {
                 await _orderService.UpdateOrderDishCount(orderDish.Id, "plus");
-                getData(Order.Id);
+                GetData(Order.Id);
             }
             catch (ConnectionException e)
             {
