@@ -21,7 +21,7 @@
                                                     SelectionMode="Multiple"
                                                     SelectionChangedCommand="{Binding TypeMultiSelectionCommand}"
                                                     SelectionChangedCommandParameter="{Binding SelectedItems, Source={x:Reference TypeCollectionView}}" 
-                                                    SelectedItems="{Binding SelectedTypeValues}">
+                                                    SelectedItems="{Binding SelectedTypeValues}" >
                                         <CollectionView.ItemsLayout>
                                             <GridItemsLayout HorizontalItemSpacing="15"
                                                              Orientation="Horizontal"/>

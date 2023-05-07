@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Luqmit3ish.Connection;
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Utilities;
 using Luqmit3ish.ViewModels;
@@ -15,7 +16,7 @@ using Newtonsoft.Json;
 
 namespace Luqmit3ish.Services
 {
-    class OrderService
+    class OrderService: IOrderService
     {
         private readonly HttpClient _httpClient;
         private  readonly string _apiUrl = Constants.BaseUrl + "api/Orders";
@@ -26,7 +27,7 @@ namespace Luqmit3ish.Services
 
         private IConnection _connection;
 
-            public OrderService()
+        public OrderService()
         {
             _httpClient = new HttpClient();
             _connection = new Connection();
@@ -56,7 +57,7 @@ namespace Luqmit3ish.Services
 
         }
         
-       public async Task<ObservableCollection<OrderCard>> GetRestaurantOrders(int id,bool receieve)
+        public async Task<ObservableCollection<OrderCard>> GetRestaurantOrders(int id,bool receieve)
         {
             if (!_connection.CheckInternetConnection())
             {
@@ -74,8 +75,8 @@ namespace Luqmit3ish.Services
             {
                 throw new Exception(e.Message);
             }
-            
         }
+
         public async Task<DishesOrder> GetBestRestaurant()
         {
             if (!_connection.CheckInternetConnection())
@@ -96,8 +97,8 @@ namespace Luqmit3ish.Services
             {
                 throw new Exception(e.Message);
             }
-
         }
+
         public async Task<Order> GetOrderById(int id)
 
         {
@@ -108,11 +109,8 @@ namespace Luqmit3ish.Services
             try
             {
                 var response = await _httpClient.GetAsync($"{_apiUrl}/{id}");
-
-                
-                    var content = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<Order>(content);
-                
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<Order>(content);
             }
             catch (HttpRequestException e)
             {
@@ -123,7 +121,6 @@ namespace Luqmit3ish.Services
 
                 throw new Exception($"Failed to retrieve user"+e.Message);
             }
-            
         }
 
         public async Task<bool> UpdateOrderDishCount(int id, string operation)
@@ -157,10 +154,7 @@ namespace Luqmit3ish.Services
             catch (Exception e)
             {
                 throw new Exception(e.Message);
-
-
             } 
-         
         }
 
         public async Task<bool> ReserveOrder(Order orderRequest)
@@ -184,7 +178,6 @@ namespace Luqmit3ish.Services
             {
                 throw new Exception(e.Message);
             }
-
         }
         public async Task<bool> DeleteOrder(int charityId, int restaurantId)
         {
@@ -207,8 +200,6 @@ namespace Luqmit3ish.Services
                 Debug.WriteLine(e.Message);
                 return false;
             }
-
-
         }
          public async Task<bool> UpdateOrderReceiveStatus(int id)
         {
@@ -241,12 +232,7 @@ namespace Luqmit3ish.Services
             catch (Exception e)
             {
                 throw new Exception(e.Message);
-
-
             }
-
         }
     }
 }
-
-

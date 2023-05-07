@@ -1,4 +1,5 @@
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using Rg.Plugins.Popup.Services;
@@ -21,7 +22,7 @@ namespace Luqmit3ish.ViewModels
 
         private string verificationCode;
 
-        private EmailService _emailService;
+        private IEmailService _emailService;
         public ICommand ResetCommand { protected set; get; }
         public CheckEmailViewModel(INavigation navigation, string Email)
         {

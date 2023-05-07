@@ -1,4 +1,5 @@
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -22,7 +23,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand DoneCommand { protected set; get; }
         public ICommand CancelCommand { protected set; get; }
         public ICommand EditPhotoClicked { protected set; get; }
-        public UserServices userServices;
+        public IUserServices userServices;
 
         private User _userInfo;
         public User UserInfo

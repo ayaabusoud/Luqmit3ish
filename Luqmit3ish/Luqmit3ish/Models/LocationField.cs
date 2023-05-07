@@ -27,7 +27,7 @@ namespace Luqmit3ish.Models
             }
         }
 
-        public Color FrameBackgroundColor => IsSelected ? Color.FromArgb(249, 117, 21) : Color.White;
+        public Color FrameBackgroundColor => IsSelected ? Color.FromArgb(249, 117, 21) : Color.Transparent;
         public Color TextBackgroundColor => IsSelected ? Color.White : Color.FromArgb(249, 117, 21);
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {

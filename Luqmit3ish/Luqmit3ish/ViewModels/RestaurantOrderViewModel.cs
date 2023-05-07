@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Luqmit3ish.Interfaces;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -23,7 +24,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand DoneCommand { protected set; get; }
         public ICommand NotRecievedCommand { protected set; get; }
         public ICommand RecievedCommand { protected set; get; }
-        private OrderService _orderService;
+        private IOrderService _orderService;
         public ICommand OrderCommand { protected set; get; }
 
 

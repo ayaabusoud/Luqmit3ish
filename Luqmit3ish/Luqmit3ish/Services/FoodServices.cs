@@ -1,7 +1,9 @@
 using Luqmit3ish.Connection;
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Utilities;
+using Luqmit3ish.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
@@ -15,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Luqmit3ish.Services
 {
-    class FoodServices
+    class FoodServices : IFoodServices
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiUrl = Constants.BaseUrl + "api/Food";
@@ -126,7 +128,7 @@ namespace Luqmit3ish.Services
             }
         }
 
-        public async Task<bool> UpdateDish(DishRequest dishRequest, int food_id)
+        public async Task<bool> UpdateDish(Dish dishRequest)
         {
             if (!_connection.CheckInternetConnection())
             {
@@ -136,7 +138,8 @@ namespace Luqmit3ish.Services
             {
                 var json = JsonConvert.SerializeObject(dishRequest);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await _httpClient.PutAsync(_apiUrl + "/" + food_id, content);
+                var response = await _httpClient.PutAsync(_apiUrl + "/" + dishRequest.Id, content);
+                await UploadPhoto(dishRequest.Photo, dishRequest.Id);
 
                 return response.IsSuccessStatusCode;
             }
@@ -287,6 +290,14 @@ namespace Luqmit3ish.Services
             }
         }
 
-        
+        public Task<bool> UpdateDish(DishRequest dishRequest, int food_id)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IFoodServices.UploadPhoto(string photoPath, int foodId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

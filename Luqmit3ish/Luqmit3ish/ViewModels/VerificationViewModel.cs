@@ -1,4 +1,5 @@
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -16,8 +17,8 @@ namespace Luqmit3ish.ViewModels
 {
     class VerificationViewModel  : ViewModelBase
     {
-        private readonly EmailService _emaiService;
-        private readonly UserServices _userServices;
+        private readonly IEmailService _emaiService;
+        private readonly IUserServices _userServices;
         private string sentCode;
         public ICommand ContinueCommand { get; }
 

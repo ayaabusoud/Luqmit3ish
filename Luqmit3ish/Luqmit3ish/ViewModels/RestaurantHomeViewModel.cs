@@ -12,6 +12,7 @@ using Luqmit3ish.Exceptions;
 using System.Net.Http;
 using Rg.Plugins.Popup.Services;
 using System.Threading;
+using Luqmit3ish.Interfaces;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -21,7 +22,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand AddCommand { protected set; get; }
         public Command<int> DeleteCommand { protected set; get; }
         public Command<Dish> FoodDetailCommand { protected set; get; }
-        private FoodServices _foodServices;
+        private IFoodServices _foodServices;
 
         private ObservableCollection<Dish> _dishes;
 
@@ -87,14 +88,6 @@ namespace Luqmit3ish.ViewModels
                     if (dish.Quantity == 0)
                     {
                         Dishes.Remove(dish);
-                    }
-                    else if (dish.Quantity == 1)
-                    {
-                        dish.Items = "1 Dish";
-                    }
-                    else
-                    {
-                        dish.Items = dish.Quantity + " Dishes";
                     }
                 }
             }
