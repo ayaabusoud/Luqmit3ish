@@ -5,66 +5,86 @@
              x:Class="Luqmit3ish.Views.SignupPage"
              NavigationPage.HasNavigationBar="False"
              BackgroundImageSource="https://i.pinimg.com/originals/2c/90/3e/2c903e31b99b8f7816a67bc480108fe1.jpg">
-    <ContentPage.Content>
-        <StackLayout Margin="0">
-            <Frame HorizontalOptions="Fill" VerticalOptions="EndAndExpand"  Margin="0,0,0,-40" HeightRequest="570" CornerRadius="30" HasShadow="True" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundDark}}">
-                <ScrollView HeightRequest="500">
+    <ContentPage.Content  MinHeightRequest="1000">
+        <StackLayout  Margin="0" >
+            <Frame HorizontalOptions="Fill" VerticalOptions="EndAndExpand"  Margin="0,0,0,-40"  CornerRadius="30" HasShadow="True" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundDark}}">
+                <ScrollView>
                     <StackLayout Margin="10" HorizontalOptions="Fill" Padding="20,0" >
                         <Label VerticalOptions="Start" Text="Sign Up" 
                                HorizontalOptions="Center" FontSize="30" 
                                FontAttributes="Bold" Style="{StaticResource LabelColor}"/>
 
+
                         <Label Text="Name *" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
-                        <Frame Style="{StaticResource textFeildFrame}" BorderColor="{Binding NameFrameColor}" >
+                        <Frame Style="{StaticResource textFeildFrame}" >
                             <StackLayout Orientation="Horizontal
                                          " Margin="10,0" Padding="0">
                                 <Label Text="&#xf007;" FontFamily="FontAwesomeIcons"
                                        FontSize="20" Style="{StaticResource LabelColor}" />
                                 <Entry Placeholder="Enter your name" Keyboard="Text" 
-                                       Style="{StaticResource textFeild}" Text="{Binding Name}"
+                                       Style="{StaticResource textFeild}" Text="{Binding UserInfo.Name}"
                                        ClearButtonVisibility="WhileEditing"/>
-                                <Label  FontSize="20" Style="{StaticResource validIcon}"  
-                                       IsVisible="{Binding NameValid}" />
                             </StackLayout>
                         </Frame>
 
+
                         <Label Text="Email *" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
-                        <Frame Style="{StaticResource textFeildFrame}"
-                               BorderColor="{Binding EmailFrameColor}">
+                        <Frame Style="{StaticResource textFeildFrame}" BorderColor="{Binding EmailFrameBorder}">
                             <StackLayout Orientation="Horizontal" 
                                          Margin="10,0" Padding="0">
                                 <Label Text="&#xf0e0;" FontFamily="FontAwesomeIcons" 
                                        FontSize="20" Style="{StaticResource LabelColor}"/>
                                 <Entry Placeholder="Enter your email" 
                                        Keyboard="Email" Style="{StaticResource textFeild}" 
-                                       Text="{Binding Email}"
-                                       ClearButtonVisibility="WhileEditing"/>
-                                <Label FontSize="20" Style="{StaticResource validIcon}" 
-                                       IsVisible="{Binding EmailValid}" />
+                                       Text="{Binding UserInfo.Email}"
+                                       ClearButtonVisibility="WhileEditing">
+                                    <Entry.Behaviors>
+                                        <xct:EmailValidationBehavior IsValid="{Binding IsEmailValid}"/>
+                                    </Entry.Behaviors>
+                                </Entry>
                                 <Label FontSize="20" Style="{StaticResource invalidIcon}"  
                                        IsVisible="{Binding EmailInValid}" />
                             </StackLayout>
                         </Frame>
                         <Label Text="{Binding EmailErrorMessage}" TextColor="DarkRed
-                               " FontSize="Small" Margin="15,0"
-                               IsVisible="{Binding EmailErrorVisible}"/>
+                               " FontSize="Small" Margin="10,0"
+                               IsVisible="{Binding EmailInValid}"/>
+
 
                         <Label Text="Password *" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
-
-                        <Frame Style="{StaticResource textFeildFrame}"
-                               BorderColor="{Binding PasswordFrameColor}">
+                        <Frame Style="{StaticResource textFeildFrame}" BorderColor="{Binding PasswordFrameBorder}">
                             <StackLayout Orientation="Horizontal"
-                                         Margin="10,0" Padding="0">
+                                         Margin="10,0" Padding="0" Spacing="10">
                                 <Label Text="&#xf023;" FontFamily="FontAwesomeIcons" 
                                        FontSize="20" Style="{StaticResource LabelColor}" />
                                 <Entry Placeholder="Enter your password"
                                        IsPassword="{Binding IsPassword}"
                                        Style="{StaticResource textFeild}"
-                                       Text="{Binding Password}"
-                                       ClearButtonVisibility="WhileEditing"/>
+                                       Text="{Binding UserInfo.Password}"
+                                       ClearButtonVisibility="WhileEditing">
+                                    <Entry.Behaviors>
+                                        <xct:MultiValidationBehavior x:Name="MultiValidation"
+                                              Errors="{Binding PasswordError}" IsValid="{Binding IsPasswordValid}" >
+                                            <xct:TextValidationBehavior xct:MultiValidationBehavior.Error="MinLength"
+                                                 MinimumLength="8" />
+                                            <xct:CharactersValidationBehavior xct:MultiValidationBehavior.Error="Digit"
+                                                 CharacterType="Digit"
+                                                 MinimumCharacterCount="1" />
+                                            <xct:CharactersValidationBehavior xct:MultiValidationBehavior.Error="Upper"
+                                                 CharacterType="UppercaseLetter" 
+                                                 MinimumCharacterCount="1" />
+                                            <xct:CharactersValidationBehavior 
+                                                 CharacterType="NonAlphanumericSymbol" xct:MultiValidationBehavior.Error="Symbol"
+                                                 MinimumCharacterCount="1" />
+                                            <xct:CharactersValidationBehavior xct:MultiValidationBehavior.Error="Space"
+                                                 CharacterType="Whitespace" 
+                                                MaximumCharacterCount="0" />
+                                        </xct:MultiValidationBehavior>
+                                    </Entry.Behaviors>
+                                </Entry>
                                 <Label TextColor="DimGray" Text="&#xf070;" FontFamily="FontAwesomeIcons" FontSize="20" Style="{StaticResource LabelColor}" IsVisible="{Binding HidePassword }" >
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding HidePasswordCommand}"  />
@@ -82,45 +102,46 @@
                         </Frame>
                         <Label Text="{Binding PasswordErrorMessage}"
                                TextColor="DarkRed" FontSize="Small"
-                               Margin="15,0" 
-                               IsVisible="{Binding PasswordErrorVisible}"/>
+                               Margin="10,0" 
+                               IsVisible="{Binding PasswordInvalid}"/>
+
+
 
                         <Label Text="Phone Number *" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
 
                         <Frame Style="{StaticResource textFeildFrame}"
-                               BorderColor="{Binding PhoneFrameColor}">
+                               BorderColor="{Binding PhoneFrameBorder}">
                             <StackLayout Orientation="Horizontal" 
                                          Margin="10,0" Padding="0">
                                 <Label Text="&#xf095;" FontFamily="FontAwesomeIcons"
                                        FontSize="20" Style="{StaticResource LabelColor}"/>
                                 <Entry Placeholder="Phone Number" Keyboard="Telephone" 
                                        MaxLength="13" Style="{StaticResource textFeild}"
-                                       Text="{Binding Phone}" ClearButtonVisibility="WhileEditing"/>
-                                <Label FontSize="20" Style="{StaticResource validIcon}"
-                                       IsVisible="{Binding PhoneValid}" />
+                                       Text="{Binding UserInfo.Phone}" ClearButtonVisibility="WhileEditing">
+                                    <Entry.Behaviors>
+                                        <xct:TextValidationBehavior RegexPattern="^[0-9]{8,15}$" IsValid="{Binding IsPhoneValid}"/>
+                                    </Entry.Behaviors>
+                                </Entry>
                                 <Label FontSize="20" Style="{StaticResource invalidIcon}"  
                                        IsVisible="{Binding PhoneInvalid}" />
                             </StackLayout>
                         </Frame>
                         <Label Text="{Binding PhoneErrorMessage}" TextColor="DarkRed"
-                               FontSize="Small" Margin="15,0" IsVisible="{Binding PhoneErrorVisible}"/>
-
+                               FontSize="Small" Margin="10,0" IsVisible="{Binding PhoneInvalid}"/>
 
 
 
                         <Label Text="Type *" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
-                        <Frame Style="{StaticResource textFeildFrame}" 
-                               BorderColor="{Binding TypeFrameColor}" >
+                        <Frame Style="{StaticResource textFeildFrame}">
                             <StackLayout Orientation="Horizontal" 
                                          Margin="10,0" Padding="0">
-                                <Label Text="&#xf4be;" FontFamily="FontAwesomeIcons"
-                                       FontSize="20" Style="{StaticResource LabelColor}"/>
+                                <Label  Text="&#xf4be;" FontFamily="FontAwesomeIcons"
+                                       FontSize="20" VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
                                 <Picker Title="Select type" FontSize="Medium" 
                                         HorizontalOptions="FillAndExpand" Margin="0,-30,0,-30"
-                                        SelectedIndex= "{Binding Type}" 
-                                        SelectedItem="{Binding SelectedType}"
+                                        SelectedItem="{Binding UserInfo.Type}"
                                         TitleColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"
                                         TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}">
                                     <Picker.Items>
@@ -128,11 +149,14 @@
                                         <x:String>Charity</x:String>
                                     </Picker.Items>
                                 </Picker>
-                                <Label Style="{StaticResource validIcon}"  IsVisible="{Binding TypeValid}" />
                             </StackLayout>
                         </Frame>
 
-                        <Button Margin="0,30,0,0" Text="Signup"
+
+
+
+
+                        <Button Margin="0,20,0,0" Text="Signup"
                                 Command="{Binding signupClicked}" 
                                 Style="{StaticResource LargeBorderButton}"/>
 
@@ -148,7 +172,7 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                                 <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding LoginClicked}" />
+                                    <TapGestureRecognizer Command="{Binding LoginCommand}" />
                                 </Label.GestureRecognizers>
                             </Label>
                         </StackLayout>

@@ -14,15 +14,15 @@
         <ResourceDictionary>
             <Style x:Key="BaseStyle" TargetType="Element">
 
-                <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryLight}, Dark={StaticResource PrimaryDark}}" />
-                <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Light=White, Dark={StaticResource PrimaryLight}}" />
-                <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light=White, Dark={StaticResource PrimaryLight}}" />
-                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
-                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
-                <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryLight}, Dark={StaticResource PrimaryDark}}" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+                <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light=White, Dark={StaticResource PrimaryDark}}" />
+                <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryLight}, Dark={StaticResource PrimaryLight}}" />
+                <Setter Property="Shell.TitleColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="Shell.DisabledColor" Value="#FFC17A"/>
+                <Setter Property="Shell.UnselectedColor" Value="#FFC17A" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={OnPlatform Android=White}, Dark={StaticResource PrimaryDark}}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="#FFC17A"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#FFC17A"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource PrimaryLight}"/>
 
             </Style>
             <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />

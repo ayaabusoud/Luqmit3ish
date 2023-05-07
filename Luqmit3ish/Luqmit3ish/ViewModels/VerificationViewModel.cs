@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Luqmit3ish.ViewModels
@@ -42,7 +43,7 @@ namespace Luqmit3ish.ViewModels
         {
 
             OnInit(recipientName, recipientEmail);
-            await PopupNavigation.Instance.PushAsync(new PopUp("We have been resent the verfication code."));
+            await PopupNavigation.Instance.PushAsync(new PopUp("We have resent the verfication code."));
             Thread.Sleep(3000);
             await PopupNavigation.Instance.PopAsync();            
         }
@@ -55,41 +56,45 @@ namespace Luqmit3ish.ViewModels
 
                 int enteredCode = int.Parse(_pin);
 
-                Debug.WriteLine(code);
-                Debug.WriteLine(_pin);
-
                 if (code == enteredCode)
                 {
-
-
-                    bool IsInserted = await _userServices.InsertUser(newUser);
-
-                    if (IsInserted)
+                    if (!Object.ReferenceEquals(newUser, null))
                     {
-                        if (newUser.Type.Equals("Restaurant"))
+                        bool IsInserted = await _userServices.InsertUser(newUser);
+
+                        Preferences.Set("userEmail", newUser.Email);
+                        User user = await _userServices.GetUserByEmail(newUser.Email);
+                        Preferences.Set("userId", user.Id.ToString());
+
+                        if (IsInserted)
                         {
-                            Application.Current.MainPage = new AppShellRestaurant();
+                            if (newUser.Type.Equals("Restaurant"))
+                            {
+                                Application.Current.MainPage = new AppShellRestaurant();
+                            }
+                            else
+                            {
+                                Application.Current.MainPage = new AppShellCharity();
+                            }
                         }
                         else
                         {
-                            Application.Current.MainPage = new AppShellCharity();
+                            await PopupNavigation.Instance.PushAsync(new PopUp("The code is incorrect, please try again."));
+                            Thread.Sleep(3000);
+                            await PopupNavigation.Instance.PopAsync();
+                            return;
                         }
                     }
                     else
                     {
-                        await PopupNavigation.Instance.PushAsync(new PopUp("The code is incorrect, please try again."));
+                        await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
                         Thread.Sleep(3000);
                         await PopupNavigation.Instance.PopAsync();
                         return;
                     }
                 }
-                else
-                {
-                    await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
-                    return;
-                }
+
+
             }
             catch (ArgumentException e)
             {

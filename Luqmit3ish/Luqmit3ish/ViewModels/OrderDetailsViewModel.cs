@@ -45,7 +45,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand PlusCommand { protected set; get; }
         public ICommand MinusCommand { protected set; get; }
         public ICommand ProfileCommand { protected set; get; }
-
+        public ICommand DeleteCommand { protected set; get; }
 
         public OrderDetailsViewModel(OrderCard order, INavigation navigation)
         {
@@ -55,10 +55,11 @@ namespace Luqmit3ish.ViewModels
             PlusCommand = new Command<OrderDish>(async (OrderDish orderDish) => await OnPlusClicked(orderDish));
             MinusCommand = new Command<OrderDish>(async (OrderDish orderDish) => await OnMinusClickedAsync(orderDish));
             ProfileCommand = new Command<User>(async (User restaurant) => await OnProfileClicked(restaurant));
+            DeleteCommand = new Command<int>(async (int id) => await OnDeleteClicked(id));
             _orderService = new OrderService();
             _foodService = new FoodServices();
         }
-        private async void getData(int orderId)
+        private async void GetData(int orderId)
         {
             try
             {
@@ -98,14 +99,54 @@ namespace Luqmit3ish.ViewModels
 
         }
 
+        private async Task OnDeleteClicked(int restaurantId)
+        {
+            var deleteConfirm = await Application.Current.MainPage.DisplayAlert("Delete Order",
+                "Are you sure that you want to delete this Order?", "Yes", "No");
+            if (deleteConfirm)
+            {
+                var id = Preferences.Get("userId", null);
+                if (id is null)
+                {
+                    return;
+                }
+                var userId = int.Parse(id);
+                try
+                {
+                    bool result = await _orderService.DeleteOrder(userId, restaurantId);
+                    if (result == true)
+                    {
+                        await _navigation.PopAsync();
+                        await PopupNavigation.Instance.PushAsync(new PopUp("The order have been deleted successfully."));
+                        Thread.Sleep(3000);
+                        await PopupNavigation.Instance.PopAsync();
 
+                    }
+                    else
+                    {
+                        await PopupNavigation.Instance.PushAsync(new PopUp("The Order has not been deleted , please try again."));
+                        Thread.Sleep(3000);
+                        await PopupNavigation.Instance.PopAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+
+                    Debug.WriteLine(e.Message);
+                    await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
+                    Thread.Sleep(3000);
+                    await PopupNavigation.Instance.PopAsync();
+                }
+            }
+
+        }
 
         private async Task OnMinusClickedAsync(OrderDish orderDish)
         {
             try
             {
                 await _orderService.UpdateOrderDishCount(orderDish.Id, "Minus");
-                getData(Order.Id);
+                GetData(Order.Id);
 
             }
             catch (ConnectionException e)
@@ -136,7 +177,7 @@ namespace Luqmit3ish.ViewModels
             try
             {
                 await _orderService.UpdateOrderDishCount(orderDish.Id, "plus");
-                getData(Order.Id);
+                GetData(Order.Id);
             }
             catch (ConnectionException e)
             {
