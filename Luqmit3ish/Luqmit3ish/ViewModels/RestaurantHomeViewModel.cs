@@ -89,14 +89,6 @@ namespace Luqmit3ish.ViewModels
                     {
                         Dishes.Remove(dish);
                     }
-                    else if (dish.Quantity == 1)
-                    {
-                        dish.Items = "1 Dish";
-                    }
-                    else
-                    {
-                        dish.Items = dish.Quantity + " Dishes";
-                    }
                 }
             }
             else

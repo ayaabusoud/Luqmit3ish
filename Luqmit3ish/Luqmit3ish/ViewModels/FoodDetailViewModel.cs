@@ -1,5 +1,4 @@
 using Luqmit3ish.Exceptions;
-using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -26,7 +25,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand MinusCommand { protected set; get; }
         public ICommand ReserveCommand { protected set; get; }
         public ICommand ProfileCommand { protected set; get; }
-        private IOrderService _orderService;
+        private OrderService _orderService;
 
 
         private int _counter = 1;
@@ -65,8 +64,9 @@ namespace Luqmit3ish.ViewModels
         public string DishOrDishes
         {
             get => _dishOrDishes;
-            set {
-                if( _dishInfo.Quantity > 1)
+            set
+            {
+                if (_dishInfo.Quantity > 1)
                 {
                     _dishOrDishes = " Dishes";
                 }
@@ -82,7 +82,7 @@ namespace Luqmit3ish.ViewModels
             get => _dayOrDays;
             set
             {
-                if(_dishInfo.KeepValid > 1)
+                if (_dishInfo.KeepValid > 1)
                 {
                     _dayOrDays = "Days";
                 }
@@ -134,7 +134,7 @@ namespace Luqmit3ish.ViewModels
             this._dishInfo = dish;
         }
 
-       
+
         private void OnPlusClicked(int quantity)
         {
             if (Counter == quantity)
@@ -150,7 +150,7 @@ namespace Luqmit3ish.ViewModels
                 MinusColor = "Orange";
                 return;
             }
-            if(Counter > 1)
+            if (Counter > 1)
             {
                 PlusColor = "Orange";
                 MinusColor = "Orange";
@@ -174,7 +174,7 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-    
+
         private async Task OnReserveClicked(int FoodId)
         {
             try
@@ -225,6 +225,6 @@ namespace Luqmit3ish.ViewModels
 
 
 
-       
+
     }
 }
