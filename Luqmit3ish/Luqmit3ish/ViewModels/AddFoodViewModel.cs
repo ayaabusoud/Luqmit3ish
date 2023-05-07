@@ -42,7 +42,6 @@ namespace Luqmit3ish.ViewModels
             KeepValidMinusCommand = new Command(OnKeepValidMinusClicked);
             QuantityPlusCommand = new Command(OnQuantityPlusClicked);
             QuantityMinusCommand = new Command(OnQuantityMinusClicked);
-            _typeValues = Constants.TypeValues;
         }
 
         public ICommand MyCollectionSelectedCommand => new Command(() =>

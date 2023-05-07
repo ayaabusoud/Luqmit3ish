@@ -2,10 +2,19 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.RestaurantOrderPage"
-              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+             xmlns:local="clr-namespace:Luqmit3ish.Converter"
              Title="Order"
              x:Name="RestaurantOrder"
              Style="{StaticResource ContentPageColor}">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:EqualOneConverter x:Key="equalOneConverter" />
+            <local:NotEqualOneConverter x:Key="notEqualOneConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
         <Grid Margin="20,0,20,0" HorizontalOptions="Fill" VerticalOptions="Fill">
             <StackLayout IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
@@ -88,10 +97,22 @@
                                                 <Label  MaxLines="1" HorizontalTextAlignment="Start"
                                                    Text="{Binding Owner.Name}" Style="{StaticResource LabelColor}"
                                                    FontSize="Medium" FontAttributes="Bold"/>
-                                                <Label  MaxLines="1" HorizontalTextAlignment="Start"
-                                                 FontSize="Small" TextColor="Gray"
-                                                    Text="{Binding Items}">
-                                                </Label>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label 
+                                                    MaxLines="1" 
+                                                    HorizontalTextAlignment="Start"
+                                                    FontSize="Small"
+                                                    TextColor="Gray"
+                                                    Text="{Binding Orders.Count}"/>
+                                                    <Label FontSize="Small"
+                                                       TextColor="Gray"
+                                                       Text="item"
+                                                       IsVisible="{Binding Orders.Count,Converter={StaticResource equalOneConverter}}" />
+                                                    <Label FontSize="Small"
+                                                       TextColor="Gray"
+                                                       Text="items" 
+                                                       IsVisible="{Binding Orders.Count, Converter={StaticResource notEqualOneConverter}}" />
+                                                </StackLayout>
                                             </StackLayout>
                                         </StackLayout>
                                     </StackLayout>

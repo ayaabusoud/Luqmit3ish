@@ -4,10 +4,18 @@
              x:Class="Luqmit3ish.Views.RestaurantHomePage"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
               xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+              xmlns:local="clr-namespace:Luqmit3ish.Converter"
              Title="Home"
              x:Name="RestaurantPage"
              Style="{StaticResource ContentPageColor}">
-
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:EqualOneConverter x:Key="equalOneConverter" />
+            <local:NotEqualOneConverter x:Key="notEqualOneConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
         <Grid Margin="16,16,16,0" HorizontalOptions="Fill" VerticalOptions="Fill" >
             <StackLayout  IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
@@ -53,16 +61,28 @@
                                             <ColumnDefinition Width="0.85*"/>
                                             <ColumnDefinition Width="0.15*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Label  TextColor="gray" Grid.Column="0" MaxLines="1" FontSize="Small" Style="{StaticResource LabelColor}">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <FormattedString.Spans>
-                                                        <Span Text="{Binding Quantity}" />
-                                                        <Span Text=" Dishes"  />
-                                                    </FormattedString.Spans>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label  TextColor="gray"
+                                                Grid.Column="0"
+                                                MaxLines="1"
+                                                FontSize="Small"
+                                                Style="{StaticResource LabelColor}"
+                                                Text="{Binding Quantity}"/>
+                                            <Label TextColor="gray"
+                                                Grid.Column="0"
+                                                MaxLines="1"
+                                                FontSize="Small"
+                                                Style="{StaticResource LabelColor}"
+                                               Text="Dish" 
+                                               IsVisible="{Binding Quantity,Converter={StaticResource equalOneConverter}}" />
+                                            <Label TextColor="gray"
+                                                Grid.Column="0"
+                                                MaxLines="1"
+                                                FontSize="Small"
+                                                Style="{StaticResource LabelColor}"
+                                               Text="Dishes"
+                                               IsVisible="{Binding Quantity,Converter={StaticResource notEqualOneConverter}}" />
+                                        </StackLayout>
                                     </Grid>
                                 </StackLayout>
                             </Frame>

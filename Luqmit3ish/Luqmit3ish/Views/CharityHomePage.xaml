@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+             xmlns:local="clr-namespace:Luqmit3ish.Converter"
              x:Class="Luqmit3ish.Views.CharityHomePage"
              Title="Home"
              x:Name="CharityPage"
@@ -10,6 +11,14 @@
         <ToolbarItem Icon="icon_search.png" Command="{Binding SearchCommand}" />
         <ToolbarItem Icon="icon_filter.png" Command="{Binding FilterCommand}" />
     </ContentPage.ToolbarItems>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:EqualOneConverter x:Key="equalOneConverter" />
+            <local:NotEqualOneConverter x:Key="notEqualOneConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
 
         <Grid Margin="16,16,16,0" HorizontalOptions="Fill" VerticalOptions="Fill">
@@ -56,18 +65,30 @@
                                     <Label MaxLines="1" FontAttributes="Bold"
                                            Style="{StaticResource LabelColor}" Text="{Binding DishName}" 
                                            Margin="15,0" FontSize="Medium"/>
-                                    <Label WidthRequest="150" MaxLines="1" Text="{Binding Restaurant.Name}" 
-                                           Margin="15,0" FontSize="Small" Style="{StaticResource LabelColor}"/>
-                                    <Label  FontSize="Small" MaxLines="1" Margin="15,0,0,0" Style="{StaticResource LabelColor}">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <FormattedString.Spans>
-                                                    <Span  Text="{Binding Quantity}" />
-                                                    <Span  Text=" Dishes"  />
-                                                </FormattedString.Spans>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
+                                    <Label WidthRequest="150"
+                                           MaxLines="1"
+                                           Text="{Binding Restaurant.Name}" 
+                                           Margin="15,0"
+                                           FontSize="Small"
+                                           Style="{StaticResource LabelColor}"/>
+
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label  FontSize="Small" 
+                                                MaxLines="1" 
+                                                Margin="15,0,0,0" 
+                                                Style="{StaticResource LabelColor}"
+                                                Text="{Binding Quantity}"/>
+                                        <Label FontSize="Small"
+                                               MaxLines="1" 
+                                               Style="{StaticResource LabelColor}"
+                                               Text="Dish" 
+                                               IsVisible="{Binding Quantity,Converter={StaticResource equalOneConverter}}" />
+                                        <Label FontSize="Small" 
+                                               MaxLines="1"
+                                               Style="{StaticResource LabelColor}"
+                                               Text="Dishes"
+                                               IsVisible="{Binding Quantity,Converter={StaticResource notEqualOneConverter}}" />
+                                    </StackLayout>
                                 </StackLayout>
                             </Frame>
                         </StackLayout>

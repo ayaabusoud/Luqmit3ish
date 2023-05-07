@@ -1,11 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:local="clr-namespace:Luqmit3ish.Converter"
              x:Class="Luqmit3ish.Views.FoodDetailPage"
              x:Name='FoodDetails'
              Title="Food Details"
              Shell.TabBarIsVisible="False"
              Style="{StaticResource ContentPageColor}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:EqualOneConverter x:Key="equalOneConverter" />
+            <local:NotEqualOneConverter x:Key="notEqualOneConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
         <Grid RowDefinitions="0.4*,0.6*" Margin="0">
             <Image Grid.Row="0" Source="{Binding DishInfo.Photo}" Aspect="AspectFill"/>
@@ -63,33 +72,45 @@
                     </StackLayout>
                     <StackLayout Orientation="Horizontal" Spacing="12" Margin="3,0">
                         <Label Text="&#xf251;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,5,0,0" Style="{StaticResource LabelColor}"/>
-                        <Label FontSize="17" Style="{StaticResource LabelColor}" Margin="0,5,0,0">
+                        <StackLayout Orientation="Horizontal">
+                            <Label FontSize="17" Style="{StaticResource LabelColor}" Margin="0,5,0,0">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="Keep valid for:  "  />
                                         <Span Text="{Binding DishInfo.KeepValid}"  FontAttributes="Bold" FontSize="17" />
-                                        <Span Text=" " FontSize="0" />
-                                        <Span Text="{Binding DayOrDays}" FontAttributes="Bold" FontSize="17"/>
-                                </FormattedString>
+                                    </FormattedString>
                             </Label.FormattedText>
-                    </Label>
+                            </Label>
+                            <Label FontSize="17" Style="{StaticResource LabelColor}" 
+                                   FontAttributes="Bold" Margin="0,5,0,0" Text="Day" 
+                                               IsVisible="{Binding DishInfo.KeepValid,Converter={StaticResource equalOneConverter}}" />
+                            <Label FontSize="17" Style="{StaticResource LabelColor}" 
+                                   FontAttributes="Bold" Margin="0,5,0,0" Text="Days" 
+                                               IsVisible="{Binding DishInfo.KeepValid,Converter={StaticResource notEqualOneConverter}}" />
+                        </StackLayout>
+                        
                     </StackLayout>
                     <StackLayout Orientation="Horizontal" Spacing="5">
-                        <Label Text="&#xf562;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,5,0,0" Style="{StaticResource LabelColor}"/>
-                        <Label VerticalOptions="Center" Margin="0,-5,0,0" Style="{StaticResource LabelColor}">
-                        <Label.FormattedText>
-                            <FormattedString >
-                                    <Span Text="Available quantity: " 
-                                       FontSize="18"/>
-                                    <Span Text="{Binding DishInfo.Quantity}" 
-                                     
-                                      FontAttributes="Bold" FontSize="Medium"/>
-                                    <Span Text=" " FontSize="0" />
-                                    <Span Text="{Binding DishOrDishes}" FontSize="Medium" FontAttributes="Bold"/>
-                                </FormattedString>
-                        </Label.FormattedText>
-                            
-                        </Label>
+                        <Label Text="&#xf562;" Margin="0,5,0,0" FontFamily="FontAwesomeIcons" FontSize="20"  Style="{StaticResource LabelColor}"/>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Style="{StaticResource LabelColor}" Margin="0,5,0,0">
+                                <Label.FormattedText>
+                                    <FormattedString >
+                                        <Span Text="Available quantity: " 
+                                          FontSize="18"/>
+                                        <Span Text="{Binding DishInfo.Quantity}" 
+                                              FontAttributes="Bold" FontSize="Medium"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label FontSize="Medium" FontAttributes="Bold"
+                                               Text="Dish" Margin="0,5,0,0" Style="{StaticResource LabelColor}"
+                                               IsVisible="{Binding DishInfo.Quantity,Converter={StaticResource equalOneConverter}}" />
+                            <Label FontSize="Medium" FontAttributes="Bold"
+                                               Text="Dishes" Margin="0,5,0,0" Style="{StaticResource LabelColor}"
+                                               IsVisible="{Binding DishInfo.Quantity,Converter={StaticResource notEqualOneConverter}}" />
+                        </StackLayout>
+                        
                 </StackLayout>
 
 
