@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Luqmit3ish.Exceptions;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -19,6 +20,7 @@ namespace Luqmit3ish.ViewModels
         protected string HttpRequestMessage { get; } = "Something went wrong, please try again.";
         protected string ExceptionMessage { get; } = "Something went wrong, please try again.";
         protected string SessionEndedMessage { get; } = "Your session have been ended.";
+        protected string NotAuthorizedMessage { get; } = "Your are not authorized to do this operation.";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -69,6 +71,33 @@ namespace Luqmit3ish.ViewModels
                 collection.Clear();
                 collection = null;
             }
+        }
+
+        protected async void NotAuthorized()
+        {
+            try
+            {
+                await PopNavigationAsync(NotAuthorizedMessage);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+
+        }
+
+        protected async void EndSession()
+        {
+            try
+            {
+                App.Current.MainPage = new LoginPage();
+                await PopNavigationAsync(SessionEndedMessage);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+
         }
     }
 }

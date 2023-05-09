@@ -13,7 +13,7 @@ namespace Luqmit3ish.Views
     class RestaurantOfTheMonthViewModel : ViewModelBase
     {
         private int _dishes;
-        private IOrderService _orderService;
+        private readonly IOrderService _orderService;
         public int Dishes
         {
             get => _dishes;

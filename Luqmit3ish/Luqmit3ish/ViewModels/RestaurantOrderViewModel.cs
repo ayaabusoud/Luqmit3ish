@@ -147,6 +147,11 @@ namespace Luqmit3ish.ViewModels
                 Thread.Sleep(3000);
                 await PopupNavigation.Instance.PopAsync();
             }
+            catch (NotAuthorizedException e)
+            {
+                Debug.WriteLine(e.Message);
+                NotAuthorized();
+            }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
@@ -216,6 +221,11 @@ namespace Luqmit3ish.ViewModels
                 Thread.Sleep(3000);
                 await PopupNavigation.Instance.PopAsync();
             }
+            catch (NotAuthorizedException e)
+            {
+                Debug.WriteLine(e.Message);
+                NotAuthorized();
+            }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
@@ -225,17 +235,6 @@ namespace Luqmit3ish.ViewModels
             }
             if (OrderCards.Count > 0)
             {
-                foreach (OrderCard order in OrderCards)
-                {
-                    if (order.Orders.Count == 1)
-                    {
-                        order.Items = "1 item";
-                    }
-                    else
-                    {
-                        order.Items = order.Orders.Count + " items";
-                    }
-                }
                 EmptyResult = false;
             }
             else

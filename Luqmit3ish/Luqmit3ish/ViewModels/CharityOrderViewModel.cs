@@ -3,18 +3,12 @@ using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
-using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Luqmit3ish.ViewModels
@@ -27,7 +21,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand DeleteCommand { protected set; get; }
         public ICommand OrderCommand { protected set; get; }
        
-        private IOrderService _orderService;
+        private readonly IOrderService _orderService;
 
         private bool _emptyResult;
 
@@ -64,37 +58,41 @@ namespace Luqmit3ish.ViewModels
                 "Are you sure that you want to delete this Order?", "Yes", "No");
             if (deleteConfirm)
             {
-                var id = Preferences.Get("userId", null);
-                if(id is null)
-                {
-                    return;
-                }
-                var userId = int.Parse(id);
+                var userId = GetUserId();
                 try
                 {
                     bool result =  await _orderService.DeleteOrder(userId, restaurantId);
                     if(result == true)
                     {
                         OnInit();
-                        await PopupNavigation.Instance.PushAsync(new PopUp("The order have been deleted successfully."));
-                        Thread.Sleep(3000);
-                        await PopupNavigation.Instance.PopAsync();
-                    
+                        await PopNavigationAsync("The order have been deleted successfully.");
+
                     }
                     else
                     {
-                        await PopupNavigation.Instance.PushAsync(new PopUp("The Order has not been deleted , please try again."));
-                        Thread.Sleep(3000);
-                        await PopupNavigation.Instance.PopAsync();
+                        await PopNavigationAsync("The Order has not been deleted , please try again.");
                     }
+                }
+                catch (ConnectionException e)
+                {
+                    Debug.WriteLine(e.Message);
+                    await PopNavigationAsync(InternetMessage);
+                }
+                catch (HttpRequestException e)
+                {
+                    Debug.WriteLine(e.Message);
+                    await PopNavigationAsync(HttpRequestMessage);
+                }
+                catch (NotAuthorizedException e)
+                {
+                    Debug.WriteLine(e.Message);
+                    NotAuthorized();
                 }
                 catch (Exception e)
                 {
 
                     Debug.WriteLine(e.Message);
-                    await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
+                    await PopNavigationAsync(ExceptionMessage);
                 }
             }
 
@@ -115,12 +113,7 @@ namespace Luqmit3ish.ViewModels
 
 
                 Task.Run(async () => {
-                    var id = Preferences.Get("userId", null);
-                    if (id is null)
-                    {
-                        return;
-                    }
-                    var userId = int.Parse(id);
+                    var userId = GetUserId();
                     try
                     {
                         OrderCards = await _orderService.GetOrders(userId);
@@ -128,10 +121,16 @@ namespace Luqmit3ish.ViewModels
                     catch (ConnectionException e)
                     {
                         Debug.WriteLine(e.Message);
+                        await PopNavigationAsync(InternetMessage);
                     }
                     catch (HttpRequestException e)
                     {
                         Debug.WriteLine(e.Message);
+                    }
+                    catch (NotAuthorizedException e)
+                    {
+                        Debug.WriteLine(e.Message);
+                        NotAuthorized();
                     }
                     catch (Exception e)
                     {
@@ -139,17 +138,7 @@ namespace Luqmit3ish.ViewModels
                     }
                     if (OrderCards.Count > 0)
                     {
-                        foreach (OrderCard order in OrderCards)
-                        {
-                            if (order.Orders.Count == 1)
-                            {
-                                order.Items = "1 item";
-                            }
-                            else
-                            {
-                                order.Items = order.Orders.Count + " items";
-                            }
-                        }
+                       
                         EmptyResult = false;
                     }
                     else

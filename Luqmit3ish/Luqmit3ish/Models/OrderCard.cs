@@ -10,6 +10,5 @@ namespace Luqmit3ish.Models
         public int Id { get; set; }
         public User Owner { get; set; }
         public ObservableCollection<OrderDish> Orders { get; set; }
-        public string Items { get; set; }
     }
 }

@@ -4,13 +4,11 @@ using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using Newtonsoft.Json;
-using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -27,7 +25,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand SearchCommand { protected set; get; }
         public ICommand FoodDetailCommand { protected set; get; }
 
-        private IFoodServices _foodServices;
+        private readonly IFoodServices _foodServices;
 
 
         private string _title;
@@ -141,10 +139,7 @@ namespace Luqmit3ish.ViewModels
                     catch (ConnectionException e)
                     {
                         Debug.WriteLine(e.Message);
-                        await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                        Thread.Sleep(3000);
-                        await PopupNavigation.Instance.PopAsync();
-                        return;
+                        await PopNavigationAsync(InternetMessage);
                     }
                     catch (HttpRequestException e)
                     {
@@ -173,14 +168,7 @@ namespace Luqmit3ish.ViewModels
                 {
                     DishCards.Remove(dish);
                 }
-                else if (dish.Quantity == 1)
-                {
-                    dish.Items = "1 Dish";
-                }
-                else
-                {
-                    dish.Items = dish.Quantity + " Dishes";
-                }
+                
             }
         }
 
@@ -189,7 +177,6 @@ namespace Luqmit3ish.ViewModels
             try
             {
                 await _navigation.PushAsync(new FilterFoodPage());
-                //await PopupNavigation.Instance.PushAsync(new FilterPopUp());
             }
             catch (ArgumentException e)
             {

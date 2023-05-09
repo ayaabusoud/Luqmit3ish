@@ -171,6 +171,11 @@ namespace Luqmit3ish.ViewModels
                     Thread.Sleep(3000);
                     await PopupNavigation.Instance.PopAsync();
                 }
+                catch (NotAuthorizedException e)
+                {
+                    Debug.WriteLine(e.Message);
+                    NotAuthorized();
+                }
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);

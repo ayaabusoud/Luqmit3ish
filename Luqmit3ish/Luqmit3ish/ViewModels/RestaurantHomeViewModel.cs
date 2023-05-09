@@ -3,15 +3,12 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Xamarin.Essentials;
 using System.Diagnostics;
 using Luqmit3ish.Services;
 using System.Collections.ObjectModel;
 using Luqmit3ish.Models;
 using Luqmit3ish.Exceptions;
 using System.Net.Http;
-using Rg.Plugins.Popup.Services;
-using System.Threading;
 using Luqmit3ish.Interfaces;
 
 namespace Luqmit3ish.ViewModels
@@ -22,7 +19,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand AddCommand { protected set; get; }
         public Command<int> DeleteCommand { protected set; get; }
         public Command<Dish> FoodDetailCommand { protected set; get; }
-        private IFoodServices _foodServices;
+        private readonly IFoodServices _foodServices;
 
         private ObservableCollection<Dish> _dishes;
 
@@ -54,13 +51,8 @@ namespace Luqmit3ish.ViewModels
             {
 
 
-                Task.Run(async () => {
-                 var id = Preferences.Get("userId", null);
-            if (id is null)
-            {
-                return;
-            }
-            var userId = int.Parse(id);
+            Task.Run(async () => {
+                    var userId = GetUserId();
             try
             {
                 Dishes = await _foodServices.GetFoodByResId(userId);
@@ -68,9 +60,7 @@ namespace Luqmit3ish.ViewModels
             catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(InternetMessage);
             }
             catch (HttpRequestException e)
             {
@@ -140,12 +130,36 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnDeleteClicked(int id)
         {
+            try
+            {
             var deleteConfirm = await Application.Current.MainPage.DisplayAlert("Delete", "Are you sure that you want to delete this dish?", "Yes", "No");
             if (deleteConfirm)
             {
                 await _foodServices.DeleteFood(id);
                 OnInit();
             }
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(InternetMessage);
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(HttpRequestMessage);
+            }
+            catch (NotAuthorizedException e)
+            {
+                Debug.WriteLine(e.Message);
+                NotAuthorized();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(ExceptionMessage);
+            }
+
         }
     
     }
