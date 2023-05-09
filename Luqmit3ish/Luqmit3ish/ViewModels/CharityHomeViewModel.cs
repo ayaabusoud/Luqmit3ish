@@ -8,6 +8,7 @@ using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -90,66 +91,74 @@ namespace Luqmit3ish.ViewModels
             try
             {
 
-            
-            Task.Run(async () => {
-                try
-                {
-                   
 
-                    string dishesJson = Preferences.Get("FilteedDishes", string.Empty);
-
-                    if (!string.IsNullOrEmpty(dishesJson))
+                Task.Run(async () => {
+                    try
                     {
-                        DishCards = JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(dishesJson);
-                        if (DishCards.Count > 0)
+                        string dishesJson = Preferences.Get("FilteedDishes", string.Empty);
+
+                        if (!string.IsNullOrEmpty(dishesJson))
                         {
-                            EmptyResult = false;
-                            RemoveEmptyDish();
+                            ObservableCollection<DishCard> allDishesUpdated = await _foodServices.GetDishCards();
+                            ObservableCollection<DishCard> filterDishes = JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(dishesJson);
+
+                            var dishCardIds = filterDishes.Select(dc => dc.Id);
+
+                            var filteredDishes = allDishesUpdated.Where(d => dishCardIds.Contains(d.Id));
+
+                            DishCards = new ObservableCollection<DishCard>(filteredDishes);
+
+
+                            if (DishCards.Count > 0)
+                            {
+                                EmptyResult = false;
+                                RemoveEmptyDish();
+                            }
+                            else
+                            {
+                                EmptyResult = true;
+                                Title = "No Filter Match Found";
+                                Description = "There is no food matches the filters you're looking for!";
+                            }
                         }
                         else
                         {
-                            EmptyResult = true;
-                            Title = "No Filter Match Found";
-                            Description = "There is no food matches the filters you're looking for!";
+                            DishCards = await _foodServices.GetDishCards();
+
+                            if (DishCards.Count > 0)
+                            {
+                                EmptyResult = false;
+                                RemoveEmptyDish();
+                            }
+                            else
+                            {
+                                EmptyResult = true;
+                                Title = "No Food Available";
+                                Description = "Come back later to explore new food!";
+                            }
                         }
                     }
-                    else
+                    catch (ConnectionException e)
                     {
-                        DishCards = await _foodServices.GetDishCards();
-
-                        if (DishCards.Count > 0)
-                        {
-                            EmptyResult = false;
-                            RemoveEmptyDish();
-                        }
-                        else
-                        {
-                            EmptyResult = true;
-                            Title = "No Food Available";
-                            Description = "Come back later to explore new food!";
-                        }
+                        Debug.WriteLine(e.Message);
+                        await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
+                        Thread.Sleep(3000);
+                        await PopupNavigation.Instance.PopAsync();
+                        return;
                     }
-                }
-                catch (ConnectionException e)
-                {
-                    Debug.WriteLine(e.Message);
-                    await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
-                    return;
-                }
-                catch (HttpRequestException e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
-                
-            }).Wait();
+                    catch (HttpRequestException e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
 
-            }catch(Exception e)
+                }).Wait();
+
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
