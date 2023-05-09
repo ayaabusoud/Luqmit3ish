@@ -161,6 +161,12 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
                 await PopNavigationAsync(HttpRequestMessage);
             }
+
+            catch (NotAuthorizedException e)
+            {
+                Debug.WriteLine(e.Message);
+                NotAuthorized();
+            }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
@@ -190,6 +196,11 @@ namespace Luqmit3ish.ViewModels
             {
                 Debug.WriteLine(e.Message);
                 await PopNavigationAsync(HttpRequestMessage);
+            }
+            catch (NotAuthorizedException e)
+            {
+                Debug.WriteLine(e.Message);
+                NotAuthorized();
             }
             catch (Exception e)
             {

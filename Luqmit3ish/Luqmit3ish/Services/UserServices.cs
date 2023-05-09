@@ -15,6 +15,7 @@ using Luqmit3ish.Models;
 using Luqmit3ish.Utilities;
 using Luqmit3ish.ViewModels;
 using Newtonsoft.Json;
+using Xamarin.Essentials;
 
 namespace Luqmit3ish.Services
 {
@@ -27,7 +28,7 @@ namespace Luqmit3ish.Services
         public UserServices()
         {
             _httpClient = new HttpClient();
-            _connection = new Connection();
+            _connection = new InternetConnection();
         }
 
        public async Task<bool> Login(LoginRequest loginRequest)
@@ -41,6 +42,9 @@ namespace Luqmit3ish.Services
                 var json = JsonConvert.SerializeObject(loginRequest);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync($"{_apiUrl}/login", content);
+
+                var token = await response.Content.ReadAsStringAsync();
+                Preferences.Set("Token", token);
                 return response.IsSuccessStatusCode;
             }
             catch(HttpRequestException e)
@@ -92,6 +96,16 @@ namespace Luqmit3ish.Services
             }
             try
             {
+                string token = Preferences.Get("Token", string.Empty);
+                if (string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = null;
+                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                }
+                else
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
                 var response = await _httpClient.DeleteAsync($"{_apiUrl}/{userId}");
                 return response.IsSuccessStatusCode;
             }
@@ -140,7 +154,8 @@ namespace Luqmit3ish.Services
                 var json = JsonConvert.SerializeObject(user);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync(_apiUrl, content);
-
+                var token = await response.Content.ReadAsStringAsync();
+                Preferences.Set("Token", token);
                 return response.IsSuccessStatusCode;
             }
             catch (HttpRequestException e)
@@ -189,6 +204,16 @@ namespace Luqmit3ish.Services
             }
             try
             {
+                string token = Preferences.Get("Token", string.Empty);
+                if (string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = null;
+                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                }
+                else
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
                 var content = JsonConvert.SerializeObject(user);
                 var response = await _httpClient.PutAsync($"{_apiUrl}/{user.Id}", new StringContent(content, UnicodeEncoding.UTF8, "application/json"));
                 if (!response.IsSuccessStatusCode)
@@ -215,7 +240,16 @@ namespace Luqmit3ish.Services
             }
             try
             {
-
+                string token = Preferences.Get("Token", string.Empty);
+                if (string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = null;
+                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                }
+                else
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
                 var patchObject = new { id, password};
                 var patchData = JsonConvert.SerializeObject(patchObject);
                 var httpContent = new StringContent(patchData, Encoding.UTF8, "application/json");
@@ -253,6 +287,16 @@ namespace Luqmit3ish.Services
             }
             try
             {
+                string token = Preferences.Get("Token", string.Empty);
+                if (string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = null;
+                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                }
+                else
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
                 ByteArrayContent fileContent;
                 if (Uri.TryCreate(photoPath, UriKind.Absolute, out Uri uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
                 {

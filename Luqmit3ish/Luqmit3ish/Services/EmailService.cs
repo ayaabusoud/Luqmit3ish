@@ -19,7 +19,7 @@ namespace Luqmit3ish.Services
         public EmailService()
         {
             _httpClient = new HttpClient();
-            _connection = new Connection();
+            _connection = new InternetConnection();
         }
         public async Task<string> SendVerificationCode(string recipientName, string recipientEmail)
         {

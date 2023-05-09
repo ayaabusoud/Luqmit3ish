@@ -69,6 +69,11 @@ namespace Luqmit3ish.ViewModels
                 Debug.WriteLine(e.Message);
                 await PopNavigationAsync(HttpRequestMessage);
             }
+            catch (NotAuthorizedException e)
+            {
+                Debug.WriteLine(e.Message);
+                NotAuthorized();
+            }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
@@ -115,14 +120,17 @@ namespace Luqmit3ish.ViewModels
             catch (EmptyIdException e)
             {
                 Debug.WriteLine(e.Message);
-                App.Current.MainPage = new LoginPage();
-                await PopNavigationAsync(SessionEndedMessage);
+                EndSession();
             }
             catch (EmailNotFoundException e)
             {
                 Debug.WriteLine(e.Message);
-                App.Current.MainPage = new LoginPage();
-                await PopNavigationAsync(SessionEndedMessage);
+                EndSession();
+            }
+            catch (NotAuthorizedException e)
+            {
+                Debug.WriteLine(e.Message);
+                NotAuthorized();
             }
             catch (Exception e)
             {

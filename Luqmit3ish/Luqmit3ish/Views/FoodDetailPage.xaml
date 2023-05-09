@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:local="clr-namespace:Luqmit3ish.Converter"
+              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
              x:Class="Luqmit3ish.Views.FoodDetailPage"
              x:Name='FoodDetails'
              Title="Food Details"
@@ -17,7 +18,8 @@
     
     <ContentPage.Content>
         <Grid RowDefinitions="0.4*,0.6*" Margin="0">
-            <Image Grid.Row="0" Source="{Binding DishInfo.Photo}" Aspect="AspectFill"/>
+            <ffimageloading:CachedImage LoadingPlaceholder="loading.PNG"
+                                         Grid.Row="0" Source="{Binding DishInfo.Photo}" Aspect="AspectFill"/>
             <Frame  Grid.Row="1" HorizontalOptions="Fill" VerticalOptions="Fill"  
                     Margin="-15,-40,0,-40"   HasShadow="True"
                     Style="{StaticResource FrameColor}">

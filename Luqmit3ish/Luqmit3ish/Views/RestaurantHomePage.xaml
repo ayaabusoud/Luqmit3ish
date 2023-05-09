@@ -17,7 +17,7 @@
     </ContentPage.Resources>
     
     <ContentPage.Content>
-        <Grid Margin="16,16,16,0" HorizontalOptions="Fill" VerticalOptions="Fill" >
+        <Grid Margin="16,10,16,0" HorizontalOptions="Fill" VerticalOptions="Fill" >
             <StackLayout  IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
                 <Image Source="https://luqmit3ish8.blob.core.windows.net/photos/1_CharityFood.png"
                        HeightRequest="200" 
@@ -36,7 +36,7 @@
                    Margin="0,0,0,10"
                    Style="{StaticResource LabelColor}"/>
             </StackLayout>
-            <CollectionView ItemsSource="{Binding Dishes}" Margin="0,35,0,0">
+            <CollectionView ItemsSource="{Binding Dishes}">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="6"/>
                 </CollectionView.ItemsLayout>
@@ -95,12 +95,13 @@
                              Source="plus_icon.png"
                              Aspect="AspectFit"
                              BorderWidth="1"
-                             BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource PrimaryLight}}"
+                             BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource SecondaryLight}}"
                              HorizontalOptions="End" 
                              WidthRequest="56"
                              HeightRequest="56"
                              CornerRadius="28"
                              Padding="19"
+                              Margin="0,0,0,10"
                              VerticalOptions="End" 
                               xct:IconTintColorEffect.TintColor="White"/>
         </Grid>
