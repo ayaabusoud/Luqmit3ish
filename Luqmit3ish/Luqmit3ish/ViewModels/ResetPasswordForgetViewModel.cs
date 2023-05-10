@@ -186,6 +186,7 @@ namespace Luqmit3ish.ViewModels
                 }
 
 
+
                 bool IsUpdatedPassword = await _userServices.ForgotPassword(user.Id, Password);
                 if (IsUpdatedPassword)
                 {
