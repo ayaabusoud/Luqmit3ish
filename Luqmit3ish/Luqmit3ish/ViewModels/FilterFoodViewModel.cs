@@ -36,6 +36,8 @@ namespace Luqmit3ish.ViewModels
         public FilterFoodViewModel(INavigation navigation)
         {
             SelectedLocationValues = new ObservableCollection<object>();
+            SelectedTypeValues = new ObservableCollection<object>();
+
             this._navigation = navigation;
 
             _typeValues = Constants.TypeValues;
@@ -170,10 +172,8 @@ namespace Luqmit3ish.ViewModels
 
         private void OnClearAllAsync()
         {
-            Parallel.Invoke(
-                () => ClearTypeValuesAsync(),
-                () => ClearLocationValues()
-            );
+            ClearTypeValuesAsync();
+            ClearLocationValues();
 
             LowerKeepValid = LowerQuantity = 0;
             UpperKeepValid = 10;
@@ -223,11 +223,9 @@ namespace Luqmit3ish.ViewModels
                     )
                 );
 
-                Parallel.Invoke(
-                    () => ClearFilterUsers(filterUsers),
-                    () => ClearFilterUsers(allDishes),
-                    () => SetPreferences(filteredDishes)
-                );
+                ClearFilterUsers(filterUsers);
+                ClearFilterUsers(allDishes);
+                SetPreferences(filteredDishes);
                 
                 await _navigation.PopAsync();
             }

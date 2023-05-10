@@ -9,11 +9,11 @@ x:Class="Luqmit3ish.Views.PopUp">
                CornerRadius="10"  
                Margin="20,20,20,63" 
                Padding="10,16" 
-               HorizontalOptions="FillAndExpand">
-            <Label TextColor="Black" 
+               HorizontalOptions="FillAndExpand"
+               BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackGroundDark}}">
+            <Label Style="{StaticResource LabelColor}"
                    HorizontalTextAlignment="Center"
                    Text="{Binding Message}"/>
-
         </Frame>
     </StackLayout>
 </popup:PopupPage>
