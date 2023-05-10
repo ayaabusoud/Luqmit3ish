@@ -1,3 +1,4 @@
+using Luqmit3ish.Encode;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
@@ -220,11 +221,7 @@ namespace Luqmit3ish.ViewModels
                 {
                     return;
                 }
-
-                byte[] passwordBytes = Encoding.UTF8.GetBytes(_oldPassword);
-                string encodedPassword = Convert.ToBase64String(passwordBytes);
-
-                if (!encodedPassword.Equals(user.Password))
+                if (!PasswordHasher.VerifyPassword(_oldPassword, user.Password))
                 {
                     _messageError = "Old password is incorrect. Please try again.";
                     _passwordErrorVisible = true;
