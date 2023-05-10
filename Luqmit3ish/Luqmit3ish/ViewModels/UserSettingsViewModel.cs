@@ -39,7 +39,8 @@ namespace Luqmit3ish.ViewModels
                LogOutCommand= new Command(async () => await OnLogOutClicked());
                DeleteCommand = new Command<int>(async (int id) => await OnDeleteAccountClicked(id));
                RestaurantCommand = new Command(async () => await OnRestaurantClicked());
-
+            _darkTheme = Preferences.Get("DarkTheme", false);
+            _swichColor = _darkTheme ? Color.DarkOrange : Color.White;
             _userServices = new UserServices();
               OnInit();
         }
@@ -68,9 +69,18 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _userInfo, value);
         }
 
+        private Color _swichColor;
+        public Color SwichColor
+        {
+            get => _swichColor;
+            set => SetProperty(ref _swichColor, value);
+        }
+
+        private bool _darkTheme;
         public bool DarkTheme
         {
             get => Preferences.Get("DarkTheme", false);
+
             set
             {
                 if (value)
@@ -83,6 +93,8 @@ namespace Luqmit3ish.ViewModels
                 }
                 Preferences.Set("DarkTheme", value);
                 OnPropertyChanged(nameof(DarkTheme));
+                _swichColor = DarkTheme ? Color.DarkOrange : Color.White;
+                OnPropertyChanged(nameof(SwichColor));
             }
         }
 
@@ -179,7 +191,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                Preferences.Clear();
+                RemovePreferences();
                 Application.Current.MainPage = new NavigationPage(new LoginPage());
                 await _navigation.PopToRootAsync();
             }
@@ -194,6 +206,12 @@ namespace Luqmit3ish.ViewModels
 
         }
 
+        private void RemovePreferences()
+        {
+            Preferences.Remove("Token");
+            Preferences.Remove("userEmail");
+            Preferences.Remove("userId");
+        }
 
         private async Task OnResetClicked()
         {

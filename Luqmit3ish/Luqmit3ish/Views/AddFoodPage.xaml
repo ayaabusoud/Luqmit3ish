@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.AddFoodPage"
@@ -54,7 +54,7 @@
                        Padding="0"
                        BackgroundColor="{AppThemeBinding Light=white,Dark={StaticResource PrimaryDark}}">
 
-                    <StackLayout Margin="0">
+                    <StackLayout Margin="0" Spacing="15">
                         <Label Text="Type: "
                                FontAttributes="Bold"
                                FontSize="17"
@@ -101,24 +101,32 @@
                         <StackLayout Spacing="0"
                                      Orientation="Horizontal"
                                      Margin="15,-8,0,0">
-                            <Label Text="Name: " 
-                                   VerticalOptions="Center"
-                                   FontSize="17"
-                                   FontAttributes="Bold" 
-                                   Style="{StaticResource LabelColor}" />
+                            <Frame Style="{StaticResource textFeildFrame}" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand">
+                                <StackLayout Orientation="Horizontal"
+                                             Margin="0"
+                                             Padding="0">
+                                    <Label Text="Name: " 
+                                       VerticalOptions="Center"
+                                       FontSize="17"
+                                       FontAttributes="Bold" 
+                                       Style="{StaticResource LabelColor}" />
 
-                            <Entry Text="{Binding Title}"
-                                   Style="{StaticResource LabelColor}" 
-                                   FontSize="17"
-                                   VerticalOptions="Center"
-                                   Placeholder="ex: Pizza"
-                                   HorizontalOptions="FillAndExpand"/>
+                                    <Entry Text="{Binding Title}"
+                                           Placeholder="ex: Pizza"
+                                           PlaceholderColor="Gray"
+                                           Keyboard="Text" 
+                                           Style="{StaticResource textFeild}"
+                                           ClearButtonVisibility="WhileEditing"
+                                           HorizontalOptions="FillAndExpand"
+                                           MaxLength="200"/>
+                                </StackLayout>
+                           </Frame>
                         </StackLayout>
 
                         <BoxView Color="Gray"
                                  HeightRequest="1"
                                  HorizontalOptions="Fill"
-                                 Margin="15,-8,15,5" />
+                                 Margin="15,-8,15,5"/>
 
                         <StackLayout Spacing="0">
                             <Label Text="Description: "
@@ -133,7 +141,9 @@
                                     Text="{Binding Description}"
                                     HorizontalOptions="Fill"
                                     VerticalOptions="FillAndExpand"
-                                    Margin="15,0"/>
+                                    Margin="15,0"
+                                    PlaceholderColor="Gray"
+                                    MaxLength="200"/>
                         </StackLayout>
 
                         <Grid Margin="15,0,0,5" HorizontalOptions="Center" >
@@ -224,7 +234,9 @@
 
                         <Button Text="Submit"
                                 Command="{Binding SubmitCommand}"
-                                Style="{StaticResource LargeBorderButton}"/>
+                                Style="{StaticResource LargeBorderButton}"
+                                VerticalOptions="EndAndExpand"
+                                Margin="10,0,10,60"/>
                     </StackLayout>
                 </Frame>
             </StackLayout>

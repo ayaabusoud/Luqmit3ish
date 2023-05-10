@@ -36,7 +36,7 @@
                         <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Text="&#xf186;" Style="{StaticResource LabelColor}" FontFamily="FontAwesomeIcons" FontSize="16"  />
                     </Frame>
                     <Label VerticalOptions="Center"  Grid.Column="1" Text="Dark Mode" FontAttributes="Bold" Style="{StaticResource LabelColor}" FontSize="18"  />
-                    <Switch Grid.Column="2" ThumbColor="DarkOrange"  IsToggled="{Binding DarkTheme}" />
+                    <Switch Grid.Column="2" ThumbColor="{Binding SwichColor}"  IsToggled="{Binding DarkTheme}" />
 
                 </Grid>
                 <Label Margin="0,5"  HorizontalOptions="StartAndExpand" FontSize="15" FontAttributes="Bold" Text="Profile" Style="{StaticResource LabelColor}" />

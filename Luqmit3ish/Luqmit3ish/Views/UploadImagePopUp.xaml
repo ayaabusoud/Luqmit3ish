@@ -8,39 +8,58 @@ x:Class="Luqmit3ish.Views.UploadImagePopUp">
                  HorizontalOptions="Center">
         <Frame CornerRadius="10"  
                Margin="20,20,20,63" 
-               Padding="10,16">
+               Padding="10,16"
+               BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackGroundDark}}">
 
             <StackLayout>
-                <Label Text="Upload Image" FontSize="Title" TextColor="Black" HorizontalOptions="Center"/>
+                <Label Text="Upload Image"
+                       FontSize="Title"
+                       Style="{StaticResource LabelColor}"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"/>
 
-               <Grid RowDefinitions="*,*" ColumnDefinitions="*,*">
+               <Grid RowDefinitions="*,*"
+                     ColumnDefinitions="*,*">
 
-                   <StackLayout HorizontalOptions="Center" Margin="0,20,0,0">
-                       <Label Text="&#xf083;" FontFamily="FontAwesomeIcons" FontSize="30" TextColor="{StaticResource PrimaryLight}" HorizontalOptions="Center">
+                   <StackLayout HorizontalOptions="Center"
+                                Margin="0,20,0,0">
+                       <Label Text="&#xf083;"
+                              FontFamily="FontAwesomeIcons"
+                              FontSize="30"
+                              TextColor="{StaticResource PrimaryLight}"
+                              HorizontalOptions="Center">
                            <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding CameraCommand}"/>
                            </Label.GestureRecognizers>
                        </Label>
-                       <Label Text="Take Photo" FontSize="Small" TextColor="Black"/>
+                       <Label Text="Take Photo"
+                              FontSize="Small"
+                              Style="{StaticResource LabelColor}"/>
                    </StackLayout>
 
-                   <StackLayout Grid.Column="1" HorizontalOptions="Center" Margin="0,20,0,0">
-                       <Label Text="&#xf03e;" FontFamily="FontAwesomeIcons" FontSize="30" TextColor="{StaticResource PrimaryLight}" HorizontalOptions="Center">
+                   <StackLayout Grid.Column="1"
+                                HorizontalOptions="Center"
+                                Margin="0,20,0,0">
+                       <Label Text="&#xf03e;"
+                              FontFamily="FontAwesomeIcons"
+                              FontSize="30"
+                              TextColor="{StaticResource PrimaryLight}" HorizontalOptions="Center">
                            <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding GalleryCommand}"/>
                            </Label.GestureRecognizers>
                        </Label>
-                       <Label Text="Select from Gallery" FontSize="Small" TextColor="Black"/>
+                       <Label Text="Select from Gallery"
+                              FontSize="Small"
+                              Style="{StaticResource LabelColor}"/>
                    </StackLayout>
                    <Button Text="Cancel"
                            HorizontalOptions="FillAndExpand"
-                           BackgroundColor="Gray" Style="{StaticResource LargeBorderButton}"
+                           BackgroundColor="Gray"
+                           Style="{StaticResource LargeBorderButton}"
                            Grid.Row="1" Grid.ColumnSpan="2"
                            Command="{Binding CancelCommand}"/>
                </Grid>
             </StackLayout>
-            
-
         </Frame>
     </StackLayout>
 </popup:PopupPage>

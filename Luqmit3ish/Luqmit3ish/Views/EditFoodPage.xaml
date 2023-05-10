@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
@@ -97,25 +97,34 @@
                                     </CollectionView.ItemTemplate>
                                 </CollectionView>
                             </StackLayout>
+                            <Frame Style="{StaticResource textFeildFrame}" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand">
+                                <StackLayout Orientation="Horizontal"
+                                                 Margin="0"
+                                                 Padding="0">
+                                        <Label Text="Name: " 
+                                               VerticalOptions="Center"
+                                               FontSize="17"
+                                               FontAttributes="Bold" 
+                                               Style="{StaticResource LabelColor}" />
 
-                            <StackLayout Spacing="0" Orientation="Horizontal" Margin="0,-8,0,0">
-                                <Label Text="Name: " 
-                                       VerticalOptions="Center"
-                                       FontSize="17"
-                                       FontAttributes="Bold" 
-                                       Style="{StaticResource LabelColor}" />
+                                        <Entry Text="{Binding DishInfo.Name}"
+                                               Placeholder="ex: Pizza"
+                                               PlaceholderColor="Gray"
+                                               Keyboard="Text" 
+                                               Style="{StaticResource textFeild}"
+                                               ClearButtonVisibility="WhileEditing"
+                                               HorizontalOptions="FillAndExpand"
+                                               MaxLength="200"/>
+                                </StackLayout>
+                            </Frame>
 
-                                <Entry Text="{Binding DishInfo.Name}"
-                                       Style="{StaticResource LabelColor}" 
-                                       FontSize="17"
-                                       VerticalOptions="Center" 
-                                       HorizontalOptions="FillAndExpand"/>
-                            </StackLayout>
-
-                        <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="2,-8,2,5" />
+                        <BoxView Color="Gray"
+                                 HeightRequest="1"
+                                 HorizontalOptions="Fill"
+                                 Margin="2,-8,2,5" />
 
 
-                            <StackLayout Spacing="0">
+                            <StackLayout Spacing="0" Margin="0,10,0,0">
 
                                 <Label Text="Description: "
                                    Style="{StaticResource LabelColor}"
@@ -127,7 +136,8 @@
                                     Style="{StaticResource LabelColor}"
                                     Text="{Binding DishInfo.Description}"
                                     HorizontalOptions="Fill"
-                                    VerticalOptions="FillAndExpand"/>
+                                    VerticalOptions="FillAndExpand"
+                                        MaxLength="200"/>
                             </StackLayout>
                             
                             

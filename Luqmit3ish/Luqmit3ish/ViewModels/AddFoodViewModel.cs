@@ -209,7 +209,7 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _img, value);
         }
 
-        private TypeField _selectedType;
+        private TypeField _selectedType = new TypeField();
         public TypeField SelectedType
         {
             get => _selectedType;

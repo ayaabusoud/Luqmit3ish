@@ -8,7 +8,7 @@
     <ContentPage.Content  MinHeightRequest="1000">
         <StackLayout  Margin="0" >
             <Frame HorizontalOptions="Fill" VerticalOptions="EndAndExpand"  Margin="0,0,0,-40"  CornerRadius="30" HasShadow="True" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundDark}}">
-                <ScrollView>
+                <ScrollView Margin="0,0,0,30">
                     <StackLayout Margin="10" HorizontalOptions="Fill" Padding="20,0" >
                         <Label VerticalOptions="Start" Text="Sign Up" 
                                HorizontalOptions="Center" FontSize="30" 
