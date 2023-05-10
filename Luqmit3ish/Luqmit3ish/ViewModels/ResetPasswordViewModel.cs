@@ -1,4 +1,3 @@
-using Luqmit3ish.Encode;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
