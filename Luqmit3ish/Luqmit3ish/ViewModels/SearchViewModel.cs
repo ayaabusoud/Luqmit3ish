@@ -129,7 +129,7 @@ namespace Luqmit3ish.ViewModels
                     }
                     catch (HttpRequestException e)
                     {
-                        throw new HttpRequestException(e.Message);
+                        Debug.WriteLine(e.Message);
                     }
                     catch (Exception e)
                     {
