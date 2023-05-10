@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Luqmit3ish.Connection;
@@ -13,6 +14,7 @@ using Luqmit3ish.Models;
 using Luqmit3ish.Utilities;
 using Luqmit3ish.ViewModels;
 using Newtonsoft.Json;
+using Xamarin.Essentials;
 
 namespace Luqmit3ish.Services
 {
@@ -30,7 +32,7 @@ namespace Luqmit3ish.Services
         public OrderService()
         {
             _httpClient = new HttpClient();
-            _connection = new Connection();
+            _connection = new InternetConnection();
         }
 
         public async Task<ObservableCollection<OrderCard>> GetOrders(int id)
@@ -41,6 +43,16 @@ namespace Luqmit3ish.Services
             }
             try
             {
+                string token = Preferences.Get("Token", string.Empty);
+                if (string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = null;
+                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                }
+                else
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
                 var response = await _httpClient.GetAsync($"{_orderApiUrl}/{id}");
                 var content = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
@@ -65,6 +77,16 @@ namespace Luqmit3ish.Services
             }
             try
             {
+                string token = Preferences.Get("Token", string.Empty);
+                if (string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = null;
+                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                }
+                else
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
                 var response = await _httpClient.GetAsync($"{_restaurantApiUrl}/{id}/{receieve}");
                 var content = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ObservableCollection<OrderCard>>(content);
@@ -108,6 +130,16 @@ namespace Luqmit3ish.Services
             }
             try
             {
+                string token = Preferences.Get("Token", string.Empty);
+                if (string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = null;
+                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                }
+                else
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
                 var response = await _httpClient.GetAsync($"{_apiUrl}/{id}");
                 var content = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Order>(content);
@@ -131,7 +163,16 @@ namespace Luqmit3ish.Services
             }
             try
             {
-
+                string token = Preferences.Get("Token", string.Empty);
+                if (string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = null;
+                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                }
+                else
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
                 var patchObject = new { id, operation };
                 var patchData = JsonConvert.SerializeObject(patchObject);
                 var httpContent = new StringContent(patchData, Encoding.UTF8, "application/json");
@@ -163,6 +204,16 @@ namespace Luqmit3ish.Services
             {
                 throw new ConnectionException("There is no internet connection");
             }
+            string token = Preferences.Get("Token", string.Empty);
+            if (string.IsNullOrEmpty(token))
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = null;
+                throw new NotAuthorizedException("You are not Authorized to do this operation");
+            }
+            else
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
             try
             {
                 var json = JsonConvert.SerializeObject(orderRequest);
@@ -179,6 +230,8 @@ namespace Luqmit3ish.Services
                 throw new Exception(e.Message);
             }
         }
+
+
         public async Task<bool> DeleteOrder(int charityId, int restaurantId)
         {
             if (!_connection.CheckInternetConnection())
@@ -187,7 +240,17 @@ namespace Luqmit3ish.Services
             }
             try
             {
-            var response = await _httpClient.DeleteAsync($"{_apiUrl}/delete/{charityId}/{restaurantId}");
+                string token = Preferences.Get("Token", string.Empty);
+                if (string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = null;
+                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                }
+                else
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
+                var response = await _httpClient.DeleteAsync($"{_apiUrl}/delete/{charityId}/{restaurantId}");
                 return response.IsSuccessStatusCode;
             }
             catch (HttpRequestException e)
@@ -209,7 +272,16 @@ namespace Luqmit3ish.Services
             }
             try
             {
-
+                string token = Preferences.Get("Token", string.Empty);
+                if (string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = null;
+                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                }
+                else
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
                 var patchObject = new { id };
                 var patchData = JsonConvert.SerializeObject(patchObject);
                 var httpContent = new StringContent(patchData, Encoding.UTF8, "application/json");

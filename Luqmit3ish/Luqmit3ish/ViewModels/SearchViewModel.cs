@@ -138,21 +138,6 @@ namespace Luqmit3ish.ViewModels
                     if (DishCards.Count > 0)
                     {
                         EmptyResult = false;
-                        foreach (DishCard dish in DishCards)
-                        {
-                            if (dish.Quantity == 0)
-                            {
-                                DishCards.Remove(dish);
-                            }
-                            else if (dish.Quantity == 1)
-                            {
-                                dish.Items = "1 Dish";
-                            }
-                            else
-                            {
-                                dish.Items = dish.Quantity + " Dishes";
-                            }
-                        }
                     }
                     else
                     {

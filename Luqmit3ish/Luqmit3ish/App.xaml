@@ -11,7 +11,7 @@
             <Color x:Key="PrimaryDark">#212121</Color>
             <Color x:Key="BackgroundLight">#F9F9F9</Color> 
             <Color x:Key="BackgroundDark">#121212</Color>
-            <Color x:Key="SecondaryLight">#35C9B7</Color>
+            <Color x:Key="SecondaryLight">#429ebd</Color>
             <Color x:Key="FrameBackGroundLight">white</Color>
             <Color x:Key="FrameBackGroundDark">#212121</Color>
             <Color x:Key="TextColorLight">Black</Color>

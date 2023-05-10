@@ -3,11 +3,12 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Luqmit3ish.Interfaces;
 using Xamarin.Forms;
 
 namespace Luqmit3ish.Models
 {
-    public class TypeField : INotifyPropertyChanged
+    public class TypeField : INotifyPropertyChanged, ISelectable
     {
         public string Name { get; set; }
         public string IconText { get; set; }

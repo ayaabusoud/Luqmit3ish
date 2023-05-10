@@ -11,7 +11,7 @@ namespace Luqmit3ish.Interfaces
         Task<ObservableCollection<Dish>> GetFoodByResId(int userId);
         Task<ObservableCollection<DishCard>> GetSearchCards(string searchRequest, string type);
         Task<Dish> GetFoodById(int food_id);
-        Task<bool> UpdateDish(DishRequest dishRequest, int food_id);
+        Task<bool> UpdateDish(Dish dishRequest);
         Task<bool> AddNewDish(DishRequest dishRequest);
         Task<bool> UploadPhoto(string photoPath, int foodId);
         Task<ObservableCollection<DishCard>> GetDishCards();

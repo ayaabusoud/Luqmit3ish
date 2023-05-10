@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Essentials;
 
-namespace Luqmit3ish.Services
+namespace Luqmit3ish.Connection
 {
-    class Connection : IConnection
+    class InternetConnection : IConnection
     {
         public bool CheckInternetConnection()
         {

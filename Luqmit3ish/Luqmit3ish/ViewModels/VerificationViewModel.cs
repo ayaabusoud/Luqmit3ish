@@ -6,6 +6,8 @@ using Luqmit3ish.Views;
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -62,13 +64,26 @@ namespace Luqmit3ish.ViewModels
                     {
                         bool IsInserted = await _userServices.InsertUser(newUser);
 
-                        Preferences.Set("userEmail", newUser.Email);
-                        User user = await _userServices.GetUserByEmail(newUser.Email);
-                        Preferences.Set("userId", user.Id.ToString());
+                        string token = Preferences.Get("Token", string.Empty);
+                        string userId = string.Empty;
+                        string userEmail = string.Empty;
+                        string userType = string.Empty;
+                        if (!string.IsNullOrEmpty(token))
+                        {
+                            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+                            JwtSecurityToken jwtToken = handler.ReadJwtToken(token);
 
+                            // access the token claims
+                            userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "nameid")?.Value;
+                            userEmail = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+                            userType = jwtToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
+                        }
+
+                        Preferences.Set("userId", userId);
+                        Preferences.Set("userEmail", userEmail);
                         if (IsInserted)
                         {
-                            if (newUser.Type.Equals("Restaurant"))
+                            if (userType.Equals("Restaurant"))
                             {
                                 Application.Current.MainPage = new AppShellRestaurant();
                             }

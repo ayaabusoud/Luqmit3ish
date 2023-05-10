@@ -9,6 +9,8 @@ using Luqmit3ish.Views;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Luqmit3ish.Exceptions;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Luqmit3ish.ViewModels
 {
@@ -18,6 +20,7 @@ namespace Luqmit3ish.ViewModels
         protected string HttpRequestMessage { get; } = "Something went wrong, please try again.";
         protected string ExceptionMessage { get; } = "Something went wrong, please try again.";
         protected string SessionEndedMessage { get; } = "Your session have been ended.";
+        protected string NotAuthorizedMessage { get; } = "Your are not authorized to do this operation.";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -41,7 +44,7 @@ namespace Luqmit3ish.ViewModels
             await PopupNavigation.Instance.PopAsync();
         }
 
-        public int GetUserId()
+        protected int GetUserId()
         {
             string id = Preferences.Get("userId", null);
             if (string.IsNullOrEmpty(id))
@@ -51,7 +54,7 @@ namespace Luqmit3ish.ViewModels
             return int.Parse(id);
         }
 
-        private string GetEmail()
+        protected string GetEmail()
         {
             string email = Preferences.Get("userEmail", null);
             if (string.IsNullOrEmpty(email))
@@ -59,6 +62,32 @@ namespace Luqmit3ish.ViewModels
                 throw new EmailNotFoundException("Email not found in preferences.");
             }
             return email;
+        }
+
+        protected void ClearFilterUsers<T>(ObservableCollection<T> collection)
+        {
+            if (collection != null)
+            {
+                collection.Clear();
+                collection = null;
+            }
+        }
+
+                
+          
+
+        protected async void EndSession()
+        {
+            try
+            {
+                App.Current.MainPage = new LoginPage();
+                await PopNavigationAsync(SessionEndedMessage);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+
         }
     }
 }

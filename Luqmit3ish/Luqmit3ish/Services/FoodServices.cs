@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace Luqmit3ish.Services
 {
@@ -26,7 +27,7 @@ namespace Luqmit3ish.Services
         public FoodServices()
         {
             _httpClient = new HttpClient();
-            _connection = new Connection();
+            _connection = new InternetConnection();
         }
 
         public async Task<ObservableCollection<Dish>> GetFood()
@@ -136,6 +137,16 @@ namespace Luqmit3ish.Services
             }
             try
             {
+                string token = Preferences.Get("Token", string.Empty);
+                if (string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = null;
+                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                }
+                else
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
                 var json = JsonConvert.SerializeObject(dishRequest);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PutAsync(_apiUrl + "/" + dishRequest.Id, content);
@@ -161,6 +172,16 @@ namespace Luqmit3ish.Services
             }
             try
             {
+                string token = Preferences.Get("Token", string.Empty);
+                if (string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = null;
+                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                }
+                else
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
                 var json = JsonConvert.SerializeObject(dishRequest);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync($"{_apiUrl}/AddDish", content);
@@ -183,7 +204,7 @@ namespace Luqmit3ish.Services
             }
         }
 
-        internal async Task<bool> UploadPhoto(string photoPath, int foodId)
+        public async Task<bool> UploadPhoto(string photoPath, int foodId)
         {
             if (!_connection.CheckInternetConnection())
             {
@@ -191,6 +212,16 @@ namespace Luqmit3ish.Services
             }
             try
             {
+                string token = Preferences.Get("Token", string.Empty);
+                if (string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = null;
+                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                }
+                else
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
                 ByteArrayContent fileContent;
                 if (Uri.TryCreate(photoPath, UriKind.Absolute, out Uri uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
                 {
@@ -273,6 +304,17 @@ namespace Luqmit3ish.Services
         {
             try
             {
+                string token = Preferences.Get("Token", string.Empty);
+                if (string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = null;
+                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                }
+                else
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
+
                 var response = await _httpClient.DeleteAsync($"{_apiUrl}/{food_id}");
 
                 if (!response.IsSuccessStatusCode)
@@ -290,14 +332,6 @@ namespace Luqmit3ish.Services
             }
         }
 
-        public Task<bool> UpdateDish(DishRequest dishRequest, int food_id)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> IFoodServices.UploadPhoto(string photoPath, int foodId)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

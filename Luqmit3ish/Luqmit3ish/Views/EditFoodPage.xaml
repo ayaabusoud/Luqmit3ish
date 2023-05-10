@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
              x:Class="Luqmit3ish.Views.EditFoodPage"
              Title="Edit Food"
              Shell.TabBarIsVisible="False"
@@ -12,9 +13,9 @@
                        Style="{StaticResource FrameColor}"
                        HeightRequest="220">
                     <Grid>
-                        <Image Source="{Binding DishInfo.Photo}"
-                               Aspect="AspectFill" HeightRequest="200">
-                        </Image>
+                        <ffimageloading:CachedImage LoadingPlaceholder="loading.PNG"
+                                        Source="{Binding DishInfo.Photo}"
+                               Aspect="AspectFill" HeightRequest="200" />
                         <Frame CornerRadius="50"
                                HasShadow="False"
                                WidthRequest="40"
@@ -219,14 +220,14 @@
                             <Button Text="Delete"
                                     Command="{Binding DeleteCommand}" 
                                 Style="{StaticResource LargeBorderButton}"
-                                    BorderColor="DarkRed"
+                                    BorderColor="{StaticResource RedColor}"
                                     BorderWidth="2"
                                     BackgroundColor="Transparent"
                                     TextColor="{AppThemeBinding Light=DarkRed,Dark= white}" />
                             <Button Text="Submit"
                                     Command="{Binding SubmitCommand}" 
                                     Style="{StaticResource LargeBorderButton}"
-                                    BackgroundColor="SeaGreen"/>
+                                    BackgroundColor="{StaticResource PrimaryLight}"/>
                         </StackLayout>
                     </StackLayout>
                     </StackLayout>
