@@ -195,7 +195,7 @@ namespace Luqmit3ish.ViewModels
 
         #endregion
 
-        #region PasswordValidation
+        #region PhoneValidation
         private bool _isPhoneValid;
         public bool IsPhoneValid
         {
