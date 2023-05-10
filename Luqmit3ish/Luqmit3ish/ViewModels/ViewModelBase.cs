@@ -73,18 +73,8 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        protected async void NotAuthorized()
-        {
-            try
-            {
-                await PopNavigationAsync(NotAuthorizedMessage);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-
-        }
+                
+          
 
         protected async void EndSession()
         {

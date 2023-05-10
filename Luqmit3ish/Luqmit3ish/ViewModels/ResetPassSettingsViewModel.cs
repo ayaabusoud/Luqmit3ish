@@ -188,7 +188,7 @@ namespace Luqmit3ish.ViewModels
             catch (NotAuthorizedException e)
             {
                 Debug.WriteLine(e.Message);
-                NotAuthorized();
+                await PopNavigationAsync(NotAuthorizedMessage);
             }
             catch (Exception e)
             {
