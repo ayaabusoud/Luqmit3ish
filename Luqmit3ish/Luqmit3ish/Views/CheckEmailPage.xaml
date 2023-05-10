@@ -7,7 +7,7 @@
              Style="{StaticResource ContentPageColor}">
     <ContentPage.Content>
         <StackLayout Margin="16,34,16,35" VerticalOptions="Center" HorizontalOptions="Center">
-            <Image Source="https://luqmit3ish8.blob.core.windows.net/photos/mail-open-outline-filled.png" 
+            <Image Source="https://luqmit3ish2.blob.core.windows.net/photos/mail-open-outline-filled.png" 
                    HeightRequest="160" 
                    WidthRequest="160"></Image>
             <Label Text="Check Your Email"

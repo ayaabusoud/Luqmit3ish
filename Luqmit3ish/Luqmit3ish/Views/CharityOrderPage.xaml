@@ -18,7 +18,7 @@
     <ContentPage.Content>
         <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
             <StackLayout IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
-                <Image Source="https://luqmit3ish8.blob.core.windows.net/photos/1_EmptyCart.png"
+                <Image Source="https://luqmit3ish2.blob.core.windows.net/photos/1_EmptyCart.png"
                            HeightRequest="200" 
                            WidthRequest="200"
                            VerticalOptions="Center"/>
@@ -47,7 +47,7 @@
                             <SwipeView.RightItems>
                                 <SwipeItems Mode="Execute">
                                     <SwipeItem Text="Delete"
-                                               IconImageSource="https://luqmit3ish8.blob.core.windows.net/photos/deleteIcon.png"
+                                               IconImageSource="https://luqmit3ish2.blob.core.windows.net/photos/deleteIcon.png"
                                                BackgroundColor="{StaticResource RedColor}"
                                                Command="{Binding BindingContext.DeleteCommand , Source={x:Reference CharityOrder}}"
                                                CommandParameter="{Binding Id}"/>

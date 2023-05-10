@@ -18,7 +18,7 @@
     
     <ContentPage.Content>
         <StackLayout Margin="0,0,0,35">
-            <Grid  BackgroundColor="{StaticResource BackgroundLight}" xct:ShadowEffect.Color="Gray"  
+            <Grid  BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource PrimaryDark}}" xct:ShadowEffect.Color="Gray"  
                    HeightRequest="80" Padding="0" Margin="0">
                 <Grid.ColumnDefinitions >
                     <ColumnDefinition Width="0.1*"/>
