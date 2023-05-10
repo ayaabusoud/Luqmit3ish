@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.ProfilePage"
@@ -12,7 +12,7 @@
 
     <ContentPage.Content >
            <StackLayout Margin="0" Style="{StaticResource StackLayoutColor}" >
-            <Grid ColumnDefinitions=",,*" BackgroundColor="{AppThemeBinding Light=white, Dark=#212121}">
+            <Grid ColumnDefinitions="*,*,*" BackgroundColor="{AppThemeBinding Light=white, Dark=#212121}">
                 <Frame WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" CornerRadius="200" Padding="0" Grid.Column="1" Margin="0,30,0,0">
                     <ffimageloading:CachedImage LoadingPlaceholder="loading.PNG" Source="{Binding UserInfo.Photo}" Aspect="AspectFill" />
                 </Frame>
@@ -112,7 +112,7 @@
                         <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,5"/>
 
                 
-                    <Grid ColumnDefinitions="," Padding="10">
+                    <Grid ColumnDefinitions="*,*" Padding="10">
                         <Button VerticalOptions="Center" BackgroundColor="{StaticResource PrimaryLight}" Text="Save" Command="{Binding DoneCommand}" Style="{StaticResource BorderButton}" HorizontalOptions="Fill"/>
                         <Button VerticalOptions="Center" BackgroundColor="Gray" Text="Cancel" Command="{Binding CancelCommand}" Style="{StaticResource BorderButton}" Grid.Column="1" HorizontalOptions="Fill"/>
                     </Grid>
