@@ -220,14 +220,14 @@
                             <Button Text="Delete"
                                     Command="{Binding DeleteCommand}" 
                                 Style="{StaticResource LargeBorderButton}"
-                                    BorderColor="DarkRed"
+                                    BorderColor="{StaticResource RedColor}"
                                     BorderWidth="2"
                                     BackgroundColor="Transparent"
                                     TextColor="{AppThemeBinding Light=DarkRed,Dark= white}" />
                             <Button Text="Submit"
                                     Command="{Binding SubmitCommand}" 
                                     Style="{StaticResource LargeBorderButton}"
-                                    BackgroundColor="SeaGreen"/>
+                                    BackgroundColor="{StaticResource PrimaryLight}"/>
                         </StackLayout>
                     </StackLayout>
                     </StackLayout>
