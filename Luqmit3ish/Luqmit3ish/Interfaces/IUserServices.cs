@@ -15,6 +15,7 @@ namespace Luqmit3ish.Interfaces
         Task<User> GetUserById(int id);
         Task EditProfile(User user);
         Task<bool> ResetPassword(int id, string password);
+        Task<bool>ForgetPassword(int id, string password);
         Task<bool> UploadPhoto(string photoPath, int userId);
     }
 }
