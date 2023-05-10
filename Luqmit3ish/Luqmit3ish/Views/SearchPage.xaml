@@ -3,15 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.SearchPage"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:local="clr-namespace:Luqmit3ish.Converter"
              Shell.NavBarIsVisible="False"
              Shell.TabBarIsVisible="False"
              x:Name="SearchFoodPage"
              Style="{StaticResource ContentPageColor}">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:EqualOneConverter x:Key="equalOneConverter" />
+            <local:NotEqualOneConverter x:Key="notEqualOneConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
-
         <StackLayout Margin="0,0,0,35">
-            <Grid  BackgroundColor="{StaticResource PrimaryLight}" 
+            <Grid  BackgroundColor="{StaticResource BackgroundLight}" xct:ShadowEffect.Color="Gray"  
                    HeightRequest="80" Padding="0" Margin="0">
                 <Grid.ColumnDefinitions >
                     <ColumnDefinition Width="0.1*"/>
@@ -19,17 +26,17 @@
                 </Grid.ColumnDefinitions>
                 <Label Margin="0,20,0,0" VerticalOptions="Center"
                        HorizontalOptions="End" Grid.Column="0" 
-                       HeightRequest="56" TextColor="white" 
+                       HeightRequest="56" TextColor="Black" 
                        Text="&#xf060;" FontFamily="FontAwesomeIcons"
                        FontSize="20" >
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding BackCommand}"/>
                     </Label.GestureRecognizers>
                 </Label>
-                <SearchBar PlaceholderColor="White"
-                           CancelButtonColor="White" 
-                           xct:IconTintColorEffect.TintColor="White" 
-                           TextColor="white"  Grid.Column="1"
+                <SearchBar PlaceholderColor="Black"
+                           CancelButtonColor="Black" 
+                           xct:IconTintColorEffect.TintColor="Black" 
+                           TextColor="Black"  Grid.Column="1"
                            Placeholder="Search" Text="{Binding SearchText}" 
            SearchCommand="{Binding SearchCommand}" HeightRequest="56"/>
             </Grid>

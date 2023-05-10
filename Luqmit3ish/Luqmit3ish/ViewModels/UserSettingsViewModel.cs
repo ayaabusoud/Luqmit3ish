@@ -25,8 +25,11 @@ namespace Luqmit3ish.ViewModels
         public ICommand LogOutCommand { protected set; get; }
         public ICommand DeleteCommand { protected set; get; }
         public ICommand DarkModeCommand { protected set; get; }
-
         private readonly IUserServices _userServices;
+        public static String RongMessage = "Something went wrong, please try again."; 
+        public static String DeleteSucsessMessage = "The Account have been deleted successfully.";
+        public static String InsureDeleteMessage = "Are you sure that you want to delete Your account?"; 
+        public static String DeleteAccount = "Delete Account";
 
 
         public UserSettingsViewModel(INavigation navigation) {
@@ -99,29 +102,23 @@ namespace Luqmit3ish.ViewModels
                 UserInfo = await _userServices.GetUserByEmail(email);
 
             }
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-                
-                
+                    catch (ConnectionException e)
+                    {
+                        Debug.WriteLine(e.Message);
+                        await PopNavigationAsync(InternetMessage);
+                    }
+                    catch (HttpRequestException e)
+                    {
+                        Debug.WriteLine(e.Message);
+                        await PopNavigationAsync(HttpRequestMessage);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message);
+                        await PopNavigationAsync(ExceptionMessage);
+                    }
+
+
                 }).Wait();
 
             }
@@ -135,7 +132,7 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnDeleteAccountClicked(int id)
         {
-            var deleteConfirm = await Application.Current.MainPage.DisplayAlert("Delete Account", "Are you sure that you want to delete Your account?", "Yes", "No");
+            var deleteConfirm = await Application.Current.MainPage.DisplayAlert(DeleteAccount, InsureDeleteMessage , "Yes", "No");
             if (deleteConfirm)
             {
                 try
@@ -145,31 +142,25 @@ namespace Luqmit3ish.ViewModels
                     {
                         Preferences.Clear();
                         Application.Current.MainPage = new LoginPage();
-                        await PopupNavigation.Instance.PushAsync(new PopUp("The Account have been deleted successfully."));
+                        await PopupNavigation.Instance.PushAsync(new PopUp(DeleteSucsessMessage));
                         Thread.Sleep(3000);
                         await PopupNavigation.Instance.PopAsync();
 
                     }
                     else
                     {
-                        await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                        Thread.Sleep(3000);
-                        await PopupNavigation.Instance.PopAsync();
+                        await PopNavigationAsync(RongMessage);
                     }
                 }
                 catch (ConnectionException e)
                 {
                     Debug.WriteLine(e.Message);
-                    await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
+                    await PopNavigationAsync(InternetMessage);
                 }
                 catch (HttpRequestException e)
                 {
                     Debug.WriteLine(e.Message);
-                    await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
+                    await PopNavigationAsync(HttpRequestMessage);
                 }
                 catch (NotAuthorizedException e)
                 {
@@ -179,9 +170,7 @@ namespace Luqmit3ish.ViewModels
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
-                    await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
+                    await PopNavigationAsync(ExceptionMessage);
                 }
             }
         }
