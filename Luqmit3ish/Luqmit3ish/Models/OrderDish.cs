@@ -12,7 +12,6 @@ namespace Luqmit3ish.Models
         public Dish Dish { get; set; }
         public int Quantity { get; set; }
         public Boolean Receive { get; set; }
-        public string Items { get; set; }
 
     }
 }

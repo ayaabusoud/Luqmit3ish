@@ -2,10 +2,11 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
+using Luqmit3ish.Interfaces;
 
 namespace Luqmit3ish.Models
 {
-    public class LocationField : INotifyPropertyChanged
+    public class LocationField : INotifyPropertyChanged, ISelectable
     {
         public string Name { get; set; }
 
@@ -35,4 +36,3 @@ namespace Luqmit3ish.Models
         }
     }
 }
-

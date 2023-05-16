@@ -3,11 +3,12 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Luqmit3ish.Interfaces;
 using Xamarin.Forms;
 
 namespace Luqmit3ish.Models
 {
-    public class TypeField : INotifyPropertyChanged
+    public class TypeField : INotifyPropertyChanged, ISelectable
     {
         public string Name { get; set; }
         public string IconText { get; set; }
@@ -42,7 +43,7 @@ namespace Luqmit3ish.Models
             field.IsSelected = !field.IsSelected;
         }
 
-        public System.Drawing.Color FrameBackgroundColor => IsSelected ? System.Drawing.Color.FromArgb(249, 117, 21) : System.Drawing.Color.Transparent;
+        public System.Drawing.Color FrameBackgroundColor => IsSelected ? System.Drawing.Color.FromArgb(249, 117, 21) : System.Drawing.Color.White;
         public System.Drawing.Color TextBackgroundColor => IsSelected ? System.Drawing.Color.White : System.Drawing.Color.FromArgb(249, 117, 21);
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")

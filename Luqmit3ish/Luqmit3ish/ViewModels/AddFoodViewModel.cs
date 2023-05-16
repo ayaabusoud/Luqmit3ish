@@ -18,13 +18,10 @@ namespace Luqmit3ish.ViewModels
     class AddFoodViewModel : ViewModelBase
     {
         private INavigation _navigation { get; set; }
+        private int _userId;
         private FoodServices _foodServices;
+
         public ICommand SubmitCommand { protected set; get; }
-        public ICommand Photo_clicked { protected set; get; }
-        public ICommand Blus { get; private set; }
-        public ICommand Minus { protected get; set; }
-        public ICommand KeepListedBlus { protected get; set; }
-        public ICommand KeepListedMinus { protected get; set; }
         public ICommand TakePhotoCommand { protected set; get; }
         public ICommand KeepValidPlusCommand { protected set; get; }
         public ICommand KeepValidMinusCommand { protected set; get; }
@@ -34,15 +31,16 @@ namespace Luqmit3ish.ViewModels
         public AddFoodViewModel(INavigation navigation)
         {
             this._navigation = navigation;
-            SubmitCommand = new Command(async () => await OnSubmitClicked());
             _foodServices = new FoodServices();
-            Photo_clicked = new Command(async () => await PhotoClicked());
+            _typeValues = Constants.TypeValues;
+            _userId = GetUserId();
+
+            SubmitCommand = new Command(async () => await OnSubmitClicked());
             TakePhotoCommand = new Command(async () => await PhotoClicked());
             KeepValidPlusCommand = new Command(OnKeepValidPlusClicked);
             KeepValidMinusCommand = new Command(OnKeepValidMinusClicked);
             QuantityPlusCommand = new Command(OnQuantityPlusClicked);
             QuantityMinusCommand = new Command(OnQuantityMinusClicked);
-            _typeValues = Constants.TypeValues;
         }
 
         public ICommand MyCollectionSelectedCommand => new Command(() =>
@@ -64,108 +62,107 @@ namespace Luqmit3ish.ViewModels
             catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(InternetMessage);
             }
             catch (HttpRequestException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(HttpRequestMessage);
+            }
+            catch (NotAuthorizedException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(NotAuthorizedMessage);
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(ExceptionMessage);
             }
         }
-
 
         private async Task OnSubmitClicked()
         {
             try
             {
-                string id = Preferences.Get("userId", "0");
-
-                if (id is null)
+                if (!IsDishDataValid())
                 {
-                    return;
-                }
-                int userId = int.Parse(id);
-
-                if (_type == null || _title == null || _description == null || KeepValid == 0 || Quantity == 0)
-                {
-                    await PopupNavigation.Instance.PushAsync(new PopUp("Please fill in all fields"));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
+                    await PopNavigationAsync("Please fill in all fields");
                     return;
                 }
                 if (_photoPath == null)
                 {
-                    await PopupNavigation.Instance.PushAsync(new PopUp("Please select or take a photo first."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
+                    await PopNavigationAsync("Please select or take a photo first.");
                     return;
                 }
 
-                DishRequest foodRequest = new DishRequest()
-                {
-                    UserId = userId,
-                    Photo = _photoPath,
-                    Type = _type,
-                    Name = _title,
-                    Description = _description,
-                    keepValid = KeepValid,
-                    Quantity = Quantity
-                };
+                DishRequest foodRequest = CreateDishRequest();
 
                 var response = await _foodServices.AddNewDish(foodRequest);
                 if (response)
                 {
                     await _navigation.PopAsync();
-                    await PopupNavigation.Instance.PushAsync(new PopUp("The dish has been added successfully"));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
+                    await PopNavigationAsync("The dish has been added successfully");
                     return;
                 }
-                await PopupNavigation.Instance.PushAsync(new PopUp("The dish was not added."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync("The dish was not added.");
             }
             catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(InternetMessage);
             }
             catch (HttpRequestException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(HttpRequestMessage);
+            }
+            catch (EmptyIdException e)
+            {
+                Debug.WriteLine(e.Message);
+                EndSession();
+            }
+            catch (EmailNotFoundException e)
+            {
+                Debug.WriteLine(e.Message);
+                EndSession();
+            }
+            catch (NotAuthorizedException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(NotAuthorizedMessage);
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(ExceptionMessage);
             }
         }
 
+        private bool IsDishDataValid()
+        {
+            return (_type != null && _title != null && _description != null && KeepValid != 0 && Quantity != 0);
+        }
+
+        private DishRequest CreateDishRequest()
+        {
+            var foodRequest = new DishRequest()
+            {
+                UserId = _userId,
+                Photo = _photoPath,
+                Type = _type,
+                Name = _title,
+                Description = _description,
+                keepValid = KeepValid,
+                Quantity = Quantity
+            };
+            return foodRequest;
+        }
+
+
         private void OnKeepValidMinusClicked()
         {
-            if (KeepValid == 0)
-            {
-                return;
-            }
-            else
+            if (KeepValid > 0)
             {
                 KeepValid--;
             }
@@ -178,11 +175,7 @@ namespace Luqmit3ish.ViewModels
 
         private void OnQuantityMinusClicked()
         {
-            if (Quantity == 0)
-            {
-                return;
-            }
-            else
+            if (Quantity > 0)
             {
                 Quantity--;
             }
@@ -216,7 +209,7 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _img, value);
         }
 
-        private TypeField _selectedType;
+        private TypeField _selectedType = new TypeField();
         public TypeField SelectedType
         {
             get => _selectedType;
@@ -283,20 +276,6 @@ namespace Luqmit3ish.ViewModels
         {
             get => _description;
             set => SetProperty(ref _description, value);
-        }
-
-        private int _keepListed;
-        public int Keep_listed
-        {
-            get => _keepListed;
-            set => SetProperty(ref _keepListed, value);
-        }
-
-        private int _proximateNumber;
-        public int Number
-        {
-            get => _proximateNumber;
-            set => SetProperty(ref _proximateNumber, value);
         }
     }
 }

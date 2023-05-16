@@ -1,14 +1,14 @@
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using Newtonsoft.Json;
-using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -25,7 +25,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand SearchCommand { protected set; get; }
         public ICommand FoodDetailCommand { protected set; get; }
 
-        private FoodServices _foodServices;
+        private readonly IFoodServices _foodServices;
 
 
         private string _title;
@@ -89,66 +89,71 @@ namespace Luqmit3ish.ViewModels
             try
             {
 
-            
-            Task.Run(async () => {
-                try
-                {
-                   
 
-                    string dishesJson = Preferences.Get("FilteedDishes", string.Empty);
-
-                    if (!string.IsNullOrEmpty(dishesJson))
+                Task.Run(async () => {
+                    try
                     {
-                        DishCards = JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(dishesJson);
-                        if (DishCards.Count > 0)
+                        string dishesJson = Preferences.Get("FilteedDishes", string.Empty);
+
+                        if (!string.IsNullOrEmpty(dishesJson))
                         {
-                            EmptyResult = false;
-                            RemoveEmptyDish();
+                            ObservableCollection<DishCard> allDishesUpdated = await _foodServices.GetDishCards();
+                            ObservableCollection<DishCard> filterDishes = JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(dishesJson);
+
+                            var dishCardIds = filterDishes.Select(dc => dc.Id);
+
+                            var filteredDishes = allDishesUpdated.Where(d => dishCardIds.Contains(d.Id));
+
+                            DishCards = new ObservableCollection<DishCard>(filteredDishes);
+
+
+                            if (DishCards.Count > 0)
+                            {
+                                EmptyResult = false;
+                                RemoveEmptyDish();
+                            }
+                            else
+                            {
+                                EmptyResult = true;
+                                Title = "No Filter Match Found";
+                                Description = "There is no food matches the filters you're looking for!";
+                            }
                         }
                         else
                         {
-                            EmptyResult = true;
-                            Title = "No Filter Match Found";
-                            Description = "There is no food matches the filters you're looking for!";
+                            DishCards = await _foodServices.GetDishCards();
+
+                            if (DishCards.Count > 0)
+                            {
+                                EmptyResult = false;
+                                RemoveEmptyDish();
+                            }
+                            else
+                            {
+                                EmptyResult = true;
+                                Title = "No Food Available";
+                                Description = "Come back later to explore new food!";
+                            }
                         }
                     }
-                    else
+                    catch (ConnectionException e)
                     {
-                        DishCards = await _foodServices.GetDishCards();
-
-                        if (DishCards.Count > 0)
-                        {
-                            EmptyResult = false;
-                            RemoveEmptyDish();
-                        }
-                        else
-                        {
-                            EmptyResult = true;
-                            Title = "No Food Available";
-                            Description = "Come back later to explore new food!";
-                        }
+                        Debug.WriteLine(e.Message);
+                        await PopNavigationAsync(InternetMessage);
                     }
-                }
-                catch (ConnectionException e)
-                {
-                    Debug.WriteLine(e.Message);
-                    await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
-                    return;
-                }
-                catch (HttpRequestException e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
-                
-            }).Wait();
+                    catch (HttpRequestException e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message);
+                    }
 
-            }catch(Exception e)
+                }).Wait();
+
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
@@ -163,14 +168,7 @@ namespace Luqmit3ish.ViewModels
                 {
                     DishCards.Remove(dish);
                 }
-                else if (dish.Quantity == 1)
-                {
-                    dish.Items = "1 Dish";
-                }
-                else
-                {
-                    dish.Items = dish.Quantity + " Dishes";
-                }
+                
             }
         }
 
@@ -179,7 +177,6 @@ namespace Luqmit3ish.ViewModels
             try
             {
                 await _navigation.PushAsync(new FilterFoodPage());
-                //await PopupNavigation.Instance.PushAsync(new FilterPopUp());
             }
             catch (ArgumentException e)
             {

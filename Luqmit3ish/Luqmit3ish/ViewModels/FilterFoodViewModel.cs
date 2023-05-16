@@ -1,4 +1,5 @@
 ﻿using System;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
@@ -16,307 +17,187 @@ using Xamarin.Forms;
 using System.Linq;
 using Xamarin.Essentials;
 using Newtonsoft.Json;
+using FFImageLoading;
 
 namespace Luqmit3ish.ViewModels
 {
-	public class FilterFoodViewModel:ViewModelBase
-	{
+    public class FilterFoodViewModel : ViewModelBase
+    {
         private INavigation _navigation { get; set; }
+
         public ICommand Apply { get; set; }
         public ICommand ClearAll { get; set; }
-        private FoodServices _foodServices;
-        private UserServices _userServices;
+        public ICommand TypeMultiSelectionCommand { get; set; }
+        public ICommand LocationMultiSelectionCommand { get; set; }
+
+        private IFoodServices _foodServices;
+        private IUserServices _userServices;
 
         public FilterFoodViewModel(INavigation navigation)
         {
             SelectedLocationValues = new ObservableCollection<object>();
+            SelectedTypeValues = new ObservableCollection<object>();
+
             this._navigation = navigation;
 
             _typeValues = Constants.TypeValues;
             _locationValues = Constants.LocationValues;
 
             Apply = new Command(async () => await OnApplyAsync());
-            ClearAll = new Command(async () => await OnClearAllAsync());
+            ClearAll = new Command(() => OnClearAllAsync());
+            TypeMultiSelectionCommand = new Command<IList<object>>(async (itemSelected) => await OnTypeMultiSelectionClicked(itemSelected));
+            LocationMultiSelectionCommand = new Command<IList<object>>(async (itemSelected) => await OnLocationMultiSelectionClicked(itemSelected));
 
+            _foodServices = new FoodServices();
+            _userServices = new UserServices();
             InitializVariable();
         }
 
         private void InitializVariable()
         {
             int upperQuantity = Preferences.Get("UpperQuantity", 0);
-            if (upperQuantity == 0)
-            {
-                _upperQuantity = 100;
-            }
-            else
-            {
-                _upperQuantity = upperQuantity;
-            }
+            _upperQuantity = upperQuantity == 0 ? 100 : upperQuantity;
+
             int upperKeepValid = Preferences.Get("UpperKeepValid", 0);
-            if (upperKeepValid == 0)
-            {
-                _upperKeepValid = 10;
-            }
-            else
-            {
-                _upperKeepValid = upperKeepValid;
-            }
+            _upperKeepValid = upperKeepValid == 0 ? 10 : upperKeepValid;
 
             int lowerQuantity = Preferences.Get("LowerQuantity", 0);
-            if (lowerQuantity == 0)
-            {
-                _lowerQuantity = 0;
-            }
-            else
-            {
-                _lowerQuantity = lowerQuantity;
-            }
+            _lowerQuantity = lowerQuantity == 0 ? 0 : lowerQuantity;
 
             int lowerKeepValid = Preferences.Get("LowerKeepValid", 0);
-            if (lowerKeepValid == 0)
-            {
-                _lowerKeepValid = 0;
-            }
-            else
-            {
-                _lowerKeepValid = lowerKeepValid;
-            }
+            _lowerKeepValid = lowerKeepValid == 0 ? 0 : lowerKeepValid;
 
-            string typeJson = Preferences.Get("SelectedTypeValues", string.Empty);
-
-            if (!string.IsNullOrEmpty(typeJson))
-            {
-                SelectedTypeValues = JsonConvert.DeserializeObject<ObservableCollection<object>>(typeJson);
-            }
-            else
-            {
-                SelectedTypeValues = new ObservableCollection<object>();
-            }
-
-            string locationJson = Preferences.Get("SelectedLocationValues", string.Empty);
-
-            if (!string.IsNullOrEmpty(locationJson))
-            {
-                SelectedLocationValues = JsonConvert.DeserializeObject<ObservableCollection<object>>(locationJson);
-            }
-            else
-            {
-                SelectedLocationValues = new ObservableCollection<object>();
-            }
-
-            _foodServices = new FoodServices();
-            _userServices = new UserServices();
-
+            var LoadTypeSelectedValues = LoadSelectedValues<TypeField>("SelectedTypeValues", SelectedTypeValues, NewSelectedTypeValues);
+            var LoadLocationSelectedValues = LoadSelectedValues<LocationField>("SelectedLocationValues", SelectedLocationValues, NewSelectedLocationValues);
+            Task.WaitAll(LoadTypeSelectedValues, LoadLocationSelectedValues);
         }
 
-        public ICommand TypeMultiSelectionCommand => new Command<IList<object>>(async (itemSelected) =>
+        private async Task LoadSelectedValues<T>(string preferencesKey, ObservableCollection<object> selectedValues, ObservableCollection<T> selectedItems) where T : class
         {
             try
             {
-                _typeSelectedValues.Clear();
+                string json = Preferences.Get(preferencesKey, string.Empty);
+                if (!string.IsNullOrEmpty(json))
+                {
+                    selectedValues = JsonConvert.DeserializeObject<ObservableCollection<object>>(json);
+                    var itemList = new ObservableCollection<T>(
+                        selectedValues.Select(o => JsonConvert.DeserializeObject<T>(o.ToString()))
+                    );
+                    foreach (var item in itemList)
+                    {
+                        selectedItems.Add(item);
+                    }
+                    ClearFilterUsers(itemList);
+                }
+                else
+                {
+                    selectedValues = new ObservableCollection<object>();
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(ExceptionMessage);
+            }
+        }
+
+        private async Task OnTypeMultiSelectionClicked(IList<object> itemSelected)
+        {
+            try
+            {
+                await UpdateSelectedValues<TypeField>(itemSelected, TypeValues, _typeSelectedValues, x => x is TypeField);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(ExceptionMessage);
+            }
+        }
+
+        private async Task OnLocationMultiSelectionClicked(IList<object> itemSelected)
+        {
+            try
+            {
+                await UpdateSelectedValues<LocationField>(itemSelected, LocationValues, _locationSelectedValues, x => x is LocationField);
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(InternetMessage);
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(HttpRequestMessage);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(ExceptionMessage);
+            }
+        }
+
+        private async Task UpdateSelectedValues<T>(IList<object> itemSelected, ObservableCollection<T> valuesCollection, ObservableCollection<T> selectedValuesCollection, Func<object, bool> predicate) where T : ISelectable
+        {
+            try
+            {
+                selectedValuesCollection.Clear();
 
                 foreach (var item in itemSelected)
                 {
-                    if (item is TypeField selectedItems)
+                    if (predicate(item))
                     {
-                        selectedItems.IsSelected = true;
-                        _typeSelectedValues.Add(selectedItems);
+                        if (item is T selectedItems)
+                        {
+                            selectedItems.IsSelected = true;
+                            selectedValuesCollection.Add(selectedItems);
+                        }
                     }
                 }
 
-                foreach (var item in TypeValues)
+                foreach (var item in valuesCollection)
                 {
-                    if (item is TypeField typeField && !_typeSelectedValues.Contains(typeField))
+                    if (item is T valueField && !selectedValuesCollection.Contains(valueField))
                     {
-                        typeField.IsSelected = false;
+                        valueField.IsSelected = false;
                     }
                 }
-            }
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-        });
-
-
-
-        public ICommand LocationMultiSelectionCommand => new Command<IList<object>>(async (itemSelected) =>
-        {
-            try
-            {
-                _locationSelectedValues.Clear();
-
-                foreach (var item in itemSelected)
-                {
-                    if (item is LocationField selectedItems)
-                    {
-                        selectedItems.IsSelected = true;
-                        _locationSelectedValues.Add(selectedItems);
-                    }
-                }
-
-                foreach (var item in LocationValues)
-                {
-                    if (item is LocationField locationField && !_locationSelectedValues.Contains(locationField))
-                    {
-                        locationField.IsSelected = false;
-                    }
-                }
-            }
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-
-        });
-
-        private ObservableCollection<TypeField> _selectedTypes = new ObservableCollection<TypeField>();
-        public ObservableCollection<TypeField> SelectedTypes
-        {
-            get { return _selectedTypes; }
-            set
-            {
-                if (_selectedTypes != value)
-                {
-                    _selectedTypes = value;
-                    OnPropertyChanged(nameof(SelectedTypes));
-                }
-            }
-        }
-        
-        private async Task OnClearAllAsync()
-        {
-            try
-            {
-                await ClearTypeValuesAsync();
-                await ClearLocationValues();
-                LowerKeepValid = LowerQuantity = 0;
-                UpperKeepValid = 10;
-                UpperQuantity = 100;
-            }
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(ExceptionMessage);
             }
         }
 
-        private async Task ClearTypeValuesAsync()
+        private void OnClearAllAsync()
         {
-            try
-            {
-                foreach (var item in TypeValues)
-                {
-                    item.IsSelected = false;
-                }
-                TypeSelectedValues.Clear();
-                SelectedTypeValues.Clear();
-            }
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
+            ClearTypeValuesAsync();
+            ClearLocationValues();
+
+            LowerKeepValid = LowerQuantity = 0;
+            UpperKeepValid = 10;
+            UpperQuantity = 100;
         }
 
-        private async Task ClearLocationValues()
+        private void ClearTypeValuesAsync()
         {
-            try
+            foreach (var item in TypeValues)
             {
-                foreach (var item in LocationValues)
-                {
-                    item.IsSelected = false;
-                }
-                LocationSelectedValues.Clear();
-                SelectedLocationValues.Clear();
+                item.IsSelected = false;
             }
-            catch (ConnectionException e)
+            NewSelectedTypeValues.Clear();
+            SelectedTypeValues.Clear();
+        }
+
+        private void ClearLocationValues()
+        {
+            foreach (var item in LocationValues)
             {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                item.IsSelected = false;
             }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
+            NewSelectedLocationValues.Clear();
+            SelectedLocationValues.Clear();
         }
 
         private async Task OnApplyAsync()
@@ -329,9 +210,9 @@ namespace Luqmit3ish.ViewModels
                 ObservableCollection<DishCard> allDishes = await _foodServices.GetDishCards();
                 ObservableCollection<User> allUsers = await _userServices.GetUsers();
 
-                var filterUsers = new ObservableCollection<User>
-                    (allUsers.Where(user => filterInfo.LocationValues.Contains(user.Location)));
-
+                ObservableCollection<User> filterUsers = new ObservableCollection<User>(
+                    allUsers.Where(user => filterInfo.LocationValues.Any(location => user.Location.Contains(location)))
+                );
 
                 ObservableCollection<DishCard> filteredDishes = new ObservableCollection<DishCard>(
                     allDishes.Where(dish =>
@@ -342,64 +223,53 @@ namespace Luqmit3ish.ViewModels
                     )
                 );
 
-                Preferences.Set("LowerKeepValid", LowerKeepValid);
-                Preferences.Set("UpperKeepValid", UpperKeepValid);
-                Preferences.Set("LowerQuantity", LowerQuantity);
-                Preferences.Set("UpperQuantity", UpperQuantity);
-
-
-                string typeJson = JsonConvert.SerializeObject(SelectedTypeValues);
-                Preferences.Set("SelectedTypeValues", typeJson);
-
-                string locationJson = JsonConvert.SerializeObject(SelectedTypeValues);
-                Preferences.Set("SelectedLocationValues", locationJson);
-
-                string dishes = JsonConvert.SerializeObject(filteredDishes);
-                Preferences.Set("FilteedDishes", dishes);
-
+                ClearFilterUsers(filterUsers);
+                ClearFilterUsers(allDishes);
+                SetPreferences(filteredDishes);
+                
                 await _navigation.PopAsync();
             }
             catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(InternetMessage);
             }
             catch (HttpRequestException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(HttpRequestMessage);
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(ExceptionMessage);
             }
         }
 
-        private async Task<bool> ValidateUserSession(string id)
+        private void SetPreferences(ObservableCollection<DishCard> filteredDishes)
         {
-            if (id == null)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "Your login session has been expired", "Ok");
-                await _navigation.PushAsync(new LoginPage());
-                return false;
-            }
-            return true;
+            Preferences.Set("LowerKeepValid", LowerKeepValid);
+            Preferences.Set("UpperKeepValid", UpperKeepValid);
+            Preferences.Set("LowerQuantity", LowerQuantity);
+            Preferences.Set("UpperQuantity", UpperQuantity);
+
+            string typeJson = JsonConvert.SerializeObject(NewSelectedTypeValues);
+            Preferences.Set("SelectedTypeValues", typeJson);
+
+            string locationJson = JsonConvert.SerializeObject(NewSelectedLocationValues);
+            Preferences.Set("SelectedLocationValues", locationJson);
+
+            string dishes = JsonConvert.SerializeObject(filteredDishes);
+            Preferences.Set("FilteedDishes", dishes);
         }
 
         private void InitializFilterInfo(FilterInfo filterInfo)
         {
-            foreach (var item in TypeSelectedValues)
+            foreach (var item in NewSelectedTypeValues)
             {
                 filterInfo.TypeValues.Add(item.Name);
             }
-            foreach (var item in LocationSelectedValues)
+            foreach (var item in NewSelectedLocationValues)
             {
                 filterInfo.LocationValues.Add(item.Name);
             }
@@ -425,16 +295,15 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _selectedLocationValues, value);
         }
 
-
         private ObservableCollection<TypeField> _typeSelectedValues = new ObservableCollection<TypeField>();
-        public ObservableCollection<TypeField> TypeSelectedValues
+        public ObservableCollection<TypeField> NewSelectedTypeValues
         {
             get => _typeSelectedValues;
             set => SetProperty(ref _typeSelectedValues, value);
         }
 
         private ObservableCollection<LocationField> _locationSelectedValues = new ObservableCollection<LocationField>();
-        public ObservableCollection<LocationField> LocationSelectedValues
+        public ObservableCollection<LocationField> NewSelectedLocationValues
         {
             get => _locationSelectedValues;
             set => SetProperty(ref _locationSelectedValues, value);
@@ -483,4 +352,3 @@ namespace Luqmit3ish.ViewModels
         }
     }
 }
-

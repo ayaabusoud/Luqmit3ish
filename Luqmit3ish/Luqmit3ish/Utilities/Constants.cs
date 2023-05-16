@@ -4,17 +4,17 @@ using System.Collections.ObjectModel;
 
 namespace Luqmit3ish.Utilities
 {
-	public class Constants
-	{
-        public readonly static string BaseUrl = "https://luqmit3ishv4.azurewebsites.net/";
+    public class Constants
+    {
+        public readonly static string BaseUrl = "https://luqmit3ishv5.azurewebsites.net/";
 
         public static ObservableCollection<TypeField> TypeValues { get; } = new ObservableCollection<TypeField>
         {
             new TypeField { Name = "Food", IconText = "\ue4c6;" },
             new TypeField { Name = "Drink", IconText = "\uf4e3;" },
-            new TypeField { Name = "Cake", IconText = "\uf7ef;" },
-            new TypeField { Name = "Snack", IconText = "\uf787;" },
-            new TypeField { Name = "Candies", IconText = "\uf786;" },
+            new TypeField { Name = "Dessert", IconText = "\uf7ef;" },
+            new TypeField { Name = "Appetizer", IconText = "\uf2e7;" },
+            new TypeField { Name = "Fast Food", IconText = "\uf805;" },
             new TypeField { Name = "Fish", IconText = "\uf578;" }
         };
 

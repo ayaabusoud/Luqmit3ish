@@ -9,14 +9,14 @@ using System.Collections.ObjectModel;
 using Luqmit3ish.Models;
 using System.Net.Http;
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 
 namespace Luqmit3ish.ViewModels
 {
     class SearchViewModel : ViewModelBase
     {
         private INavigation _navigation { get; set; }
-        public FoodServices foodServices;
-        public UserServices userServices;
+        public IFoodServices _foodServices;
         public ICommand FoodDetailCommand { protected set; get; }
         public ICommand BackCommand { protected set; get; }
 
@@ -47,9 +47,9 @@ namespace Luqmit3ish.ViewModels
             this._navigation = navigation;
 
             BackCommand = new Command(OnBackClicked);
-            foodServices = new FoodServices();
+            _foodServices = new FoodServices();
             FoodDetailCommand = new Command<DishCard>(async (DishCard dish) => await OnFrameClicked(dish));
-            userServices = new UserServices();
+           
             OnInit();
         }
 
@@ -120,7 +120,7 @@ namespace Luqmit3ish.ViewModels
                 {
                     try
                     {
-                        DishCards = await foodServices.GetSearchCards(_searchText, "Dishes");
+                        DishCards = await _foodServices.GetSearchCards(_searchText, "Dishes");
                         Debug.WriteLine(DishCards.Count);
                     }
                     catch (ConnectionException e)
@@ -129,7 +129,7 @@ namespace Luqmit3ish.ViewModels
                     }
                     catch (HttpRequestException e)
                     {
-                        throw new HttpRequestException(e.Message);
+                        Debug.WriteLine(e.Message);
                     }
                     catch (Exception e)
                     {
@@ -138,21 +138,6 @@ namespace Luqmit3ish.ViewModels
                     if (DishCards.Count > 0)
                     {
                         EmptyResult = false;
-                        foreach (DishCard dish in DishCards)
-                        {
-                            if (dish.Quantity == 0)
-                            {
-                                DishCards.Remove(dish);
-                            }
-                            else if (dish.Quantity == 1)
-                            {
-                                dish.Items = "1 Dish";
-                            }
-                            else
-                            {
-                                dish.Items = dish.Quantity + " Dishes";
-                            }
-                        }
                     }
                     else
                     {

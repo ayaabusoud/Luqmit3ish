@@ -2,13 +2,23 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.RestaurantOrderPage"
+              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+             xmlns:local="clr-namespace:Luqmit3ish.Converter"
              Title="Order"
              x:Name="RestaurantOrder"
              Style="{StaticResource ContentPageColor}">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:EqualOneConverter x:Key="equalOneConverter" />
+            <local:NotEqualOneConverter x:Key="notEqualOneConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
-        <Grid Margin="20,0,20,20" HorizontalOptions="Fill" VerticalOptions="Fill">
+        <Grid Margin="20,0,20,0" HorizontalOptions="Fill" VerticalOptions="Fill">
             <StackLayout IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
-                <Image Source="https://luqmit3ish8.blob.core.windows.net/photos/1_EmptyCart.png"
+                <Image Source="https://luqmit3ish2.blob.core.windows.net/photos/1_EmptyCart.png"
                            HeightRequest="200" 
                            WidthRequest="200"
                            VerticalOptions="Center"/>
@@ -66,8 +76,8 @@
                                 <SwipeView.RightItems>
                                     <SwipeItems>
                                         <SwipeItem Text="Received"
-                                               IconImageSource="https://luqmit3ish8.blob.core.windows.net/photos/receivedIcon.png"
-                                               BackgroundColor="LightGray"
+                                               IconImageSource="https://luqmit3ish2.blob.core.windows.net/photos/receivedIcon.png"
+                                               BackgroundColor="{StaticResource GreenColor}"
                                                Command="{Binding BindingContext.DoneCommand , Source={x:Reference RestaurantOrder}}"
                                                CommandParameter="{Binding .}"/>
                                     </SwipeItems>
@@ -80,20 +90,33 @@
                                         </StackLayout.GestureRecognizers>
                                         <StackLayout Orientation="Horizontal" Padding="0"
                                                  Margin="0" HorizontalOptions="Start">
-                                            <Image HeightRequest="60" WidthRequest="60" VerticalOptions="Center" 
-                                           HorizontalOptions="Center" Source="{Binding Owner.Photo}" />
+                                            <ffimageloading:CachedImage HeightRequest="60" WidthRequest="60" VerticalOptions="Center" 
+                                           HorizontalOptions="Center" Source="{Binding Owner.Photo}"
+                                                                LoadingPlaceholder="loading2.PNG" />
                                             <StackLayout VerticalOptions="Center" Margin="20,0,0,0">
                                                 <Label  MaxLines="1" HorizontalTextAlignment="Start"
                                                    Text="{Binding Owner.Name}" Style="{StaticResource LabelColor}"
                                                    FontSize="Medium" FontAttributes="Bold"/>
-                                                <Label  MaxLines="1" HorizontalTextAlignment="Start"
-                                                 FontSize="Small" TextColor="Gray"
-                                                    Text="{Binding Items}">
-                                                </Label>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label 
+                                                    MaxLines="1" 
+                                                    HorizontalTextAlignment="Start"
+                                                    FontSize="Small"
+                                                    TextColor="Gray"
+                                                    Text="{Binding Orders.Count}"/>
+                                                    <Label FontSize="Small"
+                                                       TextColor="Gray"
+                                                       Text="item"
+                                                       IsVisible="{Binding Orders.Count,Converter={StaticResource equalOneConverter}}" />
+                                                    <Label FontSize="Small"
+                                                       TextColor="Gray"
+                                                       Text="items" 
+                                                       IsVisible="{Binding Orders.Count, Converter={StaticResource notEqualOneConverter}}" />
+                                                </StackLayout>
                                             </StackLayout>
                                         </StackLayout>
                                     </StackLayout>
-                                    <BoxView HeightRequest="1" BackgroundColor="LightGray"/>
+                                    <BoxView HeightRequest="1" BackgroundColor="{AppThemeBinding Light=LightGray, Dark=Transparent}"/>
                                 </StackLayout>
                             </SwipeView>
 

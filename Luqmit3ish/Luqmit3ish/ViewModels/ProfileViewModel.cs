@@ -1,4 +1,5 @@
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -22,7 +23,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand DoneCommand { protected set; get; }
         public ICommand CancelCommand { protected set; get; }
         public ICommand EditPhotoClicked { protected set; get; }
-        public UserServices userServices;
+        public IUserServices userServices;
 
         private User _userInfo;
         public User UserInfo
@@ -70,6 +71,11 @@ namespace Luqmit3ish.ViewModels
                 await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
                 Thread.Sleep(3000);
                 await PopupNavigation.Instance.PopAsync();
+            }
+            catch (NotAuthorizedException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(NotAuthorizedMessage);
             }
             catch (Exception e)
             {
@@ -129,6 +135,11 @@ namespace Luqmit3ish.ViewModels
                 await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
                 Thread.Sleep(3000);
                 await PopupNavigation.Instance.PopAsync();
+            }
+            catch (NotAuthorizedException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(NotAuthorizedMessage);
             }
             catch (Exception e)
             {

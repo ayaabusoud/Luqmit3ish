@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:Luqmit3ish.ViewModels" x:DataType="viewmodels:UserSettingsViewModel"
              x:Class="Luqmit3ish.Views.settingsPage" 
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              Title="Profile"
              Style="{StaticResource ContentPageColor}">
     <ContentPage.Content >
@@ -14,7 +15,12 @@
                         <TapGestureRecognizer Command="{Binding MyProfileCommand}" />
                     </Grid.GestureRecognizers>
                     <Frame Grid.Column="0" Padding="0"  VerticalOptions="Center" HorizontalOptions="Start"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="60" WidthRequest="60"  >
-                        <Image Source="{Binding UserInfo.Photo}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Aspect="AspectFill"/>
+
+                        <ffimageloading:CachedImage LoadingPlaceholder="loading.PNG" 
+                                                    Source="{Binding UserInfo.Photo}" 
+                                                    VerticalOptions="FillAndExpand"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    Aspect="AspectFill"/>
                     </Frame>
                     <StackLayout Grid.Column="1">
                         <Label  VerticalOptions="Center" FontAttributes="Bold"  FontSize="24" Style="{StaticResource LabelColor}" Text="{Binding UserInfo.Name}"  ></Label>
@@ -26,11 +32,11 @@
 
                 <Grid ColumnDefinitions="0.2*,*,0.2*" ColumnSpacing="20" VerticalOptions="Center">
 
-                    <Frame  Grid.Column="0" Padding="0" VerticalOptions="Center" HorizontalOptions="Center"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="40" WidthRequest="40"  BackgroundColor="Gray" >
+                    <Frame  Grid.Column="0" Padding="0" VerticalOptions="Center" HorizontalOptions="Center"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="40" WidthRequest="40"  BackgroundColor="#BF40BF" >
                         <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Text="&#xf186;" Style="{StaticResource LabelColor}" FontFamily="FontAwesomeIcons" FontSize="16"  />
                     </Frame>
                     <Label VerticalOptions="Center"  Grid.Column="1" Text="Dark Mode" FontAttributes="Bold" Style="{StaticResource LabelColor}" FontSize="18"  />
-                    <Switch Grid.Column="2" ThumbColor="DarkOrange"  IsToggled="{Binding DarkTheme}" />
+                    <Switch Grid.Column="2" ThumbColor="{Binding SwichColor}"  IsToggled="{Binding DarkTheme}" />
 
                 </Grid>
                 <Label Margin="0,5"  HorizontalOptions="StartAndExpand" FontSize="15" FontAttributes="Bold" Text="Profile" Style="{StaticResource LabelColor}" />
@@ -52,7 +58,7 @@
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer  CommandParameter="{Binding UserInfo.Id}" Command="{Binding DeleteCommand}" />
                     </Grid.GestureRecognizers>
-                    <Frame  Grid.Column="0" Padding="0" VerticalOptions="Center" HorizontalOptions="Center"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="40" WidthRequest="40"  BackgroundColor="#836189" >
+                    <Frame  Grid.Column="0" Padding="0" VerticalOptions="Center" HorizontalOptions="Center"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="40" WidthRequest="40"  BackgroundColor="#D2042D" >
                         <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="&#xf506;" Style="{StaticResource LabelColor}" FontFamily="FontAwesomeIcons" FontSize="13"   />
                     </Frame>
                     <Label VerticalOptions="Center"  Grid.Column="1" Text="Delete Account" FontAttributes="Bold" Style="{StaticResource LabelColor}" FontSize="18"  />
@@ -65,7 +71,7 @@
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer   Command="{Binding RestaurantCommand}" />
                     </Grid.GestureRecognizers>
-                    <Frame  VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Padding="0"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="40" WidthRequest="40"  BackgroundColor="#F3A5D7" >
+                    <Frame  VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Padding="0"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="40" WidthRequest="40"  BackgroundColor="#ffd700" >
                         <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Text="&#xf559;" Style="{StaticResource LabelColor}" FontFamily="FontAwesomeIcons" FontSize="15" Padding="1,0,0,0"  />
                     </Frame>
                     <Label VerticalOptions="Center"  Grid.Column="1" Text="Restaurant of the month" FontAttributes="Bold" Style="{StaticResource LabelColor}" FontSize="18"  />
@@ -78,7 +84,7 @@
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer   Command="{Binding LogOutCommand}" />
                     </Grid.GestureRecognizers>
-                    <Frame VerticalOptions="Center" HorizontalOptions="Center"  Grid.Column="0" Padding="0"    CornerRadius="100" IsClippedToBounds="True" HeightRequest="40" WidthRequest="40"  BackgroundColor="Olive" >
+                    <Frame VerticalOptions="Center" HorizontalOptions="Center"  Grid.Column="0" Padding="0"    CornerRadius="100" IsClippedToBounds="True" HeightRequest="40" WidthRequest="40"  BackgroundColor="Gray" >
                         <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="&#xf2f5;" Style="{StaticResource LabelColor}"  FontFamily="FontAwesomeIcons" FontSize="16"  />
                     </Frame>
                     <Label VerticalOptions="Center" Grid.Column="1" Text="Log Out" FontAttributes="Bold" Style="{StaticResource LabelColor}"  FontSize="18"  />

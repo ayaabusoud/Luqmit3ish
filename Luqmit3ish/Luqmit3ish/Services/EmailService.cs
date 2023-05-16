@@ -1,4 +1,5 @@
 ﻿using Luqmit3ish.Connection;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Utilities;
 using Newtonsoft.Json;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Luqmit3ish.Services
 {
-    class EmailService
+    class EmailService : IEmailService
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiUrl = Constants.BaseUrl + "api/Email/send";
@@ -18,7 +19,7 @@ namespace Luqmit3ish.Services
         public EmailService()
         {
             _httpClient = new HttpClient();
-            _connection = new Connection();
+            _connection = new InternetConnection();
         }
         public async Task<string> SendVerificationCode(string recipientName, string recipientEmail)
         {

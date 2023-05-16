@@ -4,6 +4,7 @@
              x:Class="Luqmit3ish.Views.ProfilePage"
              xmlns:vm="clr-namespace:Luqmit3ish.ViewModels"
              x:DataType="vm:ProfileViewModel"
+              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              Shell.NavBarIsVisible="True"
              Title="Profile"
              Style="{StaticResource ContentPageColor}"
@@ -13,7 +14,7 @@
            <StackLayout Margin="0" Style="{StaticResource StackLayoutColor}" >
             <Grid ColumnDefinitions="*,*,*" BackgroundColor="{AppThemeBinding Light=white, Dark=#212121}">
                 <Frame WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" CornerRadius="200" Padding="0" Grid.Column="1" Margin="0,30,0,0">
-                    <Image Source="{Binding UserInfo.Photo}" Aspect="Fill"/>
+                    <ffimageloading:CachedImage LoadingPlaceholder="loading.PNG" Source="{Binding UserInfo.Photo}" Aspect="AspectFill" />
                 </Frame>
                 <Frame Grid.Column="1" Padding="0" CornerRadius="50" BackgroundColor="{StaticResource PrimaryLight}" WidthRequest="30" HeightRequest="30" VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,10,-60">
                     <Label Text="&#xf303;"  FontFamily="FontAwesomeIcons" FontSize="Small" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center">
@@ -29,45 +30,85 @@
             <Label Text="{Binding UserInfo.Email}" HorizontalOptions="Center" Style="{StaticResource LabelColor}" FontSize="Small" Margin="0,-5,0,10"/>
                <Frame Padding="0" Margin="0" Style="{StaticResource FrameColor}" VerticalOptions="FillAndExpand" >
                    <ScrollView>
-                        <StackLayout Margin="0" Style="{StaticResource StackLayoutColor}" Padding="30">
-                    <StackLayout >
-                        <StackLayout Orientation="Horizontal" >
-                            <Label  Style="{StaticResource LabelColor}" Text="&#xf007;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
-                                <Label Text="Name: " VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
+                        <StackLayout Margin="0" Style="{StaticResource StackLayoutColor}" Padding="30" Spacing="15">
 
-                                <Entry Text="{Binding UserInfo.Name}" Style="{StaticResource LabelColor}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="FillAndExpand"/>
-                        </StackLayout>
-                    </StackLayout>
+                            <Frame Style="{StaticResource textFeildFrame}" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand">
+                                <StackLayout Orientation="Horizontal"
+                                                 Margin="0"
+                                                 Padding="0">
+                                    <Label  Style="{StaticResource LabelColor}" Text="&#xf007;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
+                                    <Label Text="Name: " VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
+                                    <Entry Text="{Binding UserInfo.Name}"
+                                               Placeholder="ex: Pizza"
+                                               PlaceholderColor="Gray"
+                                               Keyboard="Text" 
+                                               Style="{StaticResource textFeild}"
+                                               ClearButtonVisibility="WhileEditing"
+                                               HorizontalOptions="FillAndExpand"
+                                               MaxLength="200"
+                                           FontSize="Medium"
+                                           TextColor="{AppThemeBinding Dark=White}"/>
+                                </StackLayout>
+                            </Frame>
+
                         <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,5" />
-
-                    <StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Style="{StaticResource LabelColor}" Text="&#xf095;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
+                            <Frame Style="{StaticResource textFeildFrame}" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand">
+                                <StackLayout Orientation="Horizontal"
+                                                 Margin="0"
+                                                 Padding="0">
+                                    <Label Style="{StaticResource LabelColor}" Text="&#xf095;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
                                 <Label Text="Phone: " VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
-                                <Entry Text="{Binding UserInfo.Phone}" Style="{StaticResource LabelColor}" FontSize="Medium" VerticalOptions="Center"  HorizontalOptions="FillAndExpand"/>
-
-                        </StackLayout>
-                    </StackLayout>
+                                    <Entry Text="{Binding UserInfo.Phone}"
+                                               Placeholder="ex: Pizza"
+                                               PlaceholderColor="Gray"
+                                               Keyboard="Text" 
+                                               Style="{StaticResource textFeild}"
+                                               ClearButtonVisibility="WhileEditing"
+                                               HorizontalOptions="FillAndExpand"
+                                               MaxLength="200"
+                                           FontSize="Medium"
+                                           TextColor="{AppThemeBinding Dark=White}"/>
+                                </StackLayout>
+                            </Frame>
                     <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,5"/>
-
-                    <StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Style="{StaticResource LabelColor}" Text="&#xf3c5;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
+                            <Frame Style="{StaticResource textFeildFrame}" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand" >
+                                <StackLayout Orientation="Horizontal"
+                                                 Margin="0"
+                                                 Padding="0">
+                                    <Label Style="{StaticResource LabelColor}" Text="&#xf3c5;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
                                 <Label Text="Location: " VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
-
-                                <Entry Text="{Binding UserInfo.Location}" Style="{StaticResource LabelColor}" FontSize="Medium" VerticalOptions="Center"  HorizontalOptions="FillAndExpand"/>
-                        </StackLayout>
-                    </StackLayout>
+                                    <Entry Text="{Binding UserInfo.Location}"
+                                               Placeholder="ex: Pizza"
+                                               PlaceholderColor="Gray"
+                                               Keyboard="Text" 
+                                               Style="{StaticResource textFeild}"
+                                               ClearButtonVisibility="WhileEditing"
+                                               HorizontalOptions="FillAndExpand"
+                                               MaxLength="200"
+                                           FontSize="Medium"
+                                           TextColor="{AppThemeBinding Dark=White}"/>
+                                </StackLayout>
+                            </Frame>
                     <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,5"/>
-                            
-                        <StackLayout>
-                            <StackLayout Orientation="Horizontal">
-                                <Label Style="{StaticResource LabelColor}" Text="&#xf073;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
+                         <Frame Style="{StaticResource textFeildFrame}" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand" >
+                                <StackLayout Orientation="Horizontal"
+                                                 Margin="0"
+                                                 Padding="0">
+                                    <Label Style="{StaticResource LabelColor}" Text="&#xf073;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
                                 <Label VerticalOptions="Center" Text="Opening Hours: "  FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
 
-                                <Entry Text="{Binding UserInfo.OpeningHours}" Style="{StaticResource LabelColor}" FontSize="Medium" VerticalOptions="Center"  HorizontalOptions="FillAndExpand"/>
-                            </StackLayout>
-                        </StackLayout>
+                                <Entry Text="{Binding UserInfo.OpeningHours}"
+                                               Placeholder="ex: Pizza"
+                                               PlaceholderColor="Gray"
+                                               Keyboard="Text" 
+                                               Style="{StaticResource textFeild}"
+                                               ClearButtonVisibility="WhileEditing"
+                                               HorizontalOptions="FillAndExpand"
+                                               MaxLength="200"
+                                           FontSize="Medium"
+                                           TextColor="{AppThemeBinding Dark=White}"/>
+                                </StackLayout>
+                            </Frame>
                         <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,5"/>
 
                 
@@ -81,9 +122,6 @@
                 </StackLayout>
 
                    </ScrollView>
-
-
-               
            </Frame>
     </StackLayout>
 

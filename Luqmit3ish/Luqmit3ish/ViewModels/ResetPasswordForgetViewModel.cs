@@ -1,4 +1,5 @@
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -28,7 +29,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand UnHidePasswordCommand { protected set; get; }
 
 
-        public readonly UserServices userServices;
+        public readonly IUserServices _userServices;
         private string _email;
 
         public ResetPasswordForgetViewModel(INavigation navigation, string email)
@@ -37,7 +38,7 @@ namespace Luqmit3ish.ViewModels
             ResetPasswordCommand = new Command(async () => await OnResetClicked());
             UnHidePasswordCommand = new Command(OnUnHidePasswordClicked);
             HidePasswordCommand = new Command(OnHidePasswordClicked);
-            userServices = new UserServices();
+            _userServices = new UserServices();
             _email = email;
 
         }
@@ -177,7 +178,7 @@ namespace Luqmit3ish.ViewModels
                     return;
                 }
                 Debug.WriteLine(_email);
-                User user = await userServices.GetUserByEmail(Email);
+                User user = await _userServices.GetUserByEmail(Email);
 
                 if (user == null)
                 {
@@ -185,7 +186,8 @@ namespace Luqmit3ish.ViewModels
                 }
 
 
-                bool IsUpdatedPassword = await userServices.ResetPassword(user.Id, Password);
+
+                bool IsUpdatedPassword = await _userServices.ForgotPassword(user.Id, Password);
                 if (IsUpdatedPassword)
                 {
                     await _navigation.PushModalAsync(new LoginPage());
@@ -195,18 +197,25 @@ namespace Luqmit3ish.ViewModels
                 }
 
             }
-            catch (ConnectionException)
+            catch (ConnectionException e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(InternetMessage);
             }
-            catch (HttpRequestException)
+            catch (HttpRequestException e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
-
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(HttpRequestMessage);
             }
-            catch (Exception)
+            catch (NotAuthorizedException e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(NotAuthorizedMessage);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(ExceptionMessage);
             }
         }
     }

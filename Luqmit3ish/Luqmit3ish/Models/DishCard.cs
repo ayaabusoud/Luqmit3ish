@@ -13,7 +13,6 @@ namespace Luqmit3ish.Models
         public string Photo { get; set; }
         public int KeepValid { get; set; }
         public int Quantity { get; set; }
-        public string Items { get; set; }
         public User Restaurant { get; set; }
 
     }

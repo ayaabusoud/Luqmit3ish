@@ -1,4 +1,5 @@
 ﻿using System;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
@@ -25,8 +26,8 @@ namespace Luqmit3ish.ViewModels
         public ICommand Apply { get; set; }
         public ICommand ClearAll { get; set; }
         public ICommand CancelCommand { get; set; }
-        private FoodServices _foodServices;
-        private UserServices _userServices;
+        private IFoodServices _foodServices;
+        private IUserServices _userServices;
 
         public FilterPopUpViewModel(INavigation navigation)
         {
@@ -286,7 +287,7 @@ namespace Luqmit3ish.ViewModels
                 {
                     item.IsSelected = false;
                 }
-                TypeSelectedValues.Clear();
+                NewSelectedTypeValues.Clear();
                 SelectedTypeValues.Clear();
             }
             catch (ConnectionException e)
@@ -320,7 +321,7 @@ namespace Luqmit3ish.ViewModels
                 {
                     item.IsSelected = false;
                 }
-                LocationSelectedValues.Clear();
+                NewSelectedLocationValues.Clear();
                 SelectedLocationValues.Clear();
             }
             catch (ConnectionException e)
@@ -421,11 +422,11 @@ namespace Luqmit3ish.ViewModels
 
         private void InitializFilterInfo(FilterInfo filterInfo)
         {
-            foreach (var item in TypeSelectedValues)
+            foreach (var item in NewSelectedTypeValues)
             {
                 filterInfo.TypeValues.Add(item.Name);
             }
-            foreach (var item in LocationSelectedValues)
+            foreach (var item in NewSelectedLocationValues)
             {
                 filterInfo.LocationValues.Add(item.Name);
             }
@@ -453,14 +454,14 @@ namespace Luqmit3ish.ViewModels
 
 
         private ObservableCollection<TypeField> _typeSelectedValues = new ObservableCollection<TypeField>();
-        public ObservableCollection<TypeField> TypeSelectedValues
+        public ObservableCollection<TypeField> NewSelectedTypeValues
         {
             get => _typeSelectedValues;
             set => SetProperty(ref _typeSelectedValues, value);
         }
 
         private ObservableCollection<LocationField> _locationSelectedValues = new ObservableCollection<LocationField>();
-        public ObservableCollection<LocationField> LocationSelectedValues
+        public ObservableCollection<LocationField> NewSelectedLocationValues
         {
             get => _locationSelectedValues;
             set => SetProperty(ref _locationSelectedValues, value);
