@@ -85,6 +85,62 @@ namespace Luqmit3ish.ViewModels
             UserInfo = new SignUpRequest();
         }
 
+        #region Name Validation
+        private bool _isNameValid;
+        public bool IsNameValid
+        {
+            get => _isNameValid;
+            set
+            {
+
+                SetProperty(ref _isNameValid, value);
+                if (IsNameValid)
+                {
+                    _nameInvalid = false;
+                    _nameFrameBorder = "Transparent";
+                }
+                else
+                {
+                    _nameInvalid = true;
+                    _nameFrameBorder = "Red";
+                }
+                OnPropertyChanged(nameof(NameInvalid));
+                OnPropertyChanged(nameof(NameFrameBorder));
+
+            }
+        }
+        private bool _nameInvalid = false;
+        public bool NameInvalid
+        {
+            get => _nameInvalid;
+            set
+            {
+                SetProperty(ref _nameInvalid, value);
+
+            }
+        }
+        private string _nameErrorMessage = "Please enter a valid name without symbols.";
+        public string NameErrorMessage
+        {
+            get => _nameErrorMessage;
+            set
+            {
+                SetProperty(ref _nameErrorMessage, value);
+            }
+
+        }
+
+        private string _nameFrameBorder = "Transparent";
+        public string NameFrameBorder
+        {
+            get => _nameFrameBorder;
+            set
+            {
+                SetProperty(ref _nameFrameBorder, value);
+            }
+        }
+
+        #endregion
 
         #region EmailValidation
         private bool _isEmailValid;

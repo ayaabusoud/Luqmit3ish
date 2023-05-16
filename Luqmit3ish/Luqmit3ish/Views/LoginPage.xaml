@@ -31,6 +31,7 @@
                                 <Entry   FontSize="Medium" Placeholder="Enter your email"
                                          Keyboard="Email" Style="{StaticResource textFeild}"
                                          Text="{Binding Email}" 
+                                         MaxLength="200"
                                          ClearButtonVisibility="WhileEditing"/>
                             </StackLayout>
                         </Frame>
@@ -45,7 +46,8 @@
                                       IsPassword="{Binding IsPassword}"
                                        Style="{StaticResource textFeild}"
                                        Text="{Binding Password}"
-                                       ClearButtonVisibility="WhileEditing"/>
+                                       ClearButtonVisibility="WhileEditing"
+                                       MaxLength="200"/>
                                 <Label TextColor="DimGray" Text="&#xf070;" FontFamily="FontAwesomeIcons" FontSize="20" Style="{StaticResource LabelColor}" IsVisible="{Binding HidePassword }" >
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding HidePasswordCommand}"  />
