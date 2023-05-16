@@ -61,12 +61,11 @@
                                 </StackLayout.GestureRecognizers>
                                 <StackLayout Orientation="Horizontal" Padding="0"
                                                  Margin="0" HorizontalOptions="Start">
-                                        <ffimageloading:CachedImage HeightRequest="60" 
-                                            WidthRequest="60"
-                                            VerticalOptions="Center" 
-                                            HorizontalOptions="Center" 
-                                            Source="{Binding Owner.Photo}"
-                                            LoadingPlaceholder="loading2.PNG" />
+                                        <Frame  Padding="0"  VerticalOptions="Center" HorizontalOptions="Center"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="60" WidthRequest="60"  >
+                                            <ffimageloading:CachedImage Source="{Binding Owner.Photo}" 
+                                                            Aspect="AspectFill"
+                                                            LoadingPlaceholder="loading2.PNG" />
+                                        </Frame>
                                         <StackLayout VerticalOptions="Center" Margin="20,0,0,0">
                                         <Label  MaxLines="1"
                                                 HorizontalTextAlignment="Start"

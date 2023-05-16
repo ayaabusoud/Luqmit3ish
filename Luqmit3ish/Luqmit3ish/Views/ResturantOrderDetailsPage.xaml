@@ -5,11 +5,12 @@
              x:Name="ResturantOrderDetails"
              BackgroundColor="WhiteSmoke"
              Shell.TabBarIsVisible="False"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
              Title="Order Details">
 
     <ContentPage.Content>
 
-        <StackLayout Margin="16,0">
+        <StackLayout Margin="20,0">
             <Label Text="{Binding Order.Owner.Name}"  TextColor="Black" FontSize="Title" FontAttributes="Bold" Margin="0,30,0,0">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ProfileCommand}" 
@@ -36,9 +37,14 @@
                         <StackLayout HorizontalOptions="Fill">
                             <Grid Padding="0,12" ColumnDefinitions="auto,*,auto"
                                               HorizontalOptions="Fill" ColumnSpacing="30">
-                                <Image   Grid.Column="0" HeightRequest="60" WidthRequest="60" VerticalOptions="End" 
-                                           HorizontalOptions="Center" Source="{Binding Dish.Photo}" 
-                                           Aspect="AspectFill"/>
+                                <ffimageloading:CachedImage Grid.Column="0" 
+                                                            HeightRequest="60" 
+                                                            WidthRequest="60" 
+                                                            VerticalOptions="End" 
+                                                            HorizontalOptions="Center" 
+                                                            Source="{Binding Dish.Photo}" 
+                                                            Aspect="AspectFill"
+                                                            LoadingPlaceholder="loading2.PNG" />
                                 <StackLayout  Grid.Column="1">
                                     <Label VerticalOptions="Center" MaxLines="1" HorizontalTextAlignment="Start"
                                                    Text="{Binding Dish.Name}" TextColor="Black" 

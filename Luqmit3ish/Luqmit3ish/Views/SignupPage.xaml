@@ -17,17 +17,26 @@
 
                         <Label Text="Name *" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
-                        <Frame Style="{StaticResource textFeildFrame}" >
+                        <Frame Style="{StaticResource textFeildFrame}" BorderColor="{Binding NameFrameBorder}" >
                             <StackLayout Orientation="Horizontal
                                          " Margin="10,0" Padding="0">
                                 <Label Text="&#xf007;" FontFamily="FontAwesomeIcons"
                                        FontSize="20" Style="{StaticResource LabelColor}" />
                                 <Entry Placeholder="Enter your name" Keyboard="Text" 
                                        Style="{StaticResource textFeild}" Text="{Binding UserInfo.Name}"
-                                       ClearButtonVisibility="WhileEditing"/>
+                                       ClearButtonVisibility="WhileEditing"
+                                       MaxLength="200">
+                                    <Entry.Behaviors>
+                                        <xct:TextValidationBehavior RegexPattern="^[A-Za-z0-9\s]{1,200}$" IsValid="{Binding IsNameValid}"/>
+                                    </Entry.Behaviors>
+                                </Entry>
+                                <Label FontSize="20" Style="{StaticResource invalidIcon}"  
+                                       IsVisible="{Binding NameInvalid}" />
                             </StackLayout>
                         </Frame>
-
+                        <Label Text="{Binding NameErrorMessage}" TextColor="DarkRed
+                               " FontSize="Small" Margin="10,0"
+                               IsVisible="{Binding NameInvalid}"/>
 
                         <Label Text="Email *" Style="{StaticResource LabelColor}"
                                FontSize="Medium" Margin="0,0,0,5"/>
@@ -39,7 +48,8 @@
                                 <Entry Placeholder="Enter your email" 
                                        Keyboard="Email" Style="{StaticResource textFeild}" 
                                        Text="{Binding UserInfo.Email}"
-                                       ClearButtonVisibility="WhileEditing">
+                                       ClearButtonVisibility="WhileEditing"
+                                       MaxLength="200">
                                     <Entry.Behaviors>
                                         <xct:EmailValidationBehavior IsValid="{Binding IsEmailValid}"/>
                                     </Entry.Behaviors>
@@ -64,6 +74,7 @@
                                        IsPassword="{Binding IsPassword}"
                                        Style="{StaticResource textFeild}"
                                        Text="{Binding UserInfo.Password}"
+                                       MaxLength="200"
                                        ClearButtonVisibility="WhileEditing">
                                     <Entry.Behaviors>
                                         <xct:MultiValidationBehavior x:Name="MultiValidation"
@@ -117,10 +128,11 @@
                                 <Label Text="&#xf095;" FontFamily="FontAwesomeIcons"
                                        FontSize="20" Style="{StaticResource LabelColor}"/>
                                 <Entry Placeholder="Phone Number" Keyboard="Telephone" 
-                                       MaxLength="13" Style="{StaticResource textFeild}"
-                                       Text="{Binding UserInfo.Phone}" ClearButtonVisibility="WhileEditing">
+                                       Style="{StaticResource textFeild}"
+                                       Text="{Binding UserInfo.Phone}" ClearButtonVisibility="WhileEditing"
+                                       MaxLength="10">
                                     <Entry.Behaviors>
-                                        <xct:TextValidationBehavior RegexPattern="^[0-9]{8,15}$" IsValid="{Binding IsPhoneValid}"/>
+                                        <xct:TextValidationBehavior RegexPattern="^[0-9]{10}$" IsValid="{Binding IsPhoneValid}"/>
                                     </Entry.Behaviors>
                                 </Entry>
                                 <Label FontSize="20" Style="{StaticResource invalidIcon}"  
