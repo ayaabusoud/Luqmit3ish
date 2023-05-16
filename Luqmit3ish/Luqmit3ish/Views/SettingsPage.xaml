@@ -6,7 +6,7 @@
              Title="Profile"
              Style="{StaticResource ContentPageColor}">
     <ContentPage.Content >
-        <StackLayout Margin="16,20" VerticalOptions="Start">
+        <StackLayout Margin="16,40,0,20" VerticalOptions="Start">
 
 
             <StackLayout >
@@ -78,7 +78,7 @@
                     <Button  Grid.Column="2" Text="&#xf105;" Background="Transparent"  FontFamily="FontAwesomeIcons" FontSize="22" Command="{Binding RestaurantCommand}" Style="{StaticResource LabelColor}" />
                 </Grid>
 
-                <Label Margin="0,5"  Grid.Column="0" HorizontalOptions="StartAndExpand" FontSize="15" FontAttributes="Bold" Text="Regional"  Style="{StaticResource LabelColor}" />
+                <Label Margin="0,5"  Grid.Column="0" HorizontalOptions="StartAndExpand" FontSize="15" FontAttributes="Bold" Text="Login"  Style="{StaticResource LabelColor}" />
 
                 <Grid  ColumnDefinitions="0.2*,*,0.2*" ColumnSpacing="20" VerticalOptions="Center">
                     <Grid.GestureRecognizers>
