@@ -26,10 +26,10 @@ namespace Luqmit3ish.ViewModels
         public ICommand DeleteCommand { protected set; get; }
         public ICommand DarkModeCommand { protected set; get; }
         private readonly IUserServices _userServices;
-        public static String RongMessage = "Something went wrong, please try again."; 
-        public static String DeleteSucsessMessage = "The Account have been deleted successfully.";
-        public static String InsureDeleteMessage = "Are you sure that you want to delete Your account?"; 
-        public static String DeleteAccount = "Delete Account";
+        private const String _rongMessage = "Something went wrong, please try again.";
+        private const String _deleteSucsessMessage = "The Account have been deleted successfully.";
+        private const String _insureDeleteMessage = "Are you sure that you want to delete Your account?"; 
+        private const String _deleteAccount = "Delete Account";
 
 
         public UserSettingsViewModel(INavigation navigation) {
@@ -144,7 +144,7 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnDeleteAccountClicked(int id)
         {
-            var deleteConfirm = await Application.Current.MainPage.DisplayAlert(DeleteAccount, InsureDeleteMessage , "Yes", "No");
+            var deleteConfirm = await Application.Current.MainPage.DisplayAlert(_deleteAccount, _insureDeleteMessage , "Yes", "No");
             if (deleteConfirm)
             {
                 try
@@ -154,14 +154,14 @@ namespace Luqmit3ish.ViewModels
                     {
                         Preferences.Clear();
                         Application.Current.MainPage = new LoginPage();
-                        await PopupNavigation.Instance.PushAsync(new PopUp(DeleteSucsessMessage));
+                        await PopupNavigation.Instance.PushAsync(new PopUp(_deleteSucsessMessage));
                         Thread.Sleep(3000);
                         await PopupNavigation.Instance.PopAsync();
 
                     }
                     else
                     {
-                        await PopNavigationAsync(RongMessage);
+                        await PopNavigationAsync(_rongMessage);
                     }
                 }
                 catch (ConnectionException e)
