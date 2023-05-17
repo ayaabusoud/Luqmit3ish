@@ -103,8 +103,11 @@
                                         <x:String>Nablus</x:String>
                                         <x:String>Ramallah</x:String>
                                         <x:String>Jenin</x:String>
+                                        <x:String>Jerico</x:String>
+                                        <x:String>Jerusalem</x:String>
                                         <x:String>Tulkarm</x:String>
-                                        <x:String>khalil</x:String>
+                                        <x:String>Bethlehem</x:String>
+                                        <x:String>Hebron</x:String>
                                     </Picker.Items>
                                 </Picker>
                             </StackLayout>

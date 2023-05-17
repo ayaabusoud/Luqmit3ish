@@ -20,6 +20,7 @@ namespace Luqmit3ish.ViewModels
         public ICommand EditCommand { protected set; get; }
         public ICommand DeleteCommand { protected set; get; }
         public ICommand OrderCommand { protected set; get; }
+        private readonly string _deleteAlertTitle = "Delete Order";
         private readonly string _successDeleteMessage = "The order have been deleted successfully.";
         private readonly string _failDeleteMessage = "The Order has not been deleted , please try again.";
         private readonly string _confirmDeleteMessage = "Are you sure that you want to delete this Order?";
@@ -57,7 +58,7 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnDeleteClicked(int restaurantId)
         {
-            var deleteConfirm = await Application.Current.MainPage.DisplayAlert("Delete Order",
+            var deleteConfirm = await Application.Current.MainPage.DisplayAlert(_deleteAlertTitle,
                 _confirmDeleteMessage, "Yes", "No");
             if (deleteConfirm)
             {
