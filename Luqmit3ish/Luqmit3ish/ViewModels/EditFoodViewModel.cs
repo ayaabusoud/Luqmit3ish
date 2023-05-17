@@ -16,7 +16,6 @@ using Rg.Plugins.Popup.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-
 namespace Luqmit3ish.ViewModels
 {
     class EditFoodViewModel : ViewModelBase
@@ -31,6 +30,10 @@ namespace Luqmit3ish.ViewModels
         public ICommand KeepValidMinusCommand { protected set; get; }
         public ICommand QuantityPlusCommand { protected set; get; }
         public ICommand QuantityMinusCommand { protected set; get; }
+
+        private const string DishDeletedMessage = "The dish has been deleted successfully.";
+        private const string FillAllFieldsMessage = "Please fill in all fields.";
+        private const string DishUpdatedMessage = "The Dish have been updated successfully.";
 
         public EditFoodViewModel(INavigation navigation, Dish dish)
         {
@@ -57,45 +60,6 @@ namespace Luqmit3ish.ViewModels
                 _dish.Photo = photoPath;
                 OnPropertyChanged(nameof(DishInfo));
             });
-        }
-
-        private Dish _dish;
-        public Dish DishInfo
-        {
-            get => _dish;
-            set => SetProperty(ref _dish, value);
-        }
-
-        private int _keepValid = 0;
-        public int KeepValid
-        {
-            get => _keepValid;
-            set => SetProperty(ref _keepValid, value);
-        }
-
-        private int _quantity = 0;
-        public int Quantity
-        {
-            get => _quantity;
-            set => SetProperty(ref _quantity, value);
-        }
-
-        private ObservableCollection<TypeField> _typeValues;
-        public ObservableCollection<TypeField> TypeValues
-        {
-            get => _typeValues;
-            set => SetProperty(ref _typeValues, value);
-        }
-
-        private TypeField _selectedType = new TypeField();
-        public TypeField SelectedType
-        {
-            get => _selectedType;
-            set
-            {
-                SetProperty(ref _selectedType, value);
-                UpdateTypeSelection();
-            }
         }
 
         private void UpdateTypeSelection()
@@ -183,7 +147,7 @@ namespace Luqmit3ish.ViewModels
                 {
                     await _foodServices.DeleteFood(_dish.Id);
                     await _navigation.PopAsync();
-                    await PopNavigationAsync("The Dish have been deleted successfully.");
+                    await PopNavigationAsync(DishDeletedMessage);
                     return;
                 }
             }
@@ -215,7 +179,7 @@ namespace Luqmit3ish.ViewModels
             {
                 if (!IsDishDataValid())
                 {
-                    await PopNavigationAsync("Please fill in all fields.");
+                    await PopNavigationAsync(FillAllFieldsMessage);
                     return;
                 }
                 UpdateDish(DishInfo);
@@ -252,7 +216,7 @@ namespace Luqmit3ish.ViewModels
                 if (request)
                 {
                     await _navigation.PopAsync();
-                    await PopNavigationAsync("The Dish have been updated successfully.");
+                    await PopNavigationAsync(DishUpdatedMessage);
                     return;
                 }
                 await PopNavigationAsync(ExceptionMessage);
@@ -271,6 +235,45 @@ namespace Luqmit3ish.ViewModels
             {
                 Debug.WriteLine(e.Message);
                 await PopNavigationAsync(ExceptionMessage);
+            }
+        }
+
+        private Dish _dish;
+        public Dish DishInfo
+        {
+            get => _dish;
+            set => SetProperty(ref _dish, value);
+        }
+
+        private int _keepValid = 0;
+        public int KeepValid
+        {
+            get => _keepValid;
+            set => SetProperty(ref _keepValid, value);
+        }
+
+        private int _quantity = 0;
+        public int Quantity
+        {
+            get => _quantity;
+            set => SetProperty(ref _quantity, value);
+        }
+
+        private ObservableCollection<TypeField> _typeValues;
+        public ObservableCollection<TypeField> TypeValues
+        {
+            get => _typeValues;
+            set => SetProperty(ref _typeValues, value);
+        }
+
+        private TypeField _selectedType = new TypeField();
+        public TypeField SelectedType
+        {
+            get => _selectedType;
+            set
+            {
+                SetProperty(ref _selectedType, value);
+                UpdateTypeSelection();
             }
         }
     }

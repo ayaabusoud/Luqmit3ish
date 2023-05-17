@@ -24,6 +24,10 @@ namespace Luqmit3ish.Services
         private readonly string _apiUrl = Constants.BaseUrl + "api/Food";
         private readonly IConnection _connection;
 
+        private const string NoInternetConnectionMessage = "There is no internet connection";
+        private const string NotAuthorizedMessage = "You are not authorized to do this operation";
+        private const string DeleteItemErrorMessage = "Failed to delete the item. Please try again later.";
+
         public FoodServices()
         {
             _httpClient = new HttpClient();
@@ -34,7 +38,7 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
@@ -56,14 +60,13 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
                 var response = await _httpClient.GetAsync($"{_apiUrl}/Restaurant/{userId}");
                 var content = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ObservableCollection<Dish>>(content);
-
             }
             catch (HttpRequestException e)
             {
@@ -79,13 +82,13 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
                 var response = await _httpClient.GetAsync($"{_apiUrl}/Search/{searchRequest}/{type}");
-
                 var content = await response.Content.ReadAsStringAsync();
+
                 return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
             }
             catch (HttpRequestException e)
@@ -102,7 +105,7 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
@@ -133,7 +136,7 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
@@ -141,7 +144,7 @@ namespace Luqmit3ish.Services
                 if (string.IsNullOrEmpty(token))
                 {
                     _httpClient.DefaultRequestHeaders.Authorization = null;
-                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                    throw new NotAuthorizedException(NotAuthorizedMessage);
                 }
                 else
                 {
@@ -164,11 +167,11 @@ namespace Luqmit3ish.Services
             }
         }
 
-        public async Task<bool> AddNewDish(DishRequest dishRequest)
+        public async Task<bool> AddNewDish(Dish dishRequest)
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
@@ -176,7 +179,7 @@ namespace Luqmit3ish.Services
                 if (string.IsNullOrEmpty(token))
                 {
                     _httpClient.DefaultRequestHeaders.Authorization = null;
-                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                    throw new NotAuthorizedException(NotAuthorizedMessage);
                 }
                 else
                 {
@@ -208,7 +211,7 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
@@ -216,7 +219,7 @@ namespace Luqmit3ish.Services
                 if (string.IsNullOrEmpty(token))
                 {
                     _httpClient.DefaultRequestHeaders.Authorization = null;
-                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                    throw new NotAuthorizedException(NotAuthorizedMessage);
                 }
                 else
                 {
@@ -258,14 +261,13 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
                 var response = await _httpClient.GetAsync(_apiUrl + "/DishCard");
                 var content = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
-
             }
             catch (HttpRequestException e)
             {
@@ -275,20 +277,19 @@ namespace Luqmit3ish.Services
             {
                 throw new Exception(e.Message);
             }
-
         }
+
         public async Task<ObservableCollection<DishCard>> GetDishCardById(int dishId)
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
                 var response = await _httpClient.GetAsync($"{_apiUrl}/DishCard/{dishId}");
                 var content = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ObservableCollection<DishCard>>(content);
-
             }
             catch (HttpRequestException e)
             {
@@ -308,7 +309,7 @@ namespace Luqmit3ish.Services
                 if (string.IsNullOrEmpty(token))
                 {
                     _httpClient.DefaultRequestHeaders.Authorization = null;
-                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                    throw new NotAuthorizedException(NotAuthorizedMessage);
                 }
                 else
                 {
@@ -319,7 +320,7 @@ namespace Luqmit3ish.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("failed to delete item");
+                    Debug.WriteLine(DeleteItemErrorMessage);
                 }
             }
             catch (HttpRequestException e)
@@ -331,7 +332,5 @@ namespace Luqmit3ish.Services
                 throw new Exception(e.Message);
             }
         }
-
-       
     }
 }

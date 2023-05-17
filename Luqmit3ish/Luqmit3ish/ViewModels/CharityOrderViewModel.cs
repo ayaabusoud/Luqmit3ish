@@ -60,6 +60,7 @@ namespace Luqmit3ish.ViewModels
         {
             var deleteConfirm = await Application.Current.MainPage.DisplayAlert(_deleteAlertTitle,
                 _confirmDeleteMessage, "Confirm", "Cancel");
+
             if (deleteConfirm)
             {
                 var userId = GetUserId();
@@ -134,7 +135,7 @@ namespace Luqmit3ish.ViewModels
                     catch (NotAuthorizedException e)
                     {
                         Debug.WriteLine(e.Message);
-                        await PopNavigationAsync(NotAuthorizedMessage);
+                        EndSession();
                     }
                     catch (Exception e)
                     {
@@ -142,7 +143,6 @@ namespace Luqmit3ish.ViewModels
                     }
                     if (OrderCards.Count > 0)
                     {
-                       
                         EmptyResult = false;
                     }
                     else

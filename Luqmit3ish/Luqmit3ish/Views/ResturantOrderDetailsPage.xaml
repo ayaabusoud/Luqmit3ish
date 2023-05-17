@@ -3,15 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.ResturantOrderDetailsPage"
              x:Name="ResturantOrderDetails"
-             BackgroundColor="WhiteSmoke"
+             Style="{StaticResource ContentPageColor}"
              Shell.TabBarIsVisible="False"
-             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
              Title="Order Details">
 
     <ContentPage.Content>
 
-        <StackLayout Margin="20,0">
-            <Label Text="{Binding Order.Owner.Name}"  TextColor="Black" FontSize="Title" FontAttributes="Bold" Margin="0,30,0,0">
+        <StackLayout Margin="16,0">
+            <Label Text="{Binding Order.Owner.Name}"  Style="{StaticResource LabelColor}" FontSize="Title" FontAttributes="Bold" Margin="0,30,0,0">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ProfileCommand}" 
                                           CommandParameter="{Binding Order.Owner}"  />
@@ -37,17 +36,12 @@
                         <StackLayout HorizontalOptions="Fill">
                             <Grid Padding="0,12" ColumnDefinitions="auto,*,auto"
                                               HorizontalOptions="Fill" ColumnSpacing="30">
-                                <ffimageloading:CachedImage Grid.Column="0" 
-                                                            HeightRequest="60" 
-                                                            WidthRequest="60" 
-                                                            VerticalOptions="End" 
-                                                            HorizontalOptions="Center" 
-                                                            Source="{Binding Dish.Photo}" 
-                                                            Aspect="AspectFill"
-                                                            LoadingPlaceholder="loading2.PNG" />
+                                <Image   Grid.Column="0" HeightRequest="60" WidthRequest="60" VerticalOptions="End" 
+                                           HorizontalOptions="Center" Source="{Binding Dish.Photo}" 
+                                           Aspect="AspectFill"/>
                                 <StackLayout  Grid.Column="1">
                                     <Label VerticalOptions="Center" MaxLines="1" HorizontalTextAlignment="Start"
-                                                   Text="{Binding Dish.Name}" TextColor="Black" 
+                                                   Text="{Binding Dish.Name}" Style="{StaticResource LabelColor}" 
                                                    FontSize="Medium" FontAttributes="Bold"/>
                                     <Label VerticalOptions="Center" MaxLines="1" HorizontalTextAlignment="Start"
                                            TextColor="Gray" 
