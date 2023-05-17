@@ -6,7 +6,7 @@
              x:Class="Luqmit3ish.Views.VerificationPage">
     <ContentPage.Content>
         <StackLayout Margin="16,64,16,35" VerticalOptions="Center" HorizontalOptions="Center">
-            <Image Source="https://luqmit3ish2.blob.core.windows.net/photos/mail-open-outline-filled.png" 
+            <Image Source="https://luqmit3ish7.blob.core.windows.net/photos/mail-open-outline-filled.png" 
                    HeightRequest="160" 
                    WidthRequest="160"></Image>
             <Label Text="Verify Your Email"

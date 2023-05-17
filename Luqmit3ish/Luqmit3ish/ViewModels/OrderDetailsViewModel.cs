@@ -95,7 +95,7 @@ namespace Luqmit3ish.ViewModels
         private async Task OnDeleteClicked(int restaurantId)
         {
             var deleteConfirm = await Application.Current.MainPage.DisplayAlert(_deleteAlertTitle,
-                _confirmDeleteMessage, "Yes", "No");
+                _confirmDeleteMessage, "Confirm", "Cnacel");
             if (deleteConfirm)
             {
                 var userId = GetUserId();

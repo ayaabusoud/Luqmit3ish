@@ -7,13 +7,13 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Luqmit3ish.Interfaces;
+using Luqmit3ish.Models;
 
 namespace Luqmit3ish.Views
 {
     class RestaurantOfTheMonthViewModel : ViewModelBase
     {
         private int _dishes;
-        private readonly IOrderService _orderService;
         public int Dishes
         {
             get => _dishes;
@@ -26,28 +26,13 @@ namespace Luqmit3ish.Views
             get => _restaurantName;
             set => SetProperty(ref _restaurantName, value);
         }
-        private bool _emptyResult;
 
-        public bool EmptyResult
-        {
-            get => _emptyResult;
-            set => SetProperty(ref _emptyResult, value);
-        }
-        private bool _nonEmptyResult;
 
-        public bool NonEmptyResult
+        public RestaurantOfTheMonthViewModel(DishesOrder bestRestaurant)
         {
-            get => _nonEmptyResult;
-            set => SetProperty(ref _nonEmptyResult, value);
+            OnInit(bestRestaurant);
         }
-        
-
-        public RestaurantOfTheMonthViewModel()
-        {
-            _orderService = new OrderService();
-            OnInit();
-        }
-        private void OnInit()
+        private void OnInit(DishesOrder bestRestaurant)
         {
             try
             {
@@ -58,21 +43,11 @@ namespace Luqmit3ish.Views
             Task.Run(async () => {
                 try
                 {
-                    var bestRestaurant = await _orderService.GetBestRestaurant();
+                   
                     if (bestRestaurant != null)
                     {
                         _dishes = bestRestaurant.Dishes;
                         _restaurantName = bestRestaurant.RestaurantName;
-                    }
-                    if (Dishes == 0)
-                    {
-                        _emptyResult = true;
-                        _nonEmptyResult = false;
-                    }
-                    else
-                    {
-                        _emptyResult = false;
-                        _nonEmptyResult = true;
                     }
                 }
                 catch (ConnectionException e)

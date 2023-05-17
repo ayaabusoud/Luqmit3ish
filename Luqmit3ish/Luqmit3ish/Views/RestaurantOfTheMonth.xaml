@@ -9,7 +9,7 @@
         <Grid Margin="16,30,16,25" HorizontalOptions="Fill" VerticalOptions="Fill">
             
             <StackLayout IsVisible="{Binding NonEmptyResult}" VerticalOptions="Start" HorizontalOptions="Center">
-                <Image  Source="https://luqmit3ish2.blob.core.windows.net/photos/winner.png" 
+                <Image  Source="https://luqmit3ish7.blob.core.windows.net/photos/winner.png" 
                          HorizontalOptions="Fill"
                         Margin="0,100,0,0"/>
                 <Label HorizontalTextAlignment="Center" Style="{StaticResource LabelColor}" FontSize="Small">

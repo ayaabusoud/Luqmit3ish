@@ -26,6 +26,8 @@ namespace Luqmit3ish.ViewModels
         public ICommand DeleteCommand { protected set; get; }
         public ICommand DarkModeCommand { protected set; get; }
         private readonly IUserServices _userServices;
+        private readonly IOrderService _orderService;
+
         public static String RongMessage = "Something went wrong, please try again."; 
         public static String DeleteSucsessMessage = "The Account have been deleted successfully.";
         public static String InsureDeleteMessage = "Are you sure that you want to delete Your account?"; 
@@ -42,14 +44,21 @@ namespace Luqmit3ish.ViewModels
             _darkTheme = Preferences.Get("DarkTheme", false);
             _swichColor = _darkTheme ? Color.DarkOrange : Color.White;
             _userServices = new UserServices();
-              OnInit();
+            _orderService = new OrderService();
+            OnInit();
         }
 
         private async Task OnRestaurantClicked()
         {
             try
             {
-                await _navigation.PushAsync(new RestaurantOfTheMonth());
+                DishesOrder bestRestaurant = await _orderService.GetBestRestaurant();
+                if(bestRestaurant == null)
+                {
+                    await PopNavigationAsync("There is no data available, try again later.");
+                    return;
+                }
+                await _navigation.PushAsync(new RestaurantOfTheMonth(bestRestaurant));
 
             }
             catch (ArgumentException e)

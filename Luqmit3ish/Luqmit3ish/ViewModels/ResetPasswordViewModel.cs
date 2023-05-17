@@ -1,4 +1,5 @@
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Hashing;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
@@ -29,8 +30,8 @@ namespace Luqmit3ish.ViewModels
         public ICommand HideNewPasswordCommand { protected set; get; }
         public ICommand UnHideNewPasswordCommand { protected set; get; }
 
-
-        public readonly UserServices userServices;
+        private readonly IHasher _hashing;
+        private readonly UserServices _userServices;
         private string _email;
 
 
@@ -43,9 +44,11 @@ namespace Luqmit3ish.ViewModels
 
             UnHideNewPasswordCommand = new Command(OnUnHideNewPasswordClicked);
             HideNewPasswordCommand = new Command(OnHideNewPasswordClicked);
-            userServices = new UserServices();
+            _userServices = new UserServices();
             _email = email;
-            
+            _hashing = new PasswordHasher();
+
+
         }
 
         private void OnUnHidePasswordClicked()
@@ -215,12 +218,12 @@ namespace Luqmit3ish.ViewModels
             try
             {
                 Debug.WriteLine(_email);
-                User user = await userServices.GetUserByEmail(Email);
+                User user = await _userServices.GetUserByEmail(Email);
                 if (user == null)
                 {
                     return;
                 }
-                if (!PasswordHasher.VerifyPassword(_oldPassword, user.Password))
+                if (!_hashing.VerifyPassword(_oldPassword, user.Password))
                 {
                     _messageError = "Old password is incorrect. Please try again.";
                     _passwordErrorVisible = true;
@@ -247,7 +250,7 @@ namespace Luqmit3ish.ViewModels
                     return;
                 }
 
-                bool IsUpdatedPassword = await userServices.ResetPassword(user.Id, NewPassword);
+                bool IsUpdatedPassword = await _userServices.ResetPassword(user.Id, NewPassword);
                 if (IsUpdatedPassword)
                 {
                     _passwordErrorVisible = false;
