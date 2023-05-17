@@ -162,14 +162,14 @@ namespace Luqmit3ish.ViewModels
                     {
                         Preferences.Clear();
                         Application.Current.MainPage = new LoginPage();
-                        await PopupNavigation.Instance.PushAsync(new PopUp(_deleteSucsessMessage));
+                        await PopupNavigation.Instance.PushAsync(new PopUp(_deleteSuccsessMessage));
                         Thread.Sleep(3000);
                         await PopupNavigation.Instance.PopAsync();
 
                     }
                     else
                     {
-                        await PopNavigationAsync(_rongMessage);
+                        await PopNavigationAsync(_wrongMessage);
                     }
                 }
                 catch (ConnectionException e)
