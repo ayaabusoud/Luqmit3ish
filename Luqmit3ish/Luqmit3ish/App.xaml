@@ -132,7 +132,7 @@
                 <Setter Property="Text" Value="&#xf057;" />
                 <Setter Property="FontFamily" Value="FontAwesomeIcons" />
                 <Setter Property="FontSize" Value="25" />
-                <Setter Property="TextColor" Value="red"/>
+                <Setter Property="TextColor" Value="DarkRed"/>
             </Style>
 
             <Style x:Key="OrderCard" TargetType="Frame">
