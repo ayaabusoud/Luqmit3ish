@@ -23,6 +23,19 @@
                 <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" />
             </Style>
 
+            <Style x:Key="BaseStyle" TargetType="Element">
+
+                <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light=White, Dark={StaticResource PrimaryDark}}" />
+                <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryLight}, Dark={StaticResource PrimaryLight}}" />
+                <Setter Property="Shell.TitleColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="Shell.DisabledColor" Value="#FFC17A"/>
+                <Setter Property="Shell.UnselectedColor" Value="#FFC17A" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={OnPlatform Android=White}, Dark={StaticResource PrimaryDark}}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="#FFC17A"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#FFC17A"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource PrimaryLight}"/>
+            </Style>
+            
             <Style x:Key="FrameColor" TargetType="Frame">
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}" />
             </Style>
@@ -119,7 +132,7 @@
                 <Setter Property="Text" Value="&#xf057;" />
                 <Setter Property="FontFamily" Value="FontAwesomeIcons" />
                 <Setter Property="FontSize" Value="25" />
-                <Setter Property="TextColor" Value="red"/>
+                <Setter Property="TextColor" Value="DarkRed"/>
             </Style>
 
             <Style x:Key="OrderCard" TargetType="Frame">

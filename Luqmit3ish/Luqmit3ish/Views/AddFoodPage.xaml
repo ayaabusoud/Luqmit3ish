@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.AddFoodPage"
              Shell.TabBarIsVisible="False"
+             Title="Add new Dish"
              Style="{StaticResource ContentPageColor}">
 
     <ContentPage.Content>
@@ -98,10 +99,12 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
 
-                        <StackLayout Spacing="0"
-                                     Orientation="Horizontal"
-                                     Margin="15,-8,0,0">
-                            <Frame Style="{StaticResource textFeildFrame}" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand">
+                        
+                            <Frame Style="{StaticResource textFeildFrame}"
+                                   BackgroundColor="Transparent"
+                                   HorizontalOptions="FillAndExpand"
+                                   Margin="15,0"
+                                   Padding="0">
                                 <StackLayout Orientation="Horizontal"
                                              Margin="0"
                                              Padding="0">
@@ -121,20 +124,18 @@
                                            MaxLength="200"/>
                                 </StackLayout>
                            </Frame>
-                        </StackLayout>
 
                         <BoxView Color="Gray"
                                  HeightRequest="1"
                                  HorizontalOptions="Fill"
                                  Margin="15,-8,15,5"/>
 
-                        <StackLayout Spacing="0">
                             <Label Text="Description: "
                                    Style="{StaticResource LabelColor}"
                                    VerticalOptions="Center"
                                    FontAttributes="Bold"
                                    FontSize="17"
-                                   Margin="15,-8,0,0"/>
+                                   Margin="15,-8,0,-15"/>
                             <Editor Placeholder="ex: mini pizza with chees"
                                     FontSize="17"
                                     Style="{StaticResource LabelColor}"
@@ -144,7 +145,6 @@
                                     Margin="15,0"
                                     PlaceholderColor="Gray"
                                     MaxLength="200"/>
-                        </StackLayout>
 
                         <Grid Margin="15,0,0,5" HorizontalOptions="Center" >
                                 <Grid.ColumnDefinitions>

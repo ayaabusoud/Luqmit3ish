@@ -24,6 +24,10 @@ namespace Luqmit3ish.ViewModels
         public ICommand FilterCommand { protected set; get; }
         public ICommand SearchCommand { protected set; get; }
         public ICommand FoodDetailCommand { protected set; get; }
+        private readonly string _noFilterTitle = "No Filter Match Found";
+        private readonly string _noFilterDescription = "There is no food matches the filters you're looking for!";
+        private readonly string _noFoodTitle = "No Food Available";
+        private readonly string _noFoodDescription = "Come back later to explore new food!";
 
         private readonly IFoodServices _foodServices;
 
@@ -115,8 +119,8 @@ namespace Luqmit3ish.ViewModels
                             else
                             {
                                 EmptyResult = true;
-                                Title = "No Filter Match Found";
-                                Description = "There is no food matches the filters you're looking for!";
+                                Title = _noFilterTitle;
+                                Description = _noFilterDescription ;
                             }
                         }
                         else
@@ -131,8 +135,8 @@ namespace Luqmit3ish.ViewModels
                             else
                             {
                                 EmptyResult = true;
-                                Title = "No Food Available";
-                                Description = "Come back later to explore new food!";
+                                Title = _noFoodTitle;
+                                Description = _noFoodDescription;
                             }
                         }
                     }

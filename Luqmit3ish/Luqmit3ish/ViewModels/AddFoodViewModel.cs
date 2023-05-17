@@ -28,6 +28,10 @@ namespace Luqmit3ish.ViewModels
         public ICommand QuantityPlusCommand { protected set; get; }
         public ICommand QuantityMinusCommand { protected set; get; }
 
+        private const string FillAllFieldsMessage = "Please fill in all fields";
+        private const string SelectOrTakePhotoMessage = "Please select or take a photo first.";
+        private const string DishAddedSuccessfullyMessage = "The dish has been added successfully";
+        private const string DishNotAddedMessage = "The dish was not added";
         public AddFoodViewModel(INavigation navigation)
         {
             this._navigation = navigation;
@@ -87,25 +91,25 @@ namespace Luqmit3ish.ViewModels
             {
                 if (!IsDishDataValid())
                 {
-                    await PopNavigationAsync("Please fill in all fields");
+                    await PopNavigationAsync(FillAllFieldsMessage);
                     return;
                 }
-                if (_photoPath == null)
+                if (IsPhotoEmpty())
                 {
-                    await PopNavigationAsync("Please select or take a photo first.");
+                    await PopNavigationAsync(SelectOrTakePhotoMessage);
                     return;
                 }
 
-                DishRequest foodRequest = CreateDishRequest();
+                Dish foodRequest = CreateDishRequest();
 
                 var response = await _foodServices.AddNewDish(foodRequest);
                 if (response)
                 {
                     await _navigation.PopAsync();
-                    await PopNavigationAsync("The dish has been added successfully");
+                    await PopNavigationAsync(DishAddedSuccessfullyMessage);
                     return;
                 }
-                await PopNavigationAsync("The dish was not added.");
+                await PopNavigationAsync(DishNotAddedMessage);
             }
             catch (ConnectionException e)
             {
@@ -144,21 +148,25 @@ namespace Luqmit3ish.ViewModels
             return (_type != null && _title != null && _description != null && KeepValid != 0 && Quantity != 0);
         }
 
-        private DishRequest CreateDishRequest()
+        private bool IsPhotoEmpty()
         {
-            var foodRequest = new DishRequest()
+            return _photoPath == null;
+        }
+
+        private Dish CreateDishRequest()
+        {
+            var foodRequest = new Dish()
             {
                 UserId = _userId,
                 Photo = _photoPath,
                 Type = _type,
                 Name = _title,
                 Description = _description,
-                keepValid = KeepValid,
+                KeepValid = KeepValid,
                 Quantity = Quantity
             };
             return foodRequest;
         }
-
 
         private void OnKeepValidMinusClicked()
         {
@@ -216,12 +224,17 @@ namespace Luqmit3ish.ViewModels
             set
             {
                 SetProperty(ref _selectedType, value);
-                if (_selectedType != null)
+                UpdateSelectedType();
+            }
+        }
+
+        private void UpdateSelectedType()
+        {
+            if (_selectedType != null)
+            {
+                foreach (var type in TypeValues)
                 {
-                    foreach (var type in TypeValues)
-                    {
-                        type.IsSelected = type == _selectedType;
-                    }
+                    type.IsSelected = type == _selectedType;
                 }
             }
         }

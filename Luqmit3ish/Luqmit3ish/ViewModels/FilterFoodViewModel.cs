@@ -33,6 +33,18 @@ namespace Luqmit3ish.ViewModels
         private IFoodServices _foodServices;
         private IUserServices _userServices;
 
+        private const string LowerKeepValidPrefKey = "LowerKeepValid";
+        private const string UpperKeepValidPrefKey = "UpperKeepValid";
+        private const string LowerQuantityPrefKey = "LowerQuantity";
+        private const string UpperQuantityPrefKey = "UpperQuantity";
+        private const string SelectedTypeValuesPrefKey = "SelectedTypeValues";
+        private const string SelectedLocationValuesPrefKey = "SelectedLocationValues";
+        private const string FilteredDishesPrefKey = "FilteredDishes";
+        private const string NullReferenceExceptionMessage = "A null reference exception occurred. This can happen when a variable or object is null and you are trying to access or use it. Please check the input and try again.";
+        private const string InvalidCastExceptionMessage = "An invalid cast exception occurred. This can happen when trying to convert a variable from one type to another that is not compatible. Please check the input and try again.";
+        private const string InvalidOperationExceptionMessage = "An invalid operation exception occurred. This can happen when trying to perform an operation that is not valid or allowed in the current state of the program. Please check the input and try again.";
+        private const string ExceptionsMessage = "An unexpected error occurred. Please try again or contact customer support for assistance.";
+
         public FilterFoodViewModel(INavigation navigation)
         {
             SelectedLocationValues = new ObservableCollection<object>();
@@ -44,7 +56,7 @@ namespace Luqmit3ish.ViewModels
             _locationValues = Constants.LocationValues;
 
             Apply = new Command(async () => await OnApplyAsync());
-            ClearAll = new Command(() => OnClearAllAsync());
+            ClearAll = new Command(async () => await OnClearAllAsync());
             TypeMultiSelectionCommand = new Command<IList<object>>(async (itemSelected) => await OnTypeMultiSelectionClicked(itemSelected));
             LocationMultiSelectionCommand = new Command<IList<object>>(async (itemSelected) => await OnLocationMultiSelectionClicked(itemSelected));
 
@@ -55,21 +67,15 @@ namespace Luqmit3ish.ViewModels
 
         private void InitializVariable()
         {
-            int upperQuantity = Preferences.Get("UpperQuantity", 0);
-            _upperQuantity = upperQuantity == 0 ? 100 : upperQuantity;
+            _upperQuantity = Preferences.Get(UpperQuantityPrefKey, 100);
+            _upperKeepValid = Preferences.Get(UpperKeepValidPrefKey, 10);
+            _lowerQuantity = Preferences.Get(LowerQuantityPrefKey, 0);
+            _lowerKeepValid = Preferences.Get(LowerKeepValidPrefKey, 0);
 
-            int upperKeepValid = Preferences.Get("UpperKeepValid", 0);
-            _upperKeepValid = upperKeepValid == 0 ? 10 : upperKeepValid;
+            var loadTypeSelectedValuesTask = LoadSelectedValues<TypeField>(SelectedTypeValuesPrefKey, SelectedTypeValues, NewSelectedTypeValues);
+            var loadLocationSelectedValuesTask = LoadSelectedValues<LocationField>(SelectedLocationValuesPrefKey, SelectedLocationValues, NewSelectedLocationValues);
 
-            int lowerQuantity = Preferences.Get("LowerQuantity", 0);
-            _lowerQuantity = lowerQuantity == 0 ? 0 : lowerQuantity;
-
-            int lowerKeepValid = Preferences.Get("LowerKeepValid", 0);
-            _lowerKeepValid = lowerKeepValid == 0 ? 0 : lowerKeepValid;
-
-            var LoadTypeSelectedValues = LoadSelectedValues<TypeField>("SelectedTypeValues", SelectedTypeValues, NewSelectedTypeValues);
-            var LoadLocationSelectedValues = LoadSelectedValues<LocationField>("SelectedLocationValues", SelectedLocationValues, NewSelectedLocationValues);
-            Task.WaitAll(LoadTypeSelectedValues, LoadLocationSelectedValues);
+            Task.WaitAll(loadTypeSelectedValuesTask, loadLocationSelectedValuesTask);
         }
 
         private async Task LoadSelectedValues<T>(string preferencesKey, ObservableCollection<object> selectedValues, ObservableCollection<T> selectedItems) where T : class
@@ -77,24 +83,27 @@ namespace Luqmit3ish.ViewModels
             try
             {
                 string json = Preferences.Get(preferencesKey, string.Empty);
+
                 if (!string.IsNullOrEmpty(json))
                 {
                     selectedValues = JsonConvert.DeserializeObject<ObservableCollection<object>>(json);
-                    var itemList = new ObservableCollection<T>(
-                        selectedValues.Select(o => JsonConvert.DeserializeObject<T>(o.ToString()))
-                    );
-                    foreach (var item in itemList)
+
+                    if (selectedValues != null && selectedValues.Any())
                     {
-                        selectedItems.Add(item);
+                        var itemList = new ObservableCollection<T>(selectedValues.Select(o => JsonConvert.DeserializeObject<T>(o.ToString())));
+
+                        foreach (var item in itemList)
+                        {
+                            selectedItems.Add(item);
+                        }
                     }
-                    ClearFilterUsers(itemList);
                 }
                 else
                 {
                     selectedValues = new ObservableCollection<object>();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 await PopNavigationAsync(ExceptionMessage);
@@ -105,7 +114,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await UpdateSelectedValues<TypeField>(itemSelected, TypeValues, _typeSelectedValues, x => x is TypeField);
+                UpdateSelectedValues<TypeField>(itemSelected, TypeValues, _typeSelectedValues, x => x is TypeField);
             }
             catch (Exception e)
             {
@@ -118,26 +127,31 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await UpdateSelectedValues<LocationField>(itemSelected, LocationValues, _locationSelectedValues, x => x is LocationField);
+                UpdateSelectedValues<LocationField>(itemSelected, LocationValues, _locationSelectedValues, x => x is LocationField);
             }
-            catch (ConnectionException e)
+            catch (NullReferenceException ex)
             {
-                Debug.WriteLine(e.Message);
-                await PopNavigationAsync(InternetMessage);
+                Debug.WriteLine(ex.Message);
+                await PopNavigationAsync(NullReferenceExceptionMessage);
             }
-            catch (HttpRequestException e)
+            catch (InvalidCastException ex)
             {
-                Debug.WriteLine(e.Message);
-                await PopNavigationAsync(HttpRequestMessage);
+                Debug.WriteLine(ex.Message);
+                await PopNavigationAsync(InvalidCastExceptionMessage);
             }
-            catch (Exception e)
+            catch (InvalidOperationException ex)
             {
-                Debug.WriteLine(e.Message);
+                Debug.WriteLine(ex.Message);
+                await PopNavigationAsync(InvalidOperationExceptionMessage);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
                 await PopNavigationAsync(ExceptionMessage);
             }
         }
 
-        private async Task UpdateSelectedValues<T>(IList<object> itemSelected, ObservableCollection<T> valuesCollection, ObservableCollection<T> selectedValuesCollection, Func<object, bool> predicate) where T : ISelectable
+        private void UpdateSelectedValues<T>(IList<object> itemSelected, ObservableCollection<T> valuesCollection, ObservableCollection<T> selectedValuesCollection, Func<object, bool> predicate) where T : ISelectable
         {
             try
             {
@@ -163,42 +177,57 @@ namespace Luqmit3ish.ViewModels
                     }
                 }
             }
+            catch (NullReferenceException ex)
+            {
+                throw new NullReferenceException(ex.Message);
+            }
+            catch (InvalidCastException ex)
+            {
+                throw new InvalidCastException(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                await PopNavigationAsync(ExceptionMessage);
+                throw new Exception(e.Message);
             }
         }
 
-        private void OnClearAllAsync()
+        private async Task OnClearAllAsync()
         {
-            ClearTypeValuesAsync();
-            ClearLocationValues();
+            await ClearTypeValues();
+            await ClearLocationValues();
 
             LowerKeepValid = LowerQuantity = 0;
             UpperKeepValid = 10;
             UpperQuantity = 100;
         }
 
-        private void ClearTypeValuesAsync()
+        private async Task ClearValues<T>(Func<IEnumerable<T>> getValueItems, ObservableCollection<T> newSelectedValues, ObservableCollection<object> selectedValues) where T : ISelectable
         {
-            foreach (var item in TypeValues)
+            await Task.Run(() =>
             {
-                item.IsSelected = false;
-            }
-            NewSelectedTypeValues.Clear();
-            SelectedTypeValues.Clear();
+                foreach (var item in getValueItems())
+                {
+                    item.IsSelected = false;
+                }
+                newSelectedValues.Clear();
+                selectedValues.Clear();
+            });
         }
 
-        private void ClearLocationValues()
+        private async Task ClearTypeValues()
         {
-            foreach (var item in LocationValues)
-            {
-                item.IsSelected = false;
-            }
-            NewSelectedLocationValues.Clear();
-            SelectedLocationValues.Clear();
+            await ClearValues<TypeField>(() => TypeValues, NewSelectedTypeValues, SelectedTypeValues);
         }
+
+        private async Task ClearLocationValues()
+        {
+            await ClearValues<LocationField>(() => LocationValues, NewSelectedLocationValues, SelectedLocationValues);
+        }
+
 
         private async Task OnApplyAsync()
         {
@@ -214,19 +243,37 @@ namespace Luqmit3ish.ViewModels
                     allUsers.Where(user => filterInfo.LocationValues.Any(location => user.Location.Contains(location)))
                 );
 
-                ObservableCollection<DishCard> filteredDishes = new ObservableCollection<DishCard>(
-                    allDishes.Where(dish =>
+                ObservableCollection<DishCard> filteredDishes;
+
+                if (_locationSelectedValues.Any())
+                {
+                    var restaurantIds = filterUsers
+                        .Where(user => _locationSelectedValues.Any(loc => loc.Name == user.Location))
+                        .Select(user => user.Id)
+                        .ToList();
+
+                    filteredDishes = new ObservableCollection<DishCard>(
+                        allDishes.Where(dish =>
+                            dish.Restaurant != null && restaurantIds.Contains(dish.Restaurant.Id)
+                        )
+                    );
+                }
+                else
+                {
+                    filteredDishes = allDishes;
+                }
+
+                filteredDishes = new ObservableCollection<DishCard>(
+                    filteredDishes.Where(dish =>
                         dish.KeepValid >= filterInfo.LowerKeepValid && dish.KeepValid <= filterInfo.UpperKeepValid &&
                         dish.Quantity >= filterInfo.LowerQuantity && dish.Quantity <= filterInfo.UpperQuantity &&
-                        (filterInfo.TypeValues == null || !filterInfo.TypeValues.Any() || filterInfo.TypeValues.Contains(dish.Type)) &&
-                        (!filterUsers.Any() || filterUsers.Any(user => user.Id == dish.Restaurant.Id))
+                        (filterInfo.TypeValues == null || !filterInfo.TypeValues.Any() || filterInfo.TypeValues.Contains(dish.Type))
                     )
                 );
 
-                ClearFilterUsers(filterUsers);
-                ClearFilterUsers(allDishes);
-                SetPreferences(filteredDishes);
-                
+                string dishes = JsonConvert.SerializeObject(filteredDishes);
+                Preferences.Set("FilteedDishes", dishes);
+
                 await _navigation.PopAsync();
             }
             catch (ConnectionException e)
@@ -246,21 +293,41 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private void SetPreferences(ObservableCollection<DishCard> filteredDishes)
+        private async Task SavePreferences(ObservableCollection<DishCard> filteredDishes)
         {
-            Preferences.Set("LowerKeepValid", LowerKeepValid);
-            Preferences.Set("UpperKeepValid", UpperKeepValid);
-            Preferences.Set("LowerQuantity", LowerQuantity);
-            Preferences.Set("UpperQuantity", UpperQuantity);
+            await Task.Run(() =>
+            {
+                Preferences.Set(LowerKeepValidPrefKey, LowerKeepValid);
+                Preferences.Set(UpperKeepValidPrefKey, UpperKeepValid);
+                Preferences.Set(LowerQuantityPrefKey, LowerQuantity);
+                Preferences.Set(UpperQuantityPrefKey, UpperQuantity);
 
-            string typeJson = JsonConvert.SerializeObject(NewSelectedTypeValues);
-            Preferences.Set("SelectedTypeValues", typeJson);
+                SaveSelectedValues(SelectedTypeValuesPrefKey, NewSelectedTypeValues);
+                SaveSelectedValues(SelectedLocationValuesPrefKey, NewSelectedLocationValues);
 
-            string locationJson = JsonConvert.SerializeObject(NewSelectedLocationValues);
-            Preferences.Set("SelectedLocationValues", locationJson);
+                if (filteredDishes?.Any() == true)
+                {
+                    string dishesJson = JsonConvert.SerializeObject(filteredDishes);
+                    Preferences.Set(FilteredDishesPrefKey, dishesJson);
+                }
+                else
+                {
+                    Preferences.Remove(FilteredDishesPrefKey);
+                }
+            });
+        }
 
-            string dishes = JsonConvert.SerializeObject(filteredDishes);
-            Preferences.Set("FilteedDishes", dishes);
+        private void SaveSelectedValues<T>(string prefKey, ObservableCollection<T> selectedValues)
+        {
+            if (selectedValues?.Any() == true)
+            {
+                string json = JsonConvert.SerializeObject(selectedValues);
+                Preferences.Set(prefKey, json);
+            }
+            else
+            {
+                Preferences.Remove(prefKey);
+            }
         }
 
         private void InitializFilterInfo(FilterInfo filterInfo)
