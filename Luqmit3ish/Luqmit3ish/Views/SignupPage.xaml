@@ -4,7 +4,7 @@
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="Luqmit3ish.Views.SignupPage"
              NavigationPage.HasNavigationBar="False"
-             BackgroundImageSource="https://luqmit3ish2.blob.core.windows.net/photos/wallpaper.jpg">
+             BackgroundImageSource="https://luqmit3ish7.blob.core.windows.net/photos/wallpaper.jpg">
     <ContentPage.Content  MinHeightRequest="1000">
         <StackLayout  Margin="0" >
             <Frame HorizontalOptions="Fill" VerticalOptions="EndAndExpand"  Margin="0,0,0,-40"  CornerRadius="30" HasShadow="True" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundDark}}">

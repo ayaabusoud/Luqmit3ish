@@ -59,7 +59,7 @@ namespace Luqmit3ish.ViewModels
         private async Task OnDeleteClicked(int restaurantId)
         {
             var deleteConfirm = await Application.Current.MainPage.DisplayAlert(_deleteAlertTitle,
-                _confirmDeleteMessage, "Yes", "No");
+                _confirmDeleteMessage, "Confirm", "Cnacel");
             if (deleteConfirm)
             {
                 var userId = GetUserId();
@@ -134,7 +134,7 @@ namespace Luqmit3ish.ViewModels
                     catch (NotAuthorizedException e)
                     {
                         Debug.WriteLine(e.Message);
-                        await PopNavigationAsync(NotAuthorizedMessage);
+                        EndSession();
                     }
                     catch (Exception e)
                     {
@@ -142,7 +142,6 @@ namespace Luqmit3ish.ViewModels
                     }
                     if (OrderCards.Count > 0)
                     {
-                       
                         EmptyResult = false;
                     }
                     else

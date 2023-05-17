@@ -1,4 +1,5 @@
 using Luqmit3ish.Exceptions;
+using Luqmit3ish.Hashing;
 using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
@@ -31,9 +32,8 @@ namespace Luqmit3ish.ViewModels
         public ICommand HideOldPasswordCommand { protected set; get; }
         public ICommand ShowOldPasswordCommand { protected set; get; }
 
-
-
-        public readonly IUserServices userServices;
+        private readonly IHasher _hashing;
+        private readonly UserServices _userServices;
         private string _email;
         private const string _samePasswordMessage = "New password cannot be the same as the old password.";
         private const string _incorrectPassword = "Old password is incorrect. Please try again.";
@@ -47,6 +47,13 @@ namespace Luqmit3ish.ViewModels
             ResetPasswordCommand = new Command(async () => await OnResetClicked());
             ShowPasswordCommand = new Command(OnUnHidePasswordClicked);
             HidePasswordCommand = new Command(OnHidePasswordClicked);
+
+            UnHideNewPasswordCommand = new Command(OnUnHideNewPasswordClicked);
+            HideNewPasswordCommand = new Command(OnHideNewPasswordClicked);
+            _userServices = new UserServices();
+            _email = email;
+            _hashing = new PasswordHasher();
+
             ShowOldPasswordCommand = new Command(OnUnHideOldPasswordClicked);
             HideOldPasswordCommand = new Command(OnHideOldPasswordClicked);
             userServices = new UserServices();
@@ -233,15 +240,25 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                User user = await userServices.GetUserByEmail(Email);
+                Debug.WriteLine(_email);
+                User user = await _userServices.GetUserByEmail(Email);
                 if (user == null)
                 {
                     return;
                 }
+                if (!_hashing.VerifyPassword(_oldPassword, user.Password))
+                {
+                    _messageError = "Old password is incorrect. Please try again.";
+                    _passwordErrorVisible = true;
+                    OnPropertyChanged(nameof(PasswordErrorVisible));
+                    OnPropertyChanged(nameof(MessageError));
+                    return;
+                }
+
 
                 if (await ValidateFields(user))
                 {
-                    bool IsUpdatedPassword = await userServices.ResetPassword(user.Id, NewPassword);
+                    bool IsUpdatedPassword = await _userServices.ResetPassword(user.Id, NewPassword);
                     if (IsUpdatedPassword)
                     {
 
