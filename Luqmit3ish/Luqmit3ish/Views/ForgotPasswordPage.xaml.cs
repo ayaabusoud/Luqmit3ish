@@ -17,7 +17,7 @@ namespace Luqmit3ish.Views
         public ForgotPasswordPage()
         {
             InitializeComponent();
-            this.BindingContext = new ForgotPasswordViewModel(Navigation);
+            this.BindingContext = new ForgotPasswordViewModel();
         }
 
    

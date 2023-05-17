@@ -1,130 +1,187 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:local="clr-namespace:Luqmit3ish.Converter"
-              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
-             x:Class="Luqmit3ish.Views.FoodDetailPage"
-             x:Name='FoodDetails'
-             Title="Food Details"
-             Shell.TabBarIsVisible="False"
-             Style="{StaticResource ContentPageColor}">
+using Luqmit3ish.Exceptions;
+using Luqmit3ish.Models;
+using Luqmit3ish.Services;
+using Luqmit3ish.Views;
+using Rg.Plugins.Popup.Services;
+using System;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <local:EqualOneConverter x:Key="equalOneConverter" />
-            <local:NotEqualOneConverter x:Key="notEqualOneConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
+namespace Luqmit3ish.ViewModels
+{
+    class FoodDetailViewModel : ViewModelBase
+    {
+        private INavigation _navigation { get; set; }
+        public ICommand PlusCommand { protected set; get; }
+        public ICommand MinusCommand { protected set; get; }
+        public ICommand ReserveCommand { protected set; get; }
+        public ICommand ProfileCommand { protected set; get; }
+        private OrderService _orderService;
+
+
+        public FoodDetailViewModel(DishCard dish, INavigation navigation)
+        {
+            this._navigation = navigation;
+            ProfileCommand = new Command<User>(async (User restaurant) => await OnProfileClicked(restaurant));
+            PlusCommand = new Command<int>(OnPlusClicked);
+            MinusCommand = new Command(OnMinusClicked);
+            ReserveCommand = new Command(async () => await OnReserveClicked());
+            _orderService = new OrderService();
+            this._dishInfo = dish;
+        }
+
+        private int _counter = 1;
+
+        public int Counter
+        {
+            get => _counter;
+            set
+            {
+                SetProperty(ref _counter, value);
+            }
+        }
+
+        private DishCard _dishInfo;
+
+        public DishCard DishInfo
+        {
+            get => _dishInfo;
+            set => SetProperty(ref _dishInfo, value);
+        }
+
+        private string _plusColor = "Orange";
+        public string PlusColor
+        {
+            get => _plusColor;
+            set => SetProperty(ref _plusColor, value);
+        }
+        private string _minusColor;
+        public string MinusColor
+        {
+            get => _minusColor;
+            set => SetProperty(ref _minusColor, value);
+        }
+
+        private void OnMinusClicked()
+        {
+            if (Counter == 1)
+            {
+                MinusColor = "Gray";
+                PlusColor = "Orange";
+                return;
+            }
+            if (Counter < 1)
+            {
+                Counter = 1;
+                MinusColor = "Gray";
+                PlusColor = "Orange";
+                return;
+            }
+
+            Counter--;
+            if (Counter == 1)
+            {
+                MinusColor = "Gray";
+                PlusColor = "Orange";
+                return;
+            }
+            if (Counter > 1)
+            {
+                PlusColor = "Orange";
+                MinusColor = "Orange";
+            }
+        }
+
+       
+        private void OnPlusClicked(int quantity)
+        {
+            if (Counter == quantity)
+            {
+                return;
+            }
+
+            Counter++;
+
+            if (Counter == quantity)
+            {
+                PlusColor = "Gray";
+                MinusColor = "Orange";
+                return;
+            }
+            if(Counter > 1)
+            {
+                PlusColor = "Orange";
+                MinusColor = "Orange";
+                return;
+            }
+        }
+        private async Task OnProfileClicked(User restaurant)
+        {
+            try
+            {
+                await PopupNavigation.Instance.PushAsync(new OtherProfilePage(restaurant));
+
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
     
-    <ContentPage.Content>
-        <Grid RowDefinitions="0.4*,0.6*" Margin="0">
-            <ffimageloading:CachedImage LoadingPlaceholder="loading.PNG"
-                                         Grid.Row="0" Source="{Binding DishInfo.Photo}" Aspect="AspectFill"/>
-            <Frame  Grid.Row="1" HorizontalOptions="Fill" VerticalOptions="Fill" CornerRadius="50" 
-                    Margin="-15,-60,-20,-40"  HasShadow="True"
-                    Style="{StaticResource FrameColor}">
-                <StackLayout Margin="10" HorizontalOptions="Fill"
-                             Spacing="15" Padding="7">
+        private async Task OnReserveClicked()
+        {
+            try
+            {
+                int UserId = GetUserId();
 
-                    <Label Text="{Binding  DishInfo.Restaurant.Name}" 
-                           FontSize="Medium" Style="{StaticResource LabelColor}" Margin="0,0,0,-15">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ProfileCommand}"
-                                                  CommandParameter="{Binding DishInfo.Restaurant}"  />
-                        </Label.GestureRecognizers>
-                    </Label>
+                Order newOrder = CreateNewOrder(UserId);
 
-                    <Grid ColumnDefinitions="*,auto" >
-                        <Label Grid.Column="0" Text="{Binding  DishInfo.DishName}" 
-                           FontSize="Title" Style="{StaticResource LabelColor}" FontAttributes="Bold"/>
+                await _orderService.ReserveOrder(newOrder);
 
-                        <StackLayout  Orientation="Horizontal"
-                                     Grid.Column="1" Margin="26,-5,0,0">
-                            <Label Text="&#xf055;" FontFamily="FontAwesomeIcons" 
-                                   FontSize="30" Margin="0,10,0,0" TextColor="{Binding PlusColor}">
-                                <Label.GestureRecognizers>
-                                    <TapGestureRecognizer CommandParameter="{Binding DishInfo.Quantity}" 
-                                                          Command="{Binding PlusCommand}"/>
-                                </Label.GestureRecognizers>
-                            </Label>
-                            <Label Text="{Binding Counter}" FontAttributes="Bold" 
-                                   Margin="3,11,3,0" FontSize="19" Style="{StaticResource LabelColor}"/>
-                            <Label Text="&#xf056;" FontFamily="FontAwesomeIcons" FontSize="30" 
-                                   VerticalOptions="Center" Margin="0,10,0,0" TextColor="{Binding MinusColor}">
-                                <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding MinusCommand}"/>
-                                </Label.GestureRecognizers>
-                            </Label>
-                        </StackLayout>
-                    </Grid>
+                await _navigation.PopAsync();
+                await PopNavigationAsync("Your order has been successfully reserved");
 
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(InternetMessage);
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(HttpRequestMessage);
+            }
+            catch (NotAuthorizedException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(NotAuthorizedMessage);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(ExceptionMessage);
+            }
+        }
+        Order CreateNewOrder(int UserId)
+        {
+            Order newOrder = new Order();
+            newOrder.CharId = UserId;
+            newOrder.ResId = _dishInfo.Restaurant.Id;
+            newOrder.DishId = _dishInfo.Id;
+            newOrder.Date = DateTime.Now;
+            newOrder.Quantity = Counter;
+            newOrder.Receive = false;
+            return newOrder;
+        }
+    }
+}
 
-                    <Label VerticalOptions="Start" Text="Description" Style="{StaticResource LabelColor}" FontSize="Medium" FontAttributes="Bold"/>
-                    <Label VerticalOptions="Start" Style="{StaticResource LabelColor}" Text="{Binding DishInfo.Description}" Margin="0,-10,0,0" FontSize="16"/>
-                    <StackLayout Orientation="Horizontal" Spacing="10">
-                        <Label  Text="&#xf48b;" FontFamily="FontAwesomeIcons" FontSize="22" Margin="0,7,0,0" Style="{StaticResource LabelColor}"/>
-                        <Label  FontSize="17" Style="{StaticResource LabelColor}" Margin="0,6,0,0" >
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="Opening Hours: " />
-                                    <Span Text="{Binding DishInfo.Restaurant.OpeningHours}" Style="{StaticResource LabelColor}" FontAttributes="Bold" FontSize="17" />
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal" Spacing="12" Margin="3,0">
-                        <Label Text="&#xf251;" FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,5,0,0" Style="{StaticResource LabelColor}"/>
-                        <StackLayout Orientation="Horizontal">
-                            <Label FontSize="17" Style="{StaticResource LabelColor}" Margin="0,5,0,0">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="Keep valid for:  "  />
-                                        <Span Text="{Binding DishInfo.KeepValid}"  FontAttributes="Bold" FontSize="17" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label FontSize="17" Style="{StaticResource LabelColor}" 
-                                   FontAttributes="Bold" Margin="0,5,0,0" Text="Day" 
-                                               IsVisible="{Binding DishInfo.KeepValid,Converter={StaticResource equalOneConverter}}" />
-                            <Label FontSize="17" Style="{StaticResource LabelColor}" 
-                                   FontAttributes="Bold" Margin="0,5,0,0" Text="Days" 
-                                               IsVisible="{Binding DishInfo.KeepValid,Converter={StaticResource notEqualOneConverter}}" />
-                        </StackLayout>
-
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal" Spacing="5">
-                        <Label Text="&#xf562;" Margin="0,5,0,0" FontFamily="FontAwesomeIcons" FontSize="20"  Style="{StaticResource LabelColor}"/>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Style="{StaticResource LabelColor}" Margin="0,5,0,0">
-                                <Label.FormattedText>
-                                    <FormattedString >
-                                        <Span Text="Available quantity: " 
-                                          FontSize="18"/>
-                                        <Span Text="{Binding DishInfo.Quantity}" 
-                                              FontAttributes="Bold" FontSize="Medium"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label FontSize="Medium" FontAttributes="Bold"
-                                               Text="Dish" Margin="0,5,0,0" Style="{StaticResource LabelColor}"
-                                               IsVisible="{Binding DishInfo.Quantity,Converter={StaticResource equalOneConverter}}" />
-                            <Label FontSize="Medium" FontAttributes="Bold"
-                                               Text="Dishes" Margin="0,5,0,0" Style="{StaticResource LabelColor}"
-                                               IsVisible="{Binding DishInfo.Quantity,Converter={StaticResource notEqualOneConverter}}" />
-                        </StackLayout>
-
-                    </StackLayout>
-
-
-                    <Button CommandParameter="{Binding DishInfo.Id}" 
-                                    Command="{Binding ReserveCommand}" 
-                                    TextColor="White" Text="Reserve" CornerRadius="10"
-                                    Margin="10,3,0,0" HeightRequest="50" 
-                                    HorizontalOptions="Start" WidthRequest="800"
-                                    BackgroundColor="{StaticResource PrimaryLight}" FontAttributes="Bold"  />
-
-                </StackLayout>
-            </Frame>
-        </Grid>
-    </ContentPage.Content>
-</ContentPage>
