@@ -43,7 +43,12 @@ namespace Luqmit3ish.ViewModels
         public ICommand MinusCommand { protected set; get; }
         public ICommand ProfileCommand { protected set; get; }
         public ICommand DeleteCommand { protected set; get; }
-
+        private readonly string _deleteAlertTitle = "Delete Order";
+        private readonly string _successDeleteMessage = "The order have been deleted successfully.";
+        private readonly string _failDeleteMessage = "The Order has not been deleted, please try again.";
+        private readonly string _confirmDeleteMessage = "Are you sure that you want to delete this Order?";
+        private readonly string _minusOperation = "Minus";
+        private readonly string _plusOperation = "plus";
         public OrderDetailsViewModel(OrderCard order, INavigation navigation)
         {
             this._navigation = navigation;
@@ -89,8 +94,8 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnDeleteClicked(int restaurantId)
         {
-            var deleteConfirm = await Application.Current.MainPage.DisplayAlert("Delete Order",
-                "Are you sure that you want to delete this Order?", "Yes", "No");
+            var deleteConfirm = await Application.Current.MainPage.DisplayAlert(_deleteAlertTitle,
+                _confirmDeleteMessage, "Yes", "No");
             if (deleteConfirm)
             {
                 var userId = GetUserId();
@@ -100,11 +105,11 @@ namespace Luqmit3ish.ViewModels
                     if (result == true)
                     {
                         await _navigation.PopAsync();
-                        await PopNavigationAsync("The order have been deleted successfully.");
+                        await PopNavigationAsync(_successDeleteMessage);
                     }
                     else
                     {
-                        await PopNavigationAsync("The Order has not been deleted, please try again.");
+                        await PopNavigationAsync(_failDeleteMessage);
                     }
                 }
                 catch (ConnectionException e)
@@ -135,7 +140,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _orderService.UpdateOrderDishCount(orderDish.Id, "Minus");
+                await _orderService.UpdateOrderDishCount(orderDish.Id, _minusOperation);
                 GetData(Order.Id);
 
             }
@@ -165,7 +170,7 @@ namespace Luqmit3ish.ViewModels
         {
             try
             {
-                await _orderService.UpdateOrderDishCount(orderDish.Id, "plus");
+                await _orderService.UpdateOrderDishCount(orderDish.Id, _plusOperation);
                 GetData(Order.Id);
             }
             catch (ConnectionException e)

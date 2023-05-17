@@ -17,7 +17,6 @@ namespace Luqmit3ish.ViewModels
     {
         private INavigation _navigation { get; set; }
         public ICommand AddCommand { protected set; get; }
-        public Command<int> DeleteCommand { protected set; get; }
         public Command<Dish> FoodDetailCommand { protected set; get; }
         private readonly IFoodServices _foodServices;
 
@@ -39,7 +38,6 @@ namespace Luqmit3ish.ViewModels
         {
             this._navigation = navigation;
             AddCommand = new Command(async () => await OnAddClicked());
-            DeleteCommand = new Command<int>(async (int id) => await OnDeleteClicked(id));
             FoodDetailCommand = new Command<Dish>(async (Dish dish) => await OnFrameClicked(dish));
             _foodServices = new FoodServices();
             OnInit();
@@ -128,39 +126,7 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private async Task OnDeleteClicked(int id)
-        {
-            try
-            {
-            var deleteConfirm = await Application.Current.MainPage.DisplayAlert("Delete", "Are you sure that you want to delete this dish?", "Yes", "No");
-            if (deleteConfirm)
-            {
-                await _foodServices.DeleteFood(id);
-                OnInit();
-            }
-            }
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopNavigationAsync(InternetMessage);
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopNavigationAsync(HttpRequestMessage);
-            }
-            catch (NotAuthorizedException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopNavigationAsync(NotAuthorizedMessage);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopNavigationAsync(ExceptionMessage);
-            }
-
-        }
+       
     
     }
 }

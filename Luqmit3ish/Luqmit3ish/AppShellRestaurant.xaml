@@ -4,26 +4,8 @@
        xmlns:local="clr-namespace:Luqmit3ish.Views"
        x:Class="Luqmit3ish.AppShellRestaurant">
 
-    <!--
-        The overall app visual hierarchy is defined here, along with navigation.
-    
-        https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/
-    -->
-    <!--  BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"  -->
     <Shell.Resources>
         <ResourceDictionary>
-            <Style x:Key="BaseStyle" TargetType="Element">
-
-                <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light=White, Dark={StaticResource PrimaryDark}}" />
-                <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryLight}, Dark={StaticResource PrimaryLight}}" />
-                <Setter Property="Shell.TitleColor" Value="{StaticResource PrimaryLight}" />
-                <Setter Property="Shell.DisabledColor" Value="#FFC17A"/>
-                <Setter Property="Shell.UnselectedColor" Value="#FFC17A" />
-                <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={OnPlatform Android=White}, Dark={StaticResource PrimaryDark}}" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="#FFC17A"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#FFC17A"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource PrimaryLight}"/>
-            </Style>
             <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
             <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
         </ResourceDictionary>
@@ -31,14 +13,11 @@
 
     <TabBar>
         <ShellContent Title="Home" Icon="icon_home.png"  Route="RestaurantHomePage"  ContentTemplate="{DataTemplate local:RestaurantHomePage}" />
-        <ShellContent Title="Order" Icon="icon_list.png"  ContentTemplate="{DataTemplate local:RestaurantOrderPage}" />
+        <ShellContent Title="Orders" Icon="icon_list.png"  ContentTemplate="{DataTemplate local:RestaurantOrderPage}" />
         <ShellContent Title="profile" Icon="icon_profile.png" ContentTemplate="{DataTemplate local:settingsPage}" />
     </TabBar>
 
-    <!--
-        If you would like to navigate to this content you can do so by calling
-        await Shell.Current.GoToAsync("//LoginPage");
-    -->
+
     <TabBar>
         <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
     </TabBar>
