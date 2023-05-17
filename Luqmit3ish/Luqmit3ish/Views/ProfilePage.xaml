@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Luqmit3ish.Views.ProfilePage"
@@ -12,7 +12,7 @@
              Shell.TabBarIsVisible="False">
 
     <ContentPage.Content >
-           <StackLayout Margin="0" Style="{StaticResource StackLayoutColor}" >
+           <StackLayout  Margin="0" Style="{StaticResource StackLayoutColor}" >
             <Grid ColumnDefinitions="*,*,*" >
                 <Frame WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" CornerRadius="200" Padding="0" Grid.Column="1" Margin="0,30,0,0">
                     <ffimageloading:CachedImage LoadingPlaceholder="loading.PNG" Source="{Binding UserInfo.Photo}" Aspect="AspectFill" />
@@ -47,7 +47,7 @@
                                                ClearButtonVisibility="WhileEditing"
                                                HorizontalOptions="FillAndExpand"
                                                MaxLength="200"
-                                           FontSize="Medium"
+                                             FontSize="Default"
                                            TextColor="{AppThemeBinding Dark=White}">
                                     <Entry.Behaviors>
                                         <xct:TextValidationBehavior RegexPattern="^[A-Za-z0-9\s]{1,200}$" IsValid="{Binding IsNameValid}"/>
@@ -60,13 +60,13 @@
                         <Label Text="{Binding NameErrorMessage}" TextColor="DarkRed"
                                FontSize="Small" Margin="0,-5,0,0" IsVisible="{Binding NameInvalid}"/>
 
-                            <Frame Style="{StaticResource textFeildFrame}" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand">
-                                <StackLayout Orientation="Horizontal"
+                            <Frame   Style="{StaticResource textFeildFrame}" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand">
+                                <Grid ColumnDefinitions="Auto,Auto,*"
                                                  Margin="0"
                                                  Padding="0">
-                                    <Label Style="{StaticResource LabelColor}" Text="&#xf095;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
-                                <Label Text="Phone: " VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
-                                <Entry Text="{Binding UserInfo.Phone}"
+                                    <Label Grid.Column="0" Grid.Row="0"  Style="{StaticResource LabelColor}" Text="&#xf095;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
+                                <Label Grid.Column="1" Grid.Row="0" Text="Phone: " VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
+                                <Entry Grid.Column="2" Grid.Row="0" Text="{Binding UserInfo.Phone}"
                                                Placeholder="Enter your phone number"
                                                PlaceholderColor="Gray"
                                                Keyboard="Text" 
@@ -74,13 +74,13 @@
                                                ClearButtonVisibility="WhileEditing"
                                                HorizontalOptions="FillAndExpand"
                                                MaxLength="10"
-                                           FontSize="Medium"
+                                             FontSize="Default"
                                            TextColor="{AppThemeBinding Dark=White}">
                                     <Entry.Behaviors>
                                         <xct:TextValidationBehavior RegexPattern="^[0-9]{10}$" IsValid="{Binding IsPhoneValid}"/>
                                     </Entry.Behaviors>
                                 </Entry>
-                                </StackLayout>
+                                </Grid>
                             </Frame>
                         
                         <BoxView Color="{Binding PhoneDivider}" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,0" />
@@ -94,30 +94,32 @@
                                                  Padding="0">
                                     <Label Style="{StaticResource LabelColor}" Text="&#xf3c5;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
                                 <Label Text="Location: " VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
-                                <Picker Title="Select type" FontSize="Medium" 
+                                <Picker Title="Select a city" FontSize="Medium" 
                                         HorizontalOptions="FillAndExpand" Margin="0,-30,0,-30"
                                         SelectedItem="{Binding UserInfo.Location}"
                                         TitleColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"
                                         TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}">
                                     <Picker.Items>
+                                        <x:String>Palestine</x:String>
                                         <x:String>Nablus</x:String>
                                         <x:String>Ramallah</x:String>
                                         <x:String>Jenin</x:String>
+                                        <x:String>Jerico</x:String>
+                                        <x:String>Jerusalem</x:String>
                                         <x:String>Tulkarm</x:String>
-                                        <x:String>khalil</x:String>
+                                        <x:String>Bethlehem</x:String>
+                                        <x:String>Hebron</x:String>
                                     </Picker.Items>
                                 </Picker>
                             </StackLayout>
                             </Frame>
                     <BoxView Color="Gray" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,5"/>
                          <Frame Style="{StaticResource textFeildFrame}" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand" >
-                                <StackLayout Orientation="Horizontal"
-                                                 Margin="0"
-                                                 Padding="0">
-                                    <Label Style="{StaticResource LabelColor}" Text="&#xf073;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
-                                <Label VerticalOptions="Center" Text="Opening Hours: "  FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
+                            <Grid ColumnDefinitions="Auto,Auto,*"  Margin="0"    Padding="0">
+                                <Label  Grid.Column="0" Grid.Row="0" Style="{StaticResource LabelColor}" Text="&#xf073;"  FontFamily="FontAwesomeIcons" FontSize="20" Margin="0,2,0,0" VerticalOptions="Center"/>
+                                <Label  Grid.Column="1" Grid.Row="0" VerticalOptions="Center" Text="Opening Hours: "  FontSize="Medium" FontAttributes="Bold" Style="{StaticResource LabelColor}" />
 
-                                <Entry Text="{Binding UserInfo.OpeningHours}"
+                                <Entry  Grid.Column="2" Grid.Row="0" Text="{Binding UserInfo.OpeningHours}"
                                                Placeholder="ex: 11:00am-11:00pm"
                                                PlaceholderColor="Gray"
                                                Keyboard="Text" 
@@ -125,14 +127,14 @@
                                                ClearButtonVisibility="WhileEditing"
                                                HorizontalOptions="FillAndExpand"
                                                MaxLength="200"
-                                           FontSize="Medium"
+                                           FontSize="15"
                                            TextColor="{AppThemeBinding Dark=White}">
                                     <Entry.Behaviors>
                                         <xct:TextValidationBehavior RegexPattern="^(0?[1-9]|1[0-2]):[0-5][0-9](am|pm)-(0?[1-9]|1[0-2]):[0-5][0-9](am|pm)$" IsValid="{Binding IsOpeningHoursValid}"/>
                                     </Entry.Behaviors>
                                 </Entry>
-                                </StackLayout>
-                            </Frame>
+                            </Grid>
+                        </Frame>
                         
                         <BoxView Color="{Binding OpeningHoursDivider}" HeightRequest="1" HorizontalOptions="Fill" Margin="0,-5,0,0" />
 
