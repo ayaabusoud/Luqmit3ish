@@ -12,7 +12,7 @@ namespace Luqmit3ish.Interfaces
         Task<ObservableCollection<DishCard>> GetSearchCards(string searchRequest, string type);
         Task<Dish> GetFoodById(int food_id);
         Task<bool> UpdateDish(Dish dishRequest);
-        Task<bool> AddNewDish(DishRequest dishRequest);
+        Task<bool> AddNewDish(Dish dishRequest);
         Task<bool> UploadPhoto(string photoPath, int foodId);
         Task<ObservableCollection<DishCard>> GetDishCards();
         Task<ObservableCollection<DishCard>> GetDishCardById(int dishId);

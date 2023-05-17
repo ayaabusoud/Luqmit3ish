@@ -1,7 +1,9 @@
 using Luqmit3ish.Exceptions;
 using Luqmit3ish.Hashing;
+using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
+using Luqmit3ish.Utilities;
 using Luqmit3ish.Views;
 using Rg.Plugins.Popup.Services;
 using System;
@@ -26,20 +28,24 @@ namespace Luqmit3ish.ViewModels
 
         public ICommand ResetPasswordCommand { protected set; get; }
         public ICommand HidePasswordCommand { protected set; get; }
-        public ICommand UnHidePasswordCommand { protected set; get; }
-        public ICommand HideNewPasswordCommand { protected set; get; }
-        public ICommand UnHideNewPasswordCommand { protected set; get; }
+        public ICommand ShowPasswordCommand { protected set; get; }
+        public ICommand HideOldPasswordCommand { protected set; get; }
+        public ICommand ShowOldPasswordCommand { protected set; get; }
 
         private readonly IHasher _hashing;
         private readonly UserServices _userServices;
         private string _email;
+        private const string _samePasswordMessage = "New password cannot be the same as the old password.";
+        private const string _incorrectPassword = "Old password is incorrect. Please try again.";
+        private const string _passwordResetSuccessMessage = "Your password has been successfully reset.";
 
 
-        public ResetPasswordViewModel(INavigation navigation,string email)
+
+        public ResetPasswordViewModel(INavigation navigation, string email)
         {
             this._navigation = navigation;
             ResetPasswordCommand = new Command(async () => await OnResetClicked());
-            UnHidePasswordCommand = new Command(OnUnHidePasswordClicked);
+            ShowPasswordCommand = new Command(OnUnHidePasswordClicked);
             HidePasswordCommand = new Command(OnHidePasswordClicked);
 
             UnHideNewPasswordCommand = new Command(OnUnHideNewPasswordClicked);
@@ -48,47 +54,158 @@ namespace Luqmit3ish.ViewModels
             _email = email;
             _hashing = new PasswordHasher();
 
+            ShowOldPasswordCommand = new Command(OnUnHideOldPasswordClicked);
+            HideOldPasswordCommand = new Command(OnHideOldPasswordClicked);
+            userServices = new UserServices();
+            _email = email;
 
         }
-
-        private void OnUnHidePasswordClicked()
+        private SignUpRequest _userInfo;
+        public SignUpRequest UserInfo
         {
-            _passwordHidden = false;
-            _passwordUnHidden = true;
-            _isPassword = false;
-            OnPropertyChanged(nameof(PasswordHidden));
-            OnPropertyChanged(nameof(PasswordUnHidden));
-            OnPropertyChanged(nameof(IsPassword));
+            get => _userInfo;
+            set => SetProperty(ref _userInfo, value);
         }
+        #region Old Password
+        private bool _isOldPassword = true;
+        public bool IsOldPassword
+        {
+            get => _isOldPassword;
+            set => SetProperty(ref _isOldPassword, value);
+
+        }
+
+        private bool _showOldPassword = false;
+        public bool ShowOldPassword
+        {
+            get => _showOldPassword;
+            set => SetProperty(ref _showOldPassword, value);
+
+        }
+
+        private bool _hideOldPassword = true;
+        public bool HideOldPassword
+        {
+            get => _hideOldPassword;
+            set => SetProperty(ref _hideOldPassword, value);
+
+        }
+
+        #endregion
+
+        #region New Password
+        private bool _isPassword = true;
+        public bool IsPassword
+        {
+            get => _isPassword;
+            set => SetProperty(ref _isPassword, value);
+
+        }
+
+        private bool _showPassword = false;
+        public bool ShowPassword
+        {
+            get => _showPassword;
+            set => SetProperty(ref _showPassword, value);
+
+        }
+
+
+        private bool _hidePassword = true;
+        public bool HidePassword
+        {
+            get => _hidePassword;
+            set => SetProperty(ref _hidePassword, value);
+
+        }
+
+        #endregion
+        #region PasswordValidation
+        private bool _isPasswordValid;
+
+        public bool IsPasswordValid
+        {
+            get => _isPasswordValid;
+            set
+            {
+                SetProperty(ref _isPasswordValid, value);
+
+                if (IsPasswordValid)
+                {
+                    PasswordInvalid = false;
+                    PasswordFrameBorder = PasswordFrameBorderStyle.Transparent;
+                }
+                else
+                {
+                    PasswordInvalid = true;
+                    PasswordFrameBorder = PasswordFrameBorderStyle.Red;
+                }
+
+                OnPropertyChanged(nameof(PasswordInvalid));
+                OnPropertyChanged(nameof(PasswordFrameBorder));
+            }
+        }
+
+        private bool _passwordInvalid = false;
+        public bool PasswordInvalid
+        {
+            get => _passwordInvalid;
+            set
+            {
+                SetProperty(ref _passwordInvalid, value);
+            }
+        }
+
+        private string _passwordErrorMessage = PasswordErrorMessages.PasswordRequirements;
+        public string PasswordErrorMessage
+        {
+            get => _passwordErrorMessage;
+            set
+            {
+                SetProperty(ref _passwordErrorMessage, value);
+            }
+        }
+
+        private string _passwordFrameBorder = PasswordFrameBorderStyle.Transparent;
+        public string PasswordFrameBorder
+        {
+            get => _passwordFrameBorder;
+            set
+            {
+                SetProperty(ref _passwordFrameBorder, value);
+            }
+        }
+
+        #endregion
+
+
 
         private void OnHidePasswordClicked()
         {
-            _passwordHidden = true;
-            _passwordUnHidden = false;
-            _isPassword = true;
-            OnPropertyChanged(nameof(PasswordHidden));
-            OnPropertyChanged(nameof(PasswordUnHidden));
-            OnPropertyChanged(nameof(IsPassword));
+            IsPassword = false;
+            ShowPassword = true;
+            HidePassword = false;
+        }
+        private void OnUnHidePasswordClicked()
+        {
+            IsPassword = true;
+            ShowPassword = false;
+            HidePassword = true;
+
         }
 
-        private void OnUnHideNewPasswordClicked()
+        private void OnHideOldPasswordClicked()
         {
-            _newPasswordHidden = false;
-            _newPasswordUnHidden = true;
-            _isPasswordNew = false;
-            OnPropertyChanged(nameof(NewPasswordHidden));
-            OnPropertyChanged(nameof(NewPasswordUnHidden));
-            OnPropertyChanged(nameof(IsPasswordNew));
+            IsOldPassword = false;
+            ShowOldPassword = true;
+            HideOldPassword = false;
         }
-
-        private void OnHideNewPasswordClicked()
+        private void OnUnHideOldPasswordClicked()
         {
-            _newPasswordHidden = true;
-            _newPasswordUnHidden = false;
-            _isPasswordNew = true;
-            OnPropertyChanged(nameof(NewPasswordHidden));
-            OnPropertyChanged(nameof(NewPasswordUnHidden));
-            OnPropertyChanged(nameof(IsPasswordNew));
+            IsOldPassword = true;
+            ShowOldPassword = false;
+            HideOldPassword = true;
+
         }
 
         public string Email
@@ -101,18 +218,9 @@ namespace Luqmit3ish.ViewModels
         public string OldPassword
         {
             get => _oldPassword;
-            set {
+            set
+            {
                 SetProperty(ref _oldPassword, value);
-                if(string.IsNullOrEmpty(_oldPassword))
-                {
-                    _passwordHidden = false;
-                    OnPropertyChanged(nameof(PasswordHidden));
-                }
-                else
-                {
-                    _passwordHidden = true;
-                    OnPropertyChanged(nameof(PasswordHidden));
-                }
             }
         }
 
@@ -123,95 +231,10 @@ namespace Luqmit3ish.ViewModels
             set
             {
                 SetProperty(ref _newPassword, value);
-                if (string.IsNullOrEmpty(_newPassword))
-                {
-                    _newPasswordHidden = false;
-                    OnPropertyChanged(nameof(NewPasswordHidden));
-
-                }
-                else
-                {
-                    _newPasswordHidden = true;
-                    OnPropertyChanged(nameof(NewPasswordHidden));
-                }
             }
         }
 
-        private Color _passwordFrameColor;
-        public Color PasswordFrameColor
-        {
-            get => _passwordFrameColor;
-            set => SetProperty(ref _passwordFrameColor, value);
-        }
 
-        private bool _passwordUnHidden = false;
-        public bool PasswordUnHidden
-        {
-            get => _passwordUnHidden;
-            set => SetProperty(ref _passwordUnHidden, value);
-
-        }
-
-        private bool _passwordHidden = false;
-        public bool PasswordHidden
-        {
-            get => _passwordHidden;
-            set => SetProperty(ref _passwordHidden, value);
-
-        }
-
-        private bool _newPasswordHidden = false;
-        public bool NewPasswordHidden
-        {
-            get => _newPasswordHidden;
-            set => SetProperty(ref _newPasswordHidden, value);
-        }
-
-        private bool _newPasswordUnHidden = false;
-        public bool NewPasswordUnHidden
-        {
-            get => _newPasswordUnHidden;
-            set => SetProperty(ref _newPasswordUnHidden, value);
-        }
-
-        private bool _isPassword= true;
-        public bool IsPassword
-        {
-            get => _isPassword;
-            set => SetProperty(ref _isPassword, value);
-        }
-
-        private bool _isPasswordNew = true;
-        public bool IsPasswordNew
-        {
-            get => _isPasswordNew;
-            set => SetProperty(ref _isPasswordNew, value);
-        }
-
-        private bool _passwordErrorVisible;
-        public bool PasswordErrorVisible
-        {
-            get => _passwordErrorVisible;
-            set=> SetProperty(ref _passwordErrorVisible, value);
-
-        }
-
-        private bool IsValidPassword(string password)
-        {
-            string passwordPattern = @"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
-            if (string.IsNullOrEmpty(password)) return false;
-            if (Regex.IsMatch(password, passwordPattern))
-            {
-                return true;
-            }
-            return false;
-        }
-        private string _messageError;
-        public string MessageError
-        {
-            get => _messageError;
-            set => SetProperty(ref _messageError, value);
-        }
 
         private async Task OnResetClicked()
         {
@@ -232,48 +255,69 @@ namespace Luqmit3ish.ViewModels
                     return;
                 }
 
-                if (OldPassword.Equals(NewPassword))
+
+                if (await ValidateFields(user))
                 {
-                    _messageError = "New password cannot be the same as the old password.";
-                    _passwordErrorVisible = true;
-                    OnPropertyChanged(nameof(PasswordErrorVisible));
-                    OnPropertyChanged(nameof(MessageError));
-                    return;
+                    bool IsUpdatedPassword = await _userServices.ResetPassword(user.Id, NewPassword);
+                    if (IsUpdatedPassword)
+                    {
+
+                        await _navigation.PopAsync();
+                        await PopNavigationAsync(_passwordResetSuccessMessage);
+                    }
                 }
 
-                if (!IsValidPassword(NewPassword))
-                {
-                    _messageError = "Enter at least 8 characters including one number, one uppercase letter and a special character.";
-                    _passwordErrorVisible = true;
-                    OnPropertyChanged(nameof(PasswordErrorVisible));
-                    OnPropertyChanged(nameof(MessageError));
-                    return;
-                }
-
-                bool IsUpdatedPassword = await _userServices.ResetPassword(user.Id, NewPassword);
-                if (IsUpdatedPassword)
-                {
-                    _passwordErrorVisible = false;
-                    OnPropertyChanged(nameof(PasswordErrorVisible));
-                    await _navigation.PopAsync();
-                    await PopupNavigation.Instance.PushAsync(new PopUp("Your password has been successfully reset."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
-                }
             }
-            catch (ConnectionException )
+            catch (ConnectionException e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "There was a connection error. Please check your internet connection and try again.", "OK");
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(InternetMessage);
             }
-            catch (HttpRequestException )
+            catch (HttpRequestException e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "There was an HTTP request error. Please try again later.", "OK");
-
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(HttpRequestMessage);
             }
-            catch (Exception )
+            catch (NotAuthorizedException e)
             {
-                await App.Current.MainPage.DisplayAlert("Error", "An error occurred. Please try again later.", "OK");
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(NotAuthorizedMessage);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(ExceptionMessage);
             }
         }
+
+        private async Task<bool> ValidateFields(User user)
+        {
+            if (string.IsNullOrEmpty(_oldPassword) || string.IsNullOrEmpty(_newPassword))
+            {
+                await PopNavigationAsync(PasswordErrorMessages.EmptyField);
+                return false;
+            }
+
+            if (!PasswordHasher.VerifyPassword(_oldPassword, user.Password))
+            {
+                await PopNavigationAsync(_incorrectPassword);
+                return false;
+            }
+
+            if (OldPassword.Equals(NewPassword))
+            {
+                await PopNavigationAsync(_samePasswordMessage);
+                return false;
+            }         
+
+            if (!_isPasswordValid)
+            {
+                await PopNavigationAsync(PasswordErrorMessages.InvalidPassword);
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }

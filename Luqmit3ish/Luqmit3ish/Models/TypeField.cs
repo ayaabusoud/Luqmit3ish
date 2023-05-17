@@ -10,18 +10,19 @@ namespace Luqmit3ish.Models
 {
     public class TypeField : INotifyPropertyChanged, ISelectable
     {
+        public ICommand SelectedCommand { get; }
+
         public string Name { get; set; }
         public string IconText { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
-        private bool _isSelected;
 
         public TypeField()
         {
             SelectedCommand = new Command<TypeField>(OnSelected);
         }
-
-        public ICommand SelectedCommand { get; }
-
+        
+        private bool _isSelected;
         public bool IsSelected
         {
             get => _isSelected;
@@ -51,5 +52,4 @@ namespace Luqmit3ish.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-
 }
