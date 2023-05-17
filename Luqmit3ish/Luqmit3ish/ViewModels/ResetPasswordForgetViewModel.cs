@@ -3,18 +3,12 @@ using Luqmit3ish.Interfaces;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
-using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 
@@ -30,7 +24,6 @@ namespace Luqmit3ish.ViewModels
 
 
         public readonly IUserServices _userServices;
-        private string _email;
 
         public ResetPasswordForgetViewModel(INavigation navigation, string email)
         {
@@ -42,6 +35,19 @@ namespace Luqmit3ish.ViewModels
             _email = email;
 
         }
+
+        private string _email;
+        public string Email
+        {
+            get => _email;
+            set
+            {
+                SetProperty(ref _email, value);
+                OnPropertyChanged(nameof(Email));
+            }
+        }
+
+        #region PasswordFieldFeatures
         private void OnUnHidePasswordClicked()
         {
             _passwordHidden = false;
@@ -61,15 +67,6 @@ namespace Luqmit3ish.ViewModels
             OnPropertyChanged(nameof(IsPassword));
             OnPropertyChanged(nameof(PasswordHidden));
             OnPropertyChanged(nameof(PasswordUnHidden));
-        }
-        public string Email
-        {
-            get => _email;
-            set
-            {
-                SetProperty(ref _email, value);
-                OnPropertyChanged(nameof(Email));
-            }
         }
 
         private string _password;
@@ -147,8 +144,6 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-
-
         private bool IsValidPassword(string password)
         {
             string passwordPattern = @"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
@@ -168,7 +163,7 @@ namespace Luqmit3ish.ViewModels
                 SetProperty(ref _passwordUnHidden, value);
             }
         }
-
+#endregion
         private async Task OnResetClicked()
         {
             try
@@ -185,15 +180,11 @@ namespace Luqmit3ish.ViewModels
                     return;
                 }
 
-
-
                 bool IsUpdatedPassword = await _userServices.ForgotPassword(user.Id, Password);
                 if (IsUpdatedPassword)
                 {
                     await _navigation.PushModalAsync(new LoginPage());
-                    await PopupNavigation.Instance.PushAsync(new PopUp("Your password has been successfully reset."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
+                    await PopNavigationAsync("Your password has been successfully reset.");
                 }
 
             }

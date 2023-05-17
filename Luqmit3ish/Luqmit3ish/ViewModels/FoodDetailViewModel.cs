@@ -4,16 +4,10 @@ using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Luqmit3ish.ViewModels
@@ -27,6 +21,17 @@ namespace Luqmit3ish.ViewModels
         public ICommand ProfileCommand { protected set; get; }
         private OrderService _orderService;
 
+
+        public FoodDetailViewModel(DishCard dish, INavigation navigation)
+        {
+            this._navigation = navigation;
+            ProfileCommand = new Command<User>(async (User restaurant) => await OnProfileClicked(restaurant));
+            PlusCommand = new Command<int>(OnPlusClicked);
+            MinusCommand = new Command(OnMinusClicked);
+            ReserveCommand = new Command(async () => await OnReserveClicked());
+            _orderService = new OrderService();
+            this._dishInfo = dish;
+        }
 
         private int _counter = 1;
 
@@ -90,17 +95,6 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        public FoodDetailViewModel(DishCard dish, INavigation navigation)
-        {
-            this._navigation = navigation;
-            ProfileCommand = new Command<User>(async (User restaurant) => await OnProfileClicked(restaurant));
-            PlusCommand = new Command<int>(OnPlusClicked);
-            MinusCommand = new Command(OnMinusClicked);
-            ReserveCommand = new Command<int>(async (int FoodId) => await OnReserveClicked(FoodId));
-            _orderService = new OrderService();
-            this._dishInfo = dish;
-        }
-
        
         private void OnPlusClicked(int quantity)
         {
@@ -142,42 +136,29 @@ namespace Luqmit3ish.ViewModels
         }
 
     
-        private async Task OnReserveClicked(int FoodId)
+        private async Task OnReserveClicked()
         {
             try
             {
-                var id = Preferences.Get("userId", "null");
-                int UserId = int.Parse(id);
+                int UserId = GetUserId();
 
-                Order newOrder = new Order();
-                newOrder.CharId = UserId;
-                newOrder.ResId = _dishInfo.Restaurant.Id;
-                newOrder.DishId = _dishInfo.Id;
-                newOrder.Date = DateTime.Now;
-                newOrder.Quantity = Counter;
-                newOrder.Receive = false;
+                Order newOrder = CreateNewOrder(UserId);
 
                 await _orderService.ReserveOrder(newOrder);
 
                 await _navigation.PopAsync();
-                await PopupNavigation.Instance.PushAsync(new PopUp("Your order has been successfully booked"));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync("Your order has been successfully reserved");
 
             }
             catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(InternetMessage);
             }
             catch (HttpRequestException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(HttpRequestMessage);
             }
             catch (NotAuthorizedException e)
             {
@@ -187,10 +168,19 @@ namespace Luqmit3ish.ViewModels
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(ExceptionMessage);
             }
+        }
+        Order CreateNewOrder(int UserId)
+        {
+            Order newOrder = new Order();
+            newOrder.CharId = UserId;
+            newOrder.ResId = _dishInfo.Restaurant.Id;
+            newOrder.DishId = _dishInfo.Id;
+            newOrder.Date = DateTime.Now;
+            newOrder.Quantity = Counter;
+            newOrder.Receive = false;
+            return newOrder;
         }
     }
 }

@@ -2,12 +2,10 @@ using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
-using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -24,17 +22,10 @@ namespace Luqmit3ish.ViewModels
         public ICommand DoneCommand { protected set; get; }
         public ICommand NotRecievedCommand { protected set; get; }
         public ICommand RecievedCommand { protected set; get; }
-        private IOrderService _orderService;
         public ICommand OrderCommand { protected set; get; }
 
+        private IOrderService _orderService;
 
-        private ObservableCollection<Dish> _dishes;
-
-        public ObservableCollection<Dish> Dishes
-        {
-            get => _dishes;
-            set => SetProperty(ref _dishes, value);
-        }
         public RestaurantOrderViewModel(INavigation navigation)
         {
            _navigation = navigation;
@@ -45,6 +36,15 @@ namespace Luqmit3ish.ViewModels
             _orderService = new OrderService();
             Selected(false);
         }
+
+        private ObservableCollection<Dish> _dishes;
+
+        public ObservableCollection<Dish> Dishes
+        {
+            get => _dishes;
+            set => SetProperty(ref _dishes, value);
+        }
+
         private bool _emptyResult;
 
         public bool EmptyResult
@@ -129,23 +129,17 @@ namespace Luqmit3ish.ViewModels
             catch (ArgumentException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(ExceptionMessage);
             }
             catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(InternetMessage);
             }
             catch (HttpRequestException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(HttpRequestMessage);
             }
             catch (NotAuthorizedException e)
             {
@@ -155,9 +149,7 @@ namespace Luqmit3ish.ViewModels
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(ExceptionMessage);
             }
         }
 
@@ -194,13 +186,11 @@ namespace Luqmit3ish.ViewModels
 
                 Task.Run(async () => {
                 var id = Preferences.Get("userId", null);
-            if (id == null)
+                if (id == null)
                 {
-                await PopupNavigation.Instance.PushAsync(new PopUp("Your login session has been expired."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-                   await _navigation.PushAsync(new LoginPage());
-                    return;
+                        await PopNavigationAsync("Your login session has been expired.");
+                        await _navigation.PushAsync(new LoginPage());
+                        return;
                 }
             var userId = int.Parse(id);
             try
@@ -210,16 +200,12 @@ namespace Luqmit3ish.ViewModels
             catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-            }
+                        await PopNavigationAsync(InternetMessage);
+                    }
             catch (HttpRequestException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(HttpRequestMessage);
             }
             catch (NotAuthorizedException e)
             {
@@ -229,9 +215,7 @@ namespace Luqmit3ish.ViewModels
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(ExceptionMessage);
             }
             if (OrderCards.Count > 0)
             {
