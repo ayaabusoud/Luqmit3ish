@@ -68,18 +68,14 @@ namespace Luqmit3ish.ViewModels
             {
                 Debug.WriteLine(e.Message);
             }
-            if ( Dishes.Count > 0)
+                RemoveEmptyDish();
+
+            if (Dishes.Count > 0)
             {
                 EmptyResult = false;
-                foreach (Dish dish in Dishes)
-                {
-                    if (dish.Quantity == 0)
-                    {
-                        Dishes.Remove(dish);
-                    }
-                }
+                
             }
-            else
+            if(Dishes.Count == 0)
             {
                 EmptyResult = true;
             }
@@ -94,6 +90,18 @@ namespace Luqmit3ish.ViewModels
 
            
         }
+
+        private void RemoveEmptyDish()
+        {
+            foreach (Dish dish in Dishes)
+            {
+                if (dish.Quantity == 0)
+                {
+                    Dishes.Remove(dish);
+                }
+            }
+        }
+
         private async Task OnFrameClicked(Dish dish)
         {
             try

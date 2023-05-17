@@ -26,10 +26,11 @@ namespace Luqmit3ish.ViewModels
         public ICommand DeleteCommand { protected set; get; }
         public ICommand DarkModeCommand { protected set; get; }
         private readonly IUserServices _userServices;
-        public static String RongMessage = "Something went wrong, please try again."; 
-        public static String DeleteSucsessMessage = "The Account have been deleted successfully.";
-        public static String InsureDeleteMessage = "Are you sure that you want to delete Your account?"; 
-        public static String DeleteAccount = "Delete Account";
+        private readonly IOrderService _orderService;
+        private const String _wrongMessage = "Something went wrong, please try again.";
+        private const String _deleteSuccsessMessage = "The Account have been deleted successfully.";
+        private const String _insureDeleteMessage = "Are you sure that you want to delete Your account?"; 
+        private const String _deleteAccount = "Delete Account";
 
 
         public UserSettingsViewModel(INavigation navigation) {
@@ -42,14 +43,21 @@ namespace Luqmit3ish.ViewModels
             _darkTheme = Preferences.Get("DarkTheme", false);
             _swichColor = _darkTheme ? Color.DarkOrange : Color.White;
             _userServices = new UserServices();
-              OnInit();
+            _orderService = new OrderService();
+            OnInit();
         }
 
         private async Task OnRestaurantClicked()
         {
             try
             {
-                await _navigation.PushAsync(new RestaurantOfTheMonth());
+                DishesOrder bestRestaurant = await _orderService.GetBestRestaurant();
+                if(bestRestaurant == null)
+                {
+                    await PopNavigationAsync("There is no data available, try again later.");
+                    return;
+                }
+                await _navigation.PushAsync(new RestaurantOfTheMonth(bestRestaurant));
 
             }
             catch (ArgumentException e)
@@ -144,7 +152,7 @@ namespace Luqmit3ish.ViewModels
 
         private async Task OnDeleteAccountClicked(int id)
         {
-            var deleteConfirm = await Application.Current.MainPage.DisplayAlert(DeleteAccount, InsureDeleteMessage , "Yes", "No");
+            var deleteConfirm = await Application.Current.MainPage.DisplayAlert(_deleteAccount, _insureDeleteMessage , "Yes", "No");
             if (deleteConfirm)
             {
                 try
@@ -154,14 +162,14 @@ namespace Luqmit3ish.ViewModels
                     {
                         Preferences.Clear();
                         Application.Current.MainPage = new LoginPage();
-                        await PopupNavigation.Instance.PushAsync(new PopUp(DeleteSucsessMessage));
+                        await PopupNavigation.Instance.PushAsync(new PopUp(_deleteSuccsessMessage));
                         Thread.Sleep(3000);
                         await PopupNavigation.Instance.PopAsync();
 
                     }
                     else
                     {
-                        await PopNavigationAsync(RongMessage);
+                        await PopNavigationAsync(_wrongMessage);
                     }
                 }
                 catch (ConnectionException e)

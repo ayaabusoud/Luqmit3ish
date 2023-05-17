@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 using Rg.Plugins.Popup.Services;
 using System.Threading;
 using Luqmit3ish.Views;
@@ -49,7 +48,7 @@ namespace Luqmit3ish.ViewModels
             string id = Preferences.Get("userId", null);
             if (string.IsNullOrEmpty(id))
             {
-                throw new EmptyIdException("The user id is empty.");
+                throw new EmptyIdException("The user id does not exist.");
             }
             return int.Parse(id);
         }
@@ -59,7 +58,7 @@ namespace Luqmit3ish.ViewModels
             string email = Preferences.Get("userEmail", null);
             if (string.IsNullOrEmpty(email))
             {
-                throw new EmailNotFoundException("Email not found in preferences.");
+                throw new EmailNotFoundException("Email does not exist.");
             }
             return email;
         }

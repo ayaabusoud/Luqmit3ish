@@ -116,11 +116,12 @@ namespace Luqmit3ish.ViewModels
                                 EmptyResult = false;
                                 RemoveEmptyDish();
                             }
-                            else
+                            if (DishCards.Count == 0)
                             {
                                 EmptyResult = true;
                                 Title = _noFilterTitle;
                                 Description = _noFilterDescription ;
+                                OnPropertyChanged(nameof(EmptyResult));
                             }
                         }
                         else
@@ -131,12 +132,14 @@ namespace Luqmit3ish.ViewModels
                             {
                                 EmptyResult = false;
                                 RemoveEmptyDish();
+                                OnPropertyChanged(nameof(EmptyResult));
                             }
                             else
                             {
                                 EmptyResult = true;
                                 Title = _noFoodTitle;
                                 Description = _noFoodDescription;
+                                OnPropertyChanged(nameof(EmptyResult));
                             }
                         }
                     }

@@ -6,7 +6,7 @@
               Style="{StaticResource ContentPageColor}">
     <ContentPage>
         <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-            <Image Source="https://luqmit3ish2.blob.core.windows.net/photos/1_FoodWaste.png"  
+            <Image Source="https://luqmit3ish7.blob.core.windows.net/photos/1_FoodWaste.png"  
                    WidthRequest="300" />
             <Label Text="1/3 of food is wasted!" HorizontalTextAlignment="Center"
                    FontAttributes="Bold"  Style="{StaticResource LabelColor}" FontSize="Title"/>
@@ -17,7 +17,7 @@
 
     <ContentPage>
         <StackLayout Margin="20,0" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-            <Image Source="https://luqmit3ish2.blob.core.windows.net/photos/Donation2.png"
+            <Image Source="https://luqmit3ish7.blob.core.windows.net/photos/Donation2.png"
                    HorizontalOptions="Fill" />
             <Label Text="Fight Hunger And Save &#10; Food With Us" HorizontalTextAlignment="Center" 
                    FontSize="25" FontAttributes="Bold"  Style="{StaticResource LabelColor}" />

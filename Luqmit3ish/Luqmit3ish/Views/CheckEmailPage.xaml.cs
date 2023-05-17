@@ -16,7 +16,7 @@ namespace Luqmit3ish.Views
         public CheckEmailPage(string Email)
         {
             InitializeComponent();
-            this.BindingContext = new CheckEmailViewModel(Navigation,Email);
+            this.BindingContext = new CheckEmailViewModel(Email);
         }
     }
 }

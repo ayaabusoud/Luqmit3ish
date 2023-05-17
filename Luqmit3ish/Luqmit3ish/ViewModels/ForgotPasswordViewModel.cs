@@ -1,9 +1,8 @@
+using Luqmit3ish.Interfaces;
+using Luqmit3ish.Services;
 using Luqmit3ish.Views;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -13,16 +12,15 @@ namespace Luqmit3ish.ViewModels
    
     class ForgotPasswordViewModel :ViewModelBase
     {
-        private INavigation _navigation { get; set; }
-
         public ICommand SendEmailCommand { protected set; get; }
         public ICommand LoginCommand { protected set; get; }
+        private IUserServices _userService;
 
-        public ForgotPasswordViewModel(INavigation navigation)
+        public ForgotPasswordViewModel()
         {
-            this._navigation = navigation;
-            SendEmailCommand = new Command(OnSendEmailClicked);
-            LoginCommand = new Command( OnLoginClicked);
+            SendEmailCommand = new Command(async () => await OnSendEmailClicked());
+            LoginCommand = new Command(OnLoginClicked);
+            _userService = new UserServices();
         }
         private string _email;
         public string Email
@@ -31,10 +29,16 @@ namespace Luqmit3ish.ViewModels
             set => SetProperty(ref _email, value);
         }
 
-        private void OnSendEmailClicked()
+        private async Task OnSendEmailClicked()
         {
             try
             {
+                var user = await _userService.GetUserByEmail(Email);
+                if(user == null)
+                {
+                    await PopNavigationAsync("The email you have entered is incorrect.");
+                    return;
+                }
                 Application.Current.MainPage = new CheckEmailPage(Email);
 
             }

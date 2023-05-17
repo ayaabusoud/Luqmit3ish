@@ -2,13 +2,11 @@ using Luqmit3ish.Exceptions;
 using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Views;
-using Rg.Plugins.Popup.Services;
 using System;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -26,44 +24,8 @@ namespace Luqmit3ish.ViewModels
         public ICommand LoginCommand { get; }
         public ICommand HidePasswordCommand { protected set; get; }
         public ICommand ShowPasswordCommand { protected set; get; }
-
-
-
-        private bool _isPassword = true;
-        public bool IsPassword
-        {
-            get => _isPassword;
-            set => SetProperty(ref _isPassword, value);
-
-        }
-
-        private bool _showPassword = false;
-        public bool ShowPassword
-        {
-            get => _showPassword;
-            set => SetProperty(ref _showPassword, value);
-
-        }
-        private bool _hidePassword = true;
-        public bool HidePassword
-        {
-            get => _hidePassword;
-            set => SetProperty(ref _hidePassword, value);
-
-        }
-        private void OnHidePasswordClicked()
-        {
-            IsPassword = false;
-            ShowPassword = true;
-            HidePassword = false;
-        }
-        private void OnUnHidePasswordClicked()
-        {
-            IsPassword = true;
-            ShowPassword = false;
-            HidePassword = true;
-        }
         private UserServices _userServices;
+
         public LoginViewModel(INavigation navigation)
         {
             _navigation = navigation;
@@ -73,6 +35,86 @@ namespace Luqmit3ish.ViewModels
             ShowPasswordCommand = new Command(OnUnHidePasswordClicked);
             HidePasswordCommand = new Command(OnHidePasswordClicked);
             _userServices = new UserServices();
+        }
+
+        private bool _loginButtonEnable = false;
+        public bool LoginButtonEnable
+        {
+            get => _loginButtonEnable;
+            set => SetProperty(ref _loginButtonEnable, value);
+        }
+        private async void OnLoginClicked()
+        {
+            LoginRequest loginRequest = new LoginRequest()
+            {
+                Email = _email,
+                Password = _password
+            };
+            await CanLogin(loginRequest);
+        }
+        public async Task<bool> CanLogin(LoginRequest loginRequest)
+        {
+            try
+            {
+                bool hasAccount = await _userServices.Login(loginRequest);
+                if (hasAccount)
+                {
+
+                    string token = Preferences.Get("Token", string.Empty);
+                    string userId = string.Empty;
+                    string userEmail = string.Empty;
+                    string userType = string.Empty;
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+                        JwtSecurityToken jwtToken = handler.ReadJwtToken(token);
+
+                        userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "nameid")?.Value;
+                        userEmail = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+                        userType = jwtToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
+                    }
+
+
+                    Preferences.Set("userEmail", userEmail);
+                    Preferences.Set("userId", userId);
+                    if (userType.Equals("Restaurant"))
+                    {
+                        Application.Current.MainPage = new AppShellRestaurant();
+
+                    }
+                    else
+                    {
+                        Application.Current.MainPage = new AppShellCharity();
+                    }
+                    return true;
+                }
+                await PopNavigationAsync("You have entered an invalid username or password.");
+                return false;
+            }
+            catch (ArgumentException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(ExceptionMessage);
+                return false;
+            }
+            catch (ConnectionException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(InternetMessage);
+                return false;
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(HttpRequestMessage);
+                return false;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(ExceptionMessage);
+                return false;
+            }
         }
 
         private void OnForgotPassClicked()
@@ -107,96 +149,7 @@ namespace Luqmit3ish.ViewModels
             }
         }
 
-        private async void OnLoginClicked()
-        {
-            LoginRequest loginRequest = new LoginRequest()
-            {
-                Email = _email,
-                Password = _password
-            };
-            await CanLogin(loginRequest);
-        }
-        public async Task<bool> CanLogin(LoginRequest loginRequest)
-        {
-            try
-            {
-                bool hasAccount = await _userServices.Login(loginRequest);
-                if (hasAccount)
-                {
-                   
-                    string token = Preferences.Get("Token", string.Empty);
-                    string userId = string.Empty;
-                    string userEmail= string.Empty;
-                    string userType= string.Empty;
-                    if (!string.IsNullOrEmpty(token))
-                    {
-                        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-                        JwtSecurityToken jwtToken = handler.ReadJwtToken(token);
-
-                        // access the token claims
-                         userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "nameid")?.Value;
-                         userEmail = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
-                         userType = jwtToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
-                    }
-
-                    
-                    Preferences.Set("userEmail", userEmail);
-                    Preferences.Set("userId", userId);
-                    if (userType.Equals("Restaurant"))
-                    {
-                        Application.Current.MainPage = new AppShellRestaurant();
-                        
-                    }
-                    else
-                    {
-                        Application.Current.MainPage = new AppShellCharity();
-                    }
-                    return true;
-                }
-                await PopupNavigation.Instance.PushAsync(new PopUp("You have entered an invalid username or password."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-                return false;
-            }
-            catch (ArgumentException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-                return false;
-            }
-            catch (ConnectionException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-                return false;
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-                return false;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
-                return false;
-            }
-        }
-        private bool _loginButtonEnable = false;
-        public bool LoginButtonEnable
-        {
-            get => _loginButtonEnable;
-            set => SetProperty(ref _loginButtonEnable, value);
-        }
+        #region InputFields
         private string _email;
         public string Email
         {
@@ -239,5 +192,44 @@ namespace Luqmit3ish.ViewModels
 
             }
         }
+        #endregion
+        #region PasswordFeatures
+
+        private bool _isPassword = true;
+        public bool IsPassword
+        {
+            get => _isPassword;
+            set => SetProperty(ref _isPassword, value);
+
+        }
+
+        private bool _showPassword = false;
+        public bool ShowPassword
+        {
+            get => _showPassword;
+            set => SetProperty(ref _showPassword, value);
+
+        }
+        private bool _hidePassword = true;
+        public bool HidePassword
+        {
+            get => _hidePassword;
+            set => SetProperty(ref _hidePassword, value);
+
+        }
+        private void OnHidePasswordClicked()
+        {
+            IsPassword = false;
+            ShowPassword = true;
+            HidePassword = false;
+        }
+        private void OnUnHidePasswordClicked()
+        {
+            IsPassword = true;
+            ShowPassword = false;
+            HidePassword = true;
+        }
+        #endregion
+
     }
 }
