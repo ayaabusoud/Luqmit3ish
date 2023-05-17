@@ -27,6 +27,9 @@ namespace Luqmit3ish.Services
         private readonly string _receive = Constants.BaseUrl + "api/";
         private readonly string _bestRestaurantUrl = Constants.BaseUrl + "BestRestaurant";
 
+        private const string NoInternetConnectionMessage = "There is no internet connection";
+        private const string NotAuthorizedMessage = "You are not authorized to do this operation";
+
         private IConnection _connection;
 
         public OrderService()
@@ -39,7 +42,7 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
@@ -47,7 +50,7 @@ namespace Luqmit3ish.Services
                 if (string.IsNullOrEmpty(token))
                 {
                     _httpClient.DefaultRequestHeaders.Authorization = null;
-                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                    throw new NotAuthorizedException(NotAuthorizedMessage);
                 }
                 else
                 {
@@ -73,7 +76,7 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
@@ -81,7 +84,7 @@ namespace Luqmit3ish.Services
                 if (string.IsNullOrEmpty(token))
                 {
                     _httpClient.DefaultRequestHeaders.Authorization = null;
-                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                    throw new NotAuthorizedException(NotAuthorizedMessage);
                 }
                 else
                 {
@@ -103,7 +106,7 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
@@ -126,7 +129,7 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
@@ -134,7 +137,7 @@ namespace Luqmit3ish.Services
                 if (string.IsNullOrEmpty(token))
                 {
                     _httpClient.DefaultRequestHeaders.Authorization = null;
-                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                    throw new NotAuthorizedException(NotAuthorizedMessage);
                 }
                 else
                 {
@@ -159,7 +162,7 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
@@ -167,7 +170,7 @@ namespace Luqmit3ish.Services
                 if (string.IsNullOrEmpty(token))
                 {
                     _httpClient.DefaultRequestHeaders.Authorization = null;
-                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                    throw new NotAuthorizedException(NotAuthorizedMessage);
                 }
                 else
                 {
@@ -202,13 +205,13 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             string token = Preferences.Get("Token", string.Empty);
             if (string.IsNullOrEmpty(token))
             {
                 _httpClient.DefaultRequestHeaders.Authorization = null;
-                throw new NotAuthorizedException("You are not Authorized to do this operation");
+                throw new NotAuthorizedException(NotAuthorizedMessage);
             }
             else
             {
@@ -236,7 +239,7 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
@@ -244,7 +247,7 @@ namespace Luqmit3ish.Services
                 if (string.IsNullOrEmpty(token))
                 {
                     _httpClient.DefaultRequestHeaders.Authorization = null;
-                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                    throw new NotAuthorizedException(NotAuthorizedMessage);
                 }
                 else
                 {
@@ -268,7 +271,7 @@ namespace Luqmit3ish.Services
         {
             if (!_connection.CheckInternetConnection())
             {
-                throw new ConnectionException("There is no internet connection");
+                throw new ConnectionException(NoInternetConnectionMessage);
             }
             try
             {
@@ -276,7 +279,7 @@ namespace Luqmit3ish.Services
                 if (string.IsNullOrEmpty(token))
                 {
                     _httpClient.DefaultRequestHeaders.Authorization = null;
-                    throw new NotAuthorizedException("You are not Authorized to do this operation");
+                    throw new NotAuthorizedException(NotAuthorizedMessage);
                 }
                 else
                 {

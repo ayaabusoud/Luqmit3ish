@@ -26,7 +26,13 @@ namespace Luqmit3ish.ViewModels
         public ICommand ShowPasswordCommand { protected set; get; }
         private readonly UserServices userServices;
 
-      
+        private const string FillFieldsMessage = "Please fill all the fields.";
+        private const string ValidFieldsMessage = "Please enter valid fields before continue.";
+        private const string EmailExistsMessage = "The email is already exists.";
+
+        private const string ValidFrameBorderColor = "Transparent";
+        private const string InValidFrameBorderColor = "DarkRed";
+
         #region Password
         private bool _isPassword = true;
         public bool IsPassword
@@ -71,7 +77,6 @@ namespace Luqmit3ish.ViewModels
             IsPassword = true;
             ShowPassword = false;
             HidePassword = true;
-
         }
 
         public SignupViewModel(INavigation navigation)
@@ -85,6 +90,25 @@ namespace Luqmit3ish.ViewModels
             UserInfo = new SignUpRequest();
         }
 
+        private void UpdateFieldValidity(ref bool isFieldValid, ref bool fieldInvalid, ref string fieldFrameBorder, params string[] propertyNames)
+        {
+            if (isFieldValid)
+            {
+                fieldInvalid = false;
+                fieldFrameBorder = ValidFrameBorderColor;
+            }
+            else
+            {
+                fieldInvalid = true;
+                fieldFrameBorder = InValidFrameBorderColor;
+            }
+
+            foreach (var propertyName in propertyNames)
+            {
+                OnPropertyChanged(propertyName);
+            }
+        }
+
         #region Name Validation
         private bool _isNameValid;
         public bool IsNameValid
@@ -92,21 +116,8 @@ namespace Luqmit3ish.ViewModels
             get => _isNameValid;
             set
             {
-
                 SetProperty(ref _isNameValid, value);
-                if (IsNameValid)
-                {
-                    _nameInvalid = false;
-                    _nameFrameBorder = "Transparent";
-                }
-                else
-                {
-                    _nameInvalid = true;
-                    _nameFrameBorder = "Red";
-                }
-                OnPropertyChanged(nameof(NameInvalid));
-                OnPropertyChanged(nameof(NameFrameBorder));
-
+                UpdateFieldValidity(ref _isNameValid, ref _nameInvalid, ref _nameFrameBorder, nameof(IsNameValid), nameof(NameInvalid), nameof(NameFrameBorder));
             }
         }
         private bool _nameInvalid = false;
@@ -116,7 +127,6 @@ namespace Luqmit3ish.ViewModels
             set
             {
                 SetProperty(ref _nameInvalid, value);
-
             }
         }
         private string _nameErrorMessage = "Please enter a valid name without symbols.";
@@ -127,17 +137,13 @@ namespace Luqmit3ish.ViewModels
             {
                 SetProperty(ref _nameErrorMessage, value);
             }
-
         }
 
-        private string _nameFrameBorder = "Transparent";
+        private string _nameFrameBorder = ValidFrameBorderColor;
         public string NameFrameBorder
         {
             get => _nameFrameBorder;
-            set
-            {
-                SetProperty(ref _nameFrameBorder, value);
-            }
+            set => SetProperty(ref _nameFrameBorder, value);
         }
 
         #endregion
@@ -149,49 +155,28 @@ namespace Luqmit3ish.ViewModels
             get => _isEmailValid;
             set
             {
-
                 SetProperty(ref _isEmailValid, value);
-                if (IsEmailValid)
-                {
-                    _emailInValid = false;
-                    _emailFrameBorder = "Transparent";
-                }
-                else
-                {
-                    _emailInValid = true;
-                    _emailFrameBorder = "Red";
-                }
-                OnPropertyChanged(nameof(EmailInValid));
-                OnPropertyChanged(nameof(EmailFrameBorder));
+                UpdateFieldValidity(ref _isEmailValid, ref _emailInValid, ref _emailFrameBorder, nameof(IsEmailValid), nameof(_emailFrameBorder), nameof(EmailFrameBorder),nameof(EmailInValid));
             }
         }
         private bool _emailInValid = false;
         public bool EmailInValid
         {
             get => _emailInValid;
-            set
-            {
-                SetProperty(ref _emailInValid, value);
-
-            }
+            set => SetProperty(ref _emailInValid, value);
         }
         private string _emailErrorMessage = "Please enter a valid email";
         public string EmailErrorMessage
         {
             get => _emailErrorMessage;
-            set
-            {
-                SetProperty(ref _emailErrorMessage, value);
-            }
+            set => SetProperty(ref _emailErrorMessage, value);
+            
         }
         private string _emailFrameBorder = "Transparent";
         public string EmailFrameBorder
         {
             get => _emailFrameBorder;
-            set
-            {
-                SetProperty(ref _emailFrameBorder, value);
-            }
+            set => SetProperty(ref _emailFrameBorder, value);
         }
         #endregion
 
@@ -202,51 +187,28 @@ namespace Luqmit3ish.ViewModels
             get => _isPasswordValid;
             set
             {
-
                 SetProperty(ref _isPasswordValid, value);
-                if (IsPasswordValid)
-                {
-                    _passwordInvalid = false;
-                    _passwordFrameBorder = "Transparent";
-                }
-                else
-                {
-                    _passwordInvalid = true;
-                    _passwordFrameBorder = "Red";
-                }
-                OnPropertyChanged(nameof(PasswordInvalid));
-                OnPropertyChanged(nameof(PasswordFrameBorder));
+                UpdateFieldValidity(ref _isPasswordValid,ref _passwordInvalid,ref _passwordFrameBorder, nameof(PasswordInvalid), nameof(PasswordFrameBorder));  
             }
         }
         private bool _passwordInvalid = false;
         public bool PasswordInvalid
         {
             get => _passwordInvalid;
-            set
-            {
-                SetProperty(ref _passwordInvalid, value);
-
-            }
+            set => SetProperty(ref _passwordInvalid, value);
         }
         private string _passwordErrorMessage = "Enter at least 8 characters including one number, one uppercase letter and a special character.";
         public string PasswordErrorMessage
         {
             get => _passwordErrorMessage;
-            set
-            {
-                SetProperty(ref _passwordErrorMessage, value);
-            }
-
+            set => SetProperty(ref _passwordErrorMessage, value);
         }
 
-        private string _passwordFrameBorder = "Transparent";
+        private string _passwordFrameBorder = ValidFrameBorderColor;
         public string PasswordFrameBorder
         {
             get => _passwordFrameBorder;
-            set
-            {
-                SetProperty(ref _passwordFrameBorder, value);
-            }
+            set => SetProperty(ref _passwordFrameBorder, value);
         }
 
         #endregion
@@ -258,106 +220,74 @@ namespace Luqmit3ish.ViewModels
             get => _isPhoneValid;
             set
             {
-
                 SetProperty(ref _isPhoneValid, value);
-                if (IsPhoneValid)
-                {
-                    _phoneInvalid = false;
-                    _phoneFrameBorder = "Transparent";
-                }
-                else
-                {
-                    _phoneInvalid = true;
-                    _phoneFrameBorder = "Red";
-                }
-                OnPropertyChanged(nameof(PhoneInvalid));
-                OnPropertyChanged(nameof(PhoneFrameBorder));
+                UpdateFieldValidity(ref _isPhoneValid, ref _phoneInvalid, ref _phoneFrameBorder, nameof(PhoneInvalid), nameof(PhoneFrameBorder));
             }
         }
         private bool _phoneInvalid = false;
         public bool PhoneInvalid
         {
             get => _phoneInvalid;
-            set
-            {
-                SetProperty(ref _phoneInvalid, value);
-
-            }
+            set => SetProperty(ref _phoneInvalid, value);
         }
         private string _phoneErrorMessage = "Please enter a valid phone number.";
         public string PhoneErrorMessage
         {
             get => _phoneErrorMessage;
-            set
-            {
-                SetProperty(ref _phoneErrorMessage, value);
-            }
-
+            set => SetProperty(ref _phoneErrorMessage, value);
         }
 
-        private string _phoneFrameBorder = "Transparent";
+        private string _phoneFrameBorder = ValidFrameBorderColor;
         public string PhoneFrameBorder
         {
             get => _phoneFrameBorder;
-            set
-            {
-                SetProperty(ref _phoneFrameBorder, value);
-            }
+            set => SetProperty(ref _phoneFrameBorder, value);
         }
-
         #endregion
 
         private bool CheckEmptyFields()
         {
-            if (string.IsNullOrEmpty(_userInfo.Email) || string.IsNullOrEmpty(_userInfo.Type) || string.IsNullOrEmpty(_userInfo.Name)
-                    || string.IsNullOrEmpty(_userInfo.Password) || string.IsNullOrEmpty(_userInfo.Phone))
-            {
-                return true;
-            }
-            return false;
+            return (
+                string.IsNullOrEmpty(_userInfo.Email) ||
+                string.IsNullOrEmpty(_userInfo.Type) ||
+                string.IsNullOrEmpty(_userInfo.Name) ||
+                string.IsNullOrEmpty(_userInfo.Password) ||
+                string.IsNullOrEmpty(_userInfo.Phone)
+            );
         }
 
         private bool ValidateFields()
         {
-            if (_emailInValid || _passwordInvalid || _phoneInvalid)
-            {
-                return true;
-            }
-            return false;
+            return (_emailInValid || _passwordInvalid || _phoneInvalid) ;
         }
+
         private bool CheckEmailExistent(ObservableCollection<User> users)
         {
-                if (!Object.ReferenceEquals(users, null))
+            if (!Object.ReferenceEquals(users, null))
+            {
+                foreach (User user in users)
                 {
-                    foreach (User user in users)
+                    if (user.Email == _userInfo.Email)
                     {
-                        if (user.Email == _userInfo.Email)
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
-                return false;
-
+            }
+            return false;
         }
 
         private async Task OnSignupClicked()
         {
             try
             {
-
                 if (CheckEmptyFields())
                 {
-                    await PopupNavigation.Instance.PushAsync(new PopUp("Please fill all the fields."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
+                    await PopNavigationAsync(FillFieldsMessage);
                     return;
                 }
                 if (ValidateFields())
                 {
-                    await PopupNavigation.Instance.PushAsync(new PopUp("Please enter valid fields before continue."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
+                    await PopNavigationAsync(ValidFieldsMessage);
                     return;
                 }
 
@@ -365,35 +295,40 @@ namespace Luqmit3ish.ViewModels
 
                 if (CheckEmailExistent(users))
                 {
-                    await PopupNavigation.Instance.PushAsync(new PopUp("The email is already exists."));
-                    Thread.Sleep(3000);
-                    await PopupNavigation.Instance.PopAsync();
+                    await PopNavigationAsync(EmailExistsMessage);
                     return;
                 }
-                
-                    Application.Current.MainPage = new VerificationPage(_userInfo);
-                
+                Application.Current.MainPage = new VerificationPage(_userInfo);
             }
             catch (ConnectionException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Please Check your internet connection."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(InternetMessage);
             }
             catch (HttpRequestException e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(HttpRequestMessage);
+            }
+            catch (EmptyIdException e)
+            {
+                Debug.WriteLine(e.Message);
+                EndSession();
+            }
+            catch (EmailNotFoundException e)
+            {
+                Debug.WriteLine(e.Message);
+                EndSession();
+            }
+            catch (NotAuthorizedException e)
+            {
+                Debug.WriteLine(e.Message);
+                await PopNavigationAsync(NotAuthorizedMessage);
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                await PopupNavigation.Instance.PushAsync(new PopUp("Something went wrong, please try again."));
-                Thread.Sleep(3000);
-                await PopupNavigation.Instance.PopAsync();
+                await PopNavigationAsync(ExceptionMessage);
             }
         }
 
@@ -402,44 +337,44 @@ namespace Luqmit3ish.ViewModels
             try
             {
                 await _navigation.PushModalAsync(new LoginPage());
-
-            }
-            catch (ArgumentException e)
-            {
-                Debug.WriteLine(e.Message);
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+                await PopNavigationAsync(ExceptionMessage);
             }
         }
 
         private async Task<ObservableCollection<User>> GetUsers()
         {
-            
-                try
-                {
-                    return await userServices.GetUsers();
-                }
-                catch (ConnectionException e)
-                {
-                Debug.WriteLine(e.Message);
-                return null;
-                   
-                }
-                catch (HttpRequestException e)
-                {
-                Debug.WriteLine(e.Message);
-                return null;
-                }
-                catch (Exception e)
-                {
-                Debug.WriteLine(e.Message);
-                return null;
+            try
+            {
+                return await userServices.GetUsers();
             }
-
-            
+            catch (ConnectionException e)
+            {
+                throw new ConnectionException(e.Message);
+            }
+            catch (HttpRequestException e)
+            {
+                throw new HttpRequestException(e.Message);
+            }
+            catch (EmptyIdException e)
+            {
+                throw new EmptyIdException(e.Message);
+            }
+            catch (EmailNotFoundException e)
+            {
+                throw new EmailNotFoundException(e.Message);
+            }
+            catch (NotAuthorizedException e)
+            {
+                throw new NotAuthorizedException(e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
-    
     }
 }
