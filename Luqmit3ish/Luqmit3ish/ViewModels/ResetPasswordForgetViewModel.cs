@@ -4,12 +4,18 @@ using Luqmit3ish.Models;
 using Luqmit3ish.Services;
 using Luqmit3ish.Utilities;
 using Luqmit3ish.Views;
+using Rg.Plugins.Popup.Services;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 
@@ -26,7 +32,6 @@ namespace Luqmit3ish.ViewModels
         public ICommand UnHidePasswordCommand { protected set; get; }
 
         public readonly IUserServices _userServices;
-
         private string _email;
         private const string _passwordResetSuccessMessage = "Your password has been successfully reset.";
 
@@ -43,30 +48,8 @@ namespace Luqmit3ish.ViewModels
             _userServices = new UserServices();
             _email = email;
         }
+
         #endregion
-
-
-        private string _email;
-        public string Email
-        {
-            get => _email;
-            set
-            {
-                SetProperty(ref _email, value);
-                OnPropertyChanged(nameof(Email));
-            }
-        }
-
-        #region PasswordFieldFeatures
-        private void OnUnHidePasswordClicked()
-        {
-            _passwordHidden = false;
-            _passwordUnHidden = true;
-            _isPassword = false;
-            OnPropertyChanged(nameof(IsPassword));
-            OnPropertyChanged(nameof(PasswordHidden));
-            OnPropertyChanged(nameof(PasswordUnHidden));
-
 
         #region Password Properties
 
@@ -162,7 +145,7 @@ namespace Luqmit3ish.ViewModels
             ShowPassword = false;
             HidePassword = true;
         }
-#endregion
+
         private async Task OnResetClicked()
         {
             try

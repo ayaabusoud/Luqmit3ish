@@ -31,7 +31,8 @@ namespace Luqmit3ish.ViewModels
         public ICommand ShowPasswordCommand { protected set; get; }
         public ICommand HideOldPasswordCommand { protected set; get; }
         public ICommand ShowOldPasswordCommand { protected set; get; }
-
+        public ICommand UnHideNewPasswordCommand { protected set; get; }
+        public ICommand HideNewPasswordCommand { protected set; get; }
         private readonly IHasher _hashing;
         private readonly UserServices _userServices;
         private string _email;
@@ -48,15 +49,14 @@ namespace Luqmit3ish.ViewModels
             ShowPasswordCommand = new Command(OnUnHidePasswordClicked);
             HidePasswordCommand = new Command(OnHidePasswordClicked);
 
-            UnHideNewPasswordCommand = new Command(OnUnHideNewPasswordClicked);
-            HideNewPasswordCommand = new Command(OnHideNewPasswordClicked);
+           
             _userServices = new UserServices();
             _email = email;
             _hashing = new PasswordHasher();
 
             ShowOldPasswordCommand = new Command(OnUnHideOldPasswordClicked);
             HideOldPasswordCommand = new Command(OnHideOldPasswordClicked);
-            userServices = new UserServices();
+            _userServices = new UserServices();
             _email = email;
 
         }
@@ -248,10 +248,7 @@ namespace Luqmit3ish.ViewModels
                 }
                 if (!_hashing.VerifyPassword(_oldPassword, user.Password))
                 {
-                    _messageError = "Old password is incorrect. Please try again.";
-                    _passwordErrorVisible = true;
-                    OnPropertyChanged(nameof(PasswordErrorVisible));
-                    OnPropertyChanged(nameof(MessageError));
+                    await PopNavigationAsync("old password is incorrect");
                     return;
                 }
 
@@ -298,7 +295,7 @@ namespace Luqmit3ish.ViewModels
                 return false;
             }
 
-            if (!PasswordHasher.VerifyPassword(_oldPassword, user.Password))
+            if (!_hashing.VerifyPassword(_oldPassword, user.Password))
             {
                 await PopNavigationAsync(_incorrectPassword);
                 return false;
