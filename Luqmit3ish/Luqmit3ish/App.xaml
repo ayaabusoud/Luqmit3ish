@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="Luqmit3ish.App">
+
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryLight">#F97515</Color>
+            <Color x:Key="PrimaryDark">#212121</Color>
+            <Color x:Key="BackgroundLight">#F9F9F9</Color> 
+            <Color x:Key="BackgroundDark">#121212</Color>
+            <Color x:Key="SecondaryLight">#429ebd</Color>
+            <Color x:Key="FrameBackGroundLight">white</Color>
+            <Color x:Key="FrameBackGroundDark">#212121</Color>
+            <Color x:Key="TextColorLight">Black</Color>
+            <Color x:Key="TextColorDark">White</Color>
+            <Color x:Key="GreenColor">#4F7942</Color>
+            <Color x:Key="RedColor">#D22B2B</Color>
+            <Style x:Key="LabelColor" TargetType="Label">
+                
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" />
+            </Style>
+
+            <Style x:Key="BaseStyle" TargetType="Element">
+
+                <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light=White, Dark={StaticResource PrimaryDark}}" />
+                <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryLight}, Dark={StaticResource PrimaryLight}}" />
+                <Setter Property="Shell.TitleColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="Shell.DisabledColor" Value="#FFC17A"/>
+                <Setter Property="Shell.UnselectedColor" Value="#FFC17A" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={OnPlatform Android=White}, Dark={StaticResource PrimaryDark}}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="#FFC17A"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#FFC17A"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource PrimaryLight}"/>
+            </Style>
+            
+            <Style x:Key="FrameColor" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}" />
+            </Style>
+
+            <Style x:Key="ContentPageColor" TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}" />
+            </Style>
+
+            <Style x:Key="StackLayoutColor" TargetType="StackLayout">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}" />
+            </Style>
+
+            <Style x:Key="SecondaryLightColor" TargetType="Label">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource PrimaryLight}}" />
+            </Style>
+
+            <Style x:Key="EntryPlaceHolderColor" TargetType="Entry">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=DimGray, Dark={StaticResource TextColorDark}}" />
+                <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light=DimGray, Dark={StaticResource TextColorDark}}" />
+
+            </Style>
+
+            <Style x:Key="FloatingButton" TargetType="Button">
+                <Setter Property="BorderColor" Value="{StaticResource SecondaryLight}" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="BorderRadius" Value="35" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="HorizontalOptions" Value="End" />
+                <Setter Property="VerticalOptions" Value="End" />
+                <Setter Property="WidthRequest" Value="70" />
+                <Setter Property="HeightRequest" Value="70" />
+                <Setter Property="Margin" Value="0,0,20,22" />
+            </Style>
+
+
+
+            <Style x:Key="NoBorderButton" TargetType="Button">
+                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="BorderColor" Value="Transparent" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextTransform" Value="None" />
+            </Style>
+
+            <Style x:Key="BorderButton" TargetType="Button">
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="BorderColor" Value="{StaticResource SecondaryLight}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="CornerRadius" Value="50" />
+                <Setter Property="MinimumWidthRequest" Value="100" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="TextTransform" Value="None" />
+            </Style>
+
+            <Style x:Key="BorderButtonFill" TargetType="Button">
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="TextColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="BorderColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="CornerRadius" Value="50" />
+                <Setter Property="MinimumWidthRequest" Value="100" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="TextTransform" Value="None" />
+            </Style>
+
+            <Style x:Key="LargeBorderButton" TargetType="Button">
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="BorderColor" Value="{StaticResource SecondaryLight}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="Margin" Value="15" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="TextTransform" Value="None" />
+            </Style>
+
+            <Style x:Key="validIcon" TargetType="Label">
+                <Setter Property="Text" Value="&#xf058;" />
+                <Setter Property="FontFamily" Value="FontAwesomeIcons" />
+                <Setter Property="FontSize" Value="25" />
+                <Setter Property="TextColor" Value="Green"/>
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+
+            <Style x:Key="invalidIcon" TargetType="Label">
+                <Setter Property="Text" Value="&#xf057;" />
+                <Setter Property="FontFamily" Value="FontAwesomeIcons" />
+                <Setter Property="FontSize" Value="25" />
+                <Setter Property="TextColor" Value="DarkRed"/>
+            </Style>
+
+            <Style x:Key="OrderCard" TargetType="Frame">
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light= {StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}" />
+                <Setter Property="Margin" Value="16,3" />
+                <Setter Property="Padding" Value="15" />
+                <Setter Property="MinimumHeightRequest" Value="100" />
+            </Style>
+
+            <Style x:Key="FoodCard" TargetType="Frame">
+                <Setter Property="CornerRadius" Value="15" />
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light= {StaticResource FrameBackGroundLight}, Dark={StaticResource FrameBackGroundDark}}" />
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="HeightRequest" Value="200" />
+                <Setter Property="WidthRequest" Value="170" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="LabelOrderCard" TargetType="Label">
+                <Setter Property="Padding" Value="10,0,0,0" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="ImageOrderCard" TargetType="Frame">
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="Margin" Value="5" />
+            </Style>
+
+            <Style x:Key="ImageFoodCard" TargetType="Image">
+                <Setter Property="Aspect" Value="AspectFill" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="Start" />
+                <Setter Property="HeightRequest" Value="100" />
+            </Style>
+
+            <Style x:Key="textFeildFrame" TargetType="Frame">
+                <Setter Property="CornerRadius" Value="6" />
+                <Setter Property="Padding" Value="9" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="Margin" Value="0,-10,0,0"/>
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light= LightGray, Dark={StaticResource FrameBackGroundDark}}"/>
+            </Style>
+
+            <Style x:Key="textFeild" TargetType="Entry">
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="Margin" Value="0,-30,0,-30"/>
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" />
+                <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light=Gray, Dark={StaticResource TextColorDark}}"/>
+            </Style>
+
+            <Style x:Key="RangeSlider" TargetType="xct:RangeSlider">
+                <Setter Property="LowerThumbBorderColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="UpperThumbBorderColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="LowerThumbColor" Value="White" />
+                <Setter Property="UpperThumbColor" Value="White" />
+                <Setter Property="TrackBorderColor" Value="Gray" />
+                <Setter Property="TrackColor" Value="Gray" />
+                <Setter Property="TrackHighlightColor" Value="{StaticResource PrimaryLight}" />
+
+            </Style>
+
+            <Style x:Key="Slider" TargetType="Slider">
+                <Setter Property="MaximumTrackColor" Value="Gray" />
+                <Setter Property="MinimumTrackColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="ThumbColor" Value="{StaticResource PrimaryLight}" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="WidthRequest" Value="200" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

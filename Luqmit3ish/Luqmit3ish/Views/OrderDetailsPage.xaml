@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:Luqmit3ish.ViewModels" 
+             x:Class="Luqmit3ish.Views.OrderDetailsPage"
+             x:Name="OrderDetails"
+             Shell.TabBarIsVisible="False"
+             Title="Order Details"
+             Style="{StaticResource ContentPageColor}">
+
+    <ContentPage.Content>
+        <StackLayout Margin="16,0">
+            <Label Text="{Binding Order.Owner.Name}" Style="{StaticResource LabelColor}" FontSize="Title" FontAttributes="Bold" Margin="0,30,0,0">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ProfileCommand}" 
+                                          CommandParameter="{Binding Order.Owner}"  />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label FontSize="Small" TextColor="Gray"  Margin="0,0,0,10">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="&#xf48b;" FontFamily="FontAwesomeIcons" FontSize="16"  />
+                            <Span  Text=" Pickup Time: " />
+                            <Span  Text="{Binding Order.Owner.OpeningHours}"  /> 
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <CollectionView ItemsSource="{Binding Items}" >
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="3" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout HorizontalOptions="Fill">
+                            <Grid Padding="0,12" ColumnDefinitions="auto,*,auto" ColumnSpacing="30"
+                                              HorizontalOptions="Fill">
+                                <Image   Grid.Column="0" HeightRequest="60" WidthRequest="60" VerticalOptions="End" 
+                                           HorizontalOptions="Center" Source="{Binding Dish.Photo}" 
+                                           Aspect="AspectFill"/>
+                                <Label VerticalOptions="Center" MaxLines="1" HorizontalTextAlignment="Start"
+                                                   Text="{Binding Dish.Name}" Style="{StaticResource LabelColor}"
+                                        Grid.Column="1" Margin="0,10"
+                                                   FontSize="Medium" FontAttributes="Bold"/>
+              
+                                <StackLayout Grid.Column="2" HorizontalOptions="Center" Orientation="Horizontal" Margin="15,-5,0,0"
+                                                             WidthRequest="100" VerticalOptions="Center" >
+                                    <Label Text="&#xf056;" FontFamily="FontAwesomeIcons"
+                                                           FontSize="25" Margin="0,10,0,0" 
+                                                           TextColor="{StaticResource PrimaryLight}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer CommandParameter="{Binding . }"
+                                                                                  Command="{Binding BindingContext.MinusCommand , Source={x:Reference OrderDetails}}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Label Text="{Binding Quantity}" FontAttributes="Bold"
+                                                           Margin="5,12,5,0" Style="{StaticResource LabelColor}"/>
+                                    <Label  Text="&#xf055;" FontFamily="FontAwesomeIcons" 
+                                                            FontSize="25" Margin="0,10,0,0" TextColor="{StaticResource PrimaryLight}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer CommandParameter="{Binding . }" 
+                                                                                  Command="{Binding BindingContext.PlusCommand  , Source={x:Reference OrderDetails}}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </StackLayout>
+                            </Grid>
+                            <BoxView HeightRequest="1" BackgroundColor="LightGray" />
+                        </StackLayout>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button  Text="Delete"
+                     BackgroundColor="{StaticResource RedColor}"
+                     Style="{StaticResource LargeBorderButton}" 
+                     Command="{Binding BindingContext.DeleteCommand , Source={x:Reference OrderDetails}}"
+                     CommandParameter="{Binding Order.Id}"/>
+           
+        </StackLayout>
+
+    </ContentPage.Content>
+</ContentPage>

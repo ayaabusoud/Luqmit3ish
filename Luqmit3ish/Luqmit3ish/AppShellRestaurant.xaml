@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:Luqmit3ish.Views"
+       x:Class="Luqmit3ish.AppShellRestaurant">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <TabBar>
+        <ShellContent Title="Home" Icon="icon_home.png"  Route="RestaurantHomePage"  ContentTemplate="{DataTemplate local:RestaurantHomePage}" />
+        <ShellContent Title="Orders" Icon="icon_list.png"  ContentTemplate="{DataTemplate local:RestaurantOrderPage}" />
+        <ShellContent Title="profile" Icon="icon_profile.png" ContentTemplate="{DataTemplate local:settingsPage}" />
+    </TabBar>
+
+
+    <TabBar>
+        <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
+    </TabBar>
+
+
+</Shell>

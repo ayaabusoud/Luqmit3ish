@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+             x:Class="Luqmit3ish.Views.EditFoodPage"
+             Title="Edit Food"
+             Shell.TabBarIsVisible="False"
+             Style="{StaticResource ContentPageColor}">
+    <ContentPage.Content>
+        <ScrollView HeightRequest="500">
+            <StackLayout Margin="0">
+                <Frame Padding="0"
+                       Style="{StaticResource FrameColor}"
+                       HeightRequest="220">
+                    <Grid>
+                        <ffimageloading:CachedImage LoadingPlaceholder="loading.PNG"
+                                        Source="{Binding DishInfo.Photo}"
+                               Aspect="AspectFill" HeightRequest="200" />
+                        <Frame CornerRadius="50"
+                               HasShadow="False"
+                               WidthRequest="40"
+                               HeightRequest="40"
+                               BackgroundColor="White"
+                               HorizontalOptions="End"
+                               VerticalOptions="End"
+                               Margin="0,0,15,65"
+                               Padding="3">
+                            <Frame CornerRadius="50"
+                                   HasShadow="False"
+                                   BackgroundColor="Gray"
+                                   WidthRequest="10"
+                                   HeightRequest="10"
+                                   HorizontalOptions="Fill"
+                               VerticalOptions="Fill"
+                                   Padding="0">
+                                <Label Text="&#xf030;"
+                                       BackgroundColor="Gray"
+                                       FontFamily="FontAwesomeIcons"
+                                       FontSize="Medium"
+                                       TextColor="White"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding TakePhotoCommand}" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Frame>
+                        </Frame>
+                    </Grid>
+                </Frame>
+
+                <Frame CornerRadius="15"
+                       Margin="0,-60,0,-40"
+                       VerticalOptions="FillAndExpand"
+                       Padding="16"
+                       BackgroundColor="{AppThemeBinding Light=white,Dark={StaticResource PrimaryDark}}">
+                    <StackLayout>
+                        <StackLayout>
+                            <StackLayout Margin="0">
+                                <Label Text="Type: "
+                                   FontAttributes="Bold"
+                                   FontSize="17"
+                                   Style="{StaticResource LabelColor}"/>
+                                <CollectionView ItemsSource="{Binding TypeValues}"
+                                            HeightRequest="100"
+                                            SelectionMode="Single"
+                                            SelectedItem="{Binding SelectedType}"
+                                            SelectionChangedCommand="{Binding MyCollectionSelectedCommand}">
+                                    <CollectionView.ItemsLayout>
+                                        <GridItemsLayout HorizontalItemSpacing="15"
+                                                     Orientation="Horizontal"/>
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackLayout Padding="5"
+                                                     Style="{StaticResource StackLayoutColor}">
+                                                <Frame Padding="0"
+                                                   CornerRadius="10"
+                                                   WidthRequest="65"
+                                                   HeightRequest="65"
+                                                   BackgroundColor="{Binding FrameBackgroundColor}"
+                                                   BorderColor="{StaticResource PrimaryLight}" >
+                                                    <StackLayout VerticalOptions="Center"
+                                                             HorizontalOptions="Center">
+                                                        <Label Text="{Binding IconText}"
+                                                           FontFamily="FontAwesomeIcons"
+                                                           FontSize="Title"
+                                                           TextColor="{Binding TextBackgroundColor}" />
+                                                    </StackLayout>
+                                                </Frame>
+                                                <Label Text="{Binding Name}"
+                                                   FontSize="17"
+                                                   HorizontalOptions="Center"
+                                                   Style="{StaticResource LabelColor}"/>
+                                            </StackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </StackLayout>
+                            <Frame Style="{StaticResource textFeildFrame}" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand">
+                                <StackLayout Orientation="Horizontal"
+                                                 Margin="0"
+                                                 Padding="0">
+                                        <Label Text="Name: " 
+                                               VerticalOptions="Center"
+                                               FontSize="17"
+                                               FontAttributes="Bold" 
+                                               Style="{StaticResource LabelColor}" />
+
+                                        <Entry Text="{Binding DishInfo.Name}"
+                                               Placeholder="ex: Pizza"
+                                               PlaceholderColor="Gray"
+                                               Keyboard="Text" 
+                                               Style="{StaticResource textFeild}"
+                                               ClearButtonVisibility="WhileEditing"
+                                               HorizontalOptions="FillAndExpand"
+                                               MaxLength="200"/>
+                                </StackLayout>
+                            </Frame>
+
+                        <BoxView Color="Gray"
+                                 HeightRequest="1"
+                                 HorizontalOptions="Fill"
+                                 Margin="2,-8,2,5" />
+
+
+                            <StackLayout Spacing="0" Margin="0,10,0,0">
+
+                                <Label Text="Description: "
+                                   Style="{StaticResource LabelColor}"
+                                   VerticalOptions="Center"
+                                   FontAttributes="Bold"
+                                       FontSize="17"/>
+                                <Editor Placeholder="ex: mini pizza with chees"
+                                    FontSize="17"
+                                    Style="{StaticResource LabelColor}"
+                                    Text="{Binding DishInfo.Description}"
+                                    HorizontalOptions="Fill"
+                                    VerticalOptions="FillAndExpand"
+                                        MaxLength="200"/>
+                            </StackLayout>
+                            
+                            
+                            <Grid Margin="0,0,0,5" HorizontalOptions="Center" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.7*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="Keep Valid for (day/s): " FontSize="17"
+                                       FontAttributes="Bold"
+                                       Style="{StaticResource LabelColor}"
+                                       Grid.Column="0"/>
+
+                                <StackLayout Orientation="Horizontal"
+                                             Margin="0,-5,20,0"
+                                             WidthRequest="100"
+                                             VerticalOptions="Center"
+                                             Grid.Column="1"
+                                             HorizontalOptions="Center">
+                                    <Label Text="&#xf055;"
+                                           FontFamily="FontAwesomeIcons"
+                                           FontSize="25"
+                                           Margin="0,10,0,0"
+                                           TextColor="{StaticResource PrimaryLight}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding KeepValidPlusCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Label Text="{Binding KeepValid}" 
+                                           FontAttributes="Bold"
+                                           Margin="3,7,3,0"
+                                           FontSize="Medium"
+                                           Style="{StaticResource LabelColor}"/>
+                                    <Label Text="&#xf056;"
+                                           FontFamily="FontAwesomeIcons"
+                                           FontSize="25"
+                                           Margin="0,10,0,0"
+                                           TextColor="{StaticResource PrimaryLight}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding KeepValidMinusCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </StackLayout>
+                            </Grid>
+
+                            <Grid HorizontalOptions="Center" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.7*"/>
+                                    <ColumnDefinition Width="0.3*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="Quantity: "
+                                       Style="{StaticResource LabelColor}"
+                                       FontAttributes="Bold"
+                                       FontSize="17"
+                                       Grid.Column="0"/>
+
+                                <StackLayout Orientation="Horizontal"
+                                             Margin="0,-5,20,0"
+                                             WidthRequest="100"
+                                             VerticalOptions="Center"
+                                             Grid.Column="1"
+                                             HorizontalOptions="Center">
+                                    <Label Text="&#xf055;"
+                                           FontFamily="FontAwesomeIcons"
+                                           FontSize="25" Margin="0,10,0,0" 
+                                           TextColor="{StaticResource PrimaryLight}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding QuantityPlusCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Label Text="{Binding Quantity}"
+                                           FontAttributes="Bold"
+                                           Margin="3,7,3,0"
+                                           FontSize="Medium"
+                                           Style="{StaticResource LabelColor}"/>
+                                    <Label Text="&#xf056;"
+                                           FontFamily="FontAwesomeIcons"
+                                           FontSize="25"
+                                           Margin="0,10,0,0"
+                                           TextColor="{StaticResource PrimaryLight}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding QuantityMinusCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </StackLayout>
+                            </Grid>
+
+
+                        <StackLayout Margin="0,0,0,10" Orientation="Horizontal">
+                            <Button Text="Delete"
+                                    Command="{Binding DeleteCommand}" 
+                                Style="{StaticResource LargeBorderButton}"
+                                    BorderColor="{StaticResource RedColor}"
+                                    BorderWidth="2"
+                                    BackgroundColor="Transparent"
+                                    TextColor="{AppThemeBinding Light=DarkRed,Dark= white}" />
+                            <Button Text="Submit"
+                                    Command="{Binding SubmitCommand}" 
+                                    Style="{StaticResource LargeBorderButton}"
+                                    BackgroundColor="{StaticResource PrimaryLight}"/>
+                        </StackLayout>
+                    </StackLayout>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

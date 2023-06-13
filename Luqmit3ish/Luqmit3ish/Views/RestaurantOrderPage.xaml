@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Luqmit3ish.Views.RestaurantOrderPage"
+              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+             xmlns:local="clr-namespace:Luqmit3ish.Converter"
+             Title="Orders"
+             x:Name="RestaurantOrder"
+             Style="{StaticResource ContentPageColor}">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:EqualOneConverter x:Key="equalOneConverter" />
+            <local:NotEqualOneConverter x:Key="notEqualOneConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <Grid Margin="10,0" HorizontalOptions="Fill" VerticalOptions="Fill">
+            <StackLayout IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
+                <Image Source="https://luqmit3ish7.blob.core.windows.net/photos/1_EmptyCart.png"
+                           HeightRequest="200" 
+                           WidthRequest="200"
+                           VerticalOptions="Center"/>
+                <Label Text="There is no orders yet"
+                           FontSize="Medium"
+                           TextColor="DimGray"
+                           HorizontalOptions="Fill" 
+                           HorizontalTextAlignment="Center"
+                           FontAttributes="Bold"
+                           Margin="0,2,0,0"/>
+                <Label Text="Go ahead and add new food to receive orders!"
+                         FontSize="Small"
+                         HorizontalOptions="Fill" 
+                         HorizontalTextAlignment="Center"
+                         Margin="0,0,0,10"
+                       TextColor="{AppThemeBinding Light=Black,Dark=White}"/>
+            </StackLayout>
+            <StackLayout  Margin="0,10,0,20">
+                <Frame Padding="10" CornerRadius="10"  HeightRequest="50" BackgroundColor="Transparent">
+                    <StackLayout >
+                        <Grid ColumnDefinitions="*,*" >
+                            <Label Text="Not Received" Style="{StaticResource LabelColor}"
+                                   FontSize="16" HorizontalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.NotRecievedCommand, Source={x:Reference RestaurantOrder}}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Label Text="Received" Style="{StaticResource LabelColor}"
+                                   FontSize="16" Grid.Column="1" HorizontalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.RecievedCommand, Source={x:Reference RestaurantOrder}}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
+
+                        <StackLayout Orientation="Horizontal" >
+                            <BoxView BackgroundColor="{Binding BindingContext.NotRecievedColor, Source={x:Reference RestaurantOrder}}"
+                                     HorizontalOptions="FillAndExpand" HeightRequest="2"/>
+                            <BoxView BackgroundColor="{Binding BindingContext.RecievedColor, Source={x:Reference RestaurantOrder}}" 
+                                     HorizontalOptions="FillAndExpand" HeightRequest="2"/>
+                </StackLayout>
+
+                    </StackLayout>
+                    
+
+                </Frame>
+<CollectionView Margin="0,10,0,0" ItemsSource="{Binding OrderCards}" >
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" 
+                                               ItemSpacing="3"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView IsEnabled="{Binding BindingContext.ReceievedCheck , Source={x:Reference RestaurantOrder}}" BackgroundColor="{AppThemeBinding Dark=#212121}">
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Received"
+                                               IconImageSource="https://luqmit3ish7.blob.core.windows.net/photos/receivedIcon.png"
+                                               BackgroundColor="{StaticResource GreenColor}"
+                                               Command="{Binding BindingContext.DoneCommand , Source={x:Reference RestaurantOrder}}"
+                                               CommandParameter="{Binding .}"/>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <StackLayout>
+                                    <StackLayout Margin="5,0" Padding="10"  >
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer CommandParameter="{Binding .}"
+                                                              Command="{Binding BindingContext.OrderCommand , Source={x:Reference RestaurantOrder}}"/>
+                                        </StackLayout.GestureRecognizers>
+                                        <StackLayout Orientation="Horizontal" Padding="0"
+                                                 Margin="0" HorizontalOptions="Start">
+                                            <Frame  Padding="0"  VerticalOptions="Center" HorizontalOptions="Center"  CornerRadius="100" IsClippedToBounds="True" HeightRequest="60" WidthRequest="60"  >
+                                                <ffimageloading:CachedImage Source="{Binding Owner.Photo}" 
+                                                            Aspect="AspectFill"
+                                                            LoadingPlaceholder="loading2.PNG" />
+                                            </Frame>
+                                            <StackLayout VerticalOptions="Center" Margin="20,0,0,0">
+                                                <Label  MaxLines="1" HorizontalTextAlignment="Start"
+                                                   Text="{Binding Owner.Name}" Style="{StaticResource LabelColor}"
+                                                   FontSize="Medium" FontAttributes="Bold"/>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label 
+                                                    MaxLines="1" 
+                                                    HorizontalTextAlignment="Start"
+                                                    FontSize="Small"
+                                                    TextColor="Gray"
+                                                    Text="{Binding Orders.Count}"/>
+                                                    <Label FontSize="Small"
+                                                       TextColor="Gray"
+                                                       Text="item"
+                                                       IsVisible="{Binding Orders.Count,Converter={StaticResource equalOneConverter}}" />
+                                                    <Label FontSize="Small"
+                                                       TextColor="Gray"
+                                                       Text="items" 
+                                                       IsVisible="{Binding Orders.Count, Converter={StaticResource notEqualOneConverter}}" />
+                                                </StackLayout>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </StackLayout>
+                                    <BoxView HeightRequest="1" BackgroundColor="{AppThemeBinding Light=LightGray, Dark=Transparent}"/>
+                                </StackLayout>
+                            </SwipeView>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+
+</ContentPage>
+                                        

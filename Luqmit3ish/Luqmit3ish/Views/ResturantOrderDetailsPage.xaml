@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Luqmit3ish.Views.ResturantOrderDetailsPage"
+             x:Name="ResturantOrderDetails"
+             Style="{StaticResource ContentPageColor}"
+             Shell.TabBarIsVisible="False"
+             Title="Order Details">
+
+    <ContentPage.Content>
+
+        <StackLayout Margin="16,0">
+            <Label Text="{Binding Order.Owner.Name}"  Style="{StaticResource LabelColor}" FontSize="Title" FontAttributes="Bold" Margin="0,30,0,0">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ProfileCommand}" 
+                                          CommandParameter="{Binding Order.Owner}"  />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label FontSize="Small" TextColor="Gray"  Margin="0,0,0,10">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="&#xf48b;" FontFamily="FontAwesomeIcons" FontSize="16"  />
+                            <Span  Text=" Pickup Time: " />
+                            <Span  Text="8:00am-9:00pm"  />
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <CollectionView ItemsSource="{Binding Order.Orders}" >
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="3" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout HorizontalOptions="Fill">
+                            <Grid Padding="0,12" ColumnDefinitions="auto,*,auto"
+                                              HorizontalOptions="Fill" ColumnSpacing="30">
+                                <Image   Grid.Column="0" HeightRequest="60" WidthRequest="60" VerticalOptions="End" 
+                                           HorizontalOptions="Center" Source="{Binding Dish.Photo}" 
+                                           Aspect="AspectFill"/>
+                                <StackLayout  Grid.Column="1">
+                                    <Label VerticalOptions="Center" MaxLines="1" HorizontalTextAlignment="Start"
+                                                   Text="{Binding Dish.Name}" Style="{StaticResource LabelColor}" 
+                                                   FontSize="Medium" FontAttributes="Bold"/>
+                                    <Label VerticalOptions="Center" MaxLines="1" HorizontalTextAlignment="Start"
+                                           TextColor="Gray" 
+                                           FontSize="Small">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span  Text="Quantity: " />
+                                                    <Span  Text="{Binding Quantity}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+
+                                    </Label>
+                                </StackLayout>
+                            </Grid>
+                            <BoxView HeightRequest="1" BackgroundColor="LightGray" />
+                        </StackLayout>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </StackLayout>
+
+    </ContentPage.Content>
+</ContentPage>

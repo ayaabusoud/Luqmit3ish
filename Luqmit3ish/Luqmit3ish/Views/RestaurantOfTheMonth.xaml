@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Luqmit3ish.Views.RestaurantOfTheMonth"
+             Shell.TabBarIsVisible="False"
+             Title="Restaurant Of The Month"
+             Style="{StaticResource ContentPageColor}">
+    <ContentPage.Content>
+        <Grid Margin="16,30,16,25" HorizontalOptions="Fill" VerticalOptions="Fill">
+            
+            <StackLayout IsVisible="{Binding NonEmptyResult}" VerticalOptions="Start" HorizontalOptions="Center">
+                <Image  Source="https://luqmit3ish7.blob.core.windows.net/photos/winner.png" 
+                         HorizontalOptions="Fill"
+                        Margin="0,100,0,0"/>
+                <Label HorizontalTextAlignment="Center" Style="{StaticResource LabelColor}" FontSize="Small">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span  Text="{Binding Dishes}"/>
+                                <Span Text=" Dishes"  />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                 <Label HorizontalTextAlignment="Center" Style="{StaticResource LabelColor}" FontSize="Small">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span  Text="Congratulations "/>
+                                <Span  Text="{Binding RestaurantName}" TextColor="{StaticResource PrimaryLight}" FontAttributes="Bold"/>
+
+                                <Span Text=" for donating the most meals last month! Let's follow their lead and make a positive impact by donating to those in need. Together, we can make a difference!"  />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+               
+
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

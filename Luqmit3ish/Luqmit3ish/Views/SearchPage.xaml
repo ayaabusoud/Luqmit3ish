@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Luqmit3ish.Views.SearchPage"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:local="clr-namespace:Luqmit3ish.Converter"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             x:Name="SearchFoodPage"
+             Style="{StaticResource ContentPageColor}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:EqualOneConverter x:Key="equalOneConverter" />
+            <local:NotEqualOneConverter x:Key="notEqualOneConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <StackLayout Margin="0,0,0,35">
+            <Grid  BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource PrimaryDark}}" xct:ShadowEffect.Color="Gray"  
+                   HeightRequest="80" Padding="0" Margin="0">
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="0.1*"/>
+                    <ColumnDefinition Width="0.9*"/>
+                </Grid.ColumnDefinitions>
+                <Label Margin="0,20,0,0" VerticalOptions="Center"
+                       HorizontalOptions="End" Grid.Column="0" 
+                       HeightRequest="56" TextColor="{AppThemeBinding Light=Black, Dark=White}" 
+                       Text="&#xf060;" FontFamily="FontAwesomeIcons"
+                       FontSize="20" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <SearchBar PlaceholderColor="{AppThemeBinding Light=Black, Dark=White}" 
+                           CancelButtonColor="{AppThemeBinding Light=Black, Dark=White}" 
+                           xct:IconTintColorEffect.TintColor="Black" 
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}" 
+                           Grid.Column="1"
+                           Placeholder="Search" Text="{Binding SearchText}" 
+           SearchCommand="{Binding SearchCommand}" HeightRequest="56"/>
+            </Grid>
+
+            <Grid Margin="16,30,16,25" HorizontalOptions="Fill" 
+                  VerticalOptions="Fill">
+                <StackLayout  IsVisible="{Binding EmptyResult}"  
+                              HorizontalOptions="Center"  
+                              VerticalOptions="Center">
+                    <Image Source="Notfound.png"
+                       HeightRequest="200" 
+                       WidthRequest="200"
+                       VerticalOptions="Center"/>
+                    <Label Text="No results found "
+                           
+                   FontSize="Medium"
+                   TextColor="DimGray"
+                   HorizontalOptions="Fill" 
+                   HorizontalTextAlignment="Center"
+                   FontAttributes="Bold"
+                   Margin="0,2,0,0"/>
+                    <Label Text="We can't find any item matching your search " 
+                   FontSize="Small"
+                   HorizontalOptions="Fill" 
+                   HorizontalTextAlignment="Center"
+                   Margin="0,0,0,10"
+                           TextColor="{AppThemeBinding Light=Black,Dark=White}"/>
+                </StackLayout>
+                <CollectionView ItemsSource="{Binding DishCards}">
+
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="6"/>
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <Frame Style="{StaticResource FoodCard}" Margin="3">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}"  Command="{Binding BindingContext.FoodDetailCommand , Source={x:Reference SearchFoodPage}}"></TapGestureRecognizer>
+                                    </Frame.GestureRecognizers>
+                                    <StackLayout>
+                                        <Image Source="{Binding Photo}"  Style="{StaticResource ImageFoodCard}" />
+                                        <Label MaxLines="1" FontAttributes="Bold"
+                                           Style="{StaticResource LabelColor}" Text="{Binding DishName}" 
+                                           Margin="15,0" FontSize="Medium"/>
+                                        <Label WidthRequest="150" MaxLines="1" Text="{Binding Restaurant.Name}" 
+                                           Margin="15,0" FontSize="Small" Style="{StaticResource LabelColor}"/>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label  FontSize="Small" 
+                                                MaxLines="1" 
+                                                Margin="15,0,0,0" 
+                                                Style="{StaticResource LabelColor}"
+                                                Text="{Binding Quantity}"/>
+                                            <Label FontSize="Small"
+                                               MaxLines="1" 
+                                               Style="{StaticResource LabelColor}"
+                                               Text="Dish" 
+                                               IsVisible="{Binding Quantity,Converter={StaticResource equalOneConverter}}" />
+                                            <Label FontSize="Small" 
+                                               MaxLines="1"
+                                               Style="{StaticResource LabelColor}"
+                                               Text="Dishes"
+                                               IsVisible="{Binding Quantity,Converter={StaticResource notEqualOneConverter}}" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </Grid>
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:Luqmit3ish.Views"
+       x:Class="Luqmit3ish.AppShellCharity">
+    
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <TabBar>
+        <ShellContent Title="Home" Icon="icon_home.png"  Route="CharityHomePage"  ContentTemplate="{DataTemplate local:CharityHomePage}" />
+        <ShellContent Title="Orders" Icon="icon_list.png" Route="CharityOrderPage"  ContentTemplate="{DataTemplate local:CharityOrderPage}" />
+        <ShellContent Title="Profile" Icon="icon_profile.png" Route="ProfilePage" ContentTemplate="{DataTemplate local:settingsPage}" />
+    </TabBar>
+
+    <TabBar>
+        <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
+    </TabBar>
+
+
+</Shell>

@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Luqmit3ish.Views.RestaurantHomePage"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+              xmlns:local="clr-namespace:Luqmit3ish.Converter"
+             Title="Home"
+             x:Name="RestaurantPage"
+             Style="{StaticResource ContentPageColor}">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:EqualOneConverter x:Key="equalOneConverter" />
+            <local:NotEqualOneConverter x:Key="notEqualOneConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <Grid Margin="16,10,16,0" HorizontalOptions="Fill" VerticalOptions="Fill" >
+            <StackLayout  IsVisible="{Binding EmptyResult}"  HorizontalOptions="Center" VerticalOptions="Center">
+                <Image Source="https://luqmit3ish7.blob.core.windows.net/photos/1_CharityFood.png"
+                       HeightRequest="200" 
+                       WidthRequest="200"
+                       VerticalOptions="Center"/>
+                <Label Text="Add New Dishes" 
+                   FontSize="Medium"
+                   TextColor="{AppThemeBinding Light=DimGray, Dark={StaticResource TextColorDark}}"
+                   HorizontalOptions="Fill" 
+                   HorizontalTextAlignment="Center"
+                   FontAttributes="Bold"/>
+                <Label Text="And help us to reduce food waste!" 
+                   FontSize="Small"
+                   HorizontalOptions="Fill" 
+                   HorizontalTextAlignment="Center"
+                   Margin="0,0,0,10"
+                   Style="{StaticResource LabelColor}"/>
+            </StackLayout>
+            <CollectionView ItemsSource="{Binding Dishes}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="6"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Frame Style="{StaticResource FoodCard}" Margin="3" HeightRequest="170" >
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding .}"
+                                                          Command="{Binding BindingContext.FoodDetailCommand , Source={x:Reference RestaurantPage}}"></TapGestureRecognizer>
+                                </Frame.GestureRecognizers>
+                                <StackLayout Spacing="5">
+                                    <ffimageloading:CachedImage Source="{Binding Photo}"
+                                                                LoadingPlaceholder="loading.PNG"
+                                                                Aspect="AspectFill" HorizontalOptions="FillAndExpand" 
+                                                                VerticalOptions="Start" 
+                                                                HeightRequest="100" />
+                                    <Label Margin="15,0,0,0" MaxLines="1" Text="{Binding Name}"
+                                           Style="{StaticResource LabelColor}" FontSize="Medium"/>
+                                    <Grid Margin="15,0,15,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.85*"/>
+                                            <ColumnDefinition Width="0.15*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label  TextColor="gray"
+                                                Grid.Column="0"
+                                                MaxLines="1"
+                                                FontSize="Small"
+                                                Style="{StaticResource LabelColor}"
+                                                Text="{Binding Quantity}"/>
+                                            <Label TextColor="gray"
+                                                Grid.Column="0"
+                                                MaxLines="1"
+                                                FontSize="Small"
+                                                Style="{StaticResource LabelColor}"
+                                               Text="Dish" 
+                                               IsVisible="{Binding Quantity,Converter={StaticResource equalOneConverter}}" />
+                                            <Label TextColor="gray"
+                                                Grid.Column="0"
+                                                MaxLines="1"
+                                                FontSize="Small"
+                                                Style="{StaticResource LabelColor}"
+                                               Text="Dishes"
+                                               IsVisible="{Binding Quantity,Converter={StaticResource notEqualOneConverter}}" />
+                                        </StackLayout>
+                                    </Grid>
+                                </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <ImageButton  Command="{Binding AddCommand}"
+                             Grid.Row="0" 
+                             Source="plus_icon.png"
+                             Aspect="AspectFit"
+                             BorderWidth="1"
+                             BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource SecondaryLight}}"
+                             HorizontalOptions="End" 
+                             WidthRequest="56"
+                             HeightRequest="56"
+                             CornerRadius="28"
+                             Padding="19"
+                              Margin="0,0,0,10"
+                             VerticalOptions="End" 
+                              xct:IconTintColorEffect.TintColor="White"/>
+        </Grid>
+
+
+    </ContentPage.Content>
+
+</ContentPage>
