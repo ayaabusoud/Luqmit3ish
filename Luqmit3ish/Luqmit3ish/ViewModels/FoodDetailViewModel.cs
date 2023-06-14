@@ -146,7 +146,7 @@ namespace Luqmit3ish.ViewModels
 
                 await _orderService.ReserveOrder(newOrder);
 
-                await _navigation.PopAsync();
+                await _navigation.PopToRootAsync();
                 await PopNavigationAsync("Your order has been successfully reserved");
 
             }
