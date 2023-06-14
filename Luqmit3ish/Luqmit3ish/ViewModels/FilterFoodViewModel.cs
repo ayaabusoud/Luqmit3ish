@@ -273,7 +273,8 @@ namespace Luqmit3ish.ViewModels
 
                 string dishes = JsonConvert.SerializeObject(filteredDishes);
                 Preferences.Set("FilteedDishes", dishes);
-
+                
+                SavePreferences(filteredDishes);
                 await _navigation.PopAsync();
             }
             catch (ConnectionException e)
